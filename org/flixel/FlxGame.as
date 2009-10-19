@@ -396,9 +396,8 @@ package org.flixel
 						}
 						else
 						{
-							//_buffer.x = (Math.random()*_quakeIntensity*FlxG.width*2-_quakeIntensity*FlxG.width)*_z;
-							//_buffer.y = (Math.random()*_quakeIntensity*FlxG.height*2-_quakeIntensity*FlxG.height)*_z;
-							_buffer.y = (Math.random()*_quakeIntensity*FlxG.height*3*2-_quakeIntensity*FlxG.height)*_z;
+							_buffer.x = (Math.random()*_quakeIntensity*FlxG.width*2-_quakeIntensity*FlxG.width)*_z;
+							_buffer.y = (Math.random()*_quakeIntensity*FlxG.height*2-_quakeIntensity*FlxG.height)*_z;
 						}
 					}
 					
