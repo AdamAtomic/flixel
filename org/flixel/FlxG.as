@@ -1,5 +1,6 @@
 package org.flixel
 {
+	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.events.Event;
 	import flash.geom.Matrix;
@@ -10,62 +11,46 @@ package org.flixel
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
 	
+	import org.flixel.data.FlxKeyboard;
+	import org.flixel.data.FlxMouse;
+	
 	//@desc		This is a global helper class full of useful functions for audio, input, basic info, and the camera system
 	public class FlxG
 	{
+		[Embed(source="data/cursor.png")] static private var ImgDefaultCursor:Class;
+		
+		static public var LIBRARY_NAME:String = "flixel";
+		static public var LIBRARY_MAJOR_VERSION:uint = 1;
+		static public var LIBRARY_MINOR_VERSION:uint = 26;
+
+		static protected var _game:FlxGame;
+		
 		//@desc Represents the amount of time in seconds that passed since last frame
 		static public var elapsed:Number;
 		//@desc A reference or pointer to the current FlxState object being used by the game
 		static public var state:FlxState;
+		//@desc The width of the screen in game pixels
 		static public var width:uint;
+		//@desc The height of the screen in game pixels
 		static public var height:uint;
-		static public var level:uint;
+		//@desc Levels and scores are generic global variables that can be used for various cross-state stuff
+		static public var level:int;
 		static public var levels:FlxArray;
-		static public var score:uint;
+		static public var score:int;
 		static public var scores:FlxArray;
-		
-		//@desc These are the constants for use with the Pressed and Releases functions
-		static public const LEFT:uint = 0;
-		//@desc These are the constants for use with the Pressed and Releases functions
-		static public const RIGHT:uint = 1;
-		//@desc These are the constants for use with the Pressed and Releases functions
-		static public const UP:uint = 2;
-		//@desc These are the constants for use with the Pressed and Releases functions
-		static public const DOWN:uint = 3;
-		//@desc These are the constants for use with the Pressed and Releases functions
-		static public const A:uint = 4;
-		//@desc These are the constants for use with the Pressed and Releases functions
-		static public const B:uint = 5;
-		//@desc These are the constants for use with the Pressed and Releases functions
-		static public const MOUSE:uint = 6;
-		
-		//@desc A shortcut way of checking if a particular key is pressed
-		static public var kUp:Boolean;
-		//@desc A shortcut way of checking if a particular key is pressed
-		static public var kDown:Boolean;
-		//@desc A shortcut way of checking if a particular key is pressed
-		static public var kLeft:Boolean;
-		//@desc A shortcut way of checking if a particular key is pressed
-		static public var kRight:Boolean;
-		//@desc A shortcut way of checking if a particular key is pressed
-		static public var kA:Boolean;
-		//@desc A shortcut way of checking if a particular key is pressed
-		static public var kB:Boolean;
-		//@desc A shortcut way of checking if a particular key is pressed
-		static public var kMouse:Boolean;
+
 		//@desc The current game coordinates of the mouse pointer (not necessarily the screen coordinates)
-		static public var mouse:Point;
-		static private var _keys:Array;
-		static private var _oldKeys:Array;
+		static public var mouse:FlxMouse;
+		static public var keys:FlxKeyboard;
 		
 		//audio
-		static private var _muted:uint;
-		static private var _music:Sound;
-		static private var _musicChannel:SoundChannel;
-		static private var _musicPosition:Number;
-		static private var _volume:Number;
-		static private var _musicVolume:Number;
-		static private var _masterVolume:Number;
+		static protected var _muted:uint;
+		static protected var _music:Sound;
+		static protected var _musicChannel:SoundChannel;
+		static protected var _musicPosition:Number;
+		static protected var _volume:Number;
+		static protected var _musicVolume:Number;
+		static protected var _masterVolume:Number;
 		
 		//Ccmera system variables
 		static public var followTarget:FlxCore;
@@ -73,48 +58,21 @@ package org.flixel
 		static public var followLerp:Number;
 		static public var followMin:Point;
 		static public var followMax:Point;
-		static private var _scrollTarget:Point;
+		static protected var _scrollTarget:Point;
 		
 		//graphics stuff
 		static public var scroll:Point;
 		static public var buffer:BitmapData;
-		static private var _cache:Object;
+		static protected var _cache:Object;
 		
 		//Kongregate API object
 		static public var kong:FlxKong;
 		
-		//function reflectors
-		static private var _quake:Function;
-		static private var _flash:Function;
-		static private var _fade:Function;
-		static private var _switchState:Function;
-		static private var _log:Function;
-		static private var _setCursor:Function;
-		static private var _showSupportPanel:Function;
-		static private var _hideSupportPanel:Function;
-		
-		//@desc		Resets the key register and shortcut booleans to "off"
-		static public function resetKeys():void
+		static public function resetInput():void
 		{
-			kUp = kDown = kLeft = kRight = kA = kB = kMouse = false;
-			for(var i:uint = 0; i < _keys.length; i++)
-				_keys[i] = 0;
+			keys.reset();
+			mouse.reset();
 		}
-		
-		//@desc		Check to see if this key is pressed
-		//@param	Key		One of the key constants listed above (e.g. LEFT or A)
-		//@return	Whether the key is pressed
-		static public function pressed(Key:uint):Boolean { return _keys[Key] > 0; }
-		
-		//@desc		Check to see if this key was JUST pressed
-		//@param	Key		One of the key constants listed above (e.g. LEFT or A)
-		//@return	Whether the key was just pressed
-		static public function justPressed(Key:uint):Boolean { return _keys[Key] == 2; }
-		
-		//@desc		Check to see if this key is NOT pressed
-		//@param	Key		One of the key constants listed above (e.g. LEFT or A)
-		//@return	Whether the key is not pressed
-		static public function justReleased(Key:uint):Boolean { return _keys[Key] == -1; }
 		
 		//@desc		Set up and autoplay a music track
 		//@param	Music		The sound file you want to loop in the background
@@ -242,11 +200,19 @@ package org.flixel
 		//@param	Height	How high the square should be
 		//@param	Color	What color the square should be
 		//@return	This object is used during the sprite blitting process
-		static public function createBitmap(Width:uint, Height:uint, Color:uint):BitmapData
+		static public function createBitmap(Width:uint, Height:uint, Color:uint,Unique:Boolean):BitmapData
 		{
 			var key:String = Width+"x"+Height+":"+Color;
+			var gen:Boolean = false;
 			if((_cache[key] == undefined) || (_cache[key] == null))
 				_cache[key] = new BitmapData(Width,Height,true,Color);
+			else if(Unique)
+			{
+				var inc:uint = 0;
+				var ukey:String;
+				do { ukey = key + inc++; } while((_cache[key] == undefined) && (_cache[key] == null));
+				_cache[key] = new BitmapData(Width,Height,true,Color);
+			}
 			return _cache[key];
 		}
 		
@@ -493,34 +459,83 @@ package org.flixel
 		
 		//@desc		Switch from one FlxState to another
 		//@param	State		The class name of the state you want (e.g. PlayState)
-		static public function switchState(State:Class):void { _switchState(State); }
+		static public function switchState(State:Class):void
+		{ 
+			_game._panel.hide();
+			FlxG.unfollow();
+			FlxG.keys.reset();
+			FlxG.mouse.reset();
+			_game._quake.reset(0);
+			_game._buffer.x = 0;
+			_game._buffer.y = 0;
+			if(_game._cursor != null)
+			{
+				_game._buffer.removeChild(_game._cursor);
+				_game._cursor = null;
+			}
+			var newState:FlxState = new State;
+			_game._buffer.addChild(newState);
+			if(_game._curState != null)
+			{
+				_game._buffer.swapChildren(newState,_game._curState);
+				_game._buffer.removeChild(_game._curState);
+				_game._curState.destroy();
+			}
+			_game._fade.visible = false;
+			_game._curState = newState;
+		}
 		
 		//@desc		Log data to the developer console
 		//@param	Data		The data (in string format) that you wanted to write to the console
-		static public function log(Data:String):void { _log(Data); }
+		static public function log(Data:String):void
+		{
+			_game._console.log(Data);
+		}
 		
 		//@desc		Shake the screen
 		//@param	Intensity	Percentage of screen size representing the maximum distance that the screen can move during the 'quake'
 		//@param	Duration	The length in seconds that the "quake" should last
-		static public function quake(Intensity:Number,Duration:Number=0.5):void { _quake(Intensity,Duration); }
+		static public function quake(Intensity:Number,Duration:Number=0.5):void
+		{
+			_game._quake.reset(Intensity,Duration);
+		}
 		
 		//@desc		Temporarily fill the screen with a certain color, then fade it out
 		//@param	Color			The color you want to use
 		//@param	Duration		How long it takes for the flash to fade
 		//@param	FlashComplete	A function you want to run when the flash finishes
 		//@param	Force			Force the effect to reset
-		static public function flash(Color:uint, Duration:Number=1, FlashComplete:Function=null, Force:Boolean=false):void { _flash(Color,Duration,FlashComplete,Force); }
+		static public function flash(Color:uint, Duration:Number=1, FlashComplete:Function=null, Force:Boolean=false):void
+		{
+			_game._flash.reset(Color,Duration,FlashComplete,Force);
+		}
 		
 		//@desc		Fade the screen out to this color
 		//@param	Color			The color you want to use
 		//@param	Duration		How long it should take to fade the screen out
 		//@param	FadeComplete	A function you want to run when the fade finishes
 		//@param	Force			Force the effect to reset
-		static public function fade(Color:uint, Duration:Number=1, FadeComplete:Function=null, Force:Boolean=false):void { _fade(Color,Duration,FadeComplete,Force); }
+		static public function fade(Color:uint, Duration:Number=1, FadeComplete:Function=null, Force:Boolean=false):void
+		{
+			_game._fade.reset(Color,Duration,FadeComplete,Force);
+		}
 		
 		//@desc		Set the mouse cursor to some graphic file
 		//@param	CursorGraphic	The image you want to use for the cursor
-		static public function setCursor(CursorGraphic:Class):void { _setCursor(CursorGraphic); }
+		static public function showCursor(CursorGraphic:Class):void
+		{
+			if(_game._cursor == null)
+				_game._cursor = _game._buffer.addChild(new ImgDefaultCursor) as Bitmap;
+			else
+				_game._cursor = _game._buffer.addChild(new CursorGraphic) as Bitmap;
+		}
+		
+		//@desc		Set the mouse cursor to some graphic file
+		//@param	CursorGraphic	The image you want to use for the cursor
+		static public function hideCursor(CursorGraphic:Class):void
+		{
+			_game._buffer.removeChild(_game._cursor);
+		}
 		
 		//@desc		Switch to a different web page
 		static public function openURL(URL:String):void
@@ -532,18 +547,19 @@ package org.flixel
 		//@param	Top		Whether to slide on from the top or the bottom
 		static public function showSupportPanel(Top:Boolean=true):void
 		{
-			_showSupportPanel(Top);
+			_game._panel.show(Top);
 		}
 		
 		//@desc		Conceals the support panel
 		static public function hideSupportPanel():void
 		{
-			_hideSupportPanel();
+			_game._panel.hide();
 		}
 
 		//@desc		This function is only used by the FlxGame class to do important internal management stuff
-		static internal function setGameData(Width:uint,Height:uint,SwitchState:Function,Log:Function,Quake:Function,Flash:Function,Fade:Function,SetCursor:Function,ShowSupportPanel:Function,HideSupportPanel:Function):void
+		static internal function setGameData(Game:FlxGame,Width:uint,Height:uint):void
 		{
+			_game = Game;
 			_cache = new Object();
 			width = Width;
 			height = Height;
@@ -552,23 +568,9 @@ package org.flixel
 			_musicVolume = 1.0;
 			_masterVolume = 0.5;
 			_musicPosition = -1;
-			mouse = new Point();
-			_switchState = SwitchState;
-			_log = Log;
-			_quake = Quake;
-			_flash = Flash;
-			_fade = Fade;
-			_setCursor = SetCursor;
-			_showSupportPanel = ShowSupportPanel;
-			_hideSupportPanel = HideSupportPanel;
+			mouse = new FlxMouse();
+			keys = new FlxKeyboard();
 			unfollow();
-			_keys = new Array();
-			_oldKeys = new Array();
-			for(var i:uint = 0; i < 7; i++)
-			{
-				_keys.push(0);
-				_oldKeys.push(0);
-			}
 			FlxG.levels = new FlxArray();
 			FlxG.scores = new FlxArray();
 			level = 0;
@@ -631,36 +633,10 @@ package org.flixel
 		}
 		
 		//@desc		This function is only used by the FlxGame class to do important internal management stuff
-		static internal function pressKey(k:uint):void
+		static internal function updateInput():void
 		{
-			if(_keys[k] > 0)
-				_keys[k] = 1;
-			else
-				_keys[k] = 2;
-		}
-		
-		//@desc		This function is only used by the FlxGame class to do important internal management stuff
-		static internal function releaseKey(k:uint):void
-		{
-			if(_keys[k] > 0)
-				_keys[k] = -1;
-			else
-				_keys[k] = 0;
-		}
-		
-		//@desc		This function is only used by the FlxGame class to do important internal management stuff
-		static internal function updateKeys():void
-		{
-			for(var i:uint = 0; i < 7; i++)
-			{
-				if((_oldKeys[i] == -1) && (_keys[i] == -1))
-					_keys[i] = 0;
-				else if((_oldKeys[i] == 2) && (_keys[i] == 2))
-					_keys[i] = 1;
-				_oldKeys[i] = _keys[i];
-			}
-			mouse.x = state.mouseX-scroll.x;
-			mouse.y = state.mouseY-scroll.y;
+			keys.update();
+			mouse.update(state.mouseX-scroll.x,state.mouseY-scroll.y);
 		}
 	}
 }

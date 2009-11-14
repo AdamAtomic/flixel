@@ -83,7 +83,7 @@ package org.flixel
 			visibility(false);
 			if(_off.overlapsPoint(FlxG.mouse.x,FlxG.mouse.y))
 			{
-				if(!FlxG.kMouse)
+				if(!FlxG.mouse.pressed())
 					_pressed = false;
 				else if(!_pressed)
 				{

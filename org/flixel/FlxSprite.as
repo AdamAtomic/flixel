@@ -1,12 +1,12 @@
 package org.flixel
 {
-	import org.flixel.data.FlxAnim;
-	
 	import flash.display.BitmapData;
 	import flash.geom.ColorTransform;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	
+	import org.flixel.data.FlxAnim;
 	
 	//@desc		The main "game object" class, handles basic physics and animation
 	public class FlxSprite extends FlxCore
@@ -45,8 +45,8 @@ package org.flixel
 		private var _facing:Boolean;
 		
 		//helpers
-		private var _bw:uint;
-		private var _bh:uint;
+		protected var _bw:uint;
+		protected var _bh:uint;
 		private var _r:Rectangle;
 		private var _p:Point;
 		private var _pZero:Point;
@@ -63,12 +63,13 @@ package org.flixel
 		//@param	Width		If you opt to NOT use an image and want to generate a colored block, or your sprite's frames are not square, you can specify a width here 
 		//@param	Height		If you opt to NOT use an image you can specify the height of the colored block here (ignored if Graphic is not null)
 		//@param	Color		Specifies the color of the generated block (ignored if Graphic is not null)
-		public function FlxSprite(Graphic:Class=null,X:int=0,Y:int=0,Animated:Boolean=false,Reverse:Boolean=false,Width:uint=0,Height:uint=0,Color:uint=0)
+		//@param	Unique		Whether the graphic should be a unique instance in the graphics cache
+		public function FlxSprite(Graphic:Class=null,X:int=0,Y:int=0,Animated:Boolean=false,Reverse:Boolean=false,Width:uint=0,Height:uint=0,Color:uint=0,Unique:Boolean=false)
 		{
 			super();
 
 			if(Graphic == null)
-				pixels = FlxG.createBitmap(Width,Height,Color);
+				pixels = FlxG.createBitmap(Width,Height,Color,Unique);
 			else
 				pixels = FlxG.addBitmap(Graphic,Reverse);
 				
@@ -302,7 +303,7 @@ package org.flixel
 		}
 		
 		//@desc		Internal function to update the current animation frame
-		private function calcFrame():void
+		protected function calcFrame():void
 		{
 			var rx:uint;
 			if(_curAnim == null)
@@ -331,6 +332,13 @@ package org.flixel
 		public function get alpha():Number
 		{
 			return _alpha;
+		}
+		
+		public function draw(Brush:FlxSprite,X:int=0,Y:int=0,ForceAlpha:Boolean=false):void
+		{
+			var b:BitmapData = Brush.pixels;
+			pixels.copyPixels(b,new Rectangle(0,0,b.width,b.height),new Point(X,Y),null,null,!ForceAlpha);
+			calcFrame();
 		}
 	}
 }
