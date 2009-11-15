@@ -522,17 +522,16 @@ package org.flixel
 		
 		//@desc		Set the mouse cursor to some graphic file
 		//@param	CursorGraphic	The image you want to use for the cursor
-		static public function showCursor(CursorGraphic:Class):void
+		static public function showCursor(CursorGraphic:Class=null):void
 		{
-			if(_game._cursor == null)
+			if(CursorGraphic == null)
 				_game._cursor = _game._buffer.addChild(new ImgDefaultCursor) as Bitmap;
 			else
 				_game._cursor = _game._buffer.addChild(new CursorGraphic) as Bitmap;
 		}
 		
-		//@desc		Set the mouse cursor to some graphic file
-		//@param	CursorGraphic	The image you want to use for the cursor
-		static public function hideCursor(CursorGraphic:Class):void
+		//@desc		Hides the mouse cursor
+		static public function hideCursor():void
 		{
 			_game._buffer.removeChild(_game._cursor);
 		}

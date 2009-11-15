@@ -53,6 +53,8 @@ package org.flixel
 		public var pixels:BitmapData;
 		private var _pixels:BitmapData;
 		private var _alpha:Number;
+		private var _color:uint;
+		private var _ct:ColorTransform;
 		
 		//@desc		Constructor
 		//@param	Graphic		The image you want to use
@@ -120,6 +122,7 @@ package org.flixel
 			
 			health = 1;
 			alpha = 1;
+			color = 0x00ffffff;
 			
 			_callback = null;
 		}
@@ -313,7 +316,7 @@ package org.flixel
 			if(!_facing && (_flipped > 0))
 				rx = (_flipped<<1)-rx-_bw;
 			_pixels.copyPixels(pixels,new Rectangle(rx,0,_bw,_bh),_pZero);
-			if(_alpha != 1) _pixels.colorTransform(_r,new ColorTransform(1,1,1,_alpha));
+			if(_ct != null) _pixels.colorTransform(_r,_ct);
 			if(_callback != null) _callback(_curAnim.name,_curFrame,_curAnim.frames[_curFrame]);
 		}
 		
@@ -324,6 +327,8 @@ package org.flixel
 			if(Alpha > 1) Alpha = 1;
 			if(Alpha < 0) Alpha = 0;
 			_alpha = Alpha;
+			if((_alpha != 1) || (_color != 0x00ffffff)) _ct = new ColorTransform(Number(_color>>16)/255,Number(_color>>8&0xff)/255,Number(_color&0xff)/255,_alpha);
+			else _ct = null;
 			calcFrame();
 		}
 		
@@ -334,10 +339,50 @@ package org.flixel
 			return _alpha;
 		}
 		
+		//@desc		The setter for color - tints the whole sprite this color (similar to Photoshop multiply)
+		//@param	Color	The new color value of the sprite (0xRRGGBB) - ignores alpha
+		public function set color(Color:uint):void
+		{
+			_color = Color & 0x00ffffff;
+			if((_alpha != 1) || (_color != 0x00ffffff)) _ct = new ColorTransform(Number(_color>>16)/255,Number(_color>>8&0xff)/255,Number(_color&0xff)/255,_alpha);
+			else _ct = null;
+			calcFrame();
+		}
+		
+		//@desc		The getter for color - tints the whole sprite this color (similar to Photoshop multiply)
+		//@return	The color value of the sprite (0xRRGGBB) - ignores alpha
+		public function get color():uint
+		{
+			return _color;
+		}
+		
+		//@desc		This function draws or stamps one FlxSprite onto another (not intended to replace render()!)
+		//@param	Brush		The image you want to use as a brush or stamp or pen or whatever
+		//@param	X			The X coordinate of the brush's top left corner on this sprite
+		//@param	Y			They Y coordinate of the brush's top left corner on this sprite
+		//@param	ForceAlpha	Whether or not to use the alpha of the brush as an eraser
 		public function draw(Brush:FlxSprite,X:int=0,Y:int=0,ForceAlpha:Boolean=false):void
 		{
-			var b:BitmapData = Brush.pixels;
-			pixels.copyPixels(b,new Rectangle(0,0,b.width,b.height),new Point(X,Y),null,null,!ForceAlpha);
+			var b:BitmapData = Brush._pixels;
+			//Simple draw, no shading or matrix math
+			if((_ct == null) && (Brush.angle == 0) && (Brush.scale.x == 1) && (Brush.scale.y == 1))
+			{
+				pixels.copyPixels(b,new Rectangle(0,0,b.width,b.height),new Point(X,Y),null,null,!ForceAlpha);
+				calcFrame();
+				return;
+			}
+			//Advanced draw, lots of shading and matrix math!
+			var mtx:Matrix = new Matrix();
+			if((Brush.angle != 0) || (Brush.scale.x != 1) || (Brush.scale.y != 1))
+			{
+				mtx.translate(-(Brush._bw>>1),-(Brush._bh>>1));
+				mtx.scale(Brush.scale.x,Brush.scale.y);
+				if(Brush.angle != 0) mtx.rotate(Math.PI * 2 * (Brush.angle / 360));
+				mtx.translate(X+(Brush._bw>>1),Y+(Brush._bh>>1));
+			}
+			else
+				mtx.translate(X,Y);
+			pixels.draw(b,mtx,_ct);
 			calcFrame();
 		}
 	}

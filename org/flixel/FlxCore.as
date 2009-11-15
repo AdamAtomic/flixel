@@ -348,10 +348,10 @@ package org.flixel
 		
 		//@desc		Call this function to figure out the post-scrolling "screen" position of the object
 		//@param	p	Takes a Flash Point object and assigns the post-scrolled X and Y values of this object to it
-		virtual protected function getScreenXY(p:Point):void
+		virtual protected function getScreenXY(P:Point):void
 		{
-			p.x = Math.floor(x)+Math.floor(FlxG.scroll.x*scrollFactor.x);
-			p.y = Math.floor(y)+Math.floor(FlxG.scroll.y*scrollFactor.y);
+			P.x = Math.floor(x)+Math.floor(FlxG.scroll.x*scrollFactor.x);
+			P.y = Math.floor(y)+Math.floor(FlxG.scroll.y*scrollFactor.y);
 		}
 	}
 }
