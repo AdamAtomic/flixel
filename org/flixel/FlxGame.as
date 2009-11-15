@@ -353,7 +353,6 @@ package org.flixel
 			else if(root != null)
 			{
 				//Set up the view window and double buffering
-				stage.showDefaultContextMenu = false;
 				stage.scaleMode = StageScaleMode.NO_SCALE;
 	            stage.align = StageAlign.TOP_LEFT;
 	            stage.frameRate = 90;
