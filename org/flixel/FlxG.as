@@ -533,7 +533,9 @@ package org.flixel
 		//@desc		Hides the mouse cursor
 		static public function hideCursor():void
 		{
+			if(_game._cursor == null) return;
 			_game._buffer.removeChild(_game._cursor);
+			_game._cursor = null;
 		}
 		
 		//@desc		Switch to a different web page
