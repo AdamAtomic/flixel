@@ -336,7 +336,7 @@ package org.flixel
 		//@param	Array		An array of FlxCore objects
 		//@param	Core		A FlxCore object
 		//@param	Collide		A function that takes two sprites as parameters (first the one from Array, then Sprite)
-		static public function overlapArray(Array:FlxArray,Core:FlxCore,Collide:Function):void
+		static public function overlapArray(Array:FlxArray,Core:FlxCore,Collide:Function=null):void
 		{
 			if((Core == null) || !Core.exists || Core.dead) return;
 			var c:FlxCore;
@@ -344,7 +344,16 @@ package org.flixel
 			{
 				c = Array[i];
 				if((c === Core) || (c == null) || !c.exists || c.dead) continue;
-				if(c.overlaps(Core)) Collide(c,Core);
+				if(c.overlaps(Core))
+				{
+					if(Collide != null)
+						Collide(c,Core);
+					else
+					{
+						c.kill();
+						Core.kill();
+					}
+				}
 			}
 		}
 		
@@ -352,7 +361,7 @@ package org.flixel
 		//@param	Array1		An array of FlxCore objects
 		//@param	Array2		Another array of FlxCore objects
 		//@param	Collide		A function that takes two FlxCore objects as parameters (first the one from Array1, then the one from Array2)
-		static public function overlapArrays(Array1:FlxArray,Array2:FlxArray,Collide:Function):void
+		static public function overlapArrays(Array1:FlxArray,Array2:FlxArray,Collide:Function=null):void
 		{
 			var i:uint;
 			var j:uint;
@@ -368,7 +377,16 @@ package org.flixel
 					{
 						core2 = Array2[j];
 						if((core2 == null) || !core2.exists || core2.dead) continue;
-						if(core1.overlaps(core2)) Collide(core1,core2);
+						if(core1.overlaps(core2))
+						{
+							if(Collide != null)
+								Collide(core1,core2);
+							else
+							{
+								core1.kill();
+								core2.kill();
+							}
+						}
 					}
 				}
 			}
@@ -382,7 +400,16 @@ package org.flixel
 					{
 						core2 = Array2[j];
 						if((core1 === core2) || (core2 == null) || !core2.exists || core2.dead) continue;
-						if(core1.overlaps(core2)) Collide(core1,core2);
+						if(core1.overlaps(core2))
+						{
+							if(Collide != null)
+								Collide(core1,core2);
+							else
+							{
+								core1.kill();
+								core2.kill();
+							}
+						}
 					}
 				}
 			}
