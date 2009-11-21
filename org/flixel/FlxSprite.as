@@ -159,8 +159,13 @@ package org.flixel
 			{
 				thrustComponents = FlxG.rotatePoint(-thrust,0,0,0,angle);
 				var maxComponents:Point = FlxG.rotatePoint(-maxThrust,0,0,0,angle);
-				maxVelocity.x = Math.abs(maxComponents.x);
-				maxVelocity.y = Math.abs(maxComponents.y);
+				var max:Number = Math.abs(maxComponents.x);
+				if(max > Math.abs(maxComponents.y))
+					maxComponents.y = max;
+				else
+					max = Math.abs(maxComponents.y);
+				maxVelocity.x = Math.abs(max);
+				maxVelocity.y = Math.abs(max);
 			}
 			else
 				thrustComponents = _pZero;
