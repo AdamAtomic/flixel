@@ -76,7 +76,7 @@ package org.flixel
 			
 			kill();
 			if(_delay > 0)
-				reset();
+				restart();
 		}
 		
 		//@desc		Called automatically by the game loop, decides when to launch particles and when to "die"
@@ -94,7 +94,7 @@ package org.flixel
 		}
 		
 		//@desc		Call this function to reset the emitter (if you used a negative delay, calling this function "Explodes" the emitter again)
-		public function reset():void
+		public function restart():void
 		{
 			active = true;
 			_timer = 0;

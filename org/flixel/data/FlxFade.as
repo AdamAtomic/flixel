@@ -13,6 +13,8 @@ package org.flixel.data
 		public function FlxFade()
 		{
 			super(null,0,0,false,false,FlxG.width,FlxG.height);
+			scrollFactor.x = 0;
+			scrollFactor.y = 0;
 			visible = false;
 		}
 		
@@ -21,7 +23,7 @@ package org.flixel.data
 		//@param	Duration		How long it should take to fade the screen out
 		//@param	FadeComplete	A function you want to run when the fade finishes
 		//@param	Force			Force the effect to reset
-		public function reset(Color:uint=0, Duration:Number=1, FadeComplete:Function=null, Force:Boolean=false):void
+		public function restart(Color:uint=0, Duration:Number=1, FadeComplete:Function=null, Force:Boolean=false):void
 		{
 			if(Color == 0)
 			{

@@ -14,7 +14,7 @@ package org.flixel
 		private var _rects:FlxArray;
 		private var _tileSize:uint;
 		private var _p:Point;
-		private var _block:FlxBlock;
+		private var _block:FlxCore;
 		private var _ci:uint;
 		
 		private var _screenRows:uint;
@@ -65,7 +65,10 @@ package org.flixel
 					_rects.push(null);
 			}
 			
-			_block = new FlxBlock(0,0,_tileSize,_tileSize,null);
+			_block = new FlxCore();
+			_block.width = _tileSize;
+			_block.height = _tileSize;
+			_block.fixed = true;
 			
 			_screenRows = Math.ceil(FlxG.height/_tileSize)+1;
 			if(_screenRows > heightInTiles)
@@ -111,27 +114,67 @@ package org.flixel
 		
 		//@desc		Collides a FlxSprite against the tilemap
 		//@param	Spr		The FlxSprite you want to collide
-		override public function collide(Spr:FlxSprite):void
+		override public function collide(Core:FlxCore):void
 		{
-			var ix:uint = Math.floor((Spr.x - x)/_tileSize);
-			var iy:uint = Math.floor((Spr.y - y)/_tileSize);
-			var iw:uint = Math.ceil(Spr.width/_tileSize)+1;
-			var ih:uint = Math.ceil(Spr.height/_tileSize)+1;
 			var c:uint;
+			var d:uint;
+			var i:uint;
+			var blocks:FlxArray = new FlxArray();
+			
+			//First make a list of all the blocks we'll use for collision
+			var ix:uint = Math.floor((Core.x - x)/_tileSize);
+			var iy:uint = Math.floor((Core.y - y)/_tileSize);
+			var iw:uint = Math.ceil(Core.width/_tileSize)+1;
+			var ih:uint = Math.ceil(Core.height/_tileSize)+1;
 			for(var r:uint = 0; r < ih; r++)
 			{
-				if((r < 0) || (r >= heightInTiles)) continue;
+				if((r < 0) || (r >= heightInTiles)) break;
+				d = (iy+r)*widthInTiles+ix;
 				for(c = 0; c < iw; c++)
 				{
-					if((c < 0) || (c >= widthInTiles)) continue;
-					if(_data[(iy+r)*widthInTiles+ix+c] >= _ci)
-					{
-						_block.x = x+(ix+c)*_tileSize;
-						_block.y = y+(iy+r)*_tileSize;
-						_block.collide(Spr);
-					}
+					if((c < 0) || (c >= widthInTiles)) break;
+					if(_data[d+c] >= _ci)
+						blocks.add(new Point(x+(ix+c)*_tileSize,y+(iy+r)*_tileSize));
 				}
 			}
+			
+			//Then do all the X collisions
+			for(i = 0; i < blocks.length; i++)
+			{
+				_block.last.x = _block.x = blocks[i].x;
+				_block.last.y = _block.y = blocks[i].y;
+				_block.collideX(Core);
+			}
+			
+			//Then do all the Y collisions
+			for(i = 0; i < blocks.length; i++)
+			{
+				_block.last.x = _block.x = blocks[i].x;
+				_block.last.y = _block.y = blocks[i].y;
+				_block.collideY(Core);
+			}
+		}
+		
+		static public function ArrayToCSV(Data:Array,Width:int):String
+		{
+			var csv:String;
+			var Height:int = Data.length / Width;
+			for(var r:int = 0; r < Height; r++)
+			{
+				for(var c:int = 0; c < Width; c++)
+				{
+					if(c == 0)
+					{
+						if(r == 0)
+							csv += Data[0];
+						else
+							csv += "\n"+Data[r*Width];
+					}
+					else
+						csv += ", "+Data[r*Width+c];
+				}
+			}
+			return csv;
 		}
 	}
 }

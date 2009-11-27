@@ -26,6 +26,7 @@ package org.flixel
 			y = Y;
 			width = Width;
 			height = Height;
+			fixed = true;
 			if(TileGraphic == null)
 				return;
 

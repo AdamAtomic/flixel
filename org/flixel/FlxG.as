@@ -418,67 +418,160 @@ package org.flixel
 		//@desc		Collides a FlxSprite against the FlxCores in the array 
 		//@param	Array		An array of FlxCore objects
 		//@param	Sprite		A FlxSprite object
-		static public function collideArray(Cores:FlxArray,Sprite:FlxSprite):void
-		{
-			if((Sprite == null) || !Sprite.exists || Sprite.dead) return;
-			var core:FlxCore;
-			for(var i:uint = 0; i < Cores.length; i++)
-			{
-				core = Cores[i];
-				if((core === Sprite) || (core == null) || !core.exists || core.dead) continue;
-				core.collide(Sprite);
-			}
-		}
-		
-		//@desc		Collides an array of FlxSprites against a FlxCore object
-		//@param	Sprites		An array of FlxSprites
-		//@param	Core		A FlxCore object
-		static public function collideArray2(Core:FlxCore,Sprites:FlxArray):void
+		static public function collideArray(Array:FlxArray,Core:FlxSprite):void
 		{
 			if((Core == null) || !Core.exists || Core.dead) return;
-			var sprite:FlxSprite;
-			for(var i:uint = 0; i < Sprites.length; i++)
+			var core:FlxCore;
+			for(var i:uint = 0; i < Array.length; i++)
 			{
-				sprite = Sprites[i];
-				if((Core === sprite) || (sprite == null) || !sprite.exists || sprite.dead) continue;
-				Core.collide(sprite);
+				core = Array[i];
+				if((core === Core) || (core == null) || !core.exists || core.dead) continue;
+				core.collide(Core);
 			}
 		}
 		
-		//@desc		Collides the array of FlxSprites against the array of FlxCores
-		//@param	Cores		An array of FlxCore objects
-		//@param	Sprites		An array of FlxSprite objects
-		static public function collideArrays(Cores:FlxArray,Sprites:FlxArray):void
+		//@desc		Collides a FlxSprite against the FlxCores in the array on the X axis ONLY
+		//@param	Array		An array of FlxCore objects
+		//@param	Sprite		A FlxSprite object
+		static public function collideArrayX(Array:FlxArray,Core:FlxSprite):void
+		{
+			if((Core == null) || !Core.exists || Core.dead) return;
+			var core:FlxCore;
+			for(var i:uint = 0; i < Array.length; i++)
+			{
+				core = Array[i];
+				if((core === Core) || (core == null) || !core.exists || core.dead) continue;
+				core.collideX(Core);
+			}
+		}
+		
+		//@desc		Collides a FlxSprite against the FlxCores in the array on the Y axis ONLY
+		//@param	Array		An array of FlxCore objects
+		//@param	Sprite		A FlxSprite object
+		static public function collideArrayY(Array:FlxArray,Core:FlxSprite):void
+		{
+			if((Core == null) || !Core.exists || Core.dead) return;
+			var core:FlxCore;
+			for(var i:uint = 0; i < Array.length; i++)
+			{
+				core = Array[i];
+				if((core === Core) || (core == null) || !core.exists || core.dead) continue;
+				core.collideY(Core);
+			}
+		}
+		
+		//@desc		Collides the first array of FlxCores against the second array of FlxCores
+		//@param	Array1		An array of FlxCore objects
+		//@param	Array2		An array of FlxSprite objects
+		static public function collideArrays(Array1:FlxArray,Array2:FlxArray):void
 		{
 			var i:uint;
 			var j:uint;
-			var core:FlxCore;
-			var sprite:FlxSprite;
-			if(Cores === Sprites)
+			var core1:FlxCore;
+			var core2:FlxCore;
+			if(Array1 === Array2)
 			{
-				for(i = 0; i < Cores.length; i++)
+				for(i = 0; i < Array1.length; i++)
 				{
-					core = Cores[i];
-					if((core == null) || !core.exists || core.dead) continue;
-					for(j = i+1; j < Sprites.length; j++)
+					core1 = Array1[i];
+					if((core1 == null) || !core1.exists || core1.dead) continue;
+					for(j = i+1; j < Array2.length; j++)
 					{
-						sprite = Sprites[j];
-						if((sprite == null) || !sprite.exists || sprite.dead) continue;
-						core.collide(sprite);
+						core2 = Array2[j];
+						if((core2 == null) || !core2.exists || core2.dead) continue;
+						core1.collide(core2);
 					}
 				}
 			}
 			else
 			{
-				for(i = 0; i < Cores.length; i++)
+				for(i = 0; i < Array1.length; i++)
 				{
-					core = Cores[i];
-					if((core == null) || !core.exists || core.dead) continue;
-					for(j = 0; j < Sprites.length; j++)
+					core1 = Array1[i];
+					if((core1 == null) || !core1.exists || core1.dead) continue;
+					for(j = 0; j < Array2.length; j++)
 					{
-						sprite = Sprites[j];
-						if((core === sprite) || (sprite == null) || !sprite.exists || sprite.dead) continue;
-						core.collide(sprite);
+						core2 = Array2[j];
+						if((core1 === core2) || (core2 == null) || !core2.exists || core2.dead) continue;
+						core1.collide(core2);
+					}
+				}
+			}
+		}
+		
+		//@desc		Collides the first array of FlxCores against the second array of FlxCores on the X axis ONLY
+		//@param	Array1		An array of FlxCore objects
+		//@param	Array2		An array of FlxSprite objects
+		static public function collideArraysX(Array1:FlxArray,Array2:FlxArray):void
+		{
+			var i:uint;
+			var j:uint;
+			var core1:FlxCore;
+			var core2:FlxCore;
+			if(Array1 === Array2)
+			{
+				for(i = 0; i < Array1.length; i++)
+				{
+					core1 = Array1[i];
+					if((core1 == null) || !core1.exists || core1.dead) continue;
+					for(j = i+1; j < Array2.length; j++)
+					{
+						core2 = Array2[j];
+						if((core2 == null) || !core2.exists || core2.dead) continue;
+						core1.collideX(core2);
+					}
+				}
+			}
+			else
+			{
+				for(i = 0; i < Array1.length; i++)
+				{
+					core1 = Array1[i];
+					if((core1 == null) || !core1.exists || core1.dead) continue;
+					for(j = 0; j < Array2.length; j++)
+					{
+						core2 = Array2[j];
+						if((core1 === core2) || (core2 == null) || !core2.exists || core2.dead) continue;
+						core1.collideX(core2);
+					}
+				}
+			}
+		}
+		
+		//@desc		Collides the first array of FlxCores against the second array of FlxCores on the Y axis ONLY
+		//@param	Array1		An array of FlxCore objects
+		//@param	Array2		An array of FlxSprite objects
+		static public function collideArraysY(Array1:FlxArray,Array2:FlxArray):void
+		{
+			var i:uint;
+			var j:uint;
+			var core1:FlxCore;
+			var core2:FlxCore;
+			if(Array1 === Array2)
+			{
+				for(i = 0; i < Array1.length; i++)
+				{
+					core1 = Array1[i];
+					if((core1 == null) || !core1.exists || core1.dead) continue;
+					for(j = i+1; j < Array2.length; j++)
+					{
+						core2 = Array2[j];
+						if((core2 == null) || !core2.exists || core2.dead) continue;
+						core1.collideY(core2);
+					}
+				}
+			}
+			else
+			{
+				for(i = 0; i < Array1.length; i++)
+				{
+					core1 = Array1[i];
+					if((core1 == null) || !core1.exists || core1.dead) continue;
+					for(j = 0; j < Array2.length; j++)
+					{
+						core2 = Array2[j];
+						if((core1 === core2) || (core2 == null) || !core2.exists || core2.dead) continue;
+						core1.collideY(core2);
 					}
 				}
 			}
@@ -534,7 +627,7 @@ package org.flixel
 		//@param	Force			Force the effect to reset
 		static public function flash(Color:uint, Duration:Number=1, FlashComplete:Function=null, Force:Boolean=false):void
 		{
-			_game._flash.reset(Color,Duration,FlashComplete,Force);
+			_game._flash.restart(Color,Duration,FlashComplete,Force);
 		}
 		
 		//@desc		Fade the screen out to this color
@@ -544,7 +637,7 @@ package org.flixel
 		//@param	Force			Force the effect to reset
 		static public function fade(Color:uint, Duration:Number=1, FadeComplete:Function=null, Force:Boolean=false):void
 		{
-			_game._fade.reset(Color,Duration,FadeComplete,Force);
+			_game._fade.restart(Color,Duration,FadeComplete,Force);
 		}
 		
 		//@desc		Set the mouse cursor to some graphic file

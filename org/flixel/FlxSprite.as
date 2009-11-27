@@ -75,8 +75,8 @@ package org.flixel
 			else
 				pixels = FlxG.addBitmap(Graphic,Reverse);
 				
-			x = X;
-			y = Y;
+			last.x = x = X;
+			last.y = y = Y;
 			if(Width == 0)
 			{
 				if(Animated)
@@ -215,15 +215,15 @@ package org.flixel
 		
 		//@desc		Called when this object collides with a FlxBlock on one of its sides
 		//@return	Whether you wish the FlxBlock to collide with it or not
-		override public function hitWall():Boolean { velocity.x = 0; return true; }
+		override public function hitWall(Contact:FlxCore=null):Boolean { velocity.x = 0; return true; }
 		
 		//@desc		Called when this object collides with the top of a FlxBlock
 		//@return	Whether you wish the FlxBlock to collide with it or not
-		override public function hitFloor():Boolean { velocity.y = 0; return true; }
+		override public function hitFloor(Contact:FlxCore=null):Boolean { velocity.y = 0; return true; }
 		
 		//@desc		Called when this object collides with the bottom of a FlxBlock
 		//@return	Whether you wish the FlxBlock to collide with it or not
-		override public function hitCeiling():Boolean { velocity.y = 0; return true; }
+		override public function hitCeiling(Contact:FlxCore=null):Boolean { velocity.y = 0; return true; }
 		
 		//@desc		Call this function to "damage" (or give health bonus) to this sprite
 		//@param	Damage		How much health to take away (use a negative number to give a health bonus)

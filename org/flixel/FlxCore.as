@@ -1,6 +1,7 @@
 package org.flixel
 {
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	
 	//@desc		This is the base class for most of the display objects (FlxSprite, FlxText, etc).  It includes some very simple basic attributes about game objects.
 	public class FlxCore
@@ -13,12 +14,15 @@ package org.flixel
 		public var visible:Boolean;
 		//@desc	If an object is dead, the functions that automate collisions will skip it (see overlapArrays in FlxSprite and collideArrays in FlxBlock)
 		public var dead:Boolean;
+		//@desc If an object is 'fixed' in space, it will not budge when it collides with a not-fixed object
+		public var fixed:Boolean;
 		
 		//Basic attributes variables
-		public var x:Number;
-		public var y:Number;
 		public var width:uint;
 		public var height:uint;
+		public var x:Number;
+		public var y:Number;
+		public var last:Point;
 		
 		//@desc	A point that can store numbers from 0 to 1 (for X and Y independently) that governs how much this object is affected by the camera subsystem.  0 means it never moves, like a HUD element or far background graphic.  1 means it scrolls along a tthe same speed as the foreground layer.
 		public var scrollFactor:Point;
@@ -32,11 +36,13 @@ package org.flixel
 			active = true;
 			visible = true;
 			dead = false;
+			fixed = false;
 			
-			x = 0;
-			y = 0;
 			width = 0;
 			height = 0;
+			x = 0;
+			y = 0;
+			last = new Point(x,y);
 			
 			scrollFactor = new Point(1,1);
 			_flicker = false;
@@ -46,6 +52,9 @@ package org.flixel
 		//@desc		Just updates the flickering.  FlxSprite and other subclasses override this to do more complicated behavior.
 		virtual public function update():void
 		{
+			last.x = x;
+			last.y = y;
+			
 			if(flickering())
 			{
 				if(_flickerTimer > 0) _flickerTimer -= FlxG.elapsed;
@@ -104,222 +113,215 @@ package org.flixel
 			return true;
 		}
 		
-		//@desc		Collides a FlxSprite against this block
-		//@param	Spr		The FlxSprite you want to collide
-		virtual public function collide(Spr:FlxSprite):void
+		//@desc		Collides a FlxCore against this object.  Simply calls collideX then collideY internally.
+		//@param	Core	The FlxCore you want to collide
+		virtual public function collide(Core:FlxCore):void
 		{
-			if((Math.abs(Spr.x + (Spr.width>>1) - x - (width>>1)) > (width>>1) + (Spr.width>>1)) && (Math.abs(Spr.y + (Spr.height>>1) - y - (height>>1)) > (height>>1) + (Spr.height>>1)))
-				return;
-
-			if((Spr.x > x) && (Spr.x + Spr.width < x + width))
-			{
-				if((Spr.y + Spr.height < y + (height>>1)) && (Spr.y + Spr.height > y) && Spr.hitFloor())
-				{
-					Spr.y = y - Spr.height;
-					return;
-				}	
-				if((Spr.y > y + (height>>1)) && (Spr.y < y + height) && Spr.hitCeiling())
-				{
-					Spr.y = y + height;
-					return;
-				}
-			}
-			if((Spr.y > y) && (Spr.y + Spr.height < y + height))
-			{
-				if((Spr.x + Spr.width < x + (width>>1)) && (Spr.x + Spr.width > x) && Spr.hitWall())
-				{
-					Spr.x = x - Spr.width;
-					return;
-				}	
-				if((Spr.x > x + (width>>1)) && (Spr.x < x + width) && Spr.hitWall())
-				{
-					Spr.x = x + width;
-					return;
-				}
-			}
+			collideX(Core);
+			collideY(Core);
+		}
+		
+		//@desc		Collides a FlxCore against this object on the X axis ONLY.
+		//@param	Core	The FlxCore you want to collide
+		virtual public function collideX(Core:FlxCore):void
+		{
+			//Helper variables for our collision process
+			var split:Number;
+			var thisBounds:Rectangle = new Rectangle();
+			var coreBounds:Rectangle = new Rectangle();
 			
-			var yFirst:Boolean = true;
-			if((Math.abs(Spr.velocity.x) > Math.abs(Spr.velocity.y)))
-				yFirst = false;
-			
-			var checkForMoreX:Boolean = false;
-			var checkForMoreY:Boolean = false;
-			if(yFirst)
+			//Calculate the Core's X axis collision bounds
+			if(Core.x > Core.last.x)
 			{
-				if(Spr.velocity.y > 0)
-				{
-					if(overlapsPoint(Spr.x + (Spr.width>>1),Spr.y + Spr.height))
-					{
-						if(Spr.hitFloor())
-							Spr.y = y - Spr.height;
-					}
-					else
-						checkForMoreY = true;
-				}
-				else if(Spr.velocity.y < 0)
-				{
-					if(overlapsPoint(Spr.x + (Spr.width>>1),Spr.y))
-					{
-						if(Spr.hitCeiling())
-							Spr.y = y + height;
-					}
-					else
-						checkForMoreY = true;
-				}
-
-				if(Spr.velocity.x < 0)
-				{
-					if(overlapsPoint(Spr.x,Spr.y + (Spr.height>>1)))
-					{
-						if(Spr.hitWall())
-							Spr.x = x + width;
-					}
-					else
-						checkForMoreX = true;
-				}
-				else if(Spr.velocity.x > 0)
-				{
-					if(overlapsPoint(Spr.x + Spr.width,Spr.y + (Spr.height>>1)))
-					{
-						if(Spr.hitWall())
-							Spr.x = x - Spr.width;
-					}
-					else
-						checkForMoreX = true;
-				}
+				coreBounds.x = Core.last.x;
+				coreBounds.width = (Core.x - Core.last.x) + Core.width;
 			}
 			else
 			{
-				if(Spr.velocity.x < 0)
-				{
-					if(overlapsPoint(Spr.x,Spr.y + (Spr.height>>1)))
-					{
-						if(Spr.hitWall())
-							Spr.x = x + width;
-					}
-					else
-						checkForMoreX = true;
-				}
-				else if(Spr.velocity.x > 0)
-				{
-					if(overlapsPoint(Spr.x + Spr.width,Spr.y + (Spr.height>>1)))
-					{
-						if(Spr.hitWall())
-							Spr.x = x - Spr.width;
-					}
-					else
-						checkForMoreX = true;
-				}
-				
-				if(Spr.velocity.y > 0)
-				{
-					if(overlapsPoint(Spr.x + (Spr.width>>1),Spr.y + Spr.height))
-					{
-						if(Spr.hitFloor())
-							Spr.y = y - Spr.height;
-					}
-					else
-						checkForMoreY = true;
-				}
-				else if(Spr.velocity.y < 0)
-				{
-					if(overlapsPoint(Spr.x + (Spr.width>>1),Spr.y))
-					{
-						if(Spr.hitCeiling())
-							Spr.y = y + height;
-					}
-					else
-						checkForMoreY = true;
-				}
+				coreBounds.x = Core.x;
+				coreBounds.width = (Core.last.x - Core.x) + Core.width;
 			}
+			coreBounds.y = Core.last.y;
+			coreBounds.height = Core.height;
 			
-			if(!checkForMoreY && !checkForMoreX)
+			//Calculate this object's own X axis collision bounds
+			if(x > last.x)
+			{
+				thisBounds.x = last.x;
+				thisBounds.width = (x - last.x) + width;
+			}
+			else
+			{
+				thisBounds.x = x;
+				thisBounds.width = (last.x - x) + width;
+			}
+			thisBounds.y = last.y;
+			thisBounds.height = height;
+			
+			//Basic overlap check
+			if( (coreBounds.x + coreBounds.width <= thisBounds.x) ||
+				(coreBounds.x >= thisBounds.x + thisBounds.width) ||
+				(coreBounds.y + coreBounds.height <= thisBounds.y) ||
+				(coreBounds.y >= thisBounds.y + thisBounds.height) )
 				return;
-			var bias:int = Spr.width>>3;
-			if(bias < 1)
-				bias = 1;
-			if(checkForMoreY && checkForMoreX)
-			{				
-				if(yFirst)
+				
+			//Check for a right side collision if Core is moving right faster than 'this',
+			// or if Core is moving left slower than 'this' we want to check the right side too
+			var coreToRight:Boolean = Core.x > Core.last.x;
+			if((coreToRight && (Core.x - Core.last.x > x - last.x)) || (!coreToRight && (Core.last.x - Core.x < last.x - x)))
+			{
+				//Right side collision
+				if(coreBounds.right > thisBounds.left)
 				{
-					if(checkForMoreY)
-					{
-						if((Spr.x + Spr.width - bias > x) && (Spr.x + bias < x + width))
-						{
-							if((Spr.velocity.y > 0) && (Spr.y + Spr.height > y) && (Spr.y + Spr.height < y + height) && Spr.hitFloor())
-								Spr.y = y - Spr.height;
-							else if((Spr.velocity.y < 0) && (Spr.y > y) && (Spr.y < y + height) && Spr.hitCeiling())
-								Spr.y = y + height;
-						}
+					if(fixed && !Core.fixed)
+					{	
+						if(Core.hitWall(this))
+							Core.x = x - Core.width;
 					}
-					if(checkForMoreX)
+					else if(!fixed && Core.fixed)
 					{
-						if((Spr.y + Spr.height - bias > y) && (Spr.y + bias < y + height))
-						{
-							if((Spr.velocity.x > 0) && (Spr.x + Spr.width > x) && (Spr.x + Spr.width < x + width) && Spr.hitWall())
-								Spr.x = x - Spr.width;
-							else if((Spr.velocity.x < 0) && (Spr.x > x) && (Spr.x < x + width) && Spr.hitWall())
-								Spr.x = x + width;
-						}
+						if(hitWall(Core))
+							x = Core.x + Core.width;
 					}
-				}
-				else
-				{
-					if(checkForMoreX)
+					else if(Core.hitWall(this) && hitWall(Core))
 					{
-						if((Spr.y + Spr.height - bias > y) && (Spr.y + bias < y + height))
-						{
-							if((Spr.velocity.x > 0) && (Spr.x + Spr.width > x) && (Spr.x + Spr.width < x + width) && Spr.hitWall())
-								Spr.x = x - Spr.width;
-							else if((Spr.velocity.x < 0) && (Spr.x > x) && (Spr.x < x + width) && Spr.hitWall())
-								Spr.x = x + width;
-						}
-					}
-					if(checkForMoreY)
-					{
-						if((Spr.x + Spr.width - bias > x) && (Spr.x + bias < x + width))
-						{
-							if((Spr.velocity.y > 0) && (Spr.y + Spr.height > y) && (Spr.y + Spr.height < y + height) && Spr.hitFloor())
-								Spr.y = y - Spr.height;
-							else if((Spr.velocity.y < 0) && (Spr.y > y) && (Spr.y < y + height) && Spr.hitCeiling())
-								Spr.y = y + height;
-						}
+						split = (coreBounds.right - thisBounds.left) / 2;
+						Core.x -= split;
+						x += split;
 					}
 				}
 			}
-			else if(checkForMoreY)
+			else if((coreToRight && (Core.x - Core.last.x < x - last.x)) || (!coreToRight && (Core.last.x - Core.x > last.x - x)))
 			{
-				if((Spr.x + Spr.width - bias > x) && (Spr.x + bias < x + width))
+				//Left side collision
+				if(coreBounds.left < thisBounds.right)
 				{
-					if((Spr.velocity.y > 0) && (Spr.y + Spr.height > y) && (Spr.y + Spr.height < y + height) && Spr.hitFloor())
-						Spr.y = y - Spr.height;
-					else if((Spr.velocity.y < 0) && (Spr.y > y) && (Spr.y < y + height) && Spr.hitCeiling())
-						Spr.y = y + height;
+					if(fixed && !Core.fixed)
+					{
+						if(Core.hitWall(this))
+							Core.x = x + width;
+					}
+					else if(!fixed && Core.fixed)
+					{
+						if(hitWall(Core))
+							x = Core.x - width;
+					}
+					else if(Core.hitWall(this) && hitWall(Core))
+					{
+						split = (thisBounds.right - coreBounds.left) / 2;
+						Core.x += split;
+						x -= split;
+					}
 				}
 			}
-			else if(checkForMoreX)
+		}
+		
+		//@desc		Collides a FlxCore against this object on the Y axis ONLY.
+		//@param	Core	The FlxCore you want to collide
+		virtual public function collideY(Core:FlxCore):void
+		{
+			//Helper variables for our collision process
+			var split:Number;
+			var thisBounds:Rectangle = new Rectangle();
+			var coreBounds:Rectangle = new Rectangle();
+			
+			//Now we just repeat this basic process only for the Y axis
+			if(Core.y > Core.last.y)
 			{
-				if((Spr.y + Spr.height - bias > y) && (Spr.y + bias < y + height))
+				coreBounds.y = Core.last.y;
+				coreBounds.height = (Core.y - Core.last.y) + Core.height;
+			}
+			else
+			{
+				coreBounds.y = Core.y;
+				coreBounds.height = (Core.last.y - Core.y) + Core.height;
+			}
+			coreBounds.x = Core.x;
+			coreBounds.width = Core.width;
+			
+			//Calculate this object's own Y axis collision bounds
+			if(y > last.y)
+			{
+				thisBounds.y = last.y;
+				thisBounds.height = (y - last.y) + height;
+			}
+			else
+			{
+				thisBounds.y = y;
+				thisBounds.height = (last.y - y) + height;
+			}
+			thisBounds.x = x;
+			thisBounds.width = width;
+			
+			//Basic overlap check
+			if( (coreBounds.x + coreBounds.width <= thisBounds.x) ||
+				(coreBounds.x >= thisBounds.x + thisBounds.width) ||
+				(coreBounds.y + coreBounds.height <= thisBounds.y) ||
+				(coreBounds.y >= thisBounds.y + thisBounds.height) )
+				return;
+				
+			//Check for a bottom collision if Core is moving down faster than 'this',
+			// or if Core is moving up slower than 'this' we want to check the bottom too
+			var coreDown:Boolean = Core.y > Core.last.y;
+			if((coreDown && (Core.y - Core.last.y > y - last.y)) || (!coreDown && (Core.last.y - Core.y < last.y - y)))
+			{
+				//Bottom collision
+				if(coreBounds.bottom > thisBounds.top)
 				{
-					if((Spr.velocity.x > 0) && (Spr.x + Spr.width > x) && (Spr.x + Spr.width < x + width) && Spr.hitWall())
-						Spr.x = x - Spr.width;
-					else if((Spr.velocity.x < 0) && (Spr.x > x) && (Spr.x < x + width) && Spr.hitWall())
-						Spr.x = x + width;
+					if(fixed && !Core.fixed)
+					{
+						if(Core.hitFloor(this))
+							Core.y = y - Core.height;
+					}
+					else if(!fixed && Core.fixed)
+					{
+						if(hitCeiling(Core))
+							y = Core.y + Core.height;
+					}
+					else if(Core.hitFloor(this) && hitCeiling(Core))
+					{
+						split = (coreBounds.bottom - thisBounds.top) / 2;
+						Core.y -= split;
+						y += split;
+					}
+				}
+			}
+			else if((coreDown && (Core.y - Core.last.y < y - last.y)) || (!coreDown && (Core.last.y - Core.y > last.y - y)))
+			{
+				//Top collision
+				if(coreBounds.top < thisBounds.bottom)
+				{
+					if(fixed && !Core.fixed)
+					{
+						if(Core.hitCeiling(this))
+							Core.y = y + height;
+					}
+					else if(!fixed && Core.fixed)
+					{
+						if(hitFloor(Core))
+							y = Core.y - height;
+					}
+					else if(Core.hitCeiling(this) && hitFloor(Core))
+					{
+						split = (thisBounds.bottom - coreBounds.top) / 2;
+						Core.y += split;
+						y -= split;
+					}
 				}
 			}
 		}
 		
 		//@desc		Called when this object collides with a FlxBlock on one of its sides
 		//@return	Whether you wish the FlxBlock to collide with it or not
-		virtual public function hitWall():Boolean { return true; }
+		virtual public function hitWall(Contact:FlxCore=null):Boolean { return true; }
 		
 		//@desc		Called when this object collides with the top of a FlxBlock
 		//@return	Whether you wish the FlxBlock to collide with it or not
-		virtual public function hitFloor():Boolean { return true; }
+		virtual public function hitFloor(Contact:FlxCore=null):Boolean { return true; }
 		
 		//@desc		Called when this object collides with the bottom of a FlxBlock
 		//@return	Whether you wish the FlxBlock to collide with it or not
-		virtual public function hitCeiling():Boolean { return true; }
+		virtual public function hitCeiling(Contact:FlxCore=null):Boolean { return true; }
 		
 		//@desc		Call this function to "kill" a sprite so that it no longer 'exists'
 		virtual public function kill():void
@@ -352,6 +354,16 @@ package org.flixel
 		{
 			P.x = Math.floor(x)+Math.floor(FlxG.scroll.x*scrollFactor.x);
 			P.y = Math.floor(y)+Math.floor(FlxG.scroll.y*scrollFactor.y);
+		}
+		
+		virtual public function reset(X:Number,Y:Number):void
+		{
+			exists = true;
+			active = true;
+			visible = true;
+			dead = false;
+			last.x = x = X;
+			last.y = y = Y;
 		}
 	}
 }
