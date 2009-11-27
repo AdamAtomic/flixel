@@ -68,6 +68,10 @@ package org.flixel
 		//Kongregate API object
 		static public var kong:FlxKong;
 		
+		//Random number stuff
+		static protected var _seed:Number;
+		static protected var _originalSeed:Number;
+		
 		static public function resetInput():void
 		{
 			keys.reset();
@@ -676,6 +680,29 @@ package org.flixel
 		{
 			_game._panel.hide();
 		}
+		
+		static public function random(ignoreSeed:Boolean=false):Number
+		{
+			if(ignoreSeed || (_seed == -256))
+				return Math.random();
+				
+			//this algorithm can calculate a seed but it mutates it poorly
+			var randomNumber:Number = ((69621 * int(_seed * 0x7FFFFFFF)) % 0x7FFFFFFF) / 0x7FFFFFFF;
+			_seed += randomNumber;
+			if(_seed > 1) _seed -= int(_seed);
+			return randomNumber;
+		}
+		
+		static public function get seed():Number
+		{
+			return _originalSeed;
+		}
+		
+		static public function set seed(Seed:Number):void
+		{
+			_seed = Seed;
+			_originalSeed = _seed;
+		}
 
 		//@desc		This function is only used by the FlxGame class to do important internal management stuff
 		static internal function setGameData(Game:FlxGame,Width:uint,Height:uint):void
@@ -696,6 +723,7 @@ package org.flixel
 			FlxG.scores = new FlxArray();
 			level = 0;
 			score = 0;
+			seed = -256;
 			kong = null;
 		}
 		

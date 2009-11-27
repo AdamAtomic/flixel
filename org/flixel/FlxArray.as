@@ -14,7 +14,7 @@ package org.flixel
 		//@return	Any object
 		static public function getRandom(A:Array):Object
 		{
-			return A[int(Math.random()*length)];
+			return A[int(FlxG.random()*length)];
 		}
 		
 		//@desc		Find the first entry in the array that doesn't "exist"

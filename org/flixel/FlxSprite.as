@@ -292,7 +292,7 @@ package org.flixel
 		//@desc		Tell the sprite to change to a random frame of animation (useful for instantiating particles or other weird things)
 		public function randomFrame():void
 		{
-			_pixels.copyPixels(pixels,new Rectangle(Math.floor(Math.random()*(pixels.width/_bw))*_bw,0,_bw,_bh),_pZero);
+			_pixels.copyPixels(pixels,new Rectangle(Math.floor(FlxG.random()*(pixels.width/_bw))*_bw,0,_bw,_bh),_pZero);
 		}
 		
 		//@desc		Tell the sprite to change to a specific frame of animation (useful for instantiating particles)

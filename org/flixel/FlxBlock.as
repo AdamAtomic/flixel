@@ -42,8 +42,8 @@ package org.flixel
 			var numGraphics:uint = _pixels.width/_tileSize;
 			for(var i:uint = 0; i < numTiles; i++)
 			{
-				if(Math.random()*(numGraphics+Empties) > Empties)
-					_rects.push(new Rectangle(_tileSize*Math.floor(Math.random()*numGraphics),0,_tileSize,_tileSize));
+				if(FlxG.random()*(numGraphics+Empties) > Empties)
+					_rects.push(new Rectangle(_tileSize*Math.floor(FlxG.random()*numGraphics),0,_tileSize,_tileSize));
 				else
 					_rects.push(null);
 			}
