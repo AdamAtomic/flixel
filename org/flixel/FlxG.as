@@ -681,18 +681,30 @@ package org.flixel
 			_game._panel.hide();
 		}
 		
-		static public function random(ignoreSeed:Boolean=false):Number
+		static public function random(UseGlobalSeed:Boolean=true):Number
 		{
-			if(ignoreSeed || (_seed == -256))
+			if(UseGlobalSeed && !isNaN(_seed))
+			{
+				var random:Number = randomize(_seed);
+				_seed = mutate(_seed,random);
+				return random;
+			}
+			else
 				return Math.random();
-				
-			//this algorithm can calculate a seed but it mutates it poorly
-			var randomNumber:Number = ((69621 * int(_seed * 0x7FFFFFFF)) % 0x7FFFFFFF) / 0x7FFFFFFF;
-			_seed += randomNumber;
-			if(_seed > 1) _seed -= int(_seed);
-			return randomNumber;
 		}
 		
+		static public function randomize(Seed:Number):Number
+		{
+			return ((69621 * int(Seed * 0x7FFFFFFF)) % 0x7FFFFFFF) / 0x7FFFFFFF;
+		}
+		
+		static public function mutate(Seed:Number,Mutator:Number):Number
+		{
+			Seed += Mutator;
+			if(Seed > 1) Seed -= int(Seed);
+			return Seed;
+		}
+
 		static public function get seed():Number
 		{
 			return _originalSeed;
@@ -723,7 +735,7 @@ package org.flixel
 			FlxG.scores = new FlxArray();
 			level = 0;
 			score = 0;
-			seed = -256;
+			seed = NaN;
 			kong = null;
 		}
 		

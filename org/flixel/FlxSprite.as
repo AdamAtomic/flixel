@@ -13,6 +13,7 @@ package org.flixel
 	{
 		static public const LEFT:Boolean = false;
 		static public const RIGHT:Boolean = true;
+		static protected const _pZero:Point = new Point();
 		
 		//@desc If you changed the size of your sprite object to shrink the bounding box, you might need to offset the new bounding box from the top-left corner of the sprite
 		public var offset:Point;
@@ -33,6 +34,7 @@ package org.flixel
 		public var health:Number;
 		//@desc	Scale doesn't currently affect collisions automatically, you will need to adjust the width, height and offset manually.  WARNING: scaling sprites decreases rendering performance for this sprite by a factor of 10x!
 		public var scale:Point;
+		public var blend:String;
 		
 		//@desc	Whether the current animation has finished its first (or only) loop
 		public var finished:Boolean;
@@ -47,14 +49,14 @@ package org.flixel
 		//helpers
 		protected var _bw:uint;
 		protected var _bh:uint;
-		private var _r:Rectangle;
-		private var _p:Point;
-		private var _pZero:Point;
+		protected var _r:Rectangle;
+		protected var _p:Point;
 		public var pixels:BitmapData;
-		private var _pixels:BitmapData;
+		protected var _pixels:BitmapData;
 		private var _alpha:Number;
 		private var _color:uint;
-		private var _ct:ColorTransform;
+		protected var _ct:ColorTransform;
+		protected var _mtx:Matrix;
 		
 		//@desc		Constructor
 		//@param	Graphic		The image you want to use
@@ -115,14 +117,15 @@ package org.flixel
 			_frameTimer = 0;
 			
 			_p = new Point(x,y);
-			_pZero = new Point();
 			_r = new Rectangle(0,0,_bw,_bh);
 			_pixels = new BitmapData(width,height);
 			_pixels.copyPixels(pixels,_r,_pZero);
+			_mtx = new Matrix();
 			
 			health = 1;
 			alpha = 1;
 			color = 0x00ffffff;
+			blend = null;
 			
 			_callback = null;
 		}
@@ -179,17 +182,21 @@ package org.flixel
 			if(!visible)
 				return;
 			getScreenXY(_p);
-			if((angle != 0) || (scale.x != 1) || (scale.y != 1))
+			
+			//Simple render
+			if((angle == 0) && (scale.x == 1) && (scale.y == 1) && (blend == null))
 			{
-				var mtx:Matrix = new Matrix();
-				mtx.translate(-(_bw>>1),-(_bh>>1));
-				mtx.scale(scale.x,scale.y);
-				if(angle != 0) mtx.rotate(Math.PI * 2 * (angle / 360));
-				mtx.translate(_p.x+(_bw>>1),_p.y+(_bh>>1));
-				FlxG.buffer.draw(_pixels,mtx);
+				FlxG.buffer.copyPixels(_pixels,_r,_p,null,null,true);
 				return;
 			}
-			FlxG.buffer.copyPixels(_pixels,_r,_p,null,null,true);
+			
+			//Advanced render
+			_mtx.identity();
+			_mtx.translate(-(_bw>>1),-(_bh>>1));
+			_mtx.scale(scale.x,scale.y);
+			if(angle != 0) _mtx.rotate(Math.PI * 2 * (angle / 360));
+			_mtx.translate(_p.x+(_bw>>1),_p.y+(_bh>>1));
+			FlxG.buffer.draw(_pixels,_mtx,null,blend);
 		}
 		
 		//@desc		Checks to see if a point in 2D space overlaps this FlxCore object
@@ -365,29 +372,25 @@ package org.flixel
 		//@param	Brush		The image you want to use as a brush or stamp or pen or whatever
 		//@param	X			The X coordinate of the brush's top left corner on this sprite
 		//@param	Y			They Y coordinate of the brush's top left corner on this sprite
-		//@param	ForceAlpha	Whether or not to use the alpha of the brush as an eraser
-		public function draw(Brush:FlxSprite,X:int=0,Y:int=0,ForceAlpha:Boolean=false):void
+		public function draw(Brush:FlxSprite,X:int=0,Y:int=0):void
 		{
 			var b:BitmapData = Brush._pixels;
-			//Simple draw, no shading or matrix math
-			if((_ct == null) && (Brush.angle == 0) && (Brush.scale.x == 1) && (Brush.scale.y == 1))
+			
+			//Simple draw
+			if((Brush.angle == 0) && (Brush.scale.x == 1) && (Brush.scale.y == 1) && (Brush.blend == null))
 			{
-				pixels.copyPixels(b,new Rectangle(0,0,b.width,b.height),new Point(X,Y),null,null,!ForceAlpha);
+				pixels.copyPixels(b,new Rectangle(0,0,b.width,b.height),new Point(X,Y),null,null,true);
 				calcFrame();
 				return;
 			}
-			//Advanced draw, lots of shading and matrix math!
-			var mtx:Matrix = new Matrix();
-			if((Brush.angle != 0) || (Brush.scale.x != 1) || (Brush.scale.y != 1))
-			{
-				mtx.translate(-(Brush._bw>>1),-(Brush._bh>>1));
-				mtx.scale(Brush.scale.x,Brush.scale.y);
-				if(Brush.angle != 0) mtx.rotate(Math.PI * 2 * (Brush.angle / 360));
-				mtx.translate(X+(Brush._bw>>1),Y+(Brush._bh>>1));
-			}
-			else
-				mtx.translate(X,Y);
-			pixels.draw(b,mtx,_ct);
+
+			//Advanced draw
+			var _mtx:Matrix = new Matrix();
+			_mtx.translate(-(Brush._bw>>1),-(Brush._bh>>1));
+			_mtx.scale(Brush.scale.x,Brush.scale.y);
+			if(Brush.angle != 0) _mtx.rotate(Math.PI * 2 * (Brush.angle / 360));
+			_mtx.translate(X+(Brush._bw>>1),Y+(Brush._bh>>1));
+			pixels.draw(b,_mtx,null,Brush.blend);
 			calcFrame();
 		}
 	}
