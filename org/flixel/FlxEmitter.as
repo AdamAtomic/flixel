@@ -13,7 +13,7 @@ package org.flixel
 		private var _drag:Number;
 		private var _delay:Number;
 		private var _timer:Number;
-		private var _sprites:FlxArray;
+		private var _sprites:Array;
 		private var _particle:uint;
 		
 		//@desc		Constructor
@@ -34,7 +34,7 @@ package org.flixel
 		//@param	Graphics		If you opted to not pre-configure an array of FlxSprite objects, you can simply pass in a particle image or sprite sheet (ignored if you pass in an array)
 		//@param	Quantity		The number of particles to generate when using the "create from image" option (ignored if you pass in an array)
 		//@param	Multiple		Whether the image in the Graphics param is a single particle or a bunch of particles (if it's a bunch, they need to be square!)
-		public function FlxEmitter(X:Number, Y:Number, Width:uint, Height:uint, Sprites:FlxArray=null, Delay:Number=-1, MinVelocityX:Number=-100, MaxVelocityX:Number=100, MinVelocityY:Number=-100, MaxVelocityY:Number=100, MinRotation:Number=-360, MaxRotation:Number=360, Gravity:Number=500, Drag:Number=0, Graphics:Class=null, Quantity:uint=0, Multiple:Boolean=false, Parent:FlxLayer=null)
+		public function FlxEmitter(X:Number, Y:Number, Width:uint, Height:uint, Sprites:Array=null, Delay:Number=-1, MinVelocityX:Number=-100, MaxVelocityX:Number=100, MinVelocityY:Number=-100, MaxVelocityY:Number=100, MinRotation:Number=-360, MaxRotation:Number=360, Gravity:Number=500, Drag:Number=0, Graphics:Class=null, Quantity:uint=0, Multiple:Boolean=false, Parent:FlxLayer=null)
 		{
 			super();
 			
@@ -55,13 +55,17 @@ package org.flixel
 			var i:uint;
 			if(Graphics != null)
 			{
-				_sprites = new FlxArray();
+				_sprites = new Array();
 				for(i = 0; i < Quantity; i++)
 				{
 					if(Multiple)
-						(_sprites.add(new FlxSprite(Graphics,0,0,true)) as FlxSprite).randomFrame();
+					{
+						var s:FlxSprite = new FlxSprite(Graphics,0,0,true);
+						s.randomFrame();
+						_sprites.push(s);
+					}
 					else
-						_sprites.add(new FlxSprite(Graphics));
+						_sprites.push(new FlxSprite(Graphics));
 				}
 				for(i = 0; i < _sprites.length; i++)
 				{
@@ -105,11 +109,7 @@ package org.flixel
 		public function emit():void
 		{
 			var s:FlxSprite = _sprites[_particle];
-			s.exists = true;
-			s.x = x - (s.width>>1);
-			if(width != 0) s.x += FlxG.random()*width;
-			s.y = y - (s.height>>1);
-			if(height != 0) s.y += FlxG.random()*height;
+			s.reset(x - (s.width>>1) + FlxG.random()*width, y - (s.height>>1) + FlxG.random()*height);
 			s.velocity.x = minVelocity.x;
 			if(minVelocity.x != maxVelocity.x) s.velocity.x += FlxG.random()*(maxVelocity.x-minVelocity.x);
 			s.velocity.y = minVelocity.y;

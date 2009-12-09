@@ -115,15 +115,16 @@ package org.flixel
 		
 		//@desc		Collides a FlxCore against this object.  Simply calls collideX then collideY internally.
 		//@param	Core	The FlxCore you want to collide
-		virtual public function collide(Core:FlxCore):void
+		virtual public function collide(Core:FlxCore):Boolean
 		{
-			collideX(Core);
-			collideY(Core);
+			var hx:Boolean = collideX(Core);
+			var hy:Boolean = collideY(Core);
+			return hx || hy;
 		}
 		
 		//@desc		Collides a FlxCore against this object on the X axis ONLY.
 		//@param	Core	The FlxCore you want to collide
-		virtual public function collideX(Core:FlxCore):void
+		virtual public function collideX(Core:FlxCore):Boolean
 		{
 			//Helper variables for our collision process
 			var split:Number;
@@ -163,7 +164,7 @@ package org.flixel
 				(coreBounds.x >= thisBounds.x + thisBounds.width) ||
 				(coreBounds.y + coreBounds.height <= thisBounds.y) ||
 				(coreBounds.y >= thisBounds.y + thisBounds.height) )
-				return;
+				return false;
 				
 			//Check for a right side collision if Core is moving right faster than 'this',
 			// or if Core is moving left slower than 'this' we want to check the right side too
@@ -176,18 +177,25 @@ package org.flixel
 					if(fixed && !Core.fixed)
 					{	
 						if(Core.hitWall(this))
+						{
 							Core.x = x - Core.width;
+							return true;
+						}
 					}
 					else if(!fixed && Core.fixed)
 					{
 						if(hitWall(Core))
+						{
 							x = Core.x + Core.width;
+							return true;
+						}
 					}
 					else if(Core.hitWall(this) && hitWall(Core))
 					{
 						split = (coreBounds.right - thisBounds.left) / 2;
 						Core.x -= split;
 						x += split;
+						return true;
 					}
 				}
 			}
@@ -199,26 +207,34 @@ package org.flixel
 					if(fixed && !Core.fixed)
 					{
 						if(Core.hitWall(this))
+						{
 							Core.x = x + width;
+							return true;
+						}
 					}
 					else if(!fixed && Core.fixed)
 					{
 						if(hitWall(Core))
+						{
 							x = Core.x - width;
+							return true;
+						}
 					}
 					else if(Core.hitWall(this) && hitWall(Core))
 					{
 						split = (thisBounds.right - coreBounds.left) / 2;
 						Core.x += split;
 						x -= split;
+						return true;
 					}
 				}
 			}
+			return false;
 		}
 		
 		//@desc		Collides a FlxCore against this object on the Y axis ONLY.
 		//@param	Core	The FlxCore you want to collide
-		virtual public function collideY(Core:FlxCore):void
+		virtual public function collideY(Core:FlxCore):Boolean
 		{
 			//Helper variables for our collision process
 			var split:Number;
@@ -258,7 +274,7 @@ package org.flixel
 				(coreBounds.x >= thisBounds.x + thisBounds.width) ||
 				(coreBounds.y + coreBounds.height <= thisBounds.y) ||
 				(coreBounds.y >= thisBounds.y + thisBounds.height) )
-				return;
+				return false;
 				
 			//Check for a bottom collision if Core is moving down faster than 'this',
 			// or if Core is moving up slower than 'this' we want to check the bottom too
@@ -271,18 +287,25 @@ package org.flixel
 					if(fixed && !Core.fixed)
 					{
 						if(Core.hitFloor(this))
+						{
 							Core.y = y - Core.height;
+							return true;
+						}
 					}
 					else if(!fixed && Core.fixed)
 					{
 						if(hitCeiling(Core))
+						{
 							y = Core.y + Core.height;
+							return true;
+						}
 					}
 					else if(Core.hitFloor(this) && hitCeiling(Core))
 					{
 						split = (coreBounds.bottom - thisBounds.top) / 2;
 						Core.y -= split;
 						y += split;
+						return true;
 					}
 				}
 			}
@@ -294,20 +317,73 @@ package org.flixel
 					if(fixed && !Core.fixed)
 					{
 						if(Core.hitCeiling(this))
+						{
 							Core.y = y + height;
+							return true;
+						}
 					}
 					else if(!fixed && Core.fixed)
 					{
 						if(hitFloor(Core))
+						{
 							y = Core.y - height;
+							return true;
+						}
 					}
 					else if(Core.hitCeiling(this) && hitFloor(Core))
 					{
 						split = (thisBounds.bottom - coreBounds.top) / 2;
 						Core.y += split;
 						y -= split;
+						return true;
 					}
 				}
+			}
+			return false;
+		}
+		
+		//@desc		Collides an array of FlxCore objects against the tilemap
+		//@param	Cores		The FlxCore objects you want to collide against
+		public function collideArray(Cores:Array):void
+		{
+			if(!exists || dead) return;
+			var core:FlxCore;
+			var l:uint = Cores.length;
+			for(var i:uint = 0; i < l; i++)
+			{
+				core = Cores[i];
+				if((core === this) || (core == null) || !core.exists || core.dead) continue;
+				collide(core);
+			}
+		}
+		
+		//@desc		Collides an array of FlxCore objects against the tilemap against the X axis only
+		//@param	Cores		The FlxCore objects you want to collide against
+		public function collideArrayX(Cores:Array):void
+		{
+			if(!exists || dead) return;
+			var core:FlxCore;
+			var l:uint = Cores.length;
+			for(var i:uint = 0; i < l; i++)
+			{
+				core = Cores[i];
+				if((core === this) || (core == null) || !core.exists || core.dead) continue;
+				collideX(core);
+			}
+		}
+		
+		//@desc		Collides an array of FlxCore objects against the tilemap against the Y axis only
+		//@param	Cores		The FlxCore objects you want to collide against
+		public function collideArrayY(Cores:Array):void
+		{
+			if(!exists || dead) return;
+			var core:FlxCore;
+			var l:uint = Cores.length;
+			for(var i:uint = 0; i < l; i++)
+			{
+				core = Cores[i];
+				if((core === this) || (core == null) || !core.exists || core.dead) continue;
+				collideY(core);
 			}
 		}
 		

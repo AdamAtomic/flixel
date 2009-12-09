@@ -35,9 +35,9 @@ package org.flixel
 		static public var height:uint;
 		//@desc Levels and scores are generic global variables that can be used for various cross-state stuff
 		static public var level:int;
-		static public var levels:FlxArray;
+		static public var levels:Array;
 		static public var score:int;
-		static public var scores:FlxArray;
+		static public var scores:Array;
 
 		//@desc The current game coordinates of the mouse pointer (not necessarily the screen coordinates)
 		static public var mouse:FlxMouse;
@@ -76,6 +76,30 @@ package org.flixel
 		{
 			keys.reset();
 			mouse.reset();
+		}
+		
+		//@desc		Picks an entry at random from an array
+		//@param	A		The array you want to pick the object from
+		//@return	Any object
+		static public function getRandom(A:Array):Object
+		{
+			return A[int(FlxG.random()*A.length)];
+		}
+		
+		//@desc		Find the first entry in the array that doesn't "exist"
+		//@param	A		The array you want to search
+		//@return	Anything based on FlxCore (FlxSprite, FlxText, FlxBlock, etc)
+		static public function getNonexist(A:Array):FlxCore
+		{
+			var l:uint = A.length;
+			if(l <= 0) return null;
+			var i:uint = 0;
+			do
+			{
+				if(!A[i].exists)
+					return A[i];
+			} while (++i < l);
+			return null;
 		}
 		
 		//@desc		Set up and autoplay a music track
@@ -337,16 +361,17 @@ package org.flixel
 		}
 		
 		//@desc		Checks to see if a FlxCore overlaps any of the FlxCores in the array, and calls a function when they do
-		//@param	Array		An array of FlxCore objects
+		//@param	Cores		An array of FlxCore objects
 		//@param	Core		A FlxCore object
 		//@param	Collide		A function that takes two sprites as parameters (first the one from Array, then Sprite)
-		static public function overlapArray(Array:FlxArray,Core:FlxCore,Collide:Function=null):void
+		static public function overlapArray(Cores:Array,Core:FlxCore,Collide:Function=null):void
 		{
 			if((Core == null) || !Core.exists || Core.dead) return;
 			var c:FlxCore;
-			for(var i:uint = 0; i < Array.length; i++)
+			var l:uint = Cores.length;
+			for(var i:uint = 0; i < l; i++)
 			{
-				c = Array[i];
+				c = Cores[i];
 				if((c === Core) || (c == null) || !c.exists || c.dead) continue;
 				if(c.overlaps(Core))
 				{
@@ -362,24 +387,26 @@ package org.flixel
 		}
 		
 		//@desc		Checks to see if any FlxCore in Array1 overlaps any FlxCore in Array2, and calls Collide when they do
-		//@param	Array1		An array of FlxCore objects
-		//@param	Array2		Another array of FlxCore objects
+		//@param	Cores1		An array of FlxCore objects
+		//@param	Cores2		Another array of FlxCore objects
 		//@param	Collide		A function that takes two FlxCore objects as parameters (first the one from Array1, then the one from Array2)
-		static public function overlapArrays(Array1:FlxArray,Array2:FlxArray,Collide:Function=null):void
+		static public function overlapArrays(Cores1:Array,Cores2:Array,Collide:Function=null):void
 		{
 			var i:uint;
 			var j:uint;
 			var core1:FlxCore;
 			var core2:FlxCore;
-			if(Array1 === Array2)
+			var l1:uint = Cores1.length;
+			var l2:uint = Cores2.length;
+			if(Cores1 === Cores2)
 			{
-				for(i = 0; i < Array1.length; i++)
+				for(i = 0; i < l1; i++)
 				{
-					core1 = Array1[i];
+					core1 = Cores1[i];
 					if((core1 == null) || !core1.exists || core1.dead) continue;
-					for(j = i+1; j < Array2.length; j++)
+					for(j = i+1; j < l2; j++)
 					{
-						core2 = Array2[j];
+						core2 = Cores2[j];
 						if((core2 == null) || !core2.exists || core2.dead) continue;
 						if(core1.overlaps(core2))
 						{
@@ -396,13 +423,13 @@ package org.flixel
 			}
 			else
 			{
-				for(i = 0; i < Array1.length; i++)
+				for(i = 0; i < Cores1.length; i++)
 				{
-					core1 = Array1[i];
+					core1 = Cores1[i];
 					if((core1 == null) || !core1.exists || core1.dead) continue;
-					for(j = 0; j < Array2.length; j++)
+					for(j = 0; j < Cores2.length; j++)
 					{
-						core2 = Array2[j];
+						core2 = Cores2[j];
 						if((core1 === core2) || (core2 == null) || !core2.exists || core2.dead) continue;
 						if(core1.overlaps(core2))
 						{
@@ -419,46 +446,49 @@ package org.flixel
 			}
 		}
 		
-		//@desc		Collides a FlxSprite against the FlxCores in the array 
-		//@param	Array		An array of FlxCore objects
-		//@param	Sprite		A FlxSprite object
-		static public function collideArray(Array:FlxArray,Core:FlxSprite):void
+		//@desc		Collides a FlxCore against the FlxCores in the array 
+		//@param	Cores		An array of FlxCore objects
+		//@param	Core		A FlxCore object
+		static public function collideArray(Cores:Array,Core:FlxCore):void
 		{
 			if((Core == null) || !Core.exists || Core.dead) return;
 			var core:FlxCore;
-			for(var i:uint = 0; i < Array.length; i++)
+			var l:uint = Cores.length;
+			for(var i:uint = 0; i < l; i++)
 			{
-				core = Array[i];
+				core = Cores[i];
 				if((core === Core) || (core == null) || !core.exists || core.dead) continue;
 				core.collide(Core);
 			}
 		}
 		
-		//@desc		Collides a FlxSprite against the FlxCores in the array on the X axis ONLY
-		//@param	Array		An array of FlxCore objects
-		//@param	Sprite		A FlxSprite object
-		static public function collideArrayX(Array:FlxArray,Core:FlxSprite):void
+		//@desc		Collides a FlxCore against the FlxCores in the array on the X axis ONLY
+		//@param	Cores		An array of FlxCore objects
+		//@param	Core		A FlxCore object
+		static public function collideArrayX(Cores:Array,Core:FlxCore):void
 		{
 			if((Core == null) || !Core.exists || Core.dead) return;
 			var core:FlxCore;
-			for(var i:uint = 0; i < Array.length; i++)
+			var l:uint = Cores.length;
+			for(var i:uint = 0; i < l; i++)
 			{
-				core = Array[i];
+				core = Cores[i];
 				if((core === Core) || (core == null) || !core.exists || core.dead) continue;
 				core.collideX(Core);
 			}
 		}
 		
 		//@desc		Collides a FlxSprite against the FlxCores in the array on the Y axis ONLY
-		//@param	Array		An array of FlxCore objects
-		//@param	Sprite		A FlxSprite object
-		static public function collideArrayY(Array:FlxArray,Core:FlxSprite):void
+		//@param	Cores		An array of FlxCore objects
+		//@param	Core		A FlxSprite object
+		static public function collideArrayY(Cores:Array,Core:FlxCore):void
 		{
 			if((Core == null) || !Core.exists || Core.dead) return;
 			var core:FlxCore;
-			for(var i:uint = 0; i < Array.length; i++)
+			var l:uint = Cores.length;
+			for(var i:uint = 0; i < l; i++)
 			{
-				core = Array[i];
+				core = Cores[i];
 				if((core === Core) || (core == null) || !core.exists || core.dead) continue;
 				core.collideY(Core);
 			}
@@ -466,22 +496,24 @@ package org.flixel
 		
 		//@desc		Collides the first array of FlxCores against the second array of FlxCores
 		//@param	Array1		An array of FlxCore objects
-		//@param	Array2		An array of FlxSprite objects
-		static public function collideArrays(Array1:FlxArray,Array2:FlxArray):void
+		//@param	Array2		An array of FlxCore objects
+		static public function collideArrays(Cores1:Array,Cores2:Array):void
 		{
 			var i:uint;
 			var j:uint;
 			var core1:FlxCore;
 			var core2:FlxCore;
-			if(Array1 === Array2)
+			var l1:uint = Cores1.length;
+			var l2:uint = Cores2.length;
+			if(Cores1 === Cores2)
 			{
-				for(i = 0; i < Array1.length; i++)
+				for(i = 0; i < l1; i++)
 				{
-					core1 = Array1[i];
+					core1 = Cores1[i];
 					if((core1 == null) || !core1.exists || core1.dead) continue;
-					for(j = i+1; j < Array2.length; j++)
+					for(j = i+1; j < l2; j++)
 					{
-						core2 = Array2[j];
+						core2 = Cores2[j];
 						if((core2 == null) || !core2.exists || core2.dead) continue;
 						core1.collide(core2);
 					}
@@ -489,13 +521,13 @@ package org.flixel
 			}
 			else
 			{
-				for(i = 0; i < Array1.length; i++)
+				for(i = 0; i < l1; i++)
 				{
-					core1 = Array1[i];
+					core1 = Cores1[i];
 					if((core1 == null) || !core1.exists || core1.dead) continue;
-					for(j = 0; j < Array2.length; j++)
+					for(j = 0; j < l2; j++)
 					{
-						core2 = Array2[j];
+						core2 = Cores2[j];
 						if((core1 === core2) || (core2 == null) || !core2.exists || core2.dead) continue;
 						core1.collide(core2);
 					}
@@ -503,24 +535,26 @@ package org.flixel
 			}
 		}
 		
-		//@desc		Collides the first array of FlxCores against the second array of FlxCores on the X axis ONLY
+		//@desc		Collides the first array of FlxCores against the second array of FlxCores on the X axis only
 		//@param	Array1		An array of FlxCore objects
-		//@param	Array2		An array of FlxSprite objects
-		static public function collideArraysX(Array1:FlxArray,Array2:FlxArray):void
+		//@param	Array2		An array of FlxCore objects
+		static public function collideArraysX(Cores1:Array,Cores2:Array):void
 		{
 			var i:uint;
 			var j:uint;
 			var core1:FlxCore;
 			var core2:FlxCore;
-			if(Array1 === Array2)
+			var l1:uint = Cores1.length;
+			var l2:uint = Cores2.length;
+			if(Cores1 === Cores2)
 			{
-				for(i = 0; i < Array1.length; i++)
+				for(i = 0; i < l1; i++)
 				{
-					core1 = Array1[i];
+					core1 = Cores1[i];
 					if((core1 == null) || !core1.exists || core1.dead) continue;
-					for(j = i+1; j < Array2.length; j++)
+					for(j = i+1; j < l2; j++)
 					{
-						core2 = Array2[j];
+						core2 = Cores2[j];
 						if((core2 == null) || !core2.exists || core2.dead) continue;
 						core1.collideX(core2);
 					}
@@ -528,13 +562,13 @@ package org.flixel
 			}
 			else
 			{
-				for(i = 0; i < Array1.length; i++)
+				for(i = 0; i < l1; i++)
 				{
-					core1 = Array1[i];
+					core1 = Cores1[i];
 					if((core1 == null) || !core1.exists || core1.dead) continue;
-					for(j = 0; j < Array2.length; j++)
+					for(j = 0; j < l2; j++)
 					{
-						core2 = Array2[j];
+						core2 = Cores2[j];
 						if((core1 === core2) || (core2 == null) || !core2.exists || core2.dead) continue;
 						core1.collideX(core2);
 					}
@@ -542,24 +576,26 @@ package org.flixel
 			}
 		}
 		
-		//@desc		Collides the first array of FlxCores against the second array of FlxCores on the Y axis ONLY
+		//@desc		Collides the first array of FlxCores against the second array of FlxCores on the Y axis only
 		//@param	Array1		An array of FlxCore objects
-		//@param	Array2		An array of FlxSprite objects
-		static public function collideArraysY(Array1:FlxArray,Array2:FlxArray):void
+		//@param	Array2		An array of FlxCore objects
+		static public function collideArraysY(Cores1:Array,Cores2:Array):void
 		{
 			var i:uint;
 			var j:uint;
 			var core1:FlxCore;
 			var core2:FlxCore;
-			if(Array1 === Array2)
+			var l1:uint = Cores1.length;
+			var l2:uint = Cores2.length;
+			if(Cores1 === Cores2)
 			{
-				for(i = 0; i < Array1.length; i++)
+				for(i = 0; i < l1; i++)
 				{
-					core1 = Array1[i];
+					core1 = Cores1[i];
 					if((core1 == null) || !core1.exists || core1.dead) continue;
-					for(j = i+1; j < Array2.length; j++)
+					for(j = i+1; j < l2; j++)
 					{
-						core2 = Array2[j];
+						core2 = Cores2[j];
 						if((core2 == null) || !core2.exists || core2.dead) continue;
 						core1.collideY(core2);
 					}
@@ -567,13 +603,13 @@ package org.flixel
 			}
 			else
 			{
-				for(i = 0; i < Array1.length; i++)
+				for(i = 0; i < l1; i++)
 				{
-					core1 = Array1[i];
+					core1 = Cores1[i];
 					if((core1 == null) || !core1.exists || core1.dead) continue;
-					for(j = 0; j < Array2.length; j++)
+					for(j = 0; j < l2; j++)
 					{
-						core2 = Array2[j];
+						core2 = Cores2[j];
 						if((core1 === core2) || (core2 == null) || !core2.exists || core2.dead) continue;
 						core1.collideY(core2);
 					}
@@ -731,8 +767,8 @@ package org.flixel
 			mouse = new FlxMouse();
 			keys = new FlxKeyboard();
 			unfollow();
-			FlxG.levels = new FlxArray();
-			FlxG.scores = new FlxArray();
+			FlxG.levels = new Array();
+			FlxG.scores = new Array();
 			level = 0;
 			score = 0;
 			seed = NaN;

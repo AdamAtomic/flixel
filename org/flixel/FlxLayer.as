@@ -3,19 +3,20 @@ package org.flixel
 	//@desc		This is an organizational class that can update and render a bunch of FlxCore objects
 	public class FlxLayer extends FlxCore
 	{
-		private var _children:FlxArray;
+		private var _children:Array;
 
 		//@desc		Constructor		
 		virtual public function FlxLayer()
 		{
-			_children = new FlxArray();
+			_children = new Array();
 		}
 		
 		//@desc		Adds a new FlxCore subclass (FlxSprite, FlxBlock, etc) to the list of children
 		//@param	Core	The object you want to add
 		virtual public function add(Core:FlxCore):FlxCore
 		{
-			return _children.add(Core) as FlxCore;
+			_children.push(Core);
+			return Core;
 		}
 		
 		//@desc		Automatically goes through and calls update on everything you added, override this function to handle custom input and perform collisions
@@ -35,9 +36,9 @@ package org.flixel
 		}
 		
 		//@desc		Override this function to handle any deleting or "shutdown" type operations you might need (such as removing traditional Flash children like Sprite objects)
-		public function destroy():void { _children.clear(); }
+		public function destroy():void { _children.length = 0; }
 		
 		//@desc		Returns the array of children
-		public function children():FlxArray { return _children; }
+		public function children():Array { return _children; }
 	}
 }

@@ -8,7 +8,7 @@ package org.flixel
 	public class FlxBlock extends FlxCore
 	{
 		protected var _pixels:BitmapData;
-		protected var _rects:FlxArray;
+		protected var _rects:Array;
 		protected var _tileSize:uint;
 		protected var _p:Point;
 		
@@ -31,7 +31,7 @@ package org.flixel
 				return;
 
 			_pixels = FlxG.addBitmap(TileGraphic);
-			_rects = new FlxArray();
+			_rects = new Array();
 			_p = new Point();
 			_tileSize = _pixels.height;
 			var widthInTiles:uint = Math.ceil(width/_tileSize);

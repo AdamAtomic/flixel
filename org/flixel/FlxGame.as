@@ -64,7 +64,7 @@ package org.flixel
 		internal var _defaultSoundControls:Boolean;
 		
 		//logo stuff
-		internal var _f:FlxArray;
+		internal var _f:Array;
 		internal var _fc:uint;
 		internal var _logoComplete:Boolean;
 		internal var _logoTimer:Number;
@@ -300,7 +300,7 @@ package org.flixel
 					if(_f == null)
 					{
 						var tmp:Bitmap;
-						_f = new FlxArray();
+						_f = new Array();
 						var scale:uint = 1;
 						if(FlxG.height > 200)
 							scale = 2;
@@ -343,7 +343,7 @@ package org.flixel
 						removeChild(_poweredBy);
 						for(i = 0; i < _f.length; i++)
 							removeChild(_f[i]);
-						_f.clear();
+						_f.length = 0;
 						removeChild(_logoFade);
 						FlxG.switchState(_iState);
 						_logoComplete = true;

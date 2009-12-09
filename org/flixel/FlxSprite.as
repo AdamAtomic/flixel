@@ -38,7 +38,7 @@ package org.flixel
 		
 		//@desc	Whether the current animation has finished its first (or only) loop
 		public var finished:Boolean;
-		private var _animations:FlxArray;
+		private var _animations:Array;
 		private var _flipped:uint;
 		protected var _curAnim:FlxAnim;
 		protected var _curFrame:uint;
@@ -107,7 +107,7 @@ package org.flixel
 			
 			finished = false;
 			_facing = true;
-			_animations = new FlxArray();
+			_animations = new Array();
 			if(Reverse)
 				_flipped = pixels.width>>1;
 			else
@@ -250,7 +250,7 @@ package org.flixel
 		//@param	Looped		Whether or not the animation is looped or just plays once
 		public function addAnimation(Name:String, Frames:Array, FrameRate:Number=0, Looped:Boolean=true):void
 		{
-			_animations.add(new FlxAnim(Name,Frames,FrameRate,Looped));
+			_animations.push(new FlxAnim(Name,Frames,FrameRate,Looped));
 		}
 		
 		//@desc		Pass in a function to be called whenever this sprite's animation changes
