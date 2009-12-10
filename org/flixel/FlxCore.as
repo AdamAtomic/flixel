@@ -172,41 +172,52 @@ package org.flixel
 				(coreBounds.y + coreBounds.height <= thisBounds.y) ||
 				(coreBounds.y >= thisBounds.y + thisBounds.height) )
 				return false;
+			
+			//NOTE: at this point we know the two volumes overlap.
+			// It's just a matter of figuring out what kind of collision just happened.
+			// We know collisions have to be either "right side" or "left side" of 'Core'
+			// But there is a matched speed + adjacency corner case that we're not handling.
+			// Differentiating this corner case from teleportation is the crux move.
+			
+			
 				
 			//Check for a right side collision if Core is moving right faster than 'this',
 			// or if Core is moving left slower than 'this' we want to check the right side too
-			var coreToRight:Boolean = Core.x > Core.last.x;
-			if((coreToRight && (Core.x - Core.last.x > x - last.x)) || (!coreToRight && (Core.last.x - Core.x < last.x - x)))
+			var ctp:Number = Core.x - Core.last.x;
+			var ttp:Number = x - last.x;
+			var tco:Boolean = (Core.x < x + width) && (Core.x + Core.width > x);
+			if(	( (ctp > 0) && (ttp < 0) ) ||
+				( (ctp > 0) && ( ( ctp >  ttp) && tco ) ) ||
+				( (ctp < 0) && ( (-ctp < -ttp) && tco ) ) )
 			{
 				//Right side collision
-				if(coreBounds.right > thisBounds.left)
-				{
-					if(fixed && !Core.fixed)
-					{	
-						if(Core.hitWall(this))
-						{
-							Core.x = x - Core.width;
-							return true;
-						}
-					}
-					else if(!fixed && Core.fixed)
+				if(fixed && !Core.fixed)
+				{	
+					if(Core.hitWall(this))
 					{
-						if(hitWall(Core))
-						{
-							x = Core.x + Core.width;
-							return true;
-						}
-					}
-					else if(Core.hitWall(this) && hitWall(Core))
-					{
-						split = (coreBounds.right - thisBounds.left) / 2;
-						Core.x -= split;
-						x += split;
+						Core.x = x - Core.width;
 						return true;
 					}
 				}
+				else if(!fixed && Core.fixed)
+				{
+					if(hitWall(Core))
+					{
+						x = Core.x + Core.width;
+						return true;
+					}
+				}
+				else if(Core.hitWall(this) && hitWall(Core))
+				{
+					split = (coreBounds.right - thisBounds.left) / 2;
+					Core.x -= split;
+					x += split;
+					return true;
+				}
 			}
-			else if((coreToRight && (Core.x - Core.last.x < x - last.x)) || (!coreToRight && (Core.last.x - Core.x > last.x - x)))
+			else if(( (ctp < 0) && (ttp > 0) ) ||
+					( (ctp > 0) && ( ( ctp <  ttp) && tco) ) ||
+					( (ctp < 0) && ( (-ctp > -ttp) && tco) ) )
 			{
 				//Left side collision
 				if(coreBounds.left < thisBounds.right)
@@ -285,8 +296,12 @@ package org.flixel
 				
 			//Check for a bottom collision if Core is moving down faster than 'this',
 			// or if Core is moving up slower than 'this' we want to check the bottom too
-			var coreDown:Boolean = Core.y > Core.last.y;
-			if((coreDown && (Core.y - Core.last.y > y - last.y)) || (!coreDown && (Core.last.y - Core.y < last.y - y)))
+			var ctp:Number = Core.y - Core.last.y;
+			var ttp:Number = y - last.y;
+			var tco:Boolean = (Core.y < y + height) && (Core.y + Core.height > y);
+			if(	( (ctp > 0) && (ttp < 0) ) ||
+				( (ctp > 0) && ( ( ctp >  ttp) && tco ) ) ||
+				( (ctp < 0) && ( (-ctp < -ttp) && tco ) ) )
 			{
 				//Bottom collision
 				if(coreBounds.bottom > thisBounds.top)
@@ -316,7 +331,9 @@ package org.flixel
 					}
 				}
 			}
-			else if((coreDown && (Core.y - Core.last.y < y - last.y)) || (!coreDown && (Core.last.y - Core.y > last.y - y)))
+			else if(( (ctp < 0) && (ttp > 0) ) ||
+					( (ctp > 0) && ( ( ctp <  ttp) && tco) ) ||
+					( (ctp < 0) && ( (-ctp > -ttp) && tco) ) )
 			{
 				//Top collision
 				if(coreBounds.top < thisBounds.bottom)
