@@ -1,20 +1,15 @@
 package org.flixel
 {
-	import flash.geom.Matrix;
-	import flash.geom.Point;
+	import flash.display.BitmapData;
+	import flash.geom.Rectangle;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
 	//@desc		A basic text display class, can do some fun stuff though like flicker and rotate
-	public class FlxText extends FlxCore
+	public class FlxText extends FlxSprite
 	{
-		public var angle:Number;
-		
-		private var _tf:TextField;
-		private var _mtx:Matrix;
-		private var _ox:Number;
-		private var _oy:Number;
-		private var _oa:Number;
+		protected var _tf:TextField;
+		protected var _regen:Boolean;
 		
 		//@desc		Constructor
 		//@param	X		The X position of the text
@@ -25,75 +20,95 @@ package org.flixel
 		//@param	Color	The color of the text object
 		//@param	Font	The name of the font you'd like to use (pass null to use the built-in pixel font)
 		//@param	Size	The size of the font (recommend using multiples of 8 for cleanest rendering)
-		//@param	Justification	Valid strings include "left", "center", and "right"
-		//@param	Angle	How much the text should be rotated
-		public function FlxText(X:Number, Y:Number, Width:uint, Height:uint, Text:String="", Color:uint=0xffffff, Font:String=null, Size:uint=8, Justification:String=null, Angle:Number=0)
+		//@param	Align	Valid strings include "left", "center", and "right"
+		public function FlxText(X:Number, Y:Number, Width:uint, Text:String="", Color:uint=0xffffff, Font:String=null, Size:Number=8, Align:String=null)
 		{
-			super();
-			
-			_ox = x = X;
-			_oy = y = Y;
-			_oa = angle = Angle;
-			width = Width;
-			height = Height;
-			
 			if(Font == null)
 				Font = "system";
 			if(Text == null)
 				Text = "";
 			_tf = new TextField();
-			_tf.width = width;
-			_tf.height = height;
+			_tf.width = Width;
+			_tf.height = 1;
 			_tf.embedFonts = true;
 			_tf.selectable = false;
 			_tf.sharpness = 100;
-			_tf.defaultTextFormat = new TextFormat(Font,Size,Color,null,null,null,null,null,Justification);
+			_tf.defaultTextFormat = new TextFormat(Font,Size,0xffffff,null,null,null,null,null,Align);
 			_tf.text = Text;
-			
-			_mtx = new Matrix();
-			_mtx.translate(-(width>>1),-(height>>1));
-			_mtx.rotate(Math.PI * 2 * (angle / 360));
-			_mtx.translate(Math.floor(x)+(width>>1),Math.floor(y)+(height>>1));
+			super(null,X,Y,false,false,Width);
+			_regen = true;
+			color = Color; //calls calcFrame() implicitly
+		} 
+		
+		//@desc		Changes the text being displayed
+		//@param	Text	The new string you want to display
+		public function set text(Text:String):void
+		{
+			_tf.text = Text;
+			_regen = true;
+			calcFrame();
+		}
+		
+		//@desc		Getter to retrieve the text being displayed
+		//@param	Text	The text string being displayed
+		public function get text():String
+		{
+			return _tf.text;
 		}
 		
 		//@desc		Changes the text being displayed
 		//@param	Text	The new string you want to display
-		public function setText(Text:String):void
+		public function set size(Size:Number):void
 		{
-			_tf.text = Text;
+			_tf.defaultTextFormat.size = Size;
+			_regen = true;
+			calcFrame();
 		}
 		
-		//@desc		Changes the color being used by the text
-		//@param	Color	The new color you want to use
-		public function setColor(Color:uint):void
+		//@desc		Getter to retrieve the text being displayed
+		//@param	Text	The text string being displayed
+		public function get size():Number
 		{
-			var format:TextFormat = _tf.defaultTextFormat;
-			format.color = Color;
-			_tf.defaultTextFormat = format;
-			_tf.text = _tf.text;
+			return _tf.defaultTextFormat.size as Number;
 		}
 		
-		//@desc		Called by the game loop automatically, updates the position and angle of the text
-		override public function update():void
+		//@desc		Internal function to update the current animation frame
+		override protected function calcFrame():void
 		{
-			super.update();
-			var n:Point = new Point();
-			getScreenXY(n);
-			if((_ox != n.x) || (_oy != n.y) || (_oa != angle))
+			//Just leave if there's no text to render
+			if((_tf == null) || (_tf.text == null) || (_tf.text.length <= 0))
 			{
-				_mtx = new Matrix();
-				_mtx.translate(-(width>>1),-(height>>1));
-				_mtx.rotate(Math.PI * 2 * (angle / 360));
-				_mtx.translate(n.x+(width>>1),n.y+(height>>1));
-				_ox = n.x;
-				_oy = n.y;
+				_pixels.fillRect(_r,0);
+				return;
 			}
-		}
-		
-		//@desc		Called by the game loop automatically, blits the text object to the screen
-		override public function render():void
-		{
-			FlxG.buffer.draw(_tf,_mtx);
+			if(_regen)
+			{
+				//Need to generate a new buffer to store the text graphic
+				var nl:uint = _tf.numLines;
+				height = 0;
+				for(var i:uint = 0; i < nl; i++)
+					height += _tf.getLineMetrics(i).height;
+				height += 4; //account for 2px gutter on top and bottom
+				_pixels = new BitmapData(width,height,true,0);
+				_bh = height;
+				_tf.height = height;
+				_r = new Rectangle(0,0,width,height);
+				_regen = false;
+			}
+			else	//Else just clear the old buffer before redrawing the text
+				_pixels.fillRect(_r,0);
+			
+			//Now that we've cleared a buffer, we need to actually render the text to it
+			var tf:TextFormat = _tf.defaultTextFormat;
+			_mtx.identity();
+			//If it's a single, centered line of text, we center it ourselves so it doesn't blur to hell
+			if((tf.align == "center") && (_tf.numLines == 1))
+			{
+				_tf.setTextFormat(new TextFormat(tf.font,tf.size,tf.color,null,null,null,null,null,"left"));				
+				_mtx.translate(Math.floor((width - _tf.getLineMetrics(0).width)/2),0);
+			}
+			_pixels.draw(_tf,_mtx,_ct);	//Actually draw the text onto the buffer
+			_tf.setTextFormat(new TextFormat(tf.font,tf.size,tf.color,null,null,null,null,null,tf.align));
 		}
 	}
 }

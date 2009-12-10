@@ -35,6 +35,8 @@ package org.flixel
 		//@desc	Scale doesn't currently affect collisions automatically, you will need to adjust the width, height and offset manually.  WARNING: scaling sprites decreases rendering performance for this sprite by a factor of 10x!
 		public var scale:Point;
 		public var blend:String;
+		//@desc	Controls whether the object is smoothed when rotated, affects performance, off by default
+		public var antialiasing:Boolean;
 		
 		//@desc	Whether the current animation has finished its first (or only) loop
 		public var finished:Boolean;
@@ -68,7 +70,7 @@ package org.flixel
 		//@param	Height		If you opt to NOT use an image you can specify the height of the colored block here (ignored if Graphic is not null)
 		//@param	Color		Specifies the color of the generated block (ignored if Graphic is not null)
 		//@param	Unique		Whether the graphic should be a unique instance in the graphics cache
-		public function FlxSprite(Graphic:Class=null,X:int=0,Y:int=0,Animated:Boolean=false,Reverse:Boolean=false,Width:uint=0,Height:uint=0,Color:uint=0,Unique:Boolean=false)
+		public function FlxSprite(Graphic:Class=null,X:int=0,Y:int=0,Animated:Boolean=false,Reverse:Boolean=false,Width:uint=0,Height:uint=1,Color:uint=0xffffffff,Unique:Boolean=false)
 		{
 			super();
 
@@ -123,8 +125,8 @@ package org.flixel
 			_mtx = new Matrix();
 			
 			health = 1;
-			alpha = 1;
-			color = 0x00ffffff;
+			_alpha = 1;
+			_color = 0x00ffffff;
 			blend = null;
 			
 			_callback = null;
@@ -196,7 +198,7 @@ package org.flixel
 			_mtx.scale(scale.x,scale.y);
 			if(angle != 0) _mtx.rotate(Math.PI * 2 * (angle / 360));
 			_mtx.translate(_p.x+(_bw>>1),_p.y+(_bh>>1));
-			FlxG.buffer.draw(_pixels,_mtx,null,blend);
+			FlxG.buffer.draw(_pixels,_mtx,null,blend,null,antialiasing);
 		}
 		
 		//@desc		Checks to see if a point in 2D space overlaps this FlxCore object
@@ -390,7 +392,7 @@ package org.flixel
 			_mtx.scale(Brush.scale.x,Brush.scale.y);
 			if(Brush.angle != 0) _mtx.rotate(Math.PI * 2 * (Brush.angle / 360));
 			_mtx.translate(X+(Brush._bw>>1),Y+(Brush._bh>>1));
-			pixels.draw(b,_mtx,null,Brush.blend);
+			pixels.draw(b,_mtx,null,Brush.blend,null,Brush.antialiasing);
 			calcFrame();
 		}
 	}

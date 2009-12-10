@@ -71,7 +71,7 @@ package org.flixel.data
 			_twitter = new FlxButton(FlxG.width/2+7+6+12+6,0,new FlxSprite(ImgTwitter),onTwitter);
 			_twitter.scrollFactor.x = 0;
 			_twitter.scrollFactor.y = 0;
-			_caption = new FlxText(FlxG.width/2,0,FlxG.width/2-19,20,"",0xffffff,null,8,"right");
+			_caption = new FlxText(FlxG.width/2,0,FlxG.width/2-19,"",0xffffff,null,8,"right");
 			_caption.scrollFactor.x = 0;
 			_caption.scrollFactor.y = 0;
 			_close = new FlxButton(FlxG.width-16,0,new FlxSprite(ImgClose),onClose);
@@ -88,7 +88,7 @@ package org.flixel.data
 			_payPalAmount = PayPalAmount;
 			_gameTitle = GameTitle;
 			_gameURL = GameURL;
-			_caption.setText(Caption);
+			_caption.text = Caption;
 			_initialized = true;
 		}
 		
@@ -148,6 +148,11 @@ package org.flixel.data
 		
 		public function show(Top:Boolean=true):void
 		{
+			if(!_initialized)
+			{
+				FlxG.log("SUPPORT PANEL ERROR: Uninitialized.\nYou forgot to call FlxGame.setupSupportPanel()\nfrom your game constructor.");
+				return;
+			}
 			if(_closed) return;
 			if(Top)
 			{

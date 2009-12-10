@@ -374,6 +374,10 @@ package org.flixel
 				_console = new FlxConsole(_gameXOffset,_gameYOffset,_zoom);
 				addChild(_console);
 				var vstring:String = FlxG.LIBRARY_NAME+" v"+FlxG.LIBRARY_MAJOR_VERSION+"."+FlxG.LIBRARY_MINOR_VERSION;
+				if(FlxG.debug)
+					vstring += " [debug]";
+				else
+					vstring += " [release]";
 				var underline:String = "";
 				for(i = 0; i < vstring.length+32; i++)
 					underline += "-";

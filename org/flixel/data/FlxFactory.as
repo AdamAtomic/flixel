@@ -14,6 +14,8 @@ package org.flixel.data
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	import flash.utils.getDefinitionByName;
+	
+	import org.flixel.FlxG;
 
 	//@desc		This class handles the 8-bit style preloader
 	public class FlxFactory extends MovieClip
@@ -35,6 +37,17 @@ package org.flixel.data
 			stop();
             stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
+			
+			//Check if we are on debug or release mode and set _DEBUG accordingly
+            try
+            {
+                throw new Error("Setting global debug flag...");
+            }
+            catch(e:Error)
+            {
+                var re:RegExp = /\[.*:[0-9]+\]/;
+                FlxG.debug = re.test(e.getStackTrace());
+            }
 			
 			var tmp:Bitmap;
 			if((myURL != null) && (myURL.length > 0) && (root.loaderInfo.url.indexOf(myURL) < 0) && (root.loaderInfo.url.indexOf("localhost") < 0))

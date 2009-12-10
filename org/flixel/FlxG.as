@@ -13,6 +13,7 @@ package org.flixel
 	
 	import org.flixel.data.FlxKeyboard;
 	import org.flixel.data.FlxMouse;
+	import org.flixel.data.FlxKong;
 	
 	//@desc		This is a global helper class full of useful functions for audio, input, basic info, and the camera system
 	public class FlxG
@@ -21,7 +22,7 @@ package org.flixel
 		
 		static public var LIBRARY_NAME:String = "flixel";
 		static public var LIBRARY_MAJOR_VERSION:uint = 1;
-		static public var LIBRARY_MINOR_VERSION:uint = 27;
+		static public var LIBRARY_MINOR_VERSION:uint = 30;
 
 		static protected var _game:FlxGame;
 		
@@ -38,6 +39,7 @@ package org.flixel
 		static public var levels:Array;
 		static public var score:int;
 		static public var scores:Array;
+		static public var debug:Boolean;
 
 		//@desc The current game coordinates of the mouse pointer (not necessarily the screen coordinates)
 		static public var mouse:FlxMouse;
@@ -303,9 +305,9 @@ package org.flixel
 		{
 			followTarget = Target;
 			followLerp = Lerp;
-			
 			scroll.x = _scrollTarget.x = (width>>1)-followTarget.x-(followTarget.width>>1);
 			scroll.y = _scrollTarget.y = (height>>1)-followTarget.y-(followTarget.height>>1);
+			doFollow();
 		}
 		
 		//@desc		Specify an additional camera component - the velocity-based "lead", or amount the camera should track in front of a sprite
@@ -329,6 +331,7 @@ package org.flixel
 				followMax.x = followMin.x;
 			if(followMax.y > followMin.y)
 				followMax.y = followMin.y;
+			doFollow();
 		}
 		
 		//@desc		A fairly stupid tween-like function that takes a starting velocity and some other factors and returns an altered velocity
@@ -647,9 +650,9 @@ package org.flixel
 		
 		//@desc		Log data to the developer console
 		//@param	Data		The data (in string format) that you wanted to write to the console
-		static public function log(Data:String):void
+		static public function log(Data:Object):void
 		{
-			_game._console.log(Data);
+			_game._console.log(Data.toString());
 		}
 		
 		//@desc		Shake the screen
