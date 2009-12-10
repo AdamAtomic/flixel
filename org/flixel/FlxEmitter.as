@@ -7,14 +7,14 @@ package org.flixel
 	{
 		public var minVelocity:Point;
 		public var maxVelocity:Point;
-		private var _minRotation:Number;
-		private var _maxRotation:Number;
-		private var _gravity:Number;
-		private var _drag:Number;
-		private var _delay:Number;
-		private var _timer:Number;
-		private var _sprites:Array;
-		private var _particle:uint;
+		protected var _minRotation:Number;
+		protected var _maxRotation:Number;
+		protected var _gravity:Number;
+		protected var _drag:Number;
+		protected var _delay:Number;
+		protected var _timer:Number;
+		protected var _sprites:Array;
+		protected var _particle:uint;
 		
 		//@desc		Constructor
 		//@param	X				The X position of the emitter
@@ -67,7 +67,8 @@ package org.flixel
 					else
 						_sprites.push(new FlxSprite(Graphics));
 				}
-				for(i = 0; i < _sprites.length; i++)
+				var sl:uint = _sprites.length;
+				for(i = 0; i < sl; i++)
 				{
 					if(Parent == null)
 						FlxG.state.add(_sprites[i]);
@@ -91,7 +92,8 @@ package org.flixel
 			{
 				if(_timer > -_delay) { kill(); return; }
 				if(_sprites[0].exists) return;
-				for(var i:uint = 0; i < _sprites.length; i++) emit();
+				var sl:uint = _sprites.length;
+				for(var i:uint = 0; i < sl; i++) emit();
 				return;
 			}
 			while(_timer > _delay) { _timer -= _delay; emit(); }
@@ -130,7 +132,8 @@ package org.flixel
 		override public function kill():void
 		{
 			active = false;
-			for(var i:uint = 0; i < _sprites.length; i++)
+			var sl:uint = _sprites.length;
+			for(var i:uint = 0; i < sl; i++)
 				_sprites[i].exists = false;
 		}
 	}

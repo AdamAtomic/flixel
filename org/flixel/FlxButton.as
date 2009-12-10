@@ -6,16 +6,16 @@ package org.flixel
 	//@desc		A simple button class that calls a function when mouse-clicked
 	public class FlxButton extends FlxCore
 	{
-		private var _onToggle:Boolean;
-		private var _off:FlxSprite;
-		private var _on:FlxSprite;
-		private var _offT:FlxText;
-		private var _offTO:Point;
-		private var _onT:FlxText;
-		private var _onTO:Point;
-		private var _callback:Function;
-		private var _pressed:Boolean;
-		private var _initialized:Boolean;
+		protected var _onToggle:Boolean;
+		protected var _off:FlxSprite;
+		protected var _on:FlxSprite;
+		protected var _offT:FlxText;
+		protected var _offTO:Point;
+		protected var _onT:FlxText;
+		protected var _onTO:Point;
+		protected var _callback:Function;
+		protected var _pressed:Boolean;
+		protected var _initialized:Boolean;
 		
 		//@desc		Constructor
 		//@param	X			The X position of the button
@@ -96,6 +96,7 @@ package org.flixel
 			updatePositions();
 		}
 		
+		//@desc		Called by the game loop automatically, renders button to screen
 		override public function render():void
 		{
 			super.render();

@@ -55,7 +55,8 @@ package org.flixel
 			super.render();
 			getScreenXY(_p);
 			var opx:int = _p.x;
-			for(var i:uint = 0; i < _rects.length; i++)
+			var rl:uint = _rects.length;
+			for(var i:uint = 0; i < rl; i++)
 			{
 				if(_rects[i] != null) FlxG.buffer.copyPixels(_pixels,_rects[i],_p,null,null,true);
 				_p.x += _tileSize;

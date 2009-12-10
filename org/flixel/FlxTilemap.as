@@ -18,7 +18,6 @@ package org.flixel
 		protected var _ci:uint;
 		protected var _di:uint;
 		protected var _callbacks:Array;
-		
 		protected var _screenRows:uint;
 		protected var _screenCols:uint;
 		
@@ -177,6 +176,10 @@ package org.flixel
 			return hx || hy;
 		}
 		
+		//@desc		Change the data and graphic of a tile in the tilemap
+		//@param	X		The X coordinate of the tile (in tiles, not pixels)
+		//@param	Y		The Y coordinate of the tile (in tiles, not pixels)
+		//@param	Tile	The new integer data you wish to inject
 		public function setTile(X:uint,Y:uint,Tile:uint):void
 		{
 			var index:uint = Y * widthInTiles + X;
@@ -187,6 +190,10 @@ package org.flixel
 				_rects[index] = null;
 		}
 		
+		//@desc		Bind a function Callback(Core:FlxCore,X:uint,Y:uint,Tile:uint) to a range of tiles
+		//@param	Tile		The tile to trigger the callback
+		//@param	Callback	The function to trigger - parameters are (Core:FlxCore,X:uint,Y:uint,Tile:uint)
+		//@param	Range		If you want this callback to work for a bunch of different tiles, input the range here (default = 1)
 		public function setTileCallback(Tile:uint,Callback:Function,Range:uint=1):void
 		{
 			if(Range <= 0) return;
@@ -194,6 +201,16 @@ package org.flixel
 				_callbacks[i] = Callback;
 		}
 		
+		//@desc		Call this function to lock the automatic camera to the map's edges
+		public function follow():void
+		{
+			FlxG.followBounds(x,y,width,height);
+		}
+		
+		//@desc		Converts a one-dimensional array of tile data to a comma-separated string
+		//@param	Data		An array full of integer tile references
+		//@param	Width		The number of tiles in each row
+		//@return	A comma-separated string containing the level data in a FlxTilemap-constructor-friendly format
 		static public function arrayToCSV(Data:Array,Width:int):String
 		{
 			var csv:String;

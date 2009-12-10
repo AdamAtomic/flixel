@@ -74,6 +74,7 @@ package org.flixel
 		static protected var _seed:Number;
 		static protected var _originalSeed:Number;
 		
+		//@desc		Call this function to reset the input objects (useful when changing screens or states)
 		static public function resetInput():void
 		{
 			keys.reset();
@@ -318,7 +319,7 @@ package org.flixel
 			followLead = new Point(LeadX,LeadY);
 		}
 		
-		//@desc		Specify an additional camera component - the boundaries of the level or where the camera is allowed to move
+		//@desc		Specify the boundaries of the level or where the camera is allowed to move
 		//@param	MinX	The smallest X value of your level (usually 0)
 		//@param	MinY	The smallest Y value of your level (usually 0)
 		//@param	MaxX	The largest X value of your level (usually the level width)
@@ -720,6 +721,9 @@ package org.flixel
 			_game._panel.hide();
 		}
 		
+		//@desc		Generate a pseudo-random number
+		//@param	UseGlobalSeed		Whether or not to use the stored FlxG.seed value to calculate it
+		//@return	A pseudo-random Number object
 		static public function random(UseGlobalSeed:Boolean=true):Number
 		{
 			if(UseGlobalSeed && !isNaN(_seed))
@@ -732,11 +736,18 @@ package org.flixel
 				return Math.random();
 		}
 		
+		//@desc		Generate a pseudo-random number
+		//@param	Seed		The number to use to generate a new random value
+		//@return	A pseudo-random Number object
 		static public function randomize(Seed:Number):Number
 		{
 			return ((69621 * int(Seed * 0x7FFFFFFF)) % 0x7FFFFFFF) / 0x7FFFFFFF;
 		}
 		
+		//@desc		Mutate a seed, usually using the result of randomize()
+		//@param	Seed		The number to mutate
+		//@param	Mutator		The value to use in the mutation
+		//@return	A predictably-altered version of the Seed
 		static public function mutate(Seed:Number,Mutator:Number):Number
 		{
 			Seed += Mutator;
@@ -744,11 +755,15 @@ package org.flixel
 			return Seed;
 		}
 
+		//@desc		Fetches the original global FlxG.seed value the user set
+		//@return	The original seed value
 		static public function get seed():Number
 		{
 			return _originalSeed;
 		}
 		
+		//@desc		Allow the user to set the global seed
+		//@param	Seed		The new number to use as a seed in random()
 		static public function set seed(Seed:Number):void
 		{
 			_seed = Seed;

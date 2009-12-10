@@ -11,8 +11,10 @@ package org.flixel
 	//@desc		The main "game object" class, handles basic physics and animation
 	public class FlxSprite extends FlxCore
 	{
-		static public const LEFT:Boolean = false;
-		static public const RIGHT:Boolean = true;
+		static public const LEFT:uint = 0;
+		static public const RIGHT:uint = 1;
+		static public const UP:uint = 2;
+		static public const DOWN:uint = 3;
 		static protected const _pZero:Point = new Point();
 		
 		//@desc If you changed the size of your sprite object to shrink the bounding box, you might need to offset the new bounding box from the top-left corner of the sprite
@@ -40,13 +42,14 @@ package org.flixel
 		
 		//@desc	Whether the current animation has finished its first (or only) loop
 		public var finished:Boolean;
-		private var _animations:Array;
-		private var _flipped:uint;
+		protected var _animations:Array;
+		protected var _flipped:uint;
 		protected var _curAnim:FlxAnim;
 		protected var _curFrame:uint;
-		private var _frameTimer:Number;
-		private var _callback:Function;
-		private var _facing:Boolean;
+		protected var _caf:uint;
+		protected var _frameTimer:Number;
+		protected var _callback:Function;
+		protected var _facing:uint;
 		
 		//helpers
 		protected var _bw:uint;
@@ -108,7 +111,7 @@ package org.flixel
 			scale = new Point(1,1);
 			
 			finished = false;
-			_facing = true;
+			_facing = RIGHT;
 			_animations = new Array();
 			if(Reverse)
 				_flipped = pixels.width>>1;
@@ -116,6 +119,7 @@ package org.flixel
 				_flipped = 0;
 			_curAnim = null;
 			_curFrame = 0;
+			_caf = 0;
 			_frameTimer = 0;
 			
 			_p = new Point(x,y);
@@ -153,6 +157,7 @@ package org.flixel
 					}
 					else
 						_curFrame++;
+					_caf = _curAnim.frames[_curFrame];
 					calcFrame();
 				}
 			}
@@ -269,13 +274,16 @@ package org.flixel
 		{
 			if(!Force && (_curAnim != null) && (AnimName == _curAnim.name)) return;
 			_curFrame = 0;
+			_caf = 0;
 			_frameTimer = 0;
-			for(var i:uint = 0; i < _animations.length; i++)
+			var al:uint = _animations.length;
+			for(var i:uint = 0; i < al; i++)
 			{
 				if(_animations[i].name == AnimName)
 				{
 					finished = false;
 					_curAnim = _animations[i];
+					_caf = _curAnim.frames[_curFrame];
 					calcFrame();
 					return;
 				}
@@ -283,8 +291,8 @@ package org.flixel
 		}
 		
 		//@desc		Tell the sprite which way to face (you can just set 'facing' but this function also updates the animation instantly)
-		//@param	Direction		True is Right, False is Left (see static const members RIGHT and LEFT)		
-		public function set facing(Direction:Boolean):void
+		//@param	Direction		See static const members RIGHT, LEFT, UP, and DOWN	
+		public function set facing(Direction:uint):void
 		{
 			var c:Boolean = _facing != Direction;
 			_facing = Direction;
@@ -293,7 +301,7 @@ package org.flixel
 		
 		//@desc		Get the direction the sprite is facing
 		//@return	True means facing right, False means facing left (see static const members RIGHT and LEFT)
-		public function get facing():Boolean
+		public function get facing():uint
 		{
 			return _facing;
 		}
@@ -301,14 +309,18 @@ package org.flixel
 		//@desc		Tell the sprite to change to a random frame of animation (useful for instantiating particles or other weird things)
 		public function randomFrame():void
 		{
-			_pixels.copyPixels(pixels,new Rectangle(Math.floor(FlxG.random()*(pixels.width/_bw))*_bw,0,_bw,_bh),_pZero);
+			_curAnim = null;
+			_caf = int(FlxG.random()*(pixels.width/_bw));
+			calcFrame();
 		}
 		
 		//@desc		Tell the sprite to change to a specific frame of animation (useful for instantiating particles)
 		//@param	Frame	The frame you want to display
 		public function specificFrame(Frame:uint):void
 		{
-			_pixels.copyPixels(pixels,new Rectangle(Frame*_bw,0,_bw,_bh),_pZero);
+			_curAnim = null;
+			_caf = Frame;
+			calcFrame();
 		}
 		
 		//@desc		Call this function to figure out the post-scrolling "screen" position of the object
@@ -323,15 +335,12 @@ package org.flixel
 		protected function calcFrame():void
 		{
 			var rx:uint;
-			if(_curAnim == null)
-				rx = 0;
-			else
-				rx = _curAnim.frames[_curFrame]*_bw;
-			if(!_facing && (_flipped > 0))
+			rx = _caf*_bw;
+			if((_facing == LEFT) && (_flipped > 0))
 				rx = (_flipped<<1)-rx-_bw;
 			_pixels.copyPixels(pixels,new Rectangle(rx,0,_bw,_bh),_pZero);
 			if(_ct != null) _pixels.colorTransform(_r,_ct);
-			if(_callback != null) _callback(_curAnim.name,_curFrame,_curAnim.frames[_curFrame]);
+			if(_callback != null) _callback(_curAnim.name,_curFrame,_caf);
 		}
 		
 		//@desc		The setter for alpha

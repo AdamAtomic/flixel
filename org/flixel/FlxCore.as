@@ -22,12 +22,13 @@ package org.flixel
 		public var height:uint;
 		public var x:Number;
 		public var y:Number;
+		//@desc	Stores the last position of the sprite, used by collision detection algorithm
 		public var last:Point;
 		
 		//@desc	A point that can store numbers from 0 to 1 (for X and Y independently) that governs how much this object is affected by the camera subsystem.  0 means it never moves, like a HUD element or far background graphic.  1 means it scrolls along a tthe same speed as the foreground layer.
 		public var scrollFactor:Point;
-		private var _flicker:Boolean;
-		private var _flickerTimer:Number;
+		protected var _flicker:Boolean;
+		protected var _flickerTimer:Number;
 		
 		//@desc		Constructor
 		public function FlxCore()
@@ -57,8 +58,14 @@ package org.flixel
 			
 			if(flickering())
 			{
-				if(_flickerTimer > 0) _flickerTimer -= FlxG.elapsed;
-				if(_flickerTimer < 0) flicker(-1);
+				if(_flickerTimer > 0)
+				{
+					_flickerTimer -= FlxG.elapsed;
+					if(_flickerTimer == 0)
+						_flickerTimer = -1;
+				}
+				if(_flickerTimer < 0)
+					flicker(-1);
 				else
 				{
 					_flicker = !_flicker;
@@ -432,6 +439,9 @@ package org.flixel
 			P.y = Math.floor(y)+Math.floor(FlxG.scroll.y*scrollFactor.y);
 		}
 		
+		//@desc		Handy function for reviving game objects.  Resets their existence flags and position, including LAST position.
+		//@param	X	The X position of the revived object
+		//@param	Y	The Y position of the revived object
 		virtual public function reset(X:Number,Y:Number):void
 		{
 			exists = true;

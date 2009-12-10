@@ -5,7 +5,7 @@ package org.flixel
 	//@desc		This is the basic game "state" object - e.g. in a simple game you might have a menu state and a play state
 	public class FlxState extends Sprite
 	{
-		private var _layer:FlxLayer;
+		protected var _layer:FlxLayer;
 		
 		//@desc		Constructor		
 		virtual public function FlxState()

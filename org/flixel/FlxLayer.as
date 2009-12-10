@@ -3,7 +3,7 @@ package org.flixel
 	//@desc		This is an organizational class that can update and render a bunch of FlxCore objects
 	public class FlxLayer extends FlxCore
 	{
-		private var _children:Array;
+		protected var _children:Array;
 
 		//@desc		Constructor		
 		virtual public function FlxLayer()
@@ -23,7 +23,8 @@ package org.flixel
 		override public function update():void
 		{
 			super.update();
-			for(var i:uint = 0; i < _children.length; i++)
+			var cl:uint = _children.length;
+			for(var i:uint = 0; i < cl; i++)
 				if((_children[i] != null) && _children[i].exists && _children[i].active) _children[i].update();
 		}
 		
@@ -31,7 +32,8 @@ package org.flixel
 		override public function render():void
 		{
 			super.render();
-			for(var i:uint = 0; i < _children.length; i++)
+			var cl:uint = _children.length;
+			for(var i:uint = 0; i < cl; i++)
 				if((_children[i] != null) && _children[i].exists && _children[i].visible) _children[i].render();
 		}
 		
