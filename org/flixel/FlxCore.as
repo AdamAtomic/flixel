@@ -299,7 +299,7 @@ package org.flixel
 			var ctp:Number = Core.y - Core.last.y;
 			var ttp:Number = y - last.y;
 			var tco:Boolean = (Core.y < y + height) && (Core.y + Core.height > y);
-			if(	( (ctp > 0) && (ttp < 0) ) ||
+			if(	( (ctp > 0) && (ttp <= 0) ) ||
 				( (ctp > 0) && ( ( ctp >  ttp) && tco ) ) ||
 				( (ctp < 0) && ( (-ctp < -ttp) && tco ) ) )
 			{
@@ -331,7 +331,7 @@ package org.flixel
 					}
 				}
 			}
-			else if(( (ctp < 0) && (ttp > 0) ) ||
+			else if(( (ctp < 0) && (ttp >= 0) ) ||
 					( (ctp > 0) && ( ( ctp <  ttp) && tco) ) ||
 					( (ctp < 0) && ( (-ctp > -ttp) && tco) ) )
 			{

@@ -22,7 +22,7 @@ package org.flixel
 		
 		static public var LIBRARY_NAME:String = "flixel";
 		static public var LIBRARY_MAJOR_VERSION:uint = 1;
-		static public var LIBRARY_MINOR_VERSION:uint = 31;
+		static public var LIBRARY_MINOR_VERSION:uint = 32;
 
 		static protected var _game:FlxGame;
 		
@@ -235,15 +235,15 @@ package org.flixel
 		{
 			var key:String = Width+"x"+Height+":"+Color;
 			var gen:Boolean = false;
-			if((_cache[key] == undefined) || (_cache[key] == null))
-				_cache[key] = new BitmapData(Width,Height,true,Color);
-			else if(Unique)
+			if(Unique && (_cache[ukey] != undefined) && (_cache[ukey] != null))
 			{
 				var inc:uint = 0;
 				var ukey:String;
-				do { ukey = key + inc++; } while((_cache[key] == undefined) && (_cache[key] == null));
-				_cache[key] = new BitmapData(Width,Height,true,Color);
+				do { ukey = key + inc++;
+				} while((_cache[ukey] != undefined) && (_cache[ukey] != null));
+				key = ukey;
 			}
+			_cache[key] = new BitmapData(Width,Height,true,Color);
 			return _cache[key];
 		}
 		
