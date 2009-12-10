@@ -35,7 +35,7 @@ package org.flixel
 			_tf.sharpness = 100;
 			_tf.defaultTextFormat = new TextFormat(Font,Size,0xffffff,null,null,null,null,null,Align);
 			_tf.text = Text;
-			super(null,X,Y,false,false,Width);
+			super(null,X,Y,false,false,Width,1);
 			_regen = true;
 			color = Color; //calls calcFrame() implicitly
 		} 

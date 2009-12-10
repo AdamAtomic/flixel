@@ -73,12 +73,12 @@ package org.flixel
 		//@param	Height		If you opt to NOT use an image you can specify the height of the colored block here (ignored if Graphic is not null)
 		//@param	Color		Specifies the color of the generated block (ignored if Graphic is not null)
 		//@param	Unique		Whether the graphic should be a unique instance in the graphics cache
-		public function FlxSprite(Graphic:Class=null,X:int=0,Y:int=0,Animated:Boolean=false,Reverse:Boolean=false,Width:uint=0,Height:uint=1,Color:uint=0xffffffff,Unique:Boolean=false)
+		public function FlxSprite(Graphic:Class=null,X:int=0,Y:int=0,Animated:Boolean=false,Reverse:Boolean=false,Width:uint=0,Height:uint=0,Color:uint=0xffffffff,Unique:Boolean=false)
 		{
 			super();
 
 			if(Graphic == null)
-				pixels = FlxG.createBitmap(Width,Height,Color,Unique);
+				pixels = FlxG.createBitmap((Width<=0)?1:Width,(Height<=0)?1:Height,Color,Unique);
 			else
 				pixels = FlxG.addBitmap(Graphic,Reverse);
 				
@@ -92,7 +92,14 @@ package org.flixel
 					Width = pixels.width;
 			}
 			width = _bw = Width;
-			height = _bh = pixels.height;
+			if(Height == 0)
+			{
+				if(Animated)
+					Height = width;
+				else
+					Height = pixels.height;
+			}
+			height = _bh = Height;
 			offset = new Point();
 			
 			velocity = new Point();
@@ -334,11 +341,19 @@ package org.flixel
 		//@desc		Internal function to update the current animation frame
 		protected function calcFrame():void
 		{
-			var rx:uint;
-			rx = _caf*_bw;
-			if((_facing == LEFT) && (_flipped > 0))
-				rx = (_flipped<<1)-rx-_bw;
-			_pixels.copyPixels(pixels,new Rectangle(rx,0,_bw,_bh),_pZero);
+			var rx:uint = _caf*_bw;
+			var ry:uint = 0;
+			if(_flipped > 0)
+			{
+				if(rx >= _flipped)
+				{
+					ry = uint(rx / _flipped) * _bh;
+					rx %= _flipped;
+				}
+				if(_facing == LEFT)
+					rx = (_flipped<<1)-rx-_bw;
+			}
+			_pixels.copyPixels(pixels,new Rectangle(rx,ry,_bw,_bh),_pZero);
 			if(_ct != null) _pixels.colorTransform(_r,_ct);
 			if(_callback != null) _callback(_curAnim.name,_curFrame,_caf);
 		}
