@@ -186,9 +186,9 @@ package org.flixel
 			var ctp:Number = Core.x - Core.last.x;
 			var ttp:Number = x - last.x;
 			var tco:Boolean = (Core.x < x + width) && (Core.x + Core.width > x);
-			if(	( (ctp > 0) && (ttp < 0) ) ||
-				( (ctp > 0) && ( ( ctp >  ttp) && tco ) ) ||
-				( (ctp < 0) && ( (-ctp < -ttp) && tco ) ) )
+			if(	( (ctp > 0) && (ttp <= 0) ) ||
+				( (ctp >= 0) && ( ( ctp >  ttp) && tco ) ) ||
+				( (ctp <= 0) && ( (-ctp < -ttp) && tco ) ) )
 			{
 				//Right side collision
 				if(fixed && !Core.fixed)
@@ -215,9 +215,9 @@ package org.flixel
 					return true;
 				}
 			}
-			else if(( (ctp < 0) && (ttp > 0) ) ||
-					( (ctp > 0) && ( ( ctp <  ttp) && tco) ) ||
-					( (ctp < 0) && ( (-ctp > -ttp) && tco) ) )
+			else if(( (ctp < 0) && (ttp >= 0) ) ||
+					( (ctp >= 0) && ( ( ctp <  ttp) && tco) ) ||
+					( (ctp <= 0) && ( (-ctp > -ttp) && tco) ) )
 			{
 				//Left side collision
 				if(coreBounds.left < thisBounds.right)
@@ -300,8 +300,8 @@ package org.flixel
 			var ttp:Number = y - last.y;
 			var tco:Boolean = (Core.y < y + height) && (Core.y + Core.height > y);
 			if(	( (ctp > 0) && (ttp <= 0) ) ||
-				( (ctp > 0) && ( ( ctp >  ttp) && tco ) ) ||
-				( (ctp < 0) && ( (-ctp < -ttp) && tco ) ) )
+				( (ctp >= 0) && ( ( ctp >  ttp) && tco ) ) ||
+				( (ctp <= 0) && ( (-ctp < -ttp) && tco ) ) )
 			{
 				//Bottom collision
 				if(coreBounds.bottom > thisBounds.top)
@@ -332,8 +332,8 @@ package org.flixel
 				}
 			}
 			else if(( (ctp < 0) && (ttp >= 0) ) ||
-					( (ctp > 0) && ( ( ctp <  ttp) && tco) ) ||
-					( (ctp < 0) && ( (-ctp > -ttp) && tco) ) )
+					( (ctp >= 0) && ( ( ctp <  ttp) && tco) ) ||
+					( (ctp <= 0) && ( (-ctp > -ttp) && tco) ) )
 			{
 				//Top collision
 				if(coreBounds.top < thisBounds.bottom)
