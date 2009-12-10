@@ -128,6 +128,12 @@ package org.flixel
 			return _onToggle;
 		}
 		
+		//@desc		Called by the game state when state is changed (if this object belongs to the state)
+		override public function destroy():void
+		{
+			FlxG.state.parent.stage.removeEventListener(MouseEvent.MOUSE_UP, onMouseUp);
+		}
+		
 		//@desc		Internal function for handling the visibility of the off and on graphics
 		//@param	On		Whether the button should be on or off
 		private function visibility(On:Boolean):void

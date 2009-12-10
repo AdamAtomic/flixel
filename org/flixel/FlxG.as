@@ -624,29 +624,8 @@ package org.flixel
 		//@desc		Switch from one FlxState to another
 		//@param	State		The class name of the state you want (e.g. PlayState)
 		static public function switchState(State:Class):void
-		{ 
-			_game._panel.hide();
-			FlxG.unfollow();
-			FlxG.keys.reset();
-			FlxG.mouse.reset();
-			_game._quake.reset(0);
-			_game._buffer.x = 0;
-			_game._buffer.y = 0;
-			if(_game._cursor != null)
-			{
-				_game._buffer.removeChild(_game._cursor);
-				_game._cursor = null;
-			}
-			var newState:FlxState = new State;
-			_game._buffer.addChild(newState);
-			if(_game._curState != null)
-			{
-				_game._buffer.swapChildren(newState,_game._curState);
-				_game._buffer.removeChild(_game._curState);
-				_game._curState.destroy();
-			}
-			_game._fade.visible = false;
-			_game._curState = newState;
+		{
+			_game.switchState(State);
 		}
 		
 		//@desc		Log data to the developer console

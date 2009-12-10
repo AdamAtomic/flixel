@@ -23,9 +23,9 @@ package org.flixel.data
 		//@param	Duration		How long it takes for the flash to fade
 		//@param	FlashComplete	A function you want to run when the flash finishes
 		//@param	Force			Force the effect to reset
-		public function restart(Color:uint, Duration:Number=1, FlashComplete:Function=null, Force:Boolean=false):void
+		public function restart(Color:uint=0xffffffff, Duration:Number=1, FlashComplete:Function=null, Force:Boolean=false):void
 		{
-			if(Color == 0)
+			if(Duration == 0)
 			{
 				visible = false;
 				return;

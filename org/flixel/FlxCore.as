@@ -50,6 +50,12 @@ package org.flixel
 			_flickerTimer = -1;
 		}
 		
+		//@desc		Called by the game state when states are changed (if it's in the state's layer)
+		virtual public function destroy():void
+		{
+			//Nothing to destroy by default, core just stores some simple variables.
+		}
+		
 		//@desc		Just updates the flickering.  FlxSprite and other subclasses override this to do more complicated behavior.
 		virtual public function update():void
 		{

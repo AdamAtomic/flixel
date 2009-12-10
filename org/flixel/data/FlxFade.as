@@ -25,7 +25,7 @@ package org.flixel.data
 		//@param	Force			Force the effect to reset
 		public function restart(Color:uint=0, Duration:Number=1, FadeComplete:Function=null, Force:Boolean=false):void
 		{
-			if(Color == 0)
+			if(Duration == 0)
 			{
 				visible = false;
 				return;

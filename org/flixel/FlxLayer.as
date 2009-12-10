@@ -38,7 +38,14 @@ package org.flixel
 		}
 		
 		//@desc		Override this function to handle any deleting or "shutdown" type operations you might need (such as removing traditional Flash children like Sprite objects)
-		public function destroy():void { _children.length = 0; }
+		override public function destroy():void
+		{
+			super.destroy();
+			var cl:uint = _children.length;
+			for(var i:uint = 0; i < cl; i++)
+				_children[i].destroy();
+			_children.length = 0;
+		}
 		
 		//@desc		Returns the array of children
 		public function children():Array { return _children; }

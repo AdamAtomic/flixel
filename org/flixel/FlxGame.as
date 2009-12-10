@@ -119,6 +119,31 @@ package org.flixel
 			_panel = new FlxPanel();
 		}
 		
+		//@desc		Switch from one FlxState to another
+		//@param	State		The class name of the state you want (e.g. PlayState)
+		public function switchState(State:Class):void
+		{ 
+			_panel.hide();
+			FlxG.unfollow();
+			FlxG.keys.reset();
+			FlxG.mouse.reset();
+			FlxG.hideCursor();
+			_flash.restart(0,0);
+			_fade.restart(0,0);
+			_quake.reset(0);
+			_buffer.x = 0;
+			_buffer.y = 0;
+			var newState:FlxState = new State;
+			_buffer.addChild(newState);
+			if(_curState != null)
+			{
+				_buffer.swapChildren(newState,_curState);
+				_buffer.removeChild(_curState);
+				_curState.destroy();
+			}
+			_curState = newState;
+		}
+		
 		//@desc		Sets up the strings that are displayed on the left side of the pause game popup
 		//@param	X		What to display next to the X button
 		//@param	C		What to display next to the C button
