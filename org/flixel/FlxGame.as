@@ -61,7 +61,8 @@ package org.flixel
 		internal var _quake:FlxQuake;
 		internal var _flash:FlxFlash;
 		internal var _fade:FlxFade;
-		internal var _defaultSoundControls:Boolean;
+		//@desc		Sets 0, -, and + to global volume and P to pause (off by default)
+		public var useDefaultHotKeys:Boolean;
 		
 		//logo stuff
 		internal var _f:Array;
@@ -117,6 +118,7 @@ package org.flixel
 			_helpStrings.push("Move");
 			_showLogo = ShowFlixelLogo;
 			_panel = new FlxPanel();
+			useDefaultHotKeys = false;
 		}
 		
 		//@desc		Switch from one FlxState to another
@@ -128,6 +130,7 @@ package org.flixel
 			FlxG.keys.reset();
 			FlxG.mouse.reset();
 			FlxG.hideCursor();
+			FlxG.destroySounds();
 			_flash.restart(0,0);
 			_fade.restart(0,0);
 			_quake.reset(0);
@@ -161,11 +164,6 @@ package org.flixel
 				_helpStrings[3] = Arrows;
 		}
 		
-		protected function useDefaultVolumeControls(YesPlz:Boolean):void
-		{
-			_defaultSoundControls = YesPlz;
-		}
-		
 		//@desc		This function is only used by the FlxGame class to do important internal management stuff
 		private function onKeyUp(event:KeyboardEvent):void
 		{
@@ -174,26 +172,28 @@ package org.flixel
 				_console.toggle();
 				return;
 			}
-			if(_defaultSoundControls)
+			if(useDefaultHotKeys)
 			{
 				var c:int = event.keyCode;
 				var code:String = String.fromCharCode(event.charCode);
 				switch(c)
 				{
 					case 48:
-						FlxG.setMute(!FlxG.getMute());
-			    		showSoundTray();
+						FlxG.mute = !FlxG.mute;
+						showSoundTray();
 						return;
 					case 189:
-						FlxG.setMute(false);
-			    		FlxG.setMasterVolume(FlxG.getMasterVolume() - 0.1);
+						FlxG.mute = false;
+			    		FlxG.volume = FlxG.volume - 0.1;
 			    		showSoundTray();
 						return;
 					case 187:
-						FlxG.setMute(false);
-			    		FlxG.setMasterVolume(FlxG.getMasterVolume() + 0.1);
+						FlxG.mute = false;
+			    		FlxG.volume = FlxG.volume + 0.1;
 			    		showSoundTray();
 						return;
+					case 80:
+						FlxG.pause = !FlxG.pause;
 					default: break;
 				}
 			}
@@ -221,16 +221,25 @@ package org.flixel
 		//@desc		This function is only used by the FlxGame class to do important internal management stuff
 		private function onFocus(event:Event=null):void
 		{
-			if(!_panel.visible) flash.ui.Mouse.hide();
-			_pausePopup.visible = false;
-			FlxG.resetInput();
-			_paused = false;
-			FlxG.playMusic();
-			stage.frameRate = 90;
+			FlxG.pause = false;
 		}
 		
 		//@desc		This function is only used by the FlxGame class to do important internal management stuff
 		private function onFocusLost(event:Event=null):void
+		{
+			FlxG.pause = true;
+		}
+		
+		internal function unpause():void
+		{
+			if(!_panel.visible) flash.ui.Mouse.hide();
+			_pausePopup.visible = false;
+			FlxG.resetInput();
+			_paused = false;
+			stage.frameRate = 90;
+		}
+		
+		internal function pause():void
 		{
 			if((x != 0) || (y != 0))
 			{
@@ -240,7 +249,6 @@ package org.flixel
 			flash.ui.Mouse.show();
 			_pausePopup.visible = true;
 			_paused = true;
-			FlxG.pauseMusic();
 			stage.frameRate = 10;
 		}
 		
@@ -282,6 +290,7 @@ package org.flixel
 					}
 					FlxG.doFollow();
 					_curState.update();
+					FlxG.updateSounds();
 					
 					//Update the various special effects
 					_flash.update()
@@ -473,15 +482,15 @@ package org.flixel
 			}
 		}
 		
-		//@desc		This function is only used by the FlxGame class to do important internal management stuff
-		private function showSoundTray():void
+		//@desc		Makes the little volume tray slide out
+		public function showSoundTray():void
 		{
 			FlxG.play(SndBeep);
 			_soundTrayTimer = 1;
 			_soundTray.y = _gameYOffset*_zoom;
 			_soundTray.visible = true;
-			var gv:uint = Math.round(FlxG.getMasterVolume()*10);
-			if(FlxG.getMute())
+			var gv:uint = Math.round(FlxG.volume*10);
+			if(FlxG.mute)
 				gv = 0;
 			for (var i:uint = 0; i < _soundTrayBars.length; i++)
 			{

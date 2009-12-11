@@ -2,18 +2,14 @@ package org.flixel
 {
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
-	import flash.events.Event;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
-	import flash.media.Sound;
-	import flash.media.SoundChannel;
-	import flash.media.SoundTransform;
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
 	
 	import org.flixel.data.FlxKeyboard;
-	import org.flixel.data.FlxMouse;
 	import org.flixel.data.FlxKong;
+	import org.flixel.data.FlxMouse;
 	
 	//@desc		This is a global helper class full of useful functions for audio, input, basic info, and the camera system
 	public class FlxG
@@ -22,8 +18,9 @@ package org.flixel
 		
 		static public var LIBRARY_NAME:String = "flixel";
 		static public var LIBRARY_MAJOR_VERSION:uint = 1;
-		static public var LIBRARY_MINOR_VERSION:uint = 34;
+		static public var LIBRARY_MINOR_VERSION:uint = 35;
 
+		static protected var _pause:Boolean;
 		static protected var _game:FlxGame;
 		
 		//@desc Represents the amount of time in seconds that passed since last frame
@@ -46,13 +43,10 @@ package org.flixel
 		static public var keys:FlxKeyboard;
 		
 		//audio
-		static protected var _muted:uint;
-		static protected var _music:Sound;
-		static protected var _musicChannel:SoundChannel;
-		static protected var _musicPosition:Number;
+		static public var music:FlxSound;
+		static public var sounds:Array;
+		static protected var _mute:Boolean;
 		static protected var _volume:Number;
-		static protected var _musicVolume:Number;
-		static protected var _masterVolume:Number;
 		
 		//Ccmera system variables
 		static public var followTarget:FlxCore;
@@ -73,6 +67,32 @@ package org.flixel
 		//Random number stuff
 		static protected var _seed:Number;
 		static protected var _originalSeed:Number;
+		
+		//@desc		The setter for FlxG.pause - pauses the game + sounds and displays the pause message
+		static public function set pause(Pause:Boolean):void
+		{
+			var op:Boolean = _pause;
+			_pause = Pause;
+			if(_pause != op)
+			{
+				if(_pause)
+				{
+					_game.pause();
+					pauseSounds();
+				}
+				else
+				{
+					_game.unpause();
+					playSounds();
+				}
+			}
+		}
+		
+		//@desc		The getter for FlxG.pause - just returns whether the game is paused or not
+		static public function get pause():Boolean
+		{
+			return _pause;
+		}
 		
 		//@desc		Call this function to reset the input objects (useful when changing screens or states)
 		static public function resetInput():void
@@ -108,122 +128,154 @@ package org.flixel
 		//@desc		Set up and autoplay a music track
 		//@param	Music		The sound file you want to loop in the background
 		//@param	Volume		How loud the sound should be, from 0 to 1
-		//@param	Autoplay	Whether to automatically start the music or not (defaults to true)
-		static public function setMusic(Music:Class,Volume:Number=1,Autoplay:Boolean=true):void
+		static public function playMusic(Music:Class,Volume:Number=1.0):void
 		{
-			stopMusic();
-			_music = new Music;
-			_musicVolume = Volume;
-			if(Autoplay)
-				playMusic();
+			if(music == null)
+				music = new FlxSound();
+			else if(music.active)
+				music.stop();
+			music.loadEmbedded(Music,true);
+			music.volume = Volume;
+			music.survive = true;
+			music.play();
 		}
 		
-		//@desc		Plays a sound effect once
-		//@param	SoundEffect		The sound you want to play
+		//@desc		Creates a new sound object from an embedded Class object
+		//@param	EmbeddedSound	The sound you want to play
 		//@param	Volume			How loud to play it (0 to 1)
-		static public function play(SoundEffect:Class,Volume:Number=1):void
+		//@param	Looped			Whether or not to loop this sound
+		//@return	A FlxSound object
+		static public function play(EmbeddedSound:Class,Volume:Number=1.0,Looped:Boolean=false):FlxSound
 		{
-			(new SoundEffect).play(0,0,new SoundTransform(Volume*_muted*_volume*_masterVolume));
+			var i:uint;
+			var sl:uint = sounds.length;
+			for(i = 0; i < sl; i++)
+				if(!sounds[i].active)
+					break;
+			if(sounds[i] == null)
+				sounds[i] = new FlxSound();
+			var s:FlxSound = sounds[i];
+			s.loadEmbedded(EmbeddedSound,Looped);
+			s.volume = Volume;
+			s.play();
+			return s;
 		}
 		
-		//@desc		Plays or resumes the music file set up using setMusic()
-		static public function playMusic():void
+		//@desc		Creates a new sound object from a URL
+		//@param	EmbeddedSound	The sound you want to play
+		//@param	Volume			How loud to play it (0 to 1)
+		//@param	Looped			Whether or not to loop this sound
+		//@return	A FlxSound object
+		static public function stream(URL:String,Volume:Number=1.0,Looped:Boolean=false):FlxSound
 		{
-			if(_musicPosition < 0)
-				return;
-			if(_musicPosition == 0)
-			{
-				if(_musicChannel == null) _musicChannel = _music.play(0,9999,new SoundTransform(_muted*_volume*_musicVolume*_masterVolume));
-			}
-			else
-			{
-				_musicChannel = _music.play(_musicPosition,0,new SoundTransform(_muted*_volume*_musicVolume*_masterVolume));
-				_musicChannel.addEventListener(Event.SOUND_COMPLETE, loopMusic);
-			}
-			_musicPosition = 0;
-		}
-		
-		//@desc		An internal helper function used to help Flash resume playing a looped music track
-		static private function loopMusic(event:Event=null):void
-		{
-		    if (_musicChannel == null)
-		    	return;
-	        _musicChannel.removeEventListener(Event.SOUND_COMPLETE,loopMusic);
-	        _musicChannel = null;
-			playMusic();
-		}
-		
-		//@desc		Pauses the current music track
-		static public function pauseMusic():void
-		{
-			if(_musicChannel == null)
-			{
-				_musicPosition = -1;
-				return;
-			}
-			_musicPosition = _musicChannel.position;
-			_musicChannel.stop();
-			while(_musicPosition >= _music.length)
-				_musicPosition -= _music.length;
-			_musicChannel = null;
-		}
-		
-		//@desc		Stops the current music track
-		static public function stopMusic():void
-		{
-			_musicPosition = 0;
-			if(_musicChannel != null)
-			{
-				_musicChannel.stop();
-				_musicChannel = null;
-			}
+			var i:uint;
+			var sl:uint = sounds.length;
+			for(i = 0; i < sl; i++)
+				if(!sounds[i].active)
+					break;
+			if(sounds[i] == null)
+				sounds[i] = new FlxSound();
+			var s:FlxSound = sounds[i];
+			s.loadStream(URL,Looped);
+			s.volume = Volume;
+			s.play();
+			return s;
 		}
 		
 		//@desc		Mutes the sound
 		//@param	SoundOff	Whether the sound should be off or on
-		static public function setMute(SoundOff:Boolean):void { if(SoundOff) _muted = 0; else _muted = 1; adjustMusicVolume(); }
+		static public function set mute(Mute:Boolean):void
+		{
+			_mute = Mute;
+			changeSounds();
+		}
 		
 		//@desc		Check to see if the game is muted
 		//@return	Whether the game is muted
-		static public function getMute():Boolean { if(_muted == 0) return true; return false; }
+		static public function get mute():Boolean
+		{
+			return _mute;
+		}
+		
+		//@desc		Get a number we can multiply into a sound transform
+		//@return	An unsigned integer - 0 if muted, 1 if not muted
+		static public function getMuteValue():uint
+		{
+			if(_mute)
+				return 0;
+			else
+				return 1;
+		}
 		
 		//@desc		Change the volume of the game
 		//@param	Volume		A number from 0 to 1
-		static public function setVolume(Volume:Number):void { _volume = Volume; adjustMusicVolume(); }
-		
-		//@desc		Find out how load the game is currently
-		//@param	A number from 0 to 1
-		static public function getVolume():Number { return _volume; }
-		
-		//@desc		Change the volume of just the music
-		//@param	Volume		A number from 0 to 1
-		static public function setMusicVolume(Volume:Number):void { _musicVolume = Volume; adjustMusicVolume(); }
-		
-		//@desc		Find out how loud the music is
-		//@return	A number from 0 to 1
-		static public function getMusicVolume():Number { return _musicVolume; }
-		
-		//@desc		An internal function that adjust the volume levels and the music channel after a change
-		static private function adjustMusicVolume():void
+		static public function set volume(Volume:Number):void
 		{
-			if(_muted < 0)
-				_muted = 0;
-			else if(_muted > 1)
-				_muted = 1;
+			_volume = Volume;
 			if(_volume < 0)
 				_volume = 0;
 			else if(_volume > 1)
 				_volume = 1;
-			if(_musicVolume < 0)
-				_musicVolume = 0;
-			else if(_musicVolume > 1)
-				_musicVolume = 1;
-			if(_masterVolume < 0)
-				_masterVolume = 0;
-			else if(_masterVolume > 1)
-				_masterVolume = 1;
-			if(_musicChannel != null)
-				_musicChannel.soundTransform = new SoundTransform(_muted*_volume*_musicVolume*_masterVolume);
+			changeSounds();
+		}
+		
+		//@desc		Find out how loud the game is currently
+		//@param	A number from 0 to 1
+		static public function get volume():Number { return _volume; }
+		
+		//@desc		Called by FlxGame on state changes to stop and destroy sounds
+		static internal function destroySounds(ForceDestroy:Boolean=false):void
+		{
+			if(sounds == null)
+				return;
+			if((music != null) && (ForceDestroy || !music.survive))
+				music.destroy();
+			var sl:uint = sounds.length;
+			for(var i:uint = 0; i < sl; i++)
+				if(ForceDestroy || !sounds[i].survive)
+					sounds[i].destroy();
+		}
+
+		//@desc		An internal function that adjust the volume levels and the music channel after a change
+		static protected function changeSounds():void
+		{
+			if((music != null) && music.active)
+				music.updateTransform();
+			var sl:uint = sounds.length;
+			for(var i:uint = 0; i < sl; i++)
+				if(sounds[i].active)
+					sounds[i].updateTransform();
+		}
+		
+		//@desc		Called by the game loop to make sure the sounds get updated each frame
+		static internal function updateSounds():void
+		{
+			if((music != null) && music.active)
+				music.update();
+			var sl:uint = sounds.length;
+			for(var i:uint = 0; i < sl; i++)
+				if(sounds[i].active)
+					sounds[i].update();
+		}
+		
+		static protected function pauseSounds():void
+		{
+			if((music != null) && music.active)
+				music.pause();
+			var sl:uint = sounds.length;
+			for(var i:uint = 0; i < sl; i++)
+				if(sounds[i].active)
+					sounds[i].pause();
+		}
+		
+		static protected function playSounds():void
+		{
+			if((music != null) && music.active)
+				music.play();
+			var sl:uint = sounds.length;
+			for(var i:uint = 0; i < sl; i++)
+				if(sounds[i].active)
+					sounds[i].play();
 		}
 		
 		//@desc		Generates a new BitmapData object (basically a colored square :P) and caches it
@@ -756,11 +808,9 @@ package org.flixel
 			_cache = new Object();
 			width = Width;
 			height = Height;
-			_muted = 1.0;
-			_volume = 1.0;
-			_musicVolume = 1.0;
-			_masterVolume = 0.5;
-			_musicPosition = -1;
+			_mute = false;
+			_volume = 0.5;
+			sounds = new Array();
 			mouse = new FlxMouse();
 			keys = new FlxKeyboard();
 			unfollow();
@@ -770,14 +820,9 @@ package org.flixel
 			score = 0;
 			seed = NaN;
 			kong = null;
+			pause = false;
 		}
-		
-		//@desc		This function is only used by the FlxGame class to do important internal management stuff
-		static internal function setMasterVolume(Volume:Number):void { _masterVolume = Volume; adjustMusicVolume(); }
-		
-		//@desc		This function is only used by the FlxGame class to do important internal management stuff
-		static internal function getMasterVolume():Number { return _masterVolume; }
-		
+
 		//@desc		This function is only used by the FlxGame class to do important internal management stuff
 		static internal function doFollow():void
 		{

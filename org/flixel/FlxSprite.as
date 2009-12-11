@@ -332,7 +332,7 @@ package org.flixel
 		
 		//@desc		Call this function to figure out the post-scrolling "screen" position of the object
 		//@param	P	Takes a Flash Point object and assigns the post-scrolled X and Y values of this object to it
-		override protected function getScreenXY(P:Point):void
+		override public function getScreenXY(P:Point):void
 		{
 			P.x = Math.floor(x-offset.x)+Math.floor(FlxG.scroll.x*scrollFactor.x);
 			P.y = Math.floor(y-offset.y)+Math.floor(FlxG.scroll.y*scrollFactor.y);
