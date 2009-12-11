@@ -50,7 +50,7 @@ package org.flixel.data
             }
 			
 			var tmp:Bitmap;
-			if((myURL != null) && (myURL.length > 0) && (root.loaderInfo.url.indexOf(myURL) < 0) && (root.loaderInfo.url.indexOf("localhost") < 0))
+			if(!FlxG.debug && (myURL != null) && (myURL.length > 0))
 			{
 				tmp = new Bitmap(new BitmapData(stage.stageWidth,stage.stageHeight,true,0xFFFFFFFF));
 				addChild(tmp);

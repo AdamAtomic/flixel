@@ -22,6 +22,7 @@ package org.flixel
 
 		static protected var _pause:Boolean;
 		static protected var _game:FlxGame;
+		static public var debug:Boolean;
 		
 		//@desc Represents the amount of time in seconds that passed since last frame
 		static public var elapsed:Number;
@@ -31,12 +32,14 @@ package org.flixel
 		static public var width:uint;
 		//@desc The height of the screen in game pixels
 		static public var height:uint;
-		//@desc Levels and scores are generic global variables that can be used for various cross-state stuff
-		static public var level:int;
+		//@desc FlxG.levels and FlxG.scores are generic global variables that can be used for various cross-state stuff
 		static public var levels:Array;
-		static public var score:int;
+		static public var level:int;
 		static public var scores:Array;
-		static public var debug:Boolean;
+		static public var score:int;
+		//@desc FlxG.saves is a generic bucket for storing FlxSaves so you can access them whenever you want
+		static public var saves:Array; 
+		static public var save:int;
 
 		//@desc The current game coordinates of the mouse pointer (not necessarily the screen coordinates)
 		static public var mouse:FlxMouse;
