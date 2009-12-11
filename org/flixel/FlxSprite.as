@@ -343,16 +343,20 @@ package org.flixel
 		{
 			var rx:uint = _caf*_bw;
 			var ry:uint = 0;
-			if(_flipped > 0)
+
+			//Handle sprite sheets
+			var w:uint = _flipped?_flipped:pixels.width;
+			if(rx >= w)
 			{
-				if(rx >= _flipped)
-				{
-					ry = uint(rx / _flipped) * _bh;
-					rx %= _flipped;
-				}
-				if(_facing == LEFT)
-					rx = (_flipped<<1)-rx-_bw;
+				ry = uint(rx/w)*_bh;
+				rx %= w;
 			}
+			
+			//handle reversed sprites
+			if(_flipped && (_facing == LEFT))
+				rx = (_flipped<<1)-rx-_bw;
+			
+			//Update display bitmap
 			_pixels.copyPixels(pixels,new Rectangle(rx,ry,_bw,_bh),_pZero);
 			if(_ct != null) _pixels.colorTransform(_r,_ct);
 			if(_callback != null) _callback(_curAnim.name,_curFrame,_caf);

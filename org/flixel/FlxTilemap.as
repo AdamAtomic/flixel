@@ -26,7 +26,7 @@ package org.flixel
 		//@param	TileGraphic		All the tiles you want to use, arranged in a strip corresponding to the numbers in MapData
 		//@param	CollisionIndex	The index of the first tile that should be treated as a hard surface
 		//@param	DrawIndex		The index of the first tile that should actually be drawn
-		public function FlxTilemap(MapData:String, TileGraphic:Class, CollisionIndex:uint=1, DrawIndex:uint=1)
+		public function FlxTilemap(MapData:String, TileGraphic:Class, TileSize:uint, CollisionIndex:uint=1, DrawIndex:uint=1)
 		{
 			super();
 			_ci = CollisionIndex;
@@ -52,20 +52,15 @@ package org.flixel
 					_data.push(uint(cols[c]));
 			}
 
-			_pixels = FlxG.addBitmap(TileGraphic);
-			_rects = new Array();
 			_p = new Point();
-			_tileSize = _pixels.height;
+			_tileSize = TileSize;
 			width = widthInTiles*_tileSize;
 			height = heightInTiles*_tileSize;
+			_pixels = FlxG.addBitmap(TileGraphic);
 			var numTiles:uint = widthInTiles*heightInTiles;
+			_rects = new Array(numTiles);
 			for(var i:uint = 0; i < numTiles; i++)
-			{
-				if(_data[i] >= _di)
-					_rects.push(new Rectangle(_tileSize*_data[i],0,_tileSize,_tileSize));
-				else
-					_rects.push(null);
-			}
+				setTileByIndex(i,_data[i]);
 			
 			_block = new FlxCore();
 			_block.width = _tileSize;
@@ -182,12 +177,26 @@ package org.flixel
 		//@param	Tile	The new integer data you wish to inject
 		public function setTile(X:uint,Y:uint,Tile:uint):void
 		{
-			var index:uint = Y * widthInTiles + X;
-			_data[index] = Tile;
+			setTileByIndex(Y * widthInTiles + X,Tile);
+		}
+		
+		//@desc		Change the data and graphic of a tile in the tilemap
+		//@param	Index	The slot in the data array (Y * widthInTiles + X) where this tile is stored
+		//@param	Tile	The new integer data you wish to inject
+		public function setTileByIndex(Index:uint,Tile:uint):void
+		{
+			_data[Index] = Tile;
+			var rx:uint = Tile*_tileSize;
+			var ry:uint = 0;
+			if(rx > _pixels.width)
+			{
+				ry = uint(rx/_pixels.width)*_tileSize;
+				rx %= _pixels.width;
+			}
 			if(Tile >= _di)
-				_rects[index] = new Rectangle(_tileSize*Tile,0,_tileSize,_tileSize);
+				_rects[Index] = (new Rectangle(rx,ry,_tileSize,_tileSize));
 			else
-				_rects[index] = null;
+				_rects[Index] = (null);
 		}
 		
 		//@desc		Bind a function Callback(Core:FlxCore,X:uint,Y:uint,Tile:uint) to a range of tiles
