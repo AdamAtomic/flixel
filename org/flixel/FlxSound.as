@@ -23,6 +23,7 @@ package org.flixel
 		protected var _looped:Boolean;
 		protected var _core:FlxCore;
 		protected var _radius:Number;
+		protected var _pan:Boolean;
 		protected var _fadeOutTimer:Number;
 		protected var _fadeOutTotal:Number;
 		protected var _pauseOnFadeOut:Boolean;
@@ -40,6 +41,7 @@ package org.flixel
 		//@desc		An internal function for clearing all the variables used by sounds
 		protected function init():void
 		{
+			_transform.pan = 0;
 			_sound = null;
 			_position = 0;
 			_volume = 1.0;
@@ -47,6 +49,7 @@ package org.flixel
 			_looped = false;
 			_core = null;
 			_radius = 0;
+			_pan = false;
 			_fadeOutTimer = 0;
 			_fadeOutTotal = 0;
 			_pauseOnFadeOut = false;
@@ -60,7 +63,8 @@ package org.flixel
 		//@desc		One of two main setup functions for sounds, this function loads a sound from an embedded MP3
 		//@param	EmbeddedSound	An embedded Class object representing an MP3 file
 		//@param	Looped			Whether or not this sound should loop endlessly
-		public function loadEmbedded(EmbeddedSound:Class, Looped:Boolean=false):void
+		//@return	This FlxSound instance (nice for chaining stuff together, if you're into that)
+		public function loadEmbedded(EmbeddedSound:Class, Looped:Boolean=false):FlxSound
 		{
 			stop();
 			init();
@@ -68,12 +72,14 @@ package org.flixel
 			_looped = Looped;
 			updateTransform();
 			active = true;
+			return this;
 		}
 		
 		//@desc		One of two main setup functions for sounds, this function loads a sound from a URL
 		//@param	EmbeddedSound	A string representing the URL of the MP3 file you want to play
 		//@param	Looped			Whether or not this sound should loop endlessly
-		public function loadStream(SoundURL:String, Looped:Boolean=false):void
+		//@return	This FlxSound instance (nice for chaining stuff together, if you're into that)
+		public function loadStream(SoundURL:String, Looped:Boolean=false):FlxSound
 		{
 			stop();
 			init();
@@ -81,6 +87,7 @@ package org.flixel
 			_looped = Looped;
 			updateTransform();
 			active = true;
+			return this;
 		}
 		
 		//@desc		Call this function if you want this sound's volume to change based on distance from a particular FlxCore object
@@ -88,12 +95,15 @@ package org.flixel
 		//@param	Y		The Y position of the sound
 		//@param	Core	The object you want to track
 		//@param	Radius	The maximum distance this sound can travel
-		public function proximity(X:Number,Y:Number,Core:FlxCore,Radius:Number):void
+		//@return	This FlxSound instance (nice for chaining stuff together, if you're into that)
+		public function proximity(X:Number,Y:Number,Core:FlxCore,Radius:Number,Pan:Boolean=true):FlxSound
 		{
 			x = X;
 			y = Y;
 			_core = Core;
 			_radius = Radius;
+			_pan = Pan;
+			return this;
 		}
 		
 		//@desc		Call this function to play the sound
@@ -140,8 +150,11 @@ package org.flixel
 			}
 			_position = _channel.position;
 			_channel.stop();
-			while(_position >= _sound.length)
-				_position -= _sound.length;
+			if(_looped)
+			{
+				while(_position >= _sound.length)
+					_position -= _sound.length;
+			}
 			_channel = null;
 		}
 		
@@ -198,6 +211,9 @@ package org.flixel
 		//@desc		The basic game loop update function - doesn't do much except optional proximity and fade calculations
 		override public function update():void
 		{
+			if(_position != 0)
+				return;
+				
 			super.update();
 			
 			var radial:Number = 1.0;
@@ -213,9 +229,16 @@ package org.flixel
 				var dx:Number = pc.x - pt.x;
 				var dy:Number = pc.y - pt.y;
 				radial = (_radius - Math.sqrt(dx*dx + dy*dy))/_radius;
-				FlxG.log(radial);
 				if(radial < 0) radial = 0;
 				if(radial > 1) radial = 1;
+				
+				if(_pan)
+				{
+					var d:Number = -dx/_radius;
+					if(d < -1) d = -1;
+					else if(d > 1) d = 1;
+					_transform.pan = d;
+				}
 			}
 			
 			//Cross-fading volume control

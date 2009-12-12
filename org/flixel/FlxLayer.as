@@ -12,10 +12,15 @@ package org.flixel
 		}
 		
 		//@desc		Adds a new FlxCore subclass (FlxSprite, FlxBlock, etc) to the list of children
-		//@param	Core	The object you want to add
-		virtual public function add(Core:FlxCore):FlxCore
+		//@param	Core			The object you want to add
+		//@param	ShareScroll		Whether or not this FlxCore should sync up with this layer's scrollFactor
+		virtual public function add(Core:FlxCore,ShareScroll:Boolean=false):FlxCore
 		{
 			_children.push(Core);
+			Core.x += x;
+			Core.y += y;
+			if(ShareScroll)
+				Core.scrollFactor = scrollFactor;
 			return Core;
 		}
 		
@@ -23,9 +28,27 @@ package org.flixel
 		override public function update():void
 		{
 			super.update();
+			var mx:Number;
+			var my:Number;
+			var moved:Boolean = false;
+			if((x != last.x) || (y != last.y))
+			{
+				moved = true;
+				mx = x - last.x;
+				my = y - last.y;
+			}
 			var cl:uint = _children.length;
 			for(var i:uint = 0; i < cl; i++)
-				if((_children[i] != null) && _children[i].exists && _children[i].active) _children[i].update();
+				if((_children[i] != null) && _children[i].exists)
+				{
+					if(moved)
+					{
+						_children[i].x += mx;
+						_children[i].y += my;
+					}
+					if(_children[i].active)
+						_children[i].update();
+				}
 		}
 		
 		//@desc		Automatically goes through and calls render on everything you added, override this loop to do crazy graphical stuffs I guess?

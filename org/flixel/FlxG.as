@@ -14,11 +14,11 @@ package org.flixel
 	//@desc		This is a global helper class full of useful functions for audio, input, basic info, and the camera system
 	public class FlxG
 	{
-		[Embed(source="data/cursor.png")] static private var ImgDefaultCursor:Class;
+		[Embed(source="data/cursor.png")] static protected var ImgDefaultCursor:Class;
 		
 		static public var LIBRARY_NAME:String = "flixel";
 		static public var LIBRARY_MAJOR_VERSION:uint = 1;
-		static public var LIBRARY_MINOR_VERSION:uint = 37;
+		static public var LIBRARY_MINOR_VERSION:uint = 40;
 
 		static protected var _pause:Boolean;
 		static protected var _game:FlxGame;
@@ -80,12 +80,12 @@ package org.flixel
 			{
 				if(_pause)
 				{
-					_game.pause();
+					_game.pauseGame();
 					pauseSounds();
 				}
 				else
 				{
-					_game.unpause();
+					_game.unpauseGame();
 					playSounds();
 				}
 			}
@@ -98,7 +98,7 @@ package org.flixel
 		}
 		
 		//@desc		Alter the background color whenever you want!  ARE YOU HAPPY NOW
-		static public function changeBackgroundColor(Color:uint):void
+		static public function setBackgroundColor(Color:uint):void
 		{ 
 			_game._bgColor = Color;
 		}

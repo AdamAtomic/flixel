@@ -12,7 +12,8 @@ package org.flixel.data
 		//@desc		Constructor initializes the fade object
 		public function FlxFade()
 		{
-			super(null,0,0,false,false,FlxG.width,FlxG.height,0,true);
+			super();
+			createGraphic(FlxG.width,FlxG.height,0,true);
 			scrollFactor.x = 0;
 			scrollFactor.y = 0;
 			visible = false;
@@ -31,7 +32,7 @@ package org.flixel.data
 				return;
 			}
 			if(!Force && visible) return;
-			draw(new FlxSprite(null,0,0,false,false,width,height,Color),0,0);
+			fill(Color);
 			_delay = Duration;
 			_complete = FadeComplete;
 			_helper = 0;

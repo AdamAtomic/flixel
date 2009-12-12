@@ -58,48 +58,26 @@ package org.flixel
 		protected var _p:Point;
 		public var pixels:BitmapData;
 		protected var _pixels:BitmapData;
-		private var _alpha:Number;
-		private var _color:uint;
+		protected var _alpha:Number;
+		protected var _color:uint;
 		protected var _ct:ColorTransform;
 		protected var _mtx:Matrix;
 		
 		//@desc		Constructor
-		//@param	Graphic		The image you want to use
-		//@param	X			The initial X position of the sprite
-		//@param	Y			The initial Y position of the sprite
-		//@param	Animated	Whether the Graphic parameter is a single sprite or a row of sprites
-		//@param	Reverse		Whether you need this class to generate horizontally flipped versions of the animation frames
-		//@param	Width		If you opt to NOT use an image and want to generate a colored block, or your sprite's frames are not square, you can specify a width here 
-		//@param	Height		If you opt to NOT use an image you can specify the height of the colored block here (ignored if Graphic is not null)
-		//@param	Color		Specifies the color of the generated block (ignored if Graphic is not null)
-		//@param	Unique		Whether the graphic should be a unique instance in the graphics cache
-		public function FlxSprite(Graphic:Class=null,X:int=0,Y:int=0,Animated:Boolean=false,Reverse:Boolean=false,Width:uint=0,Height:uint=0,Color:uint=0xffffffff,Unique:Boolean=false)
+		//@param	X				The initial X position of the sprite
+		//@param	Y				The initial Y position of the sprite
+		//@param	SimpleGraphic	The graphic you want to display (OPTIONAL - for simple stuff only, do NOT use for animated images!)
+		public function FlxSprite(X:int=0,Y:int=0,SimpleGraphic:Class=null)
 		{
 			super();
-
-			if(Graphic == null)
-				pixels = FlxG.createBitmap((Width<=0)?1:Width,(Height<=0)?1:Height,Color,Unique);
-			else
-				pixels = FlxG.addBitmap(Graphic,Reverse);
-				
+			
 			last.x = x = X;
 			last.y = y = Y;
-			if(Width == 0)
-			{
-				if(Animated)
-					Width = pixels.height;
-				else
-					Width = pixels.width;
-			}
-			width = _bw = Width;
-			if(Height == 0)
-			{
-				if(Animated)
-					Height = width;
-				else
-					Height = pixels.height;
-			}
-			height = _bh = Height;
+			_p = new Point(x,y);
+			if(SimpleGraphic == null)
+				createGraphic(8,8);
+			else
+				loadGraphic(SimpleGraphic);
 			offset = new Point();
 			
 			velocity = new Point();
@@ -116,31 +94,80 @@ package org.flixel
 			thrust = 0;
 			
 			scale = new Point(1,1);
-			
-			finished = false;
-			_facing = RIGHT;
-			_animations = new Array();
-			if(Reverse)
-				_flipped = pixels.width>>1;
-			else
-				_flipped = 0;
-			_curAnim = null;
-			_curFrame = 0;
-			_caf = 0;
-			_frameTimer = 0;
-			
-			_p = new Point(x,y);
-			_r = new Rectangle(0,0,_bw,_bh);
-			_pixels = new BitmapData(width,height);
-			_pixels.copyPixels(pixels,_r,_pZero);
-			_mtx = new Matrix();
-			
-			health = 1;
 			_alpha = 1;
 			_color = 0x00ffffff;
 			blend = null;
 			
+			finished = false;
+			_facing = RIGHT;
+			_animations = new Array();
+			_flipped = 0;
+			_curAnim = null;
+			_curFrame = 0;
+			_caf = 0;
+			_frameTimer = 0;
+
+			_mtx = new Matrix();
+			health = 1;
 			_callback = null;
+		}
+		
+		//@desc		Load an image from an embedded graphic file
+		//@param	Graphic		The image you want to use
+		//@param	Animated	Whether the Graphic parameter is a single sprite or a row of sprites
+		//@param	Reverse		Whether you need this class to generate horizontally flipped versions of the animation frames
+		//@param	Width		OPTIONAL - Specify the width of your sprite (helps FlxSprite figure out what to do with non-square sprites or sprite sheets)
+		//@param	Height		OPTIONAL - Specify the height of your sprite (helps FlxSprite figure out what to do with non-square sprites or sprite sheets)
+		//@param	Unique		Whether the graphic should be a unique instance in the graphics cache
+		//@return	This FlxSprite instance (nice for chaining stuff together, if you're into that)
+		public function loadGraphic(Graphic:Class,Animated:Boolean=false,Reverse:Boolean=false,Width:uint=0,Height:uint=0,Unique:Boolean=false):FlxSprite
+		{
+			pixels = FlxG.addBitmap(Graphic,Reverse);
+			if(Reverse)
+				_flipped = pixels.width>>1;
+			else
+				_flipped = 0;
+			if(Width == 0)
+			{
+				if(Animated)
+					Width = pixels.height;
+				else
+					Width = pixels.width;
+			}
+			width = _bw = Width;
+			if(Height == 0)
+			{
+				if(Animated)
+					Height = width;
+				else
+					Height = pixels.height;
+			}
+			height = _bh = Height;
+			resetHelpers();
+			return this;
+		}
+		
+		//@desc		This function creates a flat colored square image dynamically
+		//@param	Width		The width of the sprite you want to generate 
+		//@param	Height		The height of the sprite you want to generate
+		//@param	Color		Specifies the color of the generated block
+		//@param	Unique		Whether the graphic should be a unique instance in the graphics cache
+		//@return	This FlxSprite instance (nice for chaining stuff together, if you're into that)
+		public function createGraphic(Width:uint,Height:uint,Color:uint=0xffffffff,Unique:Boolean=false):FlxSprite
+		{
+			pixels = FlxG.createBitmap(Width,Height,Color,Unique);
+			width = _bw = pixels.width;
+			height = _bh = pixels.height;
+			resetHelpers();
+			return this;
+		}
+		
+		//@desc		Just resets some important background variables for sprite display
+		protected function resetHelpers():void
+		{
+			_r = new Rectangle(0,0,_bw,_bh);
+			_pixels = new BitmapData(width,height);
+			_pixels.copyPixels(pixels,_r,_pZero);
 		}
 		
 		//@desc		Called by game loop, handles animation and physics
@@ -421,6 +448,14 @@ package org.flixel
 			if(Brush.angle != 0) _mtx.rotate(Math.PI * 2 * (Brush.angle / 360));
 			_mtx.translate(X+(Brush._bw>>1),Y+(Brush._bh>>1));
 			pixels.draw(b,_mtx,null,Brush.blend,null,Brush.antialiasing);
+			calcFrame();
+		}
+		
+		//@desc		Fills this sprite's graphic with a specific color
+		//@param	Color		The color you want to fill the graphic with
+		public function fill(Color:uint):void
+		{
+			pixels.fillRect(new Rectangle(0,0,width,height),Color);
 			calcFrame();
 		}
 	}

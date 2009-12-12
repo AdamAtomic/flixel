@@ -17,9 +17,7 @@ package org.flixel
 		//@param	Y			The Y position of the block
 		//@param	Width		The width of the block
 		//@param	Height		The height of the block
-		//@param	TileGraphic The graphic class that contains the tiles that should fill this block
-		//@param	Empties		The number of "empty" tiles to add to the auto-fill algorithm (e.g. 8 tiles + 4 empties = 1/3 of block will be open holes)
-		public function FlxBlock(X:int,Y:int,Width:uint,Height:uint,TileGraphic:Class,Empties:uint=0)
+		public function FlxBlock(X:int,Y:int,Width:uint,Height:uint)
 		{
 			super();
 			x = X;
@@ -27,6 +25,13 @@ package org.flixel
 			width = Width;
 			height = Height;
 			fixed = true;
+		}
+		
+		//@desc		Fills the block with a randomly arranged selection of graphics from the image provided
+		//@param	TileGraphic The graphic class that contains the tiles that should fill this block
+		//@param	Empties		The number of "empty" tiles to add to the auto-fill algorithm (e.g. 8 tiles + 4 empties = 1/3 of block will be open holes)
+		public function loadGraphic(TileGraphic:Class,Empties:uint=0):void
+		{
 			if(TileGraphic == null)
 				return;
 
