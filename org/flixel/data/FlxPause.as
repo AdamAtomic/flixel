@@ -19,17 +19,17 @@ package org.flixel.data
 			var h:uint = 92;
 			x = (FlxG.width-w)/2;
 			y = (FlxG.height-h)/2;
-			add((new FlxSprite()).createGraphic(w,h,0xaa000000,true));			
-			(add(new FlxText(0,0,w,"this game is")) as FlxText).alignment = "center";
-			add((new FlxText(0,10,w,"PAUSED")).setFormat(null,16,0xffffff,"center"));
-			add(new FlxSprite(4,36,ImgKeyP));
-			add(new FlxText(16,36,w-16,"Pause Game"));
-			add(new FlxSprite(4,50,ImgKey0));
-			add(new FlxText(16,50,w-16,"Mute Sound"));
-			add(new FlxSprite(4,64,ImgKeyMinus));
-			add(new FlxText(16,64,w-16,"Sound Down"));
-			add(new FlxSprite(4,78,ImgKeyPlus));
-			add(new FlxText(16,78,w-16,"Sound Up"));
+			add((new FlxSprite()).createGraphic(w,h,0xaa000000,true),true);			
+			(add(new FlxText(0,0,w,"this game is"),true) as FlxText).alignment = "center";
+			add((new FlxText(0,10,w,"PAUSED")).setFormat(null,16,0xffffff,"center"),true);
+			add(new FlxSprite(4,36,ImgKeyP),true);
+			add(new FlxText(16,36,w-16,"Pause Game"),true);
+			add(new FlxSprite(4,50,ImgKey0),true);
+			add(new FlxText(16,50,w-16,"Mute Sound"),true);
+			add(new FlxSprite(4,64,ImgKeyMinus),true);
+			add(new FlxText(16,64,w-16,"Sound Down"),true);
+			add(new FlxSprite(4,78,ImgKeyPlus),true);
+			add(new FlxText(16,78,w-16,"Sound Up"),true);
 		}
 	}
 }
