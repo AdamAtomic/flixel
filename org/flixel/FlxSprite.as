@@ -74,6 +74,7 @@ package org.flixel
 			last.x = x = X;
 			last.y = y = Y;
 			_p = new Point(x,y);
+			_r = new Rectangle();
 			if(SimpleGraphic == null)
 				createGraphic(8,8);
 			else
@@ -182,7 +183,10 @@ package org.flixel
 		//@desc		Just resets some important background variables for sprite display
 		protected function resetHelpers():void
 		{
-			_r = new Rectangle(0,0,_bw,_bh);
+			_r.x = 0;
+			_r.y = 0;
+			_r.width = _bw;
+			_r.height = _bh;
 			if((_framePixels == null) || (_framePixels.width != width) || (_framePixels.height != height))
 				_framePixels = new BitmapData(width,height);
 			_framePixels.copyPixels(_pixels,_r,_pZero);
