@@ -5,6 +5,8 @@ package org.flixel
 	//@desc		This is the basic game "state" object - e.g. in a simple game you might have a menu state and a play state
 	public class FlxState extends Sprite
 	{
+		//@desc		This variable holds the screen buffer, so you can draw to it directly if you want
+		public var screen:FlxSprite;
 		protected var _layer:FlxLayer;
 		
 		//@desc		Constructor		
@@ -13,6 +15,8 @@ package org.flixel
 			super();
 			_layer = new FlxLayer();
 			FlxG.state = this;
+			screen = new FlxSprite();
+			screen.antialiasing = true;
 		}
 		
 		//@desc		Adds a new FlxCore subclass (FlxSprite, FlxBlock, etc) to the game loop
@@ -33,6 +37,9 @@ package org.flixel
 		{
 			_layer.render();
 		}
+		
+		//@desc		Override this function and use the 'screen' variable to do special post-processing FX (like light bloom)
+		virtual public function postProcess():void { }
 		
 		//@desc		Override this function to handle any deleting or "shutdown" type operations you might need (such as removing traditional Flash children like Sprite objects)
 		virtual public function destroy():void { _layer.destroy(); }

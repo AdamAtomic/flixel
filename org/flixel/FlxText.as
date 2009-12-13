@@ -133,7 +133,7 @@ package org.flixel
 			//Just leave if there's no text to render
 			if((_tf == null) || (_tf.text == null) || (_tf.text.length <= 0))
 			{
-				_pixels.fillRect(_r,0);
+				_framePixels.fillRect(_r,0);
 				return;
 			}
 			if(_regen)
@@ -144,14 +144,14 @@ package org.flixel
 				for(var i:uint = 0; i < nl; i++)
 					height += _tf.getLineMetrics(i).height;
 				height += 4; //account for 2px gutter on top and bottom
-				_pixels = new BitmapData(width,height,true,0);
+				_framePixels = new BitmapData(width,height,true,0);
 				_bh = height;
 				_tf.height = height;
 				_r = new Rectangle(0,0,width,height);
 				_regen = false;
 			}
 			else	//Else just clear the old buffer before redrawing the text
-				_pixels.fillRect(_r,0);
+				_framePixels.fillRect(_r,0);
 			
 			//Now that we've cleared a buffer, we need to actually render the text to it
 			var tf:TextFormat = _tf.defaultTextFormat;
@@ -162,7 +162,7 @@ package org.flixel
 				_tf.setTextFormat(new TextFormat(tf.font,tf.size,tf.color,null,null,null,null,null,"left"));				
 				_mtx.translate(Math.floor((width - _tf.getLineMetrics(0).width)/2),0);
 			}
-			_pixels.draw(_tf,_mtx,_ct);	//Actually draw the text onto the buffer
+			_framePixels.draw(_tf,_mtx,_ct);	//Actually draw the text onto the buffer
 			_tf.setTextFormat(new TextFormat(tf.font,tf.size,tf.color,null,null,null,null,null,tf.align));
 		}
 		

@@ -332,17 +332,7 @@ package org.flixel
 				}
 				else
 				{
-					FlxG.doFollow();
-					_curState.update();
-					
-					//Update the various special effects
-					_flash.update()
-					_fade.update();
-					_quake.update();
-					_buffer.x = _quake.x;
-					_buffer.y = _quake.y;					
-					
-					//Clear buffer
+					//Clear video buffer
 					if(_flipped)
 					{
 						_bmpFront.bitmapData.fillRect(_r,_bgColor);
@@ -354,13 +344,28 @@ package org.flixel
 						FlxG.buffer = _bmpBack.bitmapData;
 					}
 					
+					//Update the camera and game state
+					FlxG.doFollow();
+					_curState.update();
+					
+					//Update the various special effects
+					_flash.update()
+					_fade.update();
+					_quake.update();
+					_buffer.x = _quake.x;
+					_buffer.y = _quake.y;
+					
 					//Render game content, special fx, and overlays
 					_curState.render();
 					_flash.render();
 					_fade.render();
 					_panel.render();
 					
-					//Swap buffers
+					//Post-processing hook
+					_curState.screen.pixels = FlxG.buffer;
+					_curState.postProcess();
+					
+					//Swap video buffers
 					_bmpBack.visible = !(_bmpFront.visible = _flipped);
 					_flipped = !_flipped;
 				}

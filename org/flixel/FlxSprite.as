@@ -56,8 +56,8 @@ package org.flixel
 		protected var _bh:uint;
 		protected var _r:Rectangle;
 		protected var _p:Point;
-		public var pixels:BitmapData;
 		protected var _pixels:BitmapData;
+		protected var _framePixels:BitmapData;
 		protected var _alpha:Number;
 		protected var _color:uint;
 		protected var _ct:ColorTransform;
@@ -122,17 +122,17 @@ package org.flixel
 		//@return	This FlxSprite instance (nice for chaining stuff together, if you're into that)
 		public function loadGraphic(Graphic:Class,Animated:Boolean=false,Reverse:Boolean=false,Width:uint=0,Height:uint=0,Unique:Boolean=false):FlxSprite
 		{
-			pixels = FlxG.addBitmap(Graphic,Reverse);
+			_pixels = FlxG.addBitmap(Graphic,Reverse);
 			if(Reverse)
-				_flipped = pixels.width>>1;
+				_flipped = _pixels.width>>1;
 			else
 				_flipped = 0;
 			if(Width == 0)
 			{
 				if(Animated)
-					Width = pixels.height;
+					Width = _pixels.height;
 				else
-					Width = pixels.width;
+					Width = _pixels.width;
 			}
 			width = _bw = Width;
 			if(Height == 0)
@@ -140,7 +140,7 @@ package org.flixel
 				if(Animated)
 					Height = width;
 				else
-					Height = pixels.height;
+					Height = _pixels.height;
 			}
 			height = _bh = Height;
 			resetHelpers();
@@ -155,19 +155,36 @@ package org.flixel
 		//@return	This FlxSprite instance (nice for chaining stuff together, if you're into that)
 		public function createGraphic(Width:uint,Height:uint,Color:uint=0xffffffff,Unique:Boolean=false):FlxSprite
 		{
-			pixels = FlxG.createBitmap(Width,Height,Color,Unique);
-			width = _bw = pixels.width;
-			height = _bh = pixels.height;
+			_pixels = FlxG.createBitmap(Width,Height,Color,Unique);
+			width = _bw = _pixels.width;
+			height = _bh = _pixels.height;
 			resetHelpers();
 			return this;
+		}
+		
+		//@desc		This function allows you to set the bitmap data directly, instead of loading it through FlxG (for advanced FX only)
+		//@param	Pixels		A flash BitmapData object containing preloaded graphic information
+		public function set pixels(Pixels:BitmapData):void
+		{
+			_pixels = Pixels;
+			width = _bw = _pixels.width;
+			height = _bh = _pixels.height;
+			resetHelpers();
+		}
+		
+		//@desc		This function retrieves the reference bitmap data that powers this graphic
+		//@return	A flash BitmapData object
+		public function get pixels():BitmapData
+		{
+			return _pixels;
 		}
 		
 		//@desc		Just resets some important background variables for sprite display
 		protected function resetHelpers():void
 		{
 			_r = new Rectangle(0,0,_bw,_bh);
-			_pixels = new BitmapData(width,height);
-			_pixels.copyPixels(pixels,_r,_pZero);
+			_framePixels = new BitmapData(width,height);
+			_framePixels.copyPixels(_pixels,_r,_pZero);
 		}
 		
 		//@desc		Called by game loop, handles animation and physics
@@ -227,7 +244,7 @@ package org.flixel
 			//Simple render
 			if((angle == 0) && (scale.x == 1) && (scale.y == 1) && (blend == null))
 			{
-				FlxG.buffer.copyPixels(_pixels,_r,_p,null,null,true);
+				FlxG.buffer.copyPixels(_framePixels,_r,_p,null,null,true);
 				return;
 			}
 			
@@ -237,7 +254,7 @@ package org.flixel
 			_mtx.scale(scale.x,scale.y);
 			if(angle != 0) _mtx.rotate(Math.PI * 2 * (angle / 360));
 			_mtx.translate(_p.x+(_bw>>1),_p.y+(_bh>>1));
-			FlxG.buffer.draw(_pixels,_mtx,null,blend,null,antialiasing);
+			FlxG.buffer.draw(_framePixels,_mtx,null,blend,null,antialiasing);
 		}
 		
 		//@desc		Checks to see if a point in 2D space overlaps this FlxCore object
@@ -255,7 +272,7 @@ package org.flixel
 				ty -= Math.floor(FlxG.scroll.y*scrollFactor.y);
 			}
 			if(PerPixel)
-				return _pixels.hitTest(new Point(0,0),0xFF,new Point(X-tx,Y-ty));
+				return _framePixels.hitTest(new Point(0,0),0xFF,new Point(X-tx,Y-ty));
 			else if((X <= tx) || (X >= tx+width) || (Y <= ty) || (Y >= ty+height))
 				return false;
 			return true;
@@ -344,7 +361,7 @@ package org.flixel
 		public function randomFrame():void
 		{
 			_curAnim = null;
-			_caf = int(FlxG.random()*(pixels.width/_bw));
+			_caf = int(FlxG.random()*(_pixels.width/_bw));
 			calcFrame();
 		}
 		
@@ -372,7 +389,7 @@ package org.flixel
 			var ry:uint = 0;
 
 			//Handle sprite sheets
-			var w:uint = _flipped?_flipped:pixels.width;
+			var w:uint = _flipped?_flipped:_pixels.width;
 			if(rx >= w)
 			{
 				ry = uint(rx/w)*_bh;
@@ -384,8 +401,8 @@ package org.flixel
 				rx = (_flipped<<1)-rx-_bw;
 			
 			//Update display bitmap
-			_pixels.copyPixels(pixels,new Rectangle(rx,ry,_bw,_bh),_pZero);
-			if(_ct != null) _pixels.colorTransform(_r,_ct);
+			_framePixels.copyPixels(_pixels,new Rectangle(rx,ry,_bw,_bh),_pZero);
+			if(_ct != null) _framePixels.colorTransform(_r,_ct);
 			if(_callback != null) _callback(_curAnim.name,_curFrame,_caf);
 		}
 		
@@ -431,12 +448,12 @@ package org.flixel
 		//@param	Y			They Y coordinate of the brush's top left corner on this sprite
 		public function draw(Brush:FlxSprite,X:int=0,Y:int=0):void
 		{
-			var b:BitmapData = Brush._pixels;
+			var b:BitmapData = Brush._framePixels;
 			
 			//Simple draw
 			if((Brush.angle == 0) && (Brush.scale.x == 1) && (Brush.scale.y == 1) && (Brush.blend == null))
 			{
-				pixels.copyPixels(b,new Rectangle(0,0,b.width,b.height),new Point(X,Y),null,null,true);
+				_pixels.copyPixels(b,new Rectangle(0,0,b.width,b.height),new Point(X,Y),null,null,true);
 				calcFrame();
 				return;
 			}
@@ -447,7 +464,7 @@ package org.flixel
 			_mtx.scale(Brush.scale.x,Brush.scale.y);
 			if(Brush.angle != 0) _mtx.rotate(Math.PI * 2 * (Brush.angle / 360));
 			_mtx.translate(X+(Brush._bw>>1),Y+(Brush._bh>>1));
-			pixels.draw(b,_mtx,null,Brush.blend,null,Brush.antialiasing);
+			_pixels.draw(b,_mtx,null,Brush.blend,null,Brush.antialiasing);
 			calcFrame();
 		}
 		
@@ -455,7 +472,7 @@ package org.flixel
 		//@param	Color		The color you want to fill the graphic with
 		public function fill(Color:uint):void
 		{
-			pixels.fillRect(new Rectangle(0,0,width,height),Color);
+			_pixels.fillRect(new Rectangle(0,0,width,height),Color);
 			calcFrame();
 		}
 	}

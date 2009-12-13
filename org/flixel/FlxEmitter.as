@@ -20,7 +20,7 @@ package org.flixel
 		//@param	X				The X position of the emitter
 		//@param	Y				The Y position of the emitter
 		//@param	Delay			A negative number defines the lifespan of the particles that are launched all at once.  A positive number tells it how often to fire a new particle.
-		public function FlxEmitter(X:Number, Y:Number, Delay:Number=0.1)
+		public function FlxEmitter(X:Number=0, Y:Number=0, Delay:Number=0.1)
 		{
 			super();
 			

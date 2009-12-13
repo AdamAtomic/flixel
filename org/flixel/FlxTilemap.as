@@ -188,7 +188,7 @@ package org.flixel
 			_data[Index] = Tile;
 			var rx:uint = Tile*_tileSize;
 			var ry:uint = 0;
-			if(rx > _pixels.width)
+			if(rx >= _pixels.width)
 			{
 				ry = uint(rx/_pixels.width)*_tileSize;
 				rx %= _pixels.width;
