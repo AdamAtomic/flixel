@@ -183,7 +183,8 @@ package org.flixel
 		protected function resetHelpers():void
 		{
 			_r = new Rectangle(0,0,_bw,_bh);
-			_framePixels = new BitmapData(width,height);
+			if((_framePixels == null) || (_framePixels.width != width) || (_framePixels.height != height))
+				_framePixels = new BitmapData(width,height);
 			_framePixels.copyPixels(_pixels,_r,_pZero);
 		}
 		
