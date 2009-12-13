@@ -16,6 +16,7 @@ package org.flixel
 			_layer = new FlxLayer();
 			FlxG.state = this;
 			screen = new FlxSprite();
+			screen.createGraphic(FlxG.width,FlxG.height,0,true);
 			screen.antialiasing = true;
 		}
 		

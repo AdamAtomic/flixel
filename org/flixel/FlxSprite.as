@@ -163,7 +163,7 @@ package org.flixel
 			return this;
 		}
 		
-		//@desc		This function allows you to set the bitmap data directly, instead of loading it through FlxG (for advanced FX only)
+		//@desc		This function allows you to set the bitmap data directly, instead of loading it through FlxG
 		//@param	Pixels		A flash BitmapData object containing preloaded graphic information
 		public function set pixels(Pixels:BitmapData):void
 		{
@@ -479,6 +479,13 @@ package org.flixel
 		{
 			_pixels.fillRect(new Rectangle(0,0,width,height),Color);
 			calcFrame();
+		}
+		
+		//@desc		Internal function, currently only used to quickly update FlxState.screen for post-processing
+		//@param	Pixels		The flash BitmapData object you want to point at
+		internal function unsafeBind(Pixels:BitmapData):void
+		{
+			_pixels = _framePixels = Pixels;
 		}
 	}
 }

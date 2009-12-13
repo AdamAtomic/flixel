@@ -262,6 +262,7 @@ package org.flixel
 				FlxG.pause = true;
 		}
 		
+		//@desc		internal function to help with basic pause game functionality
 		internal function unpauseGame():void
 		{
 			if(!_panel.visible) flash.ui.Mouse.hide();
@@ -270,6 +271,7 @@ package org.flixel
 			stage.frameRate = 90;
 		}
 		
+		//@desc		internal function to help with basic pause game functionality
 		internal function pauseGame():void
 		{
 			if((x != 0) || (y != 0))
@@ -334,15 +336,11 @@ package org.flixel
 				{
 					//Clear video buffer
 					if(_flipped)
-					{
-						_bmpFront.bitmapData.fillRect(_r,_bgColor);
 						FlxG.buffer = _bmpFront.bitmapData;
-					}
 					else
-					{
-						_bmpBack.bitmapData.fillRect(_r,_bgColor);
 						FlxG.buffer = _bmpBack.bitmapData;
-					}
+					FlxG.buffer.fillRect(_r,_bgColor);
+					_curState.screen.unsafeBind(FlxG.buffer);
 					
 					//Update the camera and game state
 					FlxG.doFollow();
@@ -362,7 +360,6 @@ package org.flixel
 					_panel.render();
 					
 					//Post-processing hook
-					_curState.screen.pixels = FlxG.buffer;
 					_curState.postProcess();
 					
 					//Swap video buffers
