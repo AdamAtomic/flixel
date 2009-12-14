@@ -48,7 +48,6 @@ package org.flixel
 		internal var _zoom:uint;
 		internal var _gameXOffset:int;
 		internal var _gameYOffset:int;
-		internal var _bgColor:Number;
 		internal var _frame:Class;
 		internal var _curState:FlxState;
 		internal var _cursor:Bitmap;
@@ -88,7 +87,6 @@ package org.flixel
 			flash.ui.Mouse.hide();
 			
 			_zoom = Zoom;
-			_bgColor = 0xff000000;
 			FlxG.setGameData(this,GameSizeX,GameSizeY);
 			_elapsed = 0;
 			_total = 0;
@@ -339,8 +337,8 @@ package org.flixel
 						FlxG.buffer = _bmpFront.bitmapData;
 					else
 						FlxG.buffer = _bmpBack.bitmapData;
-					FlxG.buffer.fillRect(_r,_bgColor);
-					_curState.screen.unsafeBind(FlxG.buffer);
+					FlxState.screen.unsafeBind(FlxG.buffer);
+					_curState.preProcess();
 					
 					//Update the camera and game state
 					FlxG.doFollow();
@@ -439,11 +437,11 @@ package org.flixel
 	            _buffer.scaleX = _zoom;
 	            _buffer.scaleY = _zoom;
 	            addChild(_buffer);
-				_bmpBack = new Bitmap(new BitmapData(FlxG.width,FlxG.height,true,_bgColor));
+				_bmpBack = new Bitmap(new BitmapData(FlxG.width,FlxG.height,true,FlxState.bgColor));
 				_bmpBack.x = _gameXOffset;
 				_bmpBack.y = _gameYOffset;
 				_buffer.addChild(_bmpBack);
-				_bmpFront = new Bitmap(new BitmapData(_bmpBack.width,_bmpBack.height,true,_bgColor));
+				_bmpFront = new Bitmap(new BitmapData(_bmpBack.width,_bmpBack.height,true,FlxState.bgColor));
 				_bmpFront.x = _bmpBack.x;
 				_bmpFront.y = _bmpBack.y;
 				_buffer.addChild(_bmpFront);

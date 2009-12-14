@@ -18,7 +18,7 @@ package org.flixel
 		
 		static public var LIBRARY_NAME:String = "flixel";
 		static public var LIBRARY_MAJOR_VERSION:uint = 1;
-		static public var LIBRARY_MINOR_VERSION:uint = 44;
+		static public var LIBRARY_MINOR_VERSION:uint = 45;
 
 		static protected var _pause:Boolean;
 		static protected var _game:FlxGame;
@@ -95,12 +95,6 @@ package org.flixel
 		static public function get pause():Boolean
 		{
 			return _pause;
-		}
-		
-		//@desc		Alter the background color whenever you want!  ARE YOU HAPPY NOW
-		static public function setBackgroundColor(Color:uint):void
-		{ 
-			_game._bgColor = Color;
 		}
 		
 		//@desc		Call this function to reset the input objects (useful when changing screens or states)

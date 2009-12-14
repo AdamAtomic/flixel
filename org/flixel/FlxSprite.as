@@ -57,6 +57,7 @@ package org.flixel
 		protected var _bw:uint;
 		protected var _bh:uint;
 		protected var _r:Rectangle;
+		protected var _r2:Rectangle;
 		protected var _p:Point;
 		protected var _pixels:BitmapData;
 		protected var _framePixels:BitmapData;
@@ -75,8 +76,9 @@ package org.flixel
 			
 			last.x = x = X;
 			last.y = y = Y;
-			_p = new Point(x,y);
+			_p = new Point();
 			_r = new Rectangle();
+			_r2 = new Rectangle();
 			origin = new Point();
 			if(SimpleGraphic == null)
 				createGraphic(8,8);
@@ -191,6 +193,10 @@ package org.flixel
 			_r.y = 0;
 			_r.width = _bw;
 			_r.height = _bh;
+			_r2.x = 0;
+			_r2.y = 0;
+			_r2.width = _pixels.width;
+			_r2.height = _pixels.height;
 			if((_framePixels == null) || (_framePixels.width != width) || (_framePixels.height != height))
 				_framePixels = new BitmapData(width,height);
 			origin.x = _bw/2;
@@ -412,7 +418,10 @@ package org.flixel
 				rx = (_flipped<<1)-rx-_bw;
 			
 			//Update display bitmap
-			_framePixels.copyPixels(_pixels,new Rectangle(rx,ry,_bw,_bh),_pZero);
+			_r.x = rx;
+			_r.y = ry;
+			_framePixels.copyPixels(_pixels,_r,_pZero);
+			_r.x = _r.y = 0;
 			if(_ct != null) _framePixels.colorTransform(_r,_ct);
 			if(_callback != null) _callback(_curAnim.name,_curFrame,_caf);
 		}
@@ -464,13 +473,19 @@ package org.flixel
 			//Simple draw
 			if((Brush.angle == 0) && (Brush.scale.x == 1) && (Brush.scale.y == 1) && (Brush.blend == null))
 			{
-				_pixels.copyPixels(b,new Rectangle(0,0,b.width,b.height),new Point(X,Y),null,null,true);
+				_p.x = X;
+				_p.y = Y;
+				_r2.width = b.width;
+				_r2.height = b.height;
+				_pixels.copyPixels(b,_r2,_p,null,null,true);
+				_r2.width = _pixels.width;
+				_r2.height = _pixels.height;
 				calcFrame();
 				return;
 			}
 
 			//Advanced draw
-			var _mtx:Matrix = new Matrix();
+			_mtx.identity();
 			_mtx.translate(-Brush.origin.x,-Brush.origin.y);
 			_mtx.scale(Brush.scale.x,Brush.scale.y);
 			if(Brush.angle != 0) _mtx.rotate(Math.PI * 2 * (Brush.angle / 360));
@@ -480,10 +495,10 @@ package org.flixel
 		}
 		
 		//@desc		Fills this sprite's graphic with a specific color
-		//@param	Color		The color you want to fill the graphic with
+		//@param	Color		The color with which to fill the graphic
 		public function fill(Color:uint):void
 		{
-			_pixels.fillRect(new Rectangle(0,0,width,height),Color);
+			_pixels.fillRect(_r2,Color);
 			calcFrame();
 		}
 		
