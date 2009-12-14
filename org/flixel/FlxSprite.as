@@ -30,6 +30,8 @@ package org.flixel
 		public var angularAcceleration:Number;
 		public var angularDrag:Number;
 		public var maxAngular:Number;
+		//@desc	The origin of the sprite will default to its center - if you change this, the visuals and the collisions will likely be pretty out-of-sync!  Just a heads up.
+		public var origin:Point;
 		//@desc	If you want to do Asteroids style stuff, check out thrust (instead of directly accessing the object's velocity or acceleration)
 		public var thrust:Number;
 		public var maxThrust:Number;
@@ -75,6 +77,7 @@ package org.flixel
 			last.y = y = Y;
 			_p = new Point(x,y);
 			_r = new Rectangle();
+			origin = new Point();
 			if(SimpleGraphic == null)
 				createGraphic(8,8);
 			else
@@ -98,6 +101,7 @@ package org.flixel
 			_alpha = 1;
 			_color = 0x00ffffff;
 			blend = null;
+			antialiasing = false;
 			
 			finished = false;
 			_facing = RIGHT;
@@ -189,6 +193,8 @@ package org.flixel
 			_r.height = _bh;
 			if((_framePixels == null) || (_framePixels.width != width) || (_framePixels.height != height))
 				_framePixels = new BitmapData(width,height);
+			origin.x = _bw/2;
+			origin.y = _bh/2;
 			_framePixels.copyPixels(_pixels,_r,_pZero);
 		}
 		
@@ -255,10 +261,10 @@ package org.flixel
 			
 			//Advanced render
 			_mtx.identity();
-			_mtx.translate(-(_bw>>1),-(_bh>>1));
+			_mtx.translate(-origin.x,-origin.y);
 			_mtx.scale(scale.x,scale.y);
 			if(angle != 0) _mtx.rotate(Math.PI * 2 * (angle / 360));
-			_mtx.translate(_p.x+(_bw>>1),_p.y+(_bh>>1));
+			_mtx.translate(_p.x+origin.x,_p.y+origin.y);
 			FlxG.buffer.draw(_framePixels,_mtx,null,blend,null,antialiasing);
 		}
 		
@@ -465,10 +471,10 @@ package org.flixel
 
 			//Advanced draw
 			var _mtx:Matrix = new Matrix();
-			_mtx.translate(-(Brush._bw>>1),-(Brush._bh>>1));
+			_mtx.translate(-Brush.origin.x,-Brush.origin.y);
 			_mtx.scale(Brush.scale.x,Brush.scale.y);
 			if(Brush.angle != 0) _mtx.rotate(Math.PI * 2 * (Brush.angle / 360));
-			_mtx.translate(X+(Brush._bw>>1),Y+(Brush._bh>>1));
+			_mtx.translate(X+Brush.origin.x,Y+Brush.origin.y);
 			_pixels.draw(b,_mtx,null,Brush.blend,null,Brush.antialiasing);
 			calcFrame();
 		}
