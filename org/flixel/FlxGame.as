@@ -87,6 +87,7 @@ package org.flixel
 			flash.ui.Mouse.hide();
 			
 			_zoom = Zoom;
+			FlxState.bgColor = 0xff000000;
 			FlxG.setGameData(this,GameSizeX,GameSizeY);
 			_elapsed = 0;
 			_total = 0;
