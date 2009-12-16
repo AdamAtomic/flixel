@@ -432,6 +432,7 @@ package org.flixel
 		{
 			if(Alpha > 1) Alpha = 1;
 			if(Alpha < 0) Alpha = 0;
+			if(Alpha == _alpha) return;
 			_alpha = Alpha;
 			if((_alpha != 1) || (_color != 0x00ffffff)) _ct = new ColorTransform(Number(_color>>16)/255,Number(_color>>8&0xff)/255,Number(_color&0xff)/255,_alpha);
 			else _ct = null;
@@ -449,7 +450,9 @@ package org.flixel
 		//@param	Color	The new color value of the sprite (0xRRGGBB) - ignores alpha
 		public function set color(Color:uint):void
 		{
-			_color = Color & 0x00ffffff;
+			Color &= 0x00ffffff;
+			if(_color == Color) return;
+			_color = Color;
 			if((_alpha != 1) || (_color != 0x00ffffff)) _ct = new ColorTransform(Number(_color>>16)/255,Number(_color>>8&0xff)/255,Number(_color&0xff)/255,_alpha);
 			else _ct = null;
 			calcFrame();

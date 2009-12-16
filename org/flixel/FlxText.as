@@ -51,7 +51,8 @@ package org.flixel
 			_tf.defaultTextFormat = tf;
 			_tf.setTextFormat(tf);
 			_regen = true;
-			color = Color; //calls calcFrame() implicitly
+			color = Color;
+			calcFrame();
 			return this;
 		}
 		
