@@ -213,6 +213,14 @@ package org.flixel
 			return hx || hy;
 		}
 		
+		//@desc		Check the value of a particular tile
+		//@param	X		The X coordinate of the tile (in tiles, not pixels)
+		//@param	Y		The Y coordinate of the tile (in tiles, not pixels)
+		public function getTile(X:uint,Y:uint):uint
+		{
+			return _data[Y * widthInTiles + X];
+		}
+		
 		//@desc		Change the data and graphic of a tile in the tilemap
 		//@param	X		The X coordinate of the tile (in tiles, not pixels)
 		//@param	Y		The Y coordinate of the tile (in tiles, not pixels)
