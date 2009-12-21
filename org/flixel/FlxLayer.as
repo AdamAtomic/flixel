@@ -37,27 +37,35 @@ package org.flixel
 				mx = x - last.x;
 				my = y - last.y;
 			}
+			var c:FlxCore;
 			var cl:uint = _children.length;
 			for(var i:uint = 0; i < cl; i++)
-				if((_children[i] != null) && _children[i].exists)
+			{
+				c = _children[i] as FlxCore;
+				if((c != null) && c.exists)
 				{
 					if(moved)
 					{
-						_children[i].x += mx;
-						_children[i].y += my;
+						c.x += mx;
+						c.y += my;
 					}
-					if(_children[i].active)
-						_children[i].update();
+					if(c.active)
+						c.update();
 				}
+			}
 		}
 		
 		//@desc		Automatically goes through and calls render on everything you added, override this loop to do crazy graphical stuffs I guess?
 		override public function render():void
 		{
 			super.render();
+			var c:FlxCore;
 			var cl:uint = _children.length;
 			for(var i:uint = 0; i < cl; i++)
-				if((_children[i] != null) && _children[i].exists && _children[i].visible) _children[i].render();
+			{
+				c = _children[i];
+				if((c != null) && c.exists && c.visible) c.render();
+			}
 		}
 		
 		//@desc		Override this function to handle any deleting or "shutdown" type operations you might need (such as removing traditional Flash children like Sprite objects)
