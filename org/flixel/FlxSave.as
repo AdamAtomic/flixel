@@ -53,6 +53,11 @@ package org.flixel
 		//@return	Whether or not the write and flush were successful
 		public function write(FieldName:String,FieldValue:Object,MinFileSize:uint=0):Boolean
 		{
+			if(_so == null)
+			{
+				FlxG.log("WARNING: You must call FlxSave.bind()\nbefore calling FlxSave.write().");
+				return false;
+			}
 			data[FieldName] = FieldValue;
 			return forceSave(MinFileSize);
 		}
@@ -62,6 +67,11 @@ package org.flixel
 		//@return	The value of the data field you are reading (null if it doesn't exist)
 		public function read(FieldName:String):Object
 		{
+			if(_so == null)
+			{
+				FlxG.log("WARNING: You must call FlxSave.bind()\nbefore calling FlxSave.read().");
+				return null;
+			}
 			return data[FieldName];
 		}
 		
@@ -70,6 +80,11 @@ package org.flixel
 		//@return	Whether or not the flush was successful
 		public function forceSave(MinFileSize:uint=0):Boolean
 		{
+			if(_so == null)
+			{
+				FlxG.log("WARNING: You must call FlxSave.bind()\nbefore calling FlxSave.forceSave().");
+				return false;
+			}
 			var status:Object = null;
 			try
 			{
@@ -88,6 +103,11 @@ package org.flixel
 		//@return	Whether or not the clear and flush was successful
 		public function erase(MinFileSize:uint=0):Boolean
 		{
+			if(_so == null)
+			{
+				FlxG.log("WARNING: You must call FlxSave.bind()\nbefore calling FlxSave.erase().");
+				return false;
+			}
 			_so.clear();
 			return forceSave(MinFileSize);
 		}
