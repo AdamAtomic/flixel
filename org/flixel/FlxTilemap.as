@@ -33,7 +33,8 @@ package org.flixel
 		protected var _pixels:BitmapData;
 		protected var _data:Array;
 		protected var _rects:Array;
-		protected var _tileSize:uint;
+		protected var _tileWidth:uint;
+		protected var _tileHeight:uint;
 		protected var _p:Point;
 		protected var _block:FlxCore;
 		protected var _callbacks:Array;
@@ -53,7 +54,8 @@ package org.flixel
 			totalTiles = 0;
 			_data = new Array();
 			_p = new Point();
-			_tileSize = 0;
+			_tileWidth = 0;
+			_tileHeight = 0;
 			_rects = null;
 			_pixels = null;
 			_block = new FlxCore();
@@ -65,10 +67,12 @@ package org.flixel
 		//@desc		Load the tilemap with string data and a tile graphic
 		//@param	MapData			A string of comma and line-return delineated indices indicating what order the tiles should go in
 		//@param	TileGraphic		All the tiles you want to use, arranged in a strip corresponding to the numbers in MapData
-		//@param	TileSize		The width and height of your tiles (e.g. 8) - defaults to height of the tile graphic
+		//@param	TileWidth		The width of your tiles (e.g. 8) - defaults to height of the tile graphic if unspecified
+		//@param	TileHeight		The height of your tiles (e.g. 8) - defaults to width if unspecified
 		//@return	A pointer this instance of FlxTilemap, for chaining as usual :)
-		public function loadMap(MapData:String, TileGraphic:Class, TileSize:uint=0):FlxTilemap
+		public function loadMap(MapData:String, TileGraphic:Class, TileWidth:uint=0, TileHeight:uint=0):FlxTilemap
 		{
+			//Figure out the map dimensions based on the data string
 			var c:uint;
 			var cols:Array;
 			var rows:Array = MapData.split("\n");
@@ -87,6 +91,7 @@ package org.flixel
 					_data.push(uint(cols[c]));
 			}
 			
+			//Pre-process the map data if it's auto-tiled
 			var i:uint;
 			totalTiles = widthInTiles*heightInTiles;
 			if(auto > OFF)
@@ -95,23 +100,30 @@ package org.flixel
 				for(i = 0; i < totalTiles; i++)
 					autoTile(i);
 			}
-			
-			_tileSize = TileSize;
-			width = widthInTiles*_tileSize;
-			height = heightInTiles*_tileSize;
+
+			//Figure out the size of the tiles
 			_pixels = FlxG.addBitmap(TileGraphic);
-			if(_tileSize == 0)
-				_tileSize = _pixels.height;
+			_tileWidth = TileWidth;
+			if(_tileWidth == 0)
+				_tileWidth = _pixels.height;
+			_tileHeight = TileHeight;
+			if(_tileHeight == 0)
+				_tileHeight = _tileWidth;
+			_block.width = _tileWidth;
+			_block.height = _tileHeight;
+			
+			//Then go through and create the actual map
+			width = widthInTiles*_tileWidth;
+			height = heightInTiles*_tileHeight;
 			_rects = new Array(totalTiles);
 			for(i = 0; i < totalTiles; i++)
 				updateTile(i);
-			
-			_block.width = _block.height = _tileSize;
-			
-			_screenRows = Math.ceil(FlxG.height/_tileSize)+1;
+
+			//Pre-set some helper variables for later
+			_screenRows = Math.ceil(FlxG.height/_tileHeight)+1;
 			if(_screenRows > heightInTiles)
 				_screenRows = heightInTiles;
-			_screenCols = Math.ceil(FlxG.width/_tileSize)+1;
+			_screenCols = Math.ceil(FlxG.width/_tileWidth)+1;
 			if(_screenCols > widthInTiles)
 				_screenCols = widthInTiles;
 			
@@ -123,15 +135,15 @@ package org.flixel
 		{
 			super.render();
 			getScreenXY(_p);
-			var tx:int = Math.floor(-_p.x/_tileSize);
-			var ty:int = Math.floor(-_p.y/_tileSize);
+			var tx:int = Math.floor(-_p.x/_tileWidth);
+			var ty:int = Math.floor(-_p.y/_tileHeight);
 			if(tx < 0) tx = 0;
 			if(tx > widthInTiles-_screenCols) tx = widthInTiles-_screenCols;
 			if(ty < 0) ty = 0;
 			if(ty > heightInTiles-_screenRows) ty = heightInTiles-_screenRows;
 			var ri:int = ty*widthInTiles+tx;
-			_p.x += tx*_tileSize;
-			_p.y += ty*_tileSize;
+			_p.x += tx*_tileWidth;
+			_p.y += ty*_tileHeight;
 			var opx:int = _p.x;
 			var c:uint;
 			var cri:uint;
@@ -143,12 +155,53 @@ package org.flixel
 					if(_rects[cri] != null)
 						FlxG.buffer.copyPixels(_pixels,_rects[cri],_p,null,null,true);
 					cri++;
-					_p.x += _tileSize;
+					_p.x += _tileWidth;
 				}
 				ri += widthInTiles;
 				_p.x = opx;
-				_p.y += _tileSize;
+				_p.y += _tileHeight;
 			}
+		}
+		
+		//@desc		Checks for overlaps between the provided object and any tiles above the collision index
+		//@param	Core		The FlxCore you want to check against
+		override public function overlaps(Core:FlxCore):Boolean
+		{
+			var c:uint;
+			var d:uint;
+			var i:uint;
+			var dd:uint;
+			var blocks:Array = new Array();
+			
+			//First make a list of all the blocks we'll use for collision
+			var ix:uint = Math.floor((Core.x - x)/_tileWidth);
+			var iy:uint = Math.floor((Core.y - y)/_tileHeight);
+			var iw:uint = Math.ceil(Core.width/_tileWidth)+1;
+			var ih:uint = Math.ceil(Core.height/_tileHeight)+1;
+			for(var r:uint = 0; r < ih; r++)
+			{
+				if((r < 0) || (r >= heightInTiles)) break;
+				d = (iy+r)*widthInTiles+ix;
+				for(c = 0; c < iw; c++)
+				{
+					if((c < 0) || (c >= widthInTiles)) break;
+					dd = _data[d+c];
+					if(dd >= collideIndex)
+						blocks.push({x:x+(ix+c)*_tileWidth,y:y+(iy+r)*_tileHeight,data:dd});
+				}
+			}
+			
+			//Then check for overlaps
+			var bl:uint = blocks.length;
+			var hx:Boolean = false;
+			for(i = 0; i < bl; i++)
+			{
+				_block.last.x = _block.x = blocks[i].x;
+				_block.last.y = _block.y = blocks[i].y;
+				if(_block.overlaps(Core))
+					return true;
+			}
+			return false;
 		}
 		
 		//@desc		Collides a FlxCore object against the tilemap
@@ -162,10 +215,10 @@ package org.flixel
 			var blocks:Array = new Array();
 			
 			//First make a list of all the blocks we'll use for collision
-			var ix:uint = Math.floor((Core.x - x)/_tileSize);
-			var iy:uint = Math.floor((Core.y - y)/_tileSize);
-			var iw:uint = Math.ceil(Core.width/_tileSize)+1;
-			var ih:uint = Math.ceil(Core.height/_tileSize)+1;
+			var ix:uint = Math.floor((Core.x - x)/_tileWidth);
+			var iy:uint = Math.floor((Core.y - y)/_tileHeight);
+			var iw:uint = Math.ceil(Core.width/_tileWidth)+1;
+			var ih:uint = Math.ceil(Core.height/_tileHeight)+1;
 			for(var r:uint = 0; r < ih; r++)
 			{
 				if((r < 0) || (r >= heightInTiles)) break;
@@ -175,7 +228,7 @@ package org.flixel
 					if((c < 0) || (c >= widthInTiles)) break;
 					dd = _data[d+c];
 					if(dd >= collideIndex)
-						blocks.push({x:x+(ix+c)*_tileSize,y:y+(iy+r)*_tileSize,data:dd});
+						blocks.push({x:x+(ix+c)*_tileWidth,y:y+(iy+r)*_tileHeight,data:dd});
 				}
 			}
 			
@@ -190,7 +243,7 @@ package org.flixel
 				{
 					d = blocks[i].data;
 					if(_callbacks[d] != null)
-						_callbacks[d](Core,_block.x/_tileSize,_block.y/_tileSize,d);
+						_callbacks[d](Core,_block.x/_tileWidth,_block.y/_tileHeight,d);
 					hx = true;
 				}
 			}
@@ -205,7 +258,7 @@ package org.flixel
 				{
 					d = blocks[i].data;
 					if(_callbacks[d] != null)
-						_callbacks[d](Core,_block.x/_tileSize,_block.y/_tileSize,d);
+						_callbacks[d](Core,_block.x/_tileWidth,_block.y/_tileHeight,d);
 					hy = true;
 				}
 			}
@@ -218,7 +271,15 @@ package org.flixel
 		//@param	Y		The Y coordinate of the tile (in tiles, not pixels)
 		public function getTile(X:uint,Y:uint):uint
 		{
-			return _data[Y * widthInTiles + X];
+			return getTileByIndex(Y * widthInTiles + X);
+		}
+		
+		//@desc		Get the value of a tile in the tilemap by index
+		//@param	Index	The slot in the data array (Y * widthInTiles + X) where this tile is stored
+		//@return	A uint containing the value of the tile at this spot in the array
+		public function getTileByIndex(Index:uint):uint
+		{
+			return _data[Index];
 		}
 		
 		//@desc		Change the data and graphic of a tile in the tilemap
@@ -385,7 +446,7 @@ package org.flixel
 			_data[Index] += 1;
 		}
 		
-		//@desc		Internal function used by setTile() and setTileByIndex() to update the rectangle data
+		//@desc		Internal function used in setTileByIndex() and the constructor to update the map
 		//@param	Index		The index of the tile you want to update
 		protected function updateTile(Index:uint):void
 		{
@@ -394,14 +455,14 @@ package org.flixel
 				_rects[Index] = null;
 				return;
 			}
-			var rx:uint = (_data[Index]-startingIndex)*_tileSize;
+			var rx:uint = (_data[Index]-startingIndex)*_tileWidth;
 			var ry:uint = 0;
 			if(rx >= _pixels.width)
 			{
-				ry = uint(rx/_pixels.width)*_tileSize;
+				ry = uint(rx/_pixels.width)*_tileHeight;
 				rx %= _pixels.width;
 			}
-			_rects[Index] = (new Rectangle(rx,ry,_tileSize,_tileSize));
+			_rects[Index] = (new Rectangle(rx,ry,_tileWidth,_tileHeight));
 		}
 	}
 }

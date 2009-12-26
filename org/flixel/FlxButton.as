@@ -16,6 +16,7 @@ package org.flixel
 		protected var _callback:Function;
 		protected var _pressed:Boolean;
 		protected var _initialized:Boolean;
+		protected var _sf:Point;
 		
 		//@desc		The FlxButton constructor generates a gray button with a callback function on the UI thread
 		//@param	X			The X position of the button
@@ -30,13 +31,16 @@ package org.flixel
 			height = 10;
 			_off = new FlxSprite();
 			_off.createGraphic(width,height,0xff7f7f7f);
+			_off.scrollFactor = scrollFactor;
 			_on  = new FlxSprite();
-			_off.createGraphic(width,height,0xffffffff);
+			_on.createGraphic(width,height,0xffffffff);
+			_on.scrollFactor = scrollFactor;
 			_callback = Callback;
 			_onToggle = false;
 			_pressed = false;
 			updatePositions();
 			_initialized = false;
+			_sf = null;
 		}
 		
 		//@desc		Set your own image as the button background
@@ -46,12 +50,12 @@ package org.flixel
 		public function loadGraphic(Image:FlxSprite,ImageHighlight:FlxSprite=null):FlxButton
 		{
 			_off = Image;
+			_off.scrollFactor = scrollFactor;
 			if(ImageHighlight == null) _on = _off;
 			else _on = ImageHighlight;
+			_on.scrollFactor = scrollFactor;
 			width = _off.width;
 			height = _off.height;
-			_off.scrollFactor = scrollFactor;
-			_on.scrollFactor = scrollFactor;
 			updatePositions();
 			return this;
 		}
@@ -85,6 +89,19 @@ package org.flixel
 				_initialized = true;
 			}
 			
+			//If the button's scrollFactor object changes we need to
+			// update the rest of the object's scrollFactors.
+			//If the scrollFactor's member x and y variables
+			// change, the objects are automatically updated.
+			if(_sf != scrollFactor)
+			{
+				_sf = scrollFactor;
+				_off.scrollFactor = _sf;
+				_on.scrollFactor = _sf;
+				_offT.scrollFactor = _sf;
+				_onT.scrollFactor = _sf;
+			}
+			
 			super.update();
 
 			if((_off != null) && _off.exists && _off.active) _off.update();
@@ -101,10 +118,7 @@ package org.flixel
 				if(!FlxG.mouse.pressed())
 					_pressed = false;
 				else if(!_pressed)
-				{
 					_pressed = true;
-					if(!_initialized) _callback();
-				}
 				visibility(!_pressed);
 			}
 			if(_onToggle) visibility(_off.visible);
@@ -191,7 +205,7 @@ package org.flixel
 		//@desc		Internal function for handling the actual callback call (for UI thread dependent calls)
 		protected function onMouseUp(event:MouseEvent):void
 		{
-			if(!exists || !visible || !active || !FlxG.mouse.justReleased()) return;
+			if(!exists || !visible || !active || !FlxG.mouse.justReleased() || (_callback == null)) return;
 			if(_off.overlapsPoint(FlxG.mouse.x+(1-scrollFactor.x)*FlxG.scroll.x,FlxG.mouse.y+(1-scrollFactor.y)*FlxG.scroll.y)) _callback();
 		}
 	}

@@ -23,10 +23,11 @@ package org.flixel
 		//@desc		If you don't like to access the data object directly, you can use this to write to it
 		//@param	FieldName		The name of the data field you want to create or overwrite
 		//@param	FieldValue		The data you want to store
-		public function write(FieldName:String,FieldValue:Object):void
+		//@return	Whether or not the write and flush were successful
+		public function write(FieldName:String,FieldValue:Object):Boolean
 		{
 			data[FieldName] = FieldValue;
-			forceSave();
+			return forceSave();
 		}
 		
 		//@desc		If you don't like to access the data object directly, you can use this to read from it
@@ -38,16 +39,25 @@ package org.flixel
 		}
 		
 		//@desc		Writes the local shared object to disk immediately
-		public function forceSave():void
+		//@param	MinFileSize		If you need X amount of space for your save, specify it here
+		//@return	Whether or not the flush was successful
+		public function forceSave(MinFileSize:uint=0):Boolean
 		{
-			_so.flush();
+			if(_so.flush(MinFileSize) == true)
+				return true;
+			else
+			{
+				FlxG.log("WARNING: There was a problem flushing\nthe shared object data from FlxSave.");
+				return false;
+			}
 		}
 		
 		//@desc		Erases everything stored in the local shared object
-		public function erase():void
+		//@return	Whether or not the clear and flush was successful
+		public function erase():Boolean
 		{
 			_so.clear();
-			forceSave();
+			return forceSave();
 		}
 	}
 }

@@ -285,8 +285,8 @@ package org.flixel
 			var ty:Number = y;
 			if((scrollFactor.x != 1) || (scrollFactor.y != 1))
 			{
-				tx -= Math.floor(FlxG.scroll.x*scrollFactor.x);
-				ty -= Math.floor(FlxG.scroll.y*scrollFactor.y);
+				tx -= Math.floor(FlxG.scroll.x*(1-scrollFactor.x));
+				ty -= Math.floor(FlxG.scroll.y*(1-scrollFactor.y));
 			}
 			if(PerPixel)
 				return _framePixels.hitTest(new Point(0,0),0xFF,new Point(X-tx,Y-ty));

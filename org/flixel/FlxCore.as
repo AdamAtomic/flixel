@@ -92,15 +92,15 @@ package org.flixel
 			var ty:Number = y;
 			if((scrollFactor.x != 1) || (scrollFactor.y != 1))
 			{
-				tx -= Math.floor(FlxG.scroll.x*scrollFactor.x);
-				ty -= Math.floor(FlxG.scroll.y*scrollFactor.y);
+				tx -= Math.floor(FlxG.scroll.x*(1-scrollFactor.x));
+				ty -= Math.floor(FlxG.scroll.y*(1-scrollFactor.y));
 			}
 			var cx:Number = Core.x;
 			var cy:Number = Core.y;
 			if((Core.scrollFactor.x != 1) || (Core.scrollFactor.y != 1))
 			{
-				cx -= Math.floor(FlxG.scroll.x*Core.scrollFactor.x);
-				cy -= Math.floor(FlxG.scroll.y*Core.scrollFactor.y);
+				cx -= Math.floor(FlxG.scroll.x*(1-Core.scrollFactor.x));
+				cy -= Math.floor(FlxG.scroll.y*(1-Core.scrollFactor.y));
 			}
 			if((cx <= tx-Core.width) || (cx >= tx+width) || (cy <= ty-Core.height) || (cy >= ty+height))
 				return false;
@@ -118,8 +118,8 @@ package org.flixel
 			var ty:Number = y;
 			if((scrollFactor.x != 1) || (scrollFactor.y != 1))
 			{
-				tx -= Math.floor(FlxG.scroll.x*scrollFactor.x);
-				ty -= Math.floor(FlxG.scroll.y*scrollFactor.y);
+				tx -= Math.floor(FlxG.scroll.x*(1-scrollFactor.x));
+				ty -= Math.floor(FlxG.scroll.y*(1-scrollFactor.y));
 			}
 			if((X <= tx) || (X >= tx+width) || (Y <= ty) || (Y >= ty+height))
 				return false;
@@ -458,6 +458,7 @@ package org.flixel
 		//@param	p	Takes a Flash Point object and assigns the post-scrolled X and Y values of this object to it
 		virtual public function getScreenXY(P:Point):void
 		{
+			if(P == null) return;
 			P.x = Math.floor(x)+Math.floor(FlxG.scroll.x*scrollFactor.x);
 			P.y = Math.floor(y)+Math.floor(FlxG.scroll.y*scrollFactor.y);
 		}

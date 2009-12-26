@@ -18,7 +18,7 @@ package org.flixel
 		
 		static public var LIBRARY_NAME:String = "flixel";
 		static public var LIBRARY_MAJOR_VERSION:uint = 1;
-		static public var LIBRARY_MINOR_VERSION:uint = 48;
+		static public var LIBRARY_MINOR_VERSION:uint = 49;
 
 		static protected var _pause:Boolean;
 		static protected var _game:FlxGame;
