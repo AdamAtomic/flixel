@@ -1,6 +1,7 @@
 package org.flixel
 {
 	import flash.net.SharedObject;
+	import flash.net.SharedObjectFlushStatus;
 	
 	//@desc		A class to help automate and simplify save games
 	public class FlxSave extends Object
@@ -13,21 +14,47 @@ package org.flixel
 		
 		//@desc		The save game constructor; creates a new local shared object to store data
 		//@param	Name	The name of the object (should be the same each time to access old data)
-		public function FlxSave(Name:String)
+		public function FlxSave()
 		{
+			name = null;
+			_so = null;
+			data = null;
+		}
+		
+		//@desc		This function either creates or reconnects to locally saved data
+		//@param	Name	The name of the object (should be the same each time to access old data)
+		//@return	Whether or not you successfully connected to the save data
+		public function bind(Name:String):Boolean
+		{
+			name = null;
+			_so = null;
+			data = null;
 			name = Name;
-			_so = SharedObject.getLocal(name);
+			try
+			{
+				_so = SharedObject.getLocal(name);
+			}
+			catch(e:Error)
+			{
+				FlxG.log("WARNING: There was a problem binding to\nthe shared object data from FlxSave.");
+				name = null;
+				_so = null;
+				data = null;
+				return false;
+			}
 			data = _so.data;
+			return true;
 		}
 		
 		//@desc		If you don't like to access the data object directly, you can use this to write to it
 		//@param	FieldName		The name of the data field you want to create or overwrite
 		//@param	FieldValue		The data you want to store
+		//@param	MinFileSize		If you need X amount of space for your save, specify it here
 		//@return	Whether or not the write and flush were successful
-		public function write(FieldName:String,FieldValue:Object):Boolean
+		public function write(FieldName:String,FieldValue:Object,MinFileSize:uint=0):Boolean
 		{
 			data[FieldName] = FieldValue;
-			return forceSave();
+			return forceSave(MinFileSize);
 		}
 		
 		//@desc		If you don't like to access the data object directly, you can use this to read from it
@@ -43,21 +70,26 @@ package org.flixel
 		//@return	Whether or not the flush was successful
 		public function forceSave(MinFileSize:uint=0):Boolean
 		{
-			if(_so.flush(MinFileSize) == true)
-				return true;
-			else
+			var status:Object = null;
+			try
+			{
+				status = _so.flush(MinFileSize);
+			}
+			catch (e:Error)
 			{
 				FlxG.log("WARNING: There was a problem flushing\nthe shared object data from FlxSave.");
 				return false;
 			}
+			return status == SharedObjectFlushStatus.FLUSHED;
 		}
 		
 		//@desc		Erases everything stored in the local shared object
+		//@param	MinFileSize		If you need X amount of space for your save, specify it here
 		//@return	Whether or not the clear and flush was successful
-		public function erase():Boolean
+		public function erase(MinFileSize:uint=0):Boolean
 		{
 			_so.clear();
-			return forceSave();
+			return forceSave(MinFileSize);
 		}
 	}
 }
