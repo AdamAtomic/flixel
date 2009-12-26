@@ -96,10 +96,10 @@ package org.flixel
 			if(_sf != scrollFactor)
 			{
 				_sf = scrollFactor;
-				_off.scrollFactor = _sf;
-				_on.scrollFactor = _sf;
-				_offT.scrollFactor = _sf;
-				_onT.scrollFactor = _sf;
+				if(_off != null) _off.scrollFactor = _sf;
+				if(_on != null) _on.scrollFactor = _sf;
+				if(_offT != null) _offT.scrollFactor = _sf;
+				if(_onT != null) _onT.scrollFactor = _sf;
 			}
 			
 			super.update();
