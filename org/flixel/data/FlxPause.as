@@ -2,6 +2,10 @@ package org.flixel.data
 {
 	import org.flixel.*;
 
+	/**
+	 * This is the default flixel pause screen.
+	 * It can be overridden with your own <code>FlxLayer</code> object.
+	 */
 	public class FlxPause extends FlxLayer
 	{
 		[Embed(source="key_minus.png")] private var ImgKeyMinus:Class;
@@ -9,12 +13,14 @@ package org.flixel.data
 		[Embed(source="key_0.png")] private var ImgKey0:Class;
 		[Embed(source="key_p.png")] private var ImgKeyP:Class;
 
+		/**
+		 * Constructor.
+		 */
 		public function FlxPause()
 		{
 			super();
 			scrollFactor.x = 0;
 			scrollFactor.y = 0;
-			
 			var w:uint = 80;
 			var h:uint = 92;
 			x = (FlxG.width-w)/2;

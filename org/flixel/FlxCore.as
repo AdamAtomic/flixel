@@ -3,34 +3,76 @@ package org.flixel
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
-	//@desc		This is the base class for most of the display objects (FlxSprite, FlxText, etc).  It includes some very simple basic attributes about game objects.
+	/**
+	 * This is the base class for most of the display objects (<code>FlxSprite</code>, <code>FlxText</code>, etc).
+	 * It includes some basic attributes about game objects, including retro-style flickering,
+	 * basic state information, sizes, and scrolling.  This class also contains the
+	 * basic collision methods used by every flixel object.
+	 */
 	public class FlxCore
 	{
-		//@desc	Kind of a global on/off switch for any objects descended from FlxCore
+		/**
+		 * Kind of a global on/off switch for any objects descended from <code>FlxCore</code>.
+		 */
 		public var exists:Boolean;
-		//@desc	If an object is not alive, the game loop will not automatically call update() on it
+		/**
+		 * If an object is not alive, the game loop will not automatically call <code>update()</code> on it.
+		 */
 		public var active:Boolean;
-		//@desc	If an object is not visible, the game loop will not automatically call render() on it
+		/**
+		 * If an object is not visible, the game loop will not automatically call <code>render()</code> on it.
+		 */
 		public var visible:Boolean;
-		//@desc	If an object is dead, the functions that automate collisions will skip it (see overlapArrays in FlxSprite and collideArrays in FlxBlock)
+		/**
+		 * If an object is dead, the functions that automate collisions will skip it (see <code>FlxG.overlapArrays()</code> and <code>FlxG.collideArrays()</code>).
+		 */
 		public var dead:Boolean;
-		//@desc If an object is 'fixed' in space, it will not budge when it collides with a not-fixed object
+		/**
+		 * If an object is 'fixed' in space, it will not budge when it collides with a not-fixed object.
+		 */
 		public var fixed:Boolean;
-		
-		//Basic attributes variables
+
+		/**
+		 * @default 0
+		 */
 		public var width:uint;
+		/**
+		 * @default 0
+		 */
 		public var height:uint;
+		/**
+		 * @default 0
+		 */
 		public var x:Number;
+		/**
+		 * @default 0
+		 */
 		public var y:Number;
-		//@desc	Stores the last position of the sprite, used by collision detection algorithm
+		/**
+		 * Stores the last position of the sprite, used by collision detection algorithm.
+		 */
 		public var last:Point;
 		
-		//@desc	A point that can store numbers from 0 to 1 (for X and Y independently) that governs how much this object is affected by the camera subsystem.  0 means it never moves, like a HUD element or far background graphic.  1 means it scrolls along a tthe same speed as the foreground layer.
+		/**
+		 * A point that can store numbers from 0 to 1 (for X and Y independently)
+		 * that governs how much this object is affected by the camera subsystem.
+		 * 0 means it never moves, like a HUD element or far background graphic.
+		 * 1 means it scrolls along a the same speed as the foreground layer.
+		 * scrollFactor is initialized as (1,1) by default.
+		 */
 		public var scrollFactor:Point;
+		/**
+		 * Internal helper used for retro-style flickering.
+		 */
 		protected var _flicker:Boolean;
+		/**
+		 * Internal helper used for retro-style flickering.
+		 */
 		protected var _flickerTimer:Number;
 		
-		//@desc		Constructor
+		/**
+		 * Creates a new <code>FlxCore</code> object.
+		 */
 		public function FlxCore()
 		{
 			exists = true;
@@ -50,13 +92,18 @@ package org.flixel
 			_flickerTimer = -1;
 		}
 		
-		//@desc		Called by the game state when states are changed (if it's in the state's layer)
+		/**
+		 * Called by <code>FlxLayer</code> when states are changed (if it belongs to a layer)
+		 */
 		virtual public function destroy():void
 		{
 			//Nothing to destroy by default, core just stores some simple variables.
 		}
 		
-		//@desc		Just updates the flickering.  FlxSprite and other subclasses override this to do more complicated behavior.
+		/**
+		 * Just updates the flickering.  <code>FlxSprite</code> and other subclasses
+		 * override this to do more complicated behavior.
+		 */
 		virtual public function update():void
 		{
 			last.x = x;
@@ -80,12 +127,18 @@ package org.flixel
 			}
 		}
 		
-		//@desc		FlxSprite and other subclasses override this to render their materials to the screen
+		/**
+		 * <code>FlxSprite</code> and other subclasses override this to draw their contents to the screen.
+		 */
 		virtual public function render():void {}
 		
-		//@desc		Checks to see if some FlxCore object overlaps this FlxCore object
-		//@param	Core	The object being tested
-		//@return	Whether or not the two objects overlap
+		/**
+		 * Checks to see if some <code>FlxCore</code> object overlaps this <code>FlxCore</code> object.
+		 * 
+		 * @param	Core	The object being tested.
+		 * 
+		 * @return	Whether or not the two objects overlap.
+		 */
 		virtual public function overlaps(Core:FlxCore):Boolean
 		{
 			var tx:Number = x;
@@ -107,11 +160,15 @@ package org.flixel
 			return true;
 		}
 		
-		//@desc		Checks to see if a point in 2D space overlaps this FlxCore object
-		//@param	X			The X coordinate of the point
-		//@param	Y			The Y coordinate of the point
-		//@param	PerPixel	Whether or not to use per pixel collision checking (only available in FlxSprite subclass, included here because of Flash's F'd up lack of polymorphism)
-		//@return	Whether or not the point overlaps this object
+		/**
+		 * Checks to see if a point in 2D space overlaps this <code>FlxCore</code> object.
+		 * 
+		 * @param	X			The X coordinate of the point.
+		 * @param	Y			The Y coordinate of the point.
+		 * @param	PerPixel	Whether or not to use per pixel collision checking (only available in <code>FlxSprite</code> subclass).
+		 * 
+		 * @return	Whether or not the point overlaps this object.
+		 */
 		virtual public function overlapsPoint(X:Number,Y:Number,PerPixel:Boolean = false):Boolean
 		{
 			var tx:Number = x;
@@ -126,8 +183,12 @@ package org.flixel
 			return true;
 		}
 		
-		//@desc		Collides a FlxCore against this object.  Simply calls collideX then collideY internally.
-		//@param	Core	The FlxCore you want to collide
+		/**
+		 * Collides a <code>FlxCore</code> against this object.
+		 * Just calls <code>collideX()</code> then <code>collideY()</code>.
+		 * 
+		 * @param	Core	The <code>FlxCore</code> you want to collide.
+		 */
 		virtual public function collide(Core:FlxCore):Boolean
 		{
 			var hx:Boolean = collideX(Core);
@@ -135,8 +196,11 @@ package org.flixel
 			return hx || hy;
 		}
 		
-		//@desc		Collides a FlxCore against this object on the X axis ONLY.
-		//@param	Core	The FlxCore you want to collide
+		/**
+		 * Collides a <code>FlxCore</code> against this object on the X axis ONLY.
+		 * 
+		 * @param	Core	The <code>FlxCore</code> you want to collide.
+		 */
 		virtual public function collideX(Core:FlxCore):Boolean
 		{
 			//Helper variables for our collision process
@@ -178,15 +242,7 @@ package org.flixel
 				(coreBounds.y + coreBounds.height <= thisBounds.y) ||
 				(coreBounds.y >= thisBounds.y + thisBounds.height) )
 				return false;
-			
-			//NOTE: at this point we know the two volumes overlap.
-			// It's just a matter of figuring out what kind of collision just happened.
-			// We know collisions have to be either "right side" or "left side" of 'Core'
-			// But there is a matched speed + adjacency corner case that we're not handling.
-			// Differentiating this corner case from teleportation is the crux move.
-			
-			
-				
+
 			//Check for a right side collision if Core is moving right faster than 'this',
 			// or if Core is moving left slower than 'this' we want to check the right side too
 			var ctp:Number = Core.x - Core.last.x;
@@ -256,8 +312,11 @@ package org.flixel
 			return false;
 		}
 		
-		//@desc		Collides a FlxCore against this object on the Y axis ONLY.
-		//@param	Core	The FlxCore you want to collide
+		/**
+		 * Collides a <code>FlxCore</code> against this object on the Y axis ONLY.
+		 * 
+		 * @param	Core	The <code>FlxCore</code> you want to collide.
+		 */
 		virtual public function collideY(Core:FlxCore):Boolean
 		{
 			//Helper variables for our collision process
@@ -372,8 +431,11 @@ package org.flixel
 			return false;
 		}
 		
-		//@desc		Collides an array of FlxCore objects against the tilemap
-		//@param	Cores		The FlxCore objects you want to collide against
+		/**
+		 * Collides an array of <code>FlxCore</code> objects against the tilemap.
+		 * 
+		 * @param	Cores		The array of <code>FlxCore</code> objects you want to collide against.
+		 */
 		public function collideArray(Cores:Array):void
 		{
 			if(!exists || dead) return;
@@ -387,8 +449,11 @@ package org.flixel
 			}
 		}
 		
-		//@desc		Collides an array of FlxCore objects against the tilemap against the X axis only
-		//@param	Cores		The FlxCore objects you want to collide against
+		/**
+		 * Collides an array of <code>FlxCore</code> objects against the tilemap against the X axis only.
+		 * 
+		 * @param	Cores		The array of <code>FlxCore</code> objects you want to collide against.
+		 */
 		public function collideArrayX(Cores:Array):void
 		{
 			if(!exists || dead) return;
@@ -402,8 +467,10 @@ package org.flixel
 			}
 		}
 		
-		//@desc		Collides an array of FlxCore objects against the tilemap against the Y axis only
-		//@param	Cores		The FlxCore objects you want to collide against
+		/**Collides an array of <code>FlxCore</code> objects against the tilemap against the Y axis only.
+		 *
+		 * @param	Cores		The array of <code>FlxCore</code> objects you want to collide against.
+		 */
 		public function collideArrayY(Cores:Array):void
 		{
 			if(!exists || dead) return;
@@ -417,34 +484,55 @@ package org.flixel
 			}
 		}
 		
-		//@desc		Called when this object collides with a FlxBlock on one of its sides
-		//@return	Whether you wish the FlxBlock to collide with it or not
+		/**
+		 * Called when this object collides with another <code>FlxCore</code> on one of its sides.
+		 * 
+		 * @return	Whether you wish the <code>FlxCore</code> to collide with it or not.
+		 */
 		virtual public function hitWall(Contact:FlxCore=null):Boolean { return true; }
 		
-		//@desc		Called when this object collides with the top of a FlxBlock
-		//@return	Whether you wish the FlxBlock to collide with it or not
+		/**
+		 * Called when this object collides with the top of another <code>FlxCore</code>.
+		 * 
+		 * @return	Whether you wish the <code>FlxCore</code> to collide with it or not.
+		 */
 		virtual public function hitFloor(Contact:FlxCore=null):Boolean { return true; }
 		
-		//@desc		Called when this object collides with the bottom of a FlxBlock
-		//@return	Whether you wish the FlxBlock to collide with it or not
+		/**
+		 * Called when this object collides with the bottom of another <code>FlxCore</code>.
+		 * 
+		 * @return	Whether you wish the <code>FlxCore</code> to collide with it or not.
+		 */
 		virtual public function hitCeiling(Contact:FlxCore=null):Boolean { return true; }
 		
-		//@desc		Call this function to "kill" a sprite so that it no longer 'exists'
+		/**
+		 * Call this function to "kill" a sprite so that it no longer 'exists'.
+		 */
 		virtual public function kill():void
 		{
 			exists = false;
 			dead = true;
 		}
 		
-		//@desc		Tells this object to flicker for the number of seconds requested (0 = infinite, negative number tells it to stop)
+		/**
+		 * Tells this object to flicker, retro-style.
+		 * 
+		 * @param	Duration	How many seconds to flicker for.
+		 */
 		public function flicker(Duration:Number=1):void { _flickerTimer = Duration; if(_flickerTimer < 0) { _flicker = false; visible = true; } }
 		
-		//@desc		Called when this object collides with the bottom of a FlxBlock
-		//@return	Whether the object is flickering or not
+		/**
+		 * Check to see if the object is still flickering.
+		 * 
+		 * @return	Whether the object is flickering or not.
+		 */
 		public function flickering():Boolean { return _flickerTimer >= 0; }
 		
-		//@desc		Call this to check and see if this object is currently on screen
-		//@return	Whether the object is on screen or not
+		/**
+		 * Check and see if this object is currently on screen.
+		 * 
+		 * @return	Whether the object is on screen or not.
+		 */
 		public function onScreen():Boolean
 		{
 			var p:Point = new Point();
@@ -454,18 +542,28 @@ package org.flixel
 			return true;
 		}
 		
-		//@desc		Call this function to figure out the post-scrolling "screen" position of the object
-		//@param	p	Takes a Flash Point object and assigns the post-scrolled X and Y values of this object to it
-		virtual public function getScreenXY(P:Point):void
+		/**
+		 * Call this function to figure out the on-screen position of the object.
+		 * 
+		 * @param	P	Takes a <code>Point</code> object and assigns the post-scrolled X and Y values of this object to it.
+		 * 
+		 * @return	The <code>Point</code> you passed in, or a new <code>Point</code> if you didn't pass one, containing the screen X and Y position of this object.
+		 */
+		virtual public function getScreenXY(P:Point=null):Point
 		{
-			if(P == null) return;
+			if(P == null) P = new Point();
 			P.x = Math.floor(x)+Math.floor(FlxG.scroll.x*scrollFactor.x);
 			P.y = Math.floor(y)+Math.floor(FlxG.scroll.y*scrollFactor.y);
+			return P;
 		}
 		
-		//@desc		Handy function for reviving game objects.  Resets their existence flags and position, including LAST position.
-		//@param	X	The X position of the revived object
-		//@param	Y	The Y position of the revived object
+		/**
+		 * Handy function for reviving game objects.
+		 * Resets their existence flags and position, including LAST position.
+		 * 
+		 * @param	X	The new X position of this object.
+		 * @param	Y	The new Y position of this object.
+		 */
 		virtual public function reset(X:Number,Y:Number):void
 		{
 			exists = true;

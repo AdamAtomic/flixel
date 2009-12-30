@@ -4,19 +4,37 @@ package org.flixel
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
-	//@desc		This is the basic "environment object" class, used to create walls and floors
+	/**
+	 * This is the basic "environment object" class, used to create simple walls and floors.
+	 * It can be filled with a random selection of tiles to quickly add detail.
+	 */
 	public class FlxBlock extends FlxCore
 	{
+		/**
+		 * Stores the tile strip from which the tiles are loaded.
+		 */
 		protected var _pixels:BitmapData;
+		/**
+		 * Array of rectangles used to quickly blit the tiles to the screen.
+		 */
 		protected var _rects:Array;
+		/**
+		 * The size of the tiles (e.g. 8 means 8x8).
+		 */
 		protected var _tileSize:uint;
+		/**
+		 * Helper variable used during rendering.
+		 */
 		protected var _p:Point;
 		
-		//@desc		Constructor
-		//@param	X			The X position of the block
-		//@param	Y			The Y position of the block
-		//@param	Width		The width of the block
-		//@param	Height		The height of the block
+		/**
+		 * Creates a new <code>FlxBlock</code> object with the specified position and size.
+		 * 
+		 * @param	X			The X position of the block.
+		 * @param	Y			The Y position of the block.
+		 * @param	Width		The width of the block.
+		 * @param	Height		The height of the block.
+		 */
 		public function FlxBlock(X:int,Y:int,Width:uint,Height:uint)
 		{
 			super();
@@ -27,9 +45,12 @@ package org.flixel
 			fixed = true;
 		}
 		
-		//@desc		Fills the block with a randomly arranged selection of graphics from the image provided
-		//@param	TileGraphic The graphic class that contains the tiles that should fill this block
-		//@param	Empties		The number of "empty" tiles to add to the auto-fill algorithm (e.g. 8 tiles + 4 empties = 1/3 of block will be open holes)
+		/**
+		 * Fills the block with a randomly arranged selection of graphics from the image provided.
+		 * 
+		 * @param	TileGraphic The graphic class that contains the tiles that should fill this block.
+		 * @param	Empties		The number of "empty" tiles to add to the auto-fill algorithm (e.g. 8 tiles + 4 empties = 1/3 of block will be open holes).
+		 */
 		public function loadGraphic(TileGraphic:Class,Empties:uint=0):void
 		{
 			if(TileGraphic == null)
@@ -54,7 +75,9 @@ package org.flixel
 			}
 		}
 		
-		//@desc		Draws this block
+		/**
+		 * Draws this block.
+		 */
 		override public function render():void
 		{
 			super.render();

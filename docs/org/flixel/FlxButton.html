@@ -1,0 +1,822 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../../style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="../../print.css" type="text/css" media="print">
+<meta content="FlxButton,org.flixel.FlxButton,_callback,_initialized,_off,_offT,_offTO,_on,_onT,_onTO,_onToggle,_pressed,_sf,destroy,loadGraphic,loadText,on,onMouseUp,render,switchOff,switchOn,update,updatePositions,visibility" name="keywords">
+<title>org.flixel.FlxButton</title>
+</head>
+<body>
+<script type="text/javascript" language="javascript" src="../../asdoc.js"></script><script type="text/javascript" language="javascript" src="../../cookies.js"></script><script type="text/javascript" language="javascript">
+<!--
+				asdocTitle = 'FlxButton - API Documentation';
+				var baseRef = '../../';
+				window.onload = configPage;
+			--></script>
+<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" class="titleTable">
+<tr>
+<td align="left" class="titleTableTitle">API Documentation</td><td align="right" class="titleTableTopNav"><a onclick="loadClassListFrame('../../all-classes.html')" href="../../package-summary.html">All&nbsp;Packages</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../all-classes.html')" href="../../class-summary.html">All&nbsp;Classes</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../index-list.html')" href="../../all-index-A.html">Index</a>&nbsp;|&nbsp;<a href="../../index.html?org/flixel/FlxButton.html&amp;org/flixel/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></td><td rowspan="3" align="right" class="titleTableLogo"><img alt="Adobe Logo" title="Adobe Logo" class="logoImage" src="../../images/logo.jpg"></td>
+</tr>
+<tr class="titleTableRow2">
+<td align="left" id="subTitle" class="titleTableSubTitle">Class&nbsp;FlxButton</td><td align="right" id="subNav" class="titleTableSubNav"><a href="#propertySummary">Properties</a>&nbsp;| <a href="#methodSummary">Methods</a></td>
+</tr>
+<tr class="titleTableRow3">
+<td colspan="2">&nbsp;</td>
+</tr>
+</table>
+<script type="text/javascript" language="javascript">
+<!--
+if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Class FlxButton"); titleBar_setSubNav(false,true,false,false,false,false,true,false,false,false,false,false,false,false);}
+--></script>
+<div class="MainContent">
+<table cellspacing="0" cellpadding="0" class="classHeaderTable">
+<tr>
+<td class="classHeaderTableLabel">Package</td><td><a onclick="javascript:loadClassListFrame('class-list.html')" href="package-detail.html">org.flixel</a></td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Class</td><td class="classSignature">public class FlxButton</td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Inheritance</td><td class="inheritanceList">FlxButton <img class="inheritArrow" alt="Inheritance" title="Inheritance" src="../../images/inherit-arrow.gif"> <a href="FlxCore.html">FlxCore</a></td>
+</tr>
+</table>
+<p></p>
+  A simple button class that calls a function when clicked by the mouse.
+  Supports labels, highlight states, and parallax scrolling.
+  <p></p>
+<br>
+<hr>
+</div>
+<a name="propertySummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Properties</div>
+<div class="showHideLinks">
+<div class="hideInheritedProperty" id="hideInheritedProperty">
+<a onclick="javascript:setInheritedVisible(false,'Property');" href="#propertySummary" class="showHideLink"><img src="../../images/expanded.gif" class="showHideLinkImage"> Hide Inherited Public Properties</a>
+</div>
+<div class="showInheritedProperty" id="showInheritedProperty">
+<a onclick="javascript:setInheritedVisible(true,'Property');" href="#propertySummary" class="showHideLink"><img src="../../images/collapsed.gif" class="showHideLinkImage"> Show Inherited Public Properties</a>
+</div>
+</div>
+<table id="summaryTableProperty" class="summaryTable hideInheritedProperty" cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxCore.html#active">active</a> : Boolean<div class="summaryTableDescription">
+   If an object is not alive, the game loop will not automatically call <code>update()</code> on it.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxCore.html#dead">dead</a> : Boolean<div class="summaryTableDescription">
+   If an object is dead, the functions that automate collisions will skip it (see <code>FlxG.overlapArrays()</code> and <code>FlxG.collideArrays()</code>).</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxCore.html#exists">exists</a> : Boolean<div class="summaryTableDescription">
+   Kind of a global on/off switch for any objects descended from <code>FlxCore</code>.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxCore.html#fixed">fixed</a> : Boolean<div class="summaryTableDescription">
+   If an object is 'fixed' in space, it will not budge when it collides with a not-fixed object.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxCore.html#height">height</a> : uint<div class="summaryTableDescription">
+   </div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxCore.html#last">last</a> : Point<div class="summaryTableDescription">
+   Stores the last position of the sprite, used by collision detection algorithm.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxCore.html#scrollFactor">scrollFactor</a> : Point<div class="summaryTableDescription">
+   A point that can store numbers from 0 to 1 (for X and Y independently)
+   that governs how much this object is affected by the camera subsystem.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxCore.html#visible">visible</a> : Boolean<div class="summaryTableDescription">
+   If an object is not visible, the game loop will not automatically call <code>render()</code> on it.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxCore.html#width">width</a> : uint<div class="summaryTableDescription">
+   </div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxCore.html#x">x</a> : Number<div class="summaryTableDescription">
+   </div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxCore.html#y">y</a> : Number<div class="summaryTableDescription">
+   </div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+</table>
+</div>
+<a name="protectedPropertySummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Protected Properties</div>
+<div class="showHideLinks">
+<div class="hideInheritedProtectedProperty" id="hideInheritedProtectedProperty">
+<a onclick="javascript:setInheritedVisible(false,'ProtectedProperty');" href="#protectedPropertySummary" class="showHideLink"><img src="../../images/expanded.gif" class="showHideLinkImage"> Hide Inherited Protected Properties</a>
+</div>
+<div class="showInheritedProtectedProperty" id="showInheritedProtectedProperty">
+<a onclick="javascript:setInheritedVisible(true,'ProtectedProperty');" href="#protectedPropertySummary" class="showHideLink"><img src="../../images/collapsed.gif" class="showHideLinkImage"> Show Inherited Protected Properties</a>
+</div>
+</div>
+<table id="summaryTableProtectedProperty" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_callback">_callback</a> : Function<div class="summaryTableDescription">
+   This function is called when the button is clicked.</div>
+</td><td class="summaryTableOwnerCol">FlxButton</td>
+</tr>
+<tr class="hideInheritedProtectedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxCore.html#_flicker">_flicker</a> : Boolean<div class="summaryTableDescription">
+   Internal helper used for retro-style flickering.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="hideInheritedProtectedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxCore.html#_flickerTimer">_flickerTimer</a> : Number<div class="summaryTableDescription">
+   Internal helper used for retro-style flickering.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_initialized">_initialized</a> : Boolean<div class="summaryTableDescription">
+   Whether or not the button has initialized itself yet.</div>
+</td><td class="summaryTableOwnerCol">FlxButton</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_off">_off</a> : <a href="../flixel/FlxSprite.html">FlxSprite</a>
+<div class="summaryTableDescription">
+   Stores the 'off' or normal button state graphic.</div>
+</td><td class="summaryTableOwnerCol">FlxButton</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_offT">_offT</a> : <a href="../flixel/FlxText.html">FlxText</a>
+<div class="summaryTableDescription">
+   Stores the 'off' or normal button state label.</div>
+</td><td class="summaryTableOwnerCol">FlxButton</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_offTO">_offTO</a> : Point<div class="summaryTableDescription">
+   Stores the off label offset.</div>
+</td><td class="summaryTableOwnerCol">FlxButton</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_on">_on</a> : <a href="../flixel/FlxSprite.html">FlxSprite</a>
+<div class="summaryTableDescription">
+   Stores the 'on' or highlighted button state graphic.</div>
+</td><td class="summaryTableOwnerCol">FlxButton</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_onT">_onT</a> : <a href="../flixel/FlxText.html">FlxText</a>
+<div class="summaryTableDescription">
+   Stores the 'on' or highlighted button state label.</div>
+</td><td class="summaryTableOwnerCol">FlxButton</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_onTO">_onTO</a> : Point<div class="summaryTableDescription">
+   Stores the on label offset.</div>
+</td><td class="summaryTableOwnerCol">FlxButton</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_onToggle">_onToggle</a> : Boolean<div class="summaryTableDescription">
+   Used for checkbox-style behavior.</div>
+</td><td class="summaryTableOwnerCol">FlxButton</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_pressed">_pressed</a> : Boolean<div class="summaryTableDescription">
+   Tracks whether or not the button is currently pressed.</div>
+</td><td class="summaryTableOwnerCol">FlxButton</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_sf">_sf</a> : Point<div class="summaryTableDescription">
+   Helper variable for correcting its members' <code>scrollFactor</code> objects.</div>
+</td><td class="summaryTableOwnerCol">FlxButton</td>
+</tr>
+</table>
+</div>
+<a name="methodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Methods</div>
+<div class="showHideLinks">
+<div class="hideInheritedMethod" id="hideInheritedMethod">
+<a onclick="javascript:setInheritedVisible(false,'Method');" href="#methodSummary" class="showHideLink"><img src="../../images/expanded.gif" class="showHideLinkImage"> Hide Inherited Public Methods</a>
+</div>
+<div class="showInheritedMethod" id="showInheritedMethod">
+<a onclick="javascript:setInheritedVisible(true,'Method');" href="#methodSummary" class="showHideLink"><img src="../../images/collapsed.gif" class="showHideLinkImage"> Show Inherited Public Methods</a>
+</div>
+</div>
+<table id="summaryTableMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#FlxButton()">FlxButton</a>(X:int, Y:int, Callback:Function)</div>
+<div class="summaryTableDescription">
+   Creates a new <code>FlxButton</code> object with a gray background
+   and a callback function on the UI thread.</div>
+</td><td class="summaryTableOwnerCol">FlxButton</td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxCore.html#collide()">collide</a>(Core:<a href="../flixel/FlxCore.html">FlxCore</a>):Boolean</div>
+<div class="summaryTableDescription">
+   Collides a <code>FlxCore</code> against this object.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxCore.html#collideArray()">collideArray</a>(Cores:Array):void</div>
+<div class="summaryTableDescription">
+   Collides an array of <code>FlxCore</code> objects against the tilemap.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxCore.html#collideArrayX()">collideArrayX</a>(Cores:Array):void</div>
+<div class="summaryTableDescription">
+   Collides an array of <code>FlxCore</code> objects against the tilemap against the X axis only.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxCore.html#collideArrayY()">collideArrayY</a>(Cores:Array):void</div>
+<div class="summaryTableDescription">Collides an array of <code>FlxCore</code> objects against the tilemap against the Y axis only.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxCore.html#collideX()">collideX</a>(Core:<a href="../flixel/FlxCore.html">FlxCore</a>):Boolean</div>
+<div class="summaryTableDescription">
+   Collides a <code>FlxCore</code> against this object on the X axis ONLY.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxCore.html#collideY()">collideY</a>(Core:<a href="../flixel/FlxCore.html">FlxCore</a>):Boolean</div>
+<div class="summaryTableDescription">
+   Collides a <code>FlxCore</code> against this object on the Y axis ONLY.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#destroy()">destroy</a>():void</div>
+<div class="summaryTableDescription">
+   Called by the game state when state is changed (if this object belongs to the state)
+   </div>
+</td><td class="summaryTableOwnerCol">FlxButton</td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxCore.html#flicker()">flicker</a>(Duration:Number = 1):void</div>
+<div class="summaryTableDescription">
+   Tells this object to flicker, retro-style.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxCore.html#flickering()">flickering</a>():Boolean</div>
+<div class="summaryTableDescription">
+   Check to see if the object is still flickering.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxCore.html#getScreenXY()">getScreenXY</a>(P:Point = null):Point</div>
+<div class="summaryTableDescription">
+   Call this function to figure out the on-screen position of the object.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxCore.html#hitCeiling()">hitCeiling</a>(Contact:<a href="../flixel/FlxCore.html">FlxCore</a> = null):Boolean</div>
+<div class="summaryTableDescription">
+   Called when this object collides with the bottom of another <code>FlxCore</code>.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxCore.html#hitFloor()">hitFloor</a>(Contact:<a href="../flixel/FlxCore.html">FlxCore</a> = null):Boolean</div>
+<div class="summaryTableDescription">
+   Called when this object collides with the top of another <code>FlxCore</code>.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxCore.html#hitWall()">hitWall</a>(Contact:<a href="../flixel/FlxCore.html">FlxCore</a> = null):Boolean</div>
+<div class="summaryTableDescription">
+   Called when this object collides with another <code>FlxCore</code> on one of its sides.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxCore.html#kill()">kill</a>():void</div>
+<div class="summaryTableDescription">
+   Call this function to "kill" a sprite so that it no longer 'exists'.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#loadGraphic()">loadGraphic</a>(Image:<a href="FlxSprite.html">FlxSprite</a>, ImageHighlight:<a href="FlxSprite.html">FlxSprite</a> = null):<a href="../flixel/FlxButton.html">FlxButton</a>
+</div>
+<div class="summaryTableDescription">
+   Set your own image as the button background.</div>
+</td><td class="summaryTableOwnerCol">FlxButton</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#loadText()">loadText</a>(Text:<a href="FlxText.html">FlxText</a>, TextHighlight:<a href="FlxText.html">FlxText</a> = null):<a href="../flixel/FlxButton.html">FlxButton</a>
+</div>
+<div class="summaryTableDescription">
+   Add a text label to the button.</div>
+</td><td class="summaryTableOwnerCol">FlxButton</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#on()">on</a>():Boolean</div>
+<div class="summaryTableDescription">
+   Check to see if the button is toggled on, like a checkbox.</div>
+</td><td class="summaryTableOwnerCol">FlxButton</td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxCore.html#onScreen()">onScreen</a>():Boolean</div>
+<div class="summaryTableDescription">
+   Check and see if this object is currently on screen.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxCore.html#overlaps()">overlaps</a>(Core:<a href="../flixel/FlxCore.html">FlxCore</a>):Boolean</div>
+<div class="summaryTableDescription">
+   Checks to see if some <code>FlxCore</code> object overlaps this <code>FlxCore</code> object.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxCore.html#overlapsPoint()">overlapsPoint</a>(X:Number, Y:Number, PerPixel:Boolean = false):Boolean</div>
+<div class="summaryTableDescription">
+   Checks to see if a point in 2D space overlaps this <code>FlxCore</code> object.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#render()">render</a>():void</div>
+<div class="summaryTableDescription">
+   Called by the game loop automatically, renders button to screen.</div>
+</td><td class="summaryTableOwnerCol">FlxButton</td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxCore.html#reset()">reset</a>(X:Number, Y:Number):void</div>
+<div class="summaryTableDescription">
+   Handy function for reviving game objects.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#switchOff()">switchOff</a>():void</div>
+<div class="summaryTableDescription">
+   Call this function from your callback to toggle the button off, like a checkbox.</div>
+</td><td class="summaryTableOwnerCol">FlxButton</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#switchOn()">switchOn</a>():void</div>
+<div class="summaryTableDescription">
+   Call this function from your callback to toggle the button on, like a checkbox.</div>
+</td><td class="summaryTableOwnerCol">FlxButton</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#update()">update</a>():void</div>
+<div class="summaryTableDescription">
+   Called by the game loop automatically, handles mouseover and click detection.</div>
+</td><td class="summaryTableOwnerCol">FlxButton</td>
+</tr>
+</table>
+</div>
+<a name="protectedMethodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Protected Methods</div>
+<table id="summaryTableProtectedMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#onMouseUp()">onMouseUp</a>(event:MouseEvent):void</div>
+<div class="summaryTableDescription">
+   Internal function for handling the actual callback call (for UI thread dependent calls).</div>
+</td><td class="summaryTableOwnerCol">FlxButton</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#updatePositions()">updatePositions</a>():void</div>
+<div class="summaryTableDescription">
+   Internal function that just updates the X and Y position of the button's graphics.</div>
+</td><td class="summaryTableOwnerCol">FlxButton</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#visibility()">visibility</a>(On:Boolean):void</div>
+<div class="summaryTableDescription">
+   Internal function for handling the visibility of the off and on graphics.</div>
+</td><td class="summaryTableOwnerCol">FlxButton</td>
+</tr>
+</table>
+</div>
+<script type="text/javascript" language="javascript">
+<!--
+showHideInherited();
+--></script>
+<div class="MainContent">
+<a name="propertyDetail"></a>
+<div class="detailSectionHeader">Property detail</div>
+<a name="_callback"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_callback</td><td class="detailHeaderType">property</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _callback:Function</code><p>
+   This function is called when the button is clicked.
+   </p></div>
+<a name="_initialized"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_initialized</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _initialized:Boolean</code><p>
+   Whether or not the button has initialized itself yet.
+   </p></div>
+<a name="_off"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_off</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _off:<a href="../flixel/FlxSprite.html">FlxSprite</a></code><p>
+   Stores the 'off' or normal button state graphic.
+   </p></div>
+<a name="_offT"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_offT</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _offT:<a href="../flixel/FlxText.html">FlxText</a></code><p>
+   Stores the 'off' or normal button state label.
+   </p></div>
+<a name="_offTO"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_offTO</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _offTO:Point</code><p>
+   Stores the off label offset.
+   </p></div>
+<a name="_on"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_on</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _on:<a href="../flixel/FlxSprite.html">FlxSprite</a></code><p>
+   Stores the 'on' or highlighted button state graphic.
+   </p></div>
+<a name="_onT"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_onT</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _onT:<a href="../flixel/FlxText.html">FlxText</a></code><p>
+   Stores the 'on' or highlighted button state label.
+   </p></div>
+<a name="_onTO"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_onTO</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _onTO:Point</code><p>
+   Stores the on label offset.
+   </p></div>
+<a name="_onToggle"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_onToggle</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _onToggle:Boolean</code><p>
+   Used for checkbox-style behavior.
+   </p></div>
+<a name="_pressed"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_pressed</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _pressed:Boolean</code><p>
+   Tracks whether or not the button is currently pressed.
+   </p></div>
+<a name="_sf"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_sf</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _sf:Point</code><p>
+   Helper variable for correcting its members' <code>scrollFactor</code> objects.
+   </p></div>
+<a name="constructorDetail"></a>
+<div class="detailSectionHeader">Constructor detail</div>
+<a name="FlxButton()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">FlxButton</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">constructor</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function FlxButton(X:int, Y:int, Callback:Function)</code><p>
+   Creates a new <code>FlxButton</code> object with a gray background
+   and a callback function on the UI thread.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">X</span>:int</code> &mdash;   The X position of the button.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Y</span>:int</code> &mdash;   The Y position of the button.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Callback</span>:Function</code> &mdash; The function to call whenever the button is clicked.
+   </td>
+</tr>
+</table>
+</div>
+<a name="methodDetail"></a>
+<div class="detailSectionHeader">Method detail</div>
+<a name="destroy()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">destroy</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public override function destroy():void</code><p>
+   Called by the game state when state is changed (if this object belongs to the state)
+   </p></div>
+<a name="loadGraphic()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">loadGraphic</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function loadGraphic(Image:<a href="FlxSprite.html">FlxSprite</a>, ImageHighlight:<a href="FlxSprite.html">FlxSprite</a> = null):<a href="../flixel/FlxButton.html">FlxButton</a></code><p>
+   Set your own image as the button background.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">Image</span>:<a href="FlxSprite.html">FlxSprite</a></code> &mdash;    A FlxSprite object to use for the button background.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">ImageHighlight</span>:<a href="FlxSprite.html">FlxSprite</a></code> (default = <code>null</code>)<code></code> &mdash;  A FlxSprite object to use for the button background when highlighted (optional).
+   
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="../flixel/FlxButton.html">FlxButton</a></code> &mdash; 
+                        This FlxButton instance (nice for chaining stuff together, if you're into that).
+   
+                        
+                     </td>
+</tr>
+</table>
+</div>
+<a name="loadText()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">loadText</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function loadText(Text:<a href="FlxText.html">FlxText</a>, TextHighlight:<a href="FlxText.html">FlxText</a> = null):<a href="../flixel/FlxButton.html">FlxButton</a></code><p>
+   Add a text label to the button.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">Text</span>:<a href="FlxText.html">FlxText</a></code> &mdash;    A FlxText object to use to display text on this button (optional).
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">TextHighlight</span>:<a href="FlxText.html">FlxText</a></code> (default = <code>null</code>)<code></code> &mdash;  A FlxText object that is used when the button is highlighted (optional).
+   
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="../flixel/FlxButton.html">FlxButton</a></code> &mdash; 
+                        This FlxButton instance (nice for chaining stuff together, if you're into that).
+   
+                        
+                     </td>
+</tr>
+</table>
+</div>
+<a name="on()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">on</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function on():Boolean</code><p>
+   Check to see if the button is toggled on, like a checkbox.
+   
+   </p><p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code> &mdash; Whether the button is toggled.
+   </td>
+</tr>
+</table>
+</div>
+<a name="onMouseUp()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">onMouseUp</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected function onMouseUp(event:MouseEvent):void</code><p>
+   Internal function for handling the actual callback call (for UI thread dependent calls).
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">event</span>:MouseEvent</code></td>
+</tr>
+</table>
+</div>
+<a name="render()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">render</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public override function render():void</code><p>
+   Called by the game loop automatically, renders button to screen.
+   </p></div>
+<a name="switchOff()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">switchOff</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function switchOff():void</code><p>
+   Call this function from your callback to toggle the button off, like a checkbox.
+   </p></div>
+<a name="switchOn()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">switchOn</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function switchOn():void</code><p>
+   Call this function from your callback to toggle the button on, like a checkbox.
+   </p></div>
+<a name="update()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">update</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public override function update():void</code><p>
+   Called by the game loop automatically, handles mouseover and click detection.
+   </p></div>
+<a name="updatePositions()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">updatePositions</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected function updatePositions():void</code><p>
+   Internal function that just updates the X and Y position of the button's graphics.
+   </p></div>
+<a name="visibility()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">visibility</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected function visibility(On:Boolean):void</code><p>
+   Internal function for handling the visibility of the off and on graphics.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">On</span>:Boolean</code> &mdash;  Whether the button should be on or off.
+   </td>
+</tr>
+</table>
+</div>
+<br>
+<br>
+<hr>
+<br>
+<p></p>
+<center class="copyright"> 
+</center>
+</div>
+</body>
+</html>
+<!-- -->

@@ -1,0 +1,1003 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../../style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="../../print.css" type="text/css" media="print">
+<meta content="FlxSound,org.flixel.FlxSound,_channel,_core,_fadeInTimer,_fadeInTotal,_fadeOutTimer,_fadeOutTotal,_init,_looped,_pan,_pauseOnFadeOut,_position,_radius,_sound,_transform,_volume,_volumeAdjust,survive,volume,destroy,fadeIn,fadeOut,init,loadEmbedded,loadStream,looped,pause,play,proximity,stop,stopped,update,updateTransform" name="keywords">
+<title>org.flixel.FlxSound</title>
+</head>
+<body>
+<script type="text/javascript" language="javascript" src="../../asdoc.js"></script><script type="text/javascript" language="javascript" src="../../cookies.js"></script><script type="text/javascript" language="javascript">
+<!--
+				asdocTitle = 'FlxSound - API Documentation';
+				var baseRef = '../../';
+				window.onload = configPage;
+			--></script>
+<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" class="titleTable">
+<tr>
+<td align="left" class="titleTableTitle">API Documentation</td><td align="right" class="titleTableTopNav"><a onclick="loadClassListFrame('../../all-classes.html')" href="../../package-summary.html">All&nbsp;Packages</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../all-classes.html')" href="../../class-summary.html">All&nbsp;Classes</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../index-list.html')" href="../../all-index-A.html">Index</a>&nbsp;|&nbsp;<a href="../../index.html?org/flixel/FlxSound.html&amp;org/flixel/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></td><td rowspan="3" align="right" class="titleTableLogo"><img alt="Adobe Logo" title="Adobe Logo" class="logoImage" src="../../images/logo.jpg"></td>
+</tr>
+<tr class="titleTableRow2">
+<td align="left" id="subTitle" class="titleTableSubTitle">Class&nbsp;FlxSound</td><td align="right" id="subNav" class="titleTableSubNav"><a href="#propertySummary">Properties</a>&nbsp;| <a href="#methodSummary">Methods</a></td>
+</tr>
+<tr class="titleTableRow3">
+<td colspan="2">&nbsp;</td>
+</tr>
+</table>
+<script type="text/javascript" language="javascript">
+<!--
+if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Class FlxSound"); titleBar_setSubNav(false,true,false,false,false,false,true,false,false,false,false,false,false,false);}
+--></script>
+<div class="MainContent">
+<table cellspacing="0" cellpadding="0" class="classHeaderTable">
+<tr>
+<td class="classHeaderTableLabel">Package</td><td><a onclick="javascript:loadClassListFrame('class-list.html')" href="package-detail.html">org.flixel</a></td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Class</td><td class="classSignature">public class FlxSound</td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Inheritance</td><td class="inheritanceList">FlxSound <img class="inheritArrow" alt="Inheritance" title="Inheritance" src="../../images/inherit-arrow.gif"> <a href="FlxCore.html">FlxCore</a></td>
+</tr>
+</table>
+<p></p>
+  This is the universal flixel sound object, used for streaming, music, and sound effects.
+  <p></p>
+<br>
+<hr>
+</div>
+<a name="propertySummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Properties</div>
+<div class="showHideLinks">
+<div class="hideInheritedProperty" id="hideInheritedProperty">
+<a onclick="javascript:setInheritedVisible(false,'Property');" href="#propertySummary" class="showHideLink"><img src="../../images/expanded.gif" class="showHideLinkImage"> Hide Inherited Public Properties</a>
+</div>
+<div class="showInheritedProperty" id="showInheritedProperty">
+<a onclick="javascript:setInheritedVisible(true,'Property');" href="#propertySummary" class="showHideLink"><img src="../../images/collapsed.gif" class="showHideLinkImage"> Show Inherited Public Properties</a>
+</div>
+</div>
+<table id="summaryTableProperty" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxCore.html#active">active</a> : Boolean<div class="summaryTableDescription">
+   If an object is not alive, the game loop will not automatically call <code>update()</code> on it.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxCore.html#dead">dead</a> : Boolean<div class="summaryTableDescription">
+   If an object is dead, the functions that automate collisions will skip it (see <code>FlxG.overlapArrays()</code> and <code>FlxG.collideArrays()</code>).</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxCore.html#exists">exists</a> : Boolean<div class="summaryTableDescription">
+   Kind of a global on/off switch for any objects descended from <code>FlxCore</code>.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxCore.html#fixed">fixed</a> : Boolean<div class="summaryTableDescription">
+   If an object is 'fixed' in space, it will not budge when it collides with a not-fixed object.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxCore.html#height">height</a> : uint<div class="summaryTableDescription">
+   </div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxCore.html#last">last</a> : Point<div class="summaryTableDescription">
+   Stores the last position of the sprite, used by collision detection algorithm.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxCore.html#scrollFactor">scrollFactor</a> : Point<div class="summaryTableDescription">
+   A point that can store numbers from 0 to 1 (for X and Y independently)
+   that governs how much this object is affected by the camera subsystem.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#survive">survive</a> : Boolean<div class="summaryTableDescription">
+   Whether or not this sound should be automatically destroyed when you switch states.</div>
+</td><td class="summaryTableOwnerCol">FlxSound</td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxCore.html#visible">visible</a> : Boolean<div class="summaryTableDescription">
+   If an object is not visible, the game loop will not automatically call <code>render()</code> on it.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#volume">volume</a> : Number<div class="summaryTableDescription">
+   Set <code>volume</code> to a value between 0 and 1 to change how this sound is.</div>
+</td><td class="summaryTableOwnerCol">FlxSound</td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxCore.html#width">width</a> : uint<div class="summaryTableDescription">
+   </div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxCore.html#x">x</a> : Number<div class="summaryTableDescription">
+   </div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxCore.html#y">y</a> : Number<div class="summaryTableDescription">
+   </div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+</table>
+</div>
+<a name="protectedPropertySummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Protected Properties</div>
+<div class="showHideLinks">
+<div class="hideInheritedProtectedProperty" id="hideInheritedProtectedProperty">
+<a onclick="javascript:setInheritedVisible(false,'ProtectedProperty');" href="#protectedPropertySummary" class="showHideLink"><img src="../../images/expanded.gif" class="showHideLinkImage"> Hide Inherited Protected Properties</a>
+</div>
+<div class="showInheritedProtectedProperty" id="showInheritedProtectedProperty">
+<a onclick="javascript:setInheritedVisible(true,'ProtectedProperty');" href="#protectedPropertySummary" class="showHideLink"><img src="../../images/collapsed.gif" class="showHideLinkImage"> Show Inherited Protected Properties</a>
+</div>
+</div>
+<table id="summaryTableProtectedProperty" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_channel">_channel</a> : SoundChannel<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">FlxSound</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_core">_core</a> : <a href="../flixel/FlxCore.html">FlxCore</a>
+<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">FlxSound</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_fadeInTimer">_fadeInTimer</a> : Number<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">FlxSound</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_fadeInTotal">_fadeInTotal</a> : Number<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">FlxSound</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_fadeOutTimer">_fadeOutTimer</a> : Number<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">FlxSound</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_fadeOutTotal">_fadeOutTotal</a> : Number<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">FlxSound</td>
+</tr>
+<tr class="hideInheritedProtectedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxCore.html#_flicker">_flicker</a> : Boolean<div class="summaryTableDescription">
+   Internal helper used for retro-style flickering.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="hideInheritedProtectedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxCore.html#_flickerTimer">_flickerTimer</a> : Number<div class="summaryTableDescription">
+   Internal helper used for retro-style flickering.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_init">_init</a> : Boolean<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">FlxSound</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_looped">_looped</a> : Boolean<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">FlxSound</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_pan">_pan</a> : Boolean<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">FlxSound</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_pauseOnFadeOut">_pauseOnFadeOut</a> : Boolean<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">FlxSound</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_position">_position</a> : Number<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">FlxSound</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_radius">_radius</a> : Number<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">FlxSound</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_sound">_sound</a> : Sound<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">FlxSound</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_transform">_transform</a> : SoundTransform<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">FlxSound</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_volume">_volume</a> : Number<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">FlxSound</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_volumeAdjust">_volumeAdjust</a> : Number<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">FlxSound</td>
+</tr>
+</table>
+</div>
+<a name="methodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Methods</div>
+<div class="showHideLinks">
+<div class="hideInheritedMethod" id="hideInheritedMethod">
+<a onclick="javascript:setInheritedVisible(false,'Method');" href="#methodSummary" class="showHideLink"><img src="../../images/expanded.gif" class="showHideLinkImage"> Hide Inherited Public Methods</a>
+</div>
+<div class="showInheritedMethod" id="showInheritedMethod">
+<a onclick="javascript:setInheritedVisible(true,'Method');" href="#methodSummary" class="showHideLink"><img src="../../images/collapsed.gif" class="showHideLinkImage"> Show Inherited Public Methods</a>
+</div>
+</div>
+<table id="summaryTableMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#FlxSound()">FlxSound</a>()</div>
+<div class="summaryTableDescription">
+   The FlxSound constructor gets all the variables initialized, but NOT ready to play a sound yet.</div>
+</td><td class="summaryTableOwnerCol">FlxSound</td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxCore.html#collide()">collide</a>(Core:<a href="../flixel/FlxCore.html">FlxCore</a>):Boolean</div>
+<div class="summaryTableDescription">
+   Collides a <code>FlxCore</code> against this object.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxCore.html#collideArray()">collideArray</a>(Cores:Array):void</div>
+<div class="summaryTableDescription">
+   Collides an array of <code>FlxCore</code> objects against the tilemap.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxCore.html#collideArrayX()">collideArrayX</a>(Cores:Array):void</div>
+<div class="summaryTableDescription">
+   Collides an array of <code>FlxCore</code> objects against the tilemap against the X axis only.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxCore.html#collideArrayY()">collideArrayY</a>(Cores:Array):void</div>
+<div class="summaryTableDescription">Collides an array of <code>FlxCore</code> objects against the tilemap against the Y axis only.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxCore.html#collideX()">collideX</a>(Core:<a href="../flixel/FlxCore.html">FlxCore</a>):Boolean</div>
+<div class="summaryTableDescription">
+   Collides a <code>FlxCore</code> against this object on the X axis ONLY.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxCore.html#collideY()">collideY</a>(Core:<a href="../flixel/FlxCore.html">FlxCore</a>):Boolean</div>
+<div class="summaryTableDescription">
+   Collides a <code>FlxCore</code> against this object on the Y axis ONLY.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#destroy()">destroy</a>():void</div>
+<div class="summaryTableDescription">
+   The basic class destructor, stops the music and removes any leftover events.</div>
+</td><td class="summaryTableOwnerCol">FlxSound</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#fadeIn()">fadeIn</a>(Seconds:Number):void</div>
+<div class="summaryTableDescription">
+   Call this function to make a sound fade in over a certain
+   time interval (calls <code>play()</code> automatically).</div>
+</td><td class="summaryTableOwnerCol">FlxSound</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#fadeOut()">fadeOut</a>(Seconds:Number, PauseInstead:Boolean = false):void</div>
+<div class="summaryTableDescription">
+   Call this function to make this sound fade out over a certain time interval.</div>
+</td><td class="summaryTableOwnerCol">FlxSound</td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxCore.html#flicker()">flicker</a>(Duration:Number = 1):void</div>
+<div class="summaryTableDescription">
+   Tells this object to flicker, retro-style.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxCore.html#flickering()">flickering</a>():Boolean</div>
+<div class="summaryTableDescription">
+   Check to see if the object is still flickering.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxCore.html#getScreenXY()">getScreenXY</a>(P:Point = null):Point</div>
+<div class="summaryTableDescription">
+   Call this function to figure out the on-screen position of the object.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxCore.html#hitCeiling()">hitCeiling</a>(Contact:<a href="../flixel/FlxCore.html">FlxCore</a> = null):Boolean</div>
+<div class="summaryTableDescription">
+   Called when this object collides with the bottom of another <code>FlxCore</code>.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxCore.html#hitFloor()">hitFloor</a>(Contact:<a href="../flixel/FlxCore.html">FlxCore</a> = null):Boolean</div>
+<div class="summaryTableDescription">
+   Called when this object collides with the top of another <code>FlxCore</code>.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxCore.html#hitWall()">hitWall</a>(Contact:<a href="../flixel/FlxCore.html">FlxCore</a> = null):Boolean</div>
+<div class="summaryTableDescription">
+   Called when this object collides with another <code>FlxCore</code> on one of its sides.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxCore.html#kill()">kill</a>():void</div>
+<div class="summaryTableDescription">
+   Call this function to "kill" a sprite so that it no longer 'exists'.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#loadEmbedded()">loadEmbedded</a>(EmbeddedSound:Class, Looped:Boolean = false):<a href="../flixel/FlxSound.html">FlxSound</a>
+</div>
+<div class="summaryTableDescription">
+   One of two main setup functions for sounds, this function loads a sound from an embedded MP3.</div>
+</td><td class="summaryTableOwnerCol">FlxSound</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#loadStream()">loadStream</a>(SoundURL:String, Looped:Boolean = false):<a href="../flixel/FlxSound.html">FlxSound</a>
+</div>
+<div class="summaryTableDescription">
+   One of two main setup functions for sounds, this function loads a sound from a URL.</div>
+</td><td class="summaryTableOwnerCol">FlxSound</td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxCore.html#onScreen()">onScreen</a>():Boolean</div>
+<div class="summaryTableDescription">
+   Check and see if this object is currently on screen.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxCore.html#overlaps()">overlaps</a>(Core:<a href="../flixel/FlxCore.html">FlxCore</a>):Boolean</div>
+<div class="summaryTableDescription">
+   Checks to see if some <code>FlxCore</code> object overlaps this <code>FlxCore</code> object.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxCore.html#overlapsPoint()">overlapsPoint</a>(X:Number, Y:Number, PerPixel:Boolean = false):Boolean</div>
+<div class="summaryTableDescription">
+   Checks to see if a point in 2D space overlaps this <code>FlxCore</code> object.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#pause()">pause</a>():void</div>
+<div class="summaryTableDescription">
+   Call this function to pause this sound.</div>
+</td><td class="summaryTableOwnerCol">FlxSound</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#play()">play</a>():void</div>
+<div class="summaryTableDescription">
+   Call this function to play the sound.</div>
+</td><td class="summaryTableOwnerCol">FlxSound</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#proximity()">proximity</a>(X:Number, Y:Number, Core:<a href="FlxCore.html">FlxCore</a>, Radius:Number, Pan:Boolean = true):<a href="../flixel/FlxSound.html">FlxSound</a>
+</div>
+<div class="summaryTableDescription">
+   Call this function if you want this sound's volume to change
+   based on distance from a particular FlxCore object.</div>
+</td><td class="summaryTableOwnerCol">FlxSound</td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxCore.html#render()">render</a>():void</div>
+<div class="summaryTableDescription">
+   <code>FlxSprite</code> and other subclasses override this to draw their contents to the screen.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxCore.html#reset()">reset</a>(X:Number, Y:Number):void</div>
+<div class="summaryTableDescription">
+   Handy function for reviving game objects.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#stop()">stop</a>():void</div>
+<div class="summaryTableDescription">
+   Call this function to stop this sound.</div>
+</td><td class="summaryTableOwnerCol">FlxSound</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#update()">update</a>():void</div>
+<div class="summaryTableDescription">
+   The basic game loop update function.</div>
+</td><td class="summaryTableOwnerCol">FlxSound</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#updateTransform()">updateTransform</a>():void</div>
+<div class="summaryTableDescription">
+   An internal function used to help organize and change the volume of the sound.</div>
+</td><td class="summaryTableOwnerCol">FlxSound</td>
+</tr>
+</table>
+</div>
+<a name="protectedMethodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Protected Methods</div>
+<table id="summaryTableProtectedMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#init()">init</a>():void</div>
+<div class="summaryTableDescription">
+   An internal function for clearing all the variables used by sounds.</div>
+</td><td class="summaryTableOwnerCol">FlxSound</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#looped()">looped</a>(event:Event = null):void</div>
+<div class="summaryTableDescription">
+   An internal helper function used to help Flash resume playing a looped sound.</div>
+</td><td class="summaryTableOwnerCol">FlxSound</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#stopped()">stopped</a>(event:Event = null):void</div>
+<div class="summaryTableDescription">
+   An internal helper function used to help Flash clean up and re-use finished sounds.</div>
+</td><td class="summaryTableOwnerCol">FlxSound</td>
+</tr>
+</table>
+</div>
+<script type="text/javascript" language="javascript">
+<!--
+showHideInherited();
+--></script>
+<div class="MainContent">
+<a name="propertyDetail"></a>
+<div class="detailSectionHeader">Property detail</div>
+<a name="_channel"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_channel</td><td class="detailHeaderType">property</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _channel:SoundChannel</code>
+</div>
+<a name="_core"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_core</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _core:<a href="../flixel/FlxCore.html">FlxCore</a></code>
+</div>
+<a name="_fadeInTimer"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_fadeInTimer</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _fadeInTimer:Number</code>
+</div>
+<a name="_fadeInTotal"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_fadeInTotal</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _fadeInTotal:Number</code>
+</div>
+<a name="_fadeOutTimer"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_fadeOutTimer</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _fadeOutTimer:Number</code>
+</div>
+<a name="_fadeOutTotal"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_fadeOutTotal</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _fadeOutTotal:Number</code>
+</div>
+<a name="_init"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_init</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _init:Boolean</code>
+</div>
+<a name="_looped"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_looped</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _looped:Boolean</code>
+</div>
+<a name="_pan"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_pan</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _pan:Boolean</code>
+</div>
+<a name="_pauseOnFadeOut"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_pauseOnFadeOut</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _pauseOnFadeOut:Boolean</code>
+</div>
+<a name="_position"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_position</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _position:Number</code>
+</div>
+<a name="_radius"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_radius</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _radius:Number</code>
+</div>
+<a name="_sound"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_sound</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _sound:Sound</code>
+</div>
+<a name="survive"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">survive</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var survive:Boolean</code><p>
+   Whether or not this sound should be automatically destroyed when you switch states.
+   </p></div>
+<a name="_transform"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_transform</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _transform:SoundTransform</code>
+</div>
+<a name="_volume"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_volume</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _volume:Number</code>
+</div>
+<a name="volume"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">volume</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>volume:Number</code>&nbsp;&nbsp;[read-write]<p>
+   Set <code>volume</code> to a value between 0 and 1 to change how this sound is.
+   </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get volume():Number</code>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set volume(value:Number):void</code>
+<br>
+</div>
+<a name="_volumeAdjust"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_volumeAdjust</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _volumeAdjust:Number</code>
+</div>
+<a name="constructorDetail"></a>
+<div class="detailSectionHeader">Constructor detail</div>
+<a name="FlxSound()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">FlxSound</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">constructor</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function FlxSound()</code><p>
+   The FlxSound constructor gets all the variables initialized, but NOT ready to play a sound yet.
+   </p></div>
+<a name="methodDetail"></a>
+<div class="detailSectionHeader">Method detail</div>
+<a name="destroy()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">destroy</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public override function destroy():void</code><p>
+   The basic class destructor, stops the music and removes any leftover events.
+   </p></div>
+<a name="fadeIn()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">fadeIn</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function fadeIn(Seconds:Number):void</code><p>
+   Call this function to make a sound fade in over a certain
+   time interval (calls <code>play()</code> automatically).
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">Seconds</span>:Number</code> &mdash;  The amount of time the fade-in operation should take.
+   </td>
+</tr>
+</table>
+</div>
+<a name="fadeOut()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">fadeOut</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function fadeOut(Seconds:Number, PauseInstead:Boolean = false):void</code><p>
+   Call this function to make this sound fade out over a certain time interval.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">Seconds</span>:Number</code> &mdash;   The amount of time the fade out operation should take.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">PauseInstead</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash; Tells the sound to pause on fadeout, instead of stopping.
+   </td>
+</tr>
+</table>
+</div>
+<a name="init()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">init</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected function init():void</code><p>
+   An internal function for clearing all the variables used by sounds.
+   </p></div>
+<a name="loadEmbedded()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">loadEmbedded</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function loadEmbedded(EmbeddedSound:Class, Looped:Boolean = false):<a href="../flixel/FlxSound.html">FlxSound</a></code><p>
+   One of two main setup functions for sounds, this function loads a sound from an embedded MP3.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">EmbeddedSound</span>:Class</code> &mdash; An embedded Class object representing an MP3 file.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Looped</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash;   Whether or not this sound should loop endlessly.
+   
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="../flixel/FlxSound.html">FlxSound</a></code> &mdash; 
+                        This <code>FlxSound</code> instance (nice for chaining stuff together, if you're into that).
+   
+                        
+                     </td>
+</tr>
+</table>
+</div>
+<a name="loadStream()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">loadStream</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function loadStream(SoundURL:String, Looped:Boolean = false):<a href="../flixel/FlxSound.html">FlxSound</a></code><p>
+   One of two main setup functions for sounds, this function loads a sound from a URL.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">SoundURL</span>:String</code> &mdash; A string representing the URL of the MP3 file you want to play.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Looped</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash;   Whether or not this sound should loop endlessly.
+   
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="../flixel/FlxSound.html">FlxSound</a></code> &mdash; 
+                        This <code>FlxSound</code> instance (nice for chaining stuff together, if you're into that).
+   
+                        
+                     </td>
+</tr>
+</table>
+</div>
+<a name="looped()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">looped</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected function looped(event:Event = null):void</code><p>
+   An internal helper function used to help Flash resume playing a looped sound.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">event</span>:Event</code> (default = <code>null</code>)<code></code> &mdash;  An <code>Event</code> object.
+   </td>
+</tr>
+</table>
+</div>
+<a name="pause()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">pause</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function pause():void</code><p>
+   Call this function to pause this sound.
+   </p></div>
+<a name="play()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">play</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function play():void</code><p>
+   Call this function to play the sound.
+   </p></div>
+<a name="proximity()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">proximity</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function proximity(X:Number, Y:Number, Core:<a href="FlxCore.html">FlxCore</a>, Radius:Number, Pan:Boolean = true):<a href="../flixel/FlxSound.html">FlxSound</a></code><p>
+   Call this function if you want this sound's volume to change
+   based on distance from a particular FlxCore object.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">X</span>:Number</code> &mdash;  The X position of the sound.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Y</span>:Number</code> &mdash;  The Y position of the sound.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Core</span>:<a href="FlxCore.html">FlxCore</a></code> &mdash; The object you want to track.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Radius</span>:Number</code> &mdash; The maximum distance this sound can travel.
+   
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Pan</span>:Boolean</code> (default = <code>true</code>)<code></code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="../flixel/FlxSound.html">FlxSound</a></code> &mdash; 
+                        This FlxSound instance (nice for chaining stuff together, if you're into that).
+   
+                        
+                     </td>
+</tr>
+</table>
+</div>
+<a name="stop()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">stop</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function stop():void</code><p>
+   Call this function to stop this sound.
+   </p></div>
+<a name="stopped()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">stopped</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected function stopped(event:Event = null):void</code><p>
+   An internal helper function used to help Flash clean up and re-use finished sounds.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">event</span>:Event</code> (default = <code>null</code>)<code></code> &mdash;  An <code>Event</code> object.
+   </td>
+</tr>
+</table>
+</div>
+<a name="update()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">update</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public override function update():void</code><p>
+   The basic game loop update function.
+   Doesn't do much except optional proximity and fade calculations.
+   </p></div>
+<a name="updateTransform()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">updateTransform</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function updateTransform():void</code><p>
+   An internal function used to help organize and change the volume of the sound.
+   </p></div>
+<br>
+<br>
+<hr>
+<br>
+<p></p>
+<center class="copyright"> 
+</center>
+</div>
+</body>
+</html>
+<!-- -->

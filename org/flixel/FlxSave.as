@@ -3,17 +3,30 @@ package org.flixel
 	import flash.net.SharedObject;
 	import flash.net.SharedObjectFlushStatus;
 	
-	//@desc		A class to help automate and simplify save games
+	/**
+	 * A class to help automate and simplify save game functionality.
+	 */
 	public class FlxSave extends Object
 	{
-		//@desc		Allows you to directly access the data container in the local shared object
+		/**
+		 * Allows you to directly access the data container in the local shared object.
+		 * @default null
+		 */
 		public var data:Object;
-		//@desc		The name of the local shared object
+		/**
+		 * The name of the local shared object.
+		 * @default null
+		 */
 		public var name:String;
+		/**
+		 * The local shared object itself.
+		 * @default null
+		 */
 		protected var _so:SharedObject;
 		
-		//@desc		The save game constructor; creates a new local shared object to store data
-		//@param	Name	The name of the object (should be the same each time to access old data)
+		/**
+		 * Blanks out the containers.
+		 */
 		public function FlxSave()
 		{
 			name = null;
@@ -21,9 +34,13 @@ package org.flixel
 			data = null;
 		}
 		
-		//@desc		This function either creates or reconnects to locally saved data
-		//@param	Name	The name of the object (should be the same each time to access old data)
-		//@return	Whether or not you successfully connected to the save data
+		/**
+		 * Automatically creates or reconnects to locally saved data.
+		 * 
+		 * @param	Name	The name of the object (should be the same each time to access old data).
+		 * 
+		 * @return	Whether or not you successfully connected to the save data.
+		 */
 		public function bind(Name:String):Boolean
 		{
 			name = null;
@@ -46,11 +63,15 @@ package org.flixel
 			return true;
 		}
 		
-		//@desc		If you don't like to access the data object directly, you can use this to write to it
-		//@param	FieldName		The name of the data field you want to create or overwrite
-		//@param	FieldValue		The data you want to store
-		//@param	MinFileSize		If you need X amount of space for your save, specify it here
-		//@return	Whether or not the write and flush were successful
+		/**
+		 * If you don't like to access the data object directly, you can use this to write to it.
+		 * 
+		 * @param	FieldName		The name of the data field you want to create or overwrite.
+		 * @param	FieldValue		The data you want to store.
+		 * @param	MinFileSize		If you need X amount of space for your save, specify it here.
+		 * 
+		 * @return	Whether or not the write and flush were successful.
+		 */
 		public function write(FieldName:String,FieldValue:Object,MinFileSize:uint=0):Boolean
 		{
 			if(_so == null)
@@ -62,9 +83,13 @@ package org.flixel
 			return forceSave(MinFileSize);
 		}
 		
-		//@desc		If you don't like to access the data object directly, you can use this to read from it
-		//@param	FieldName		The name of the data field you want to read
-		//@return	The value of the data field you are reading (null if it doesn't exist)
+		/**
+		 * If you don't like to access the data object directly, you can use this to read from it.
+		 * 
+		 * @param	FieldName		The name of the data field you want to read
+		 * 
+		 * @return	The value of the data field you are reading (null if it doesn't exist).
+		 */
 		public function read(FieldName:String):Object
 		{
 			if(_so == null)
@@ -75,9 +100,13 @@ package org.flixel
 			return data[FieldName];
 		}
 		
-		//@desc		Writes the local shared object to disk immediately
-		//@param	MinFileSize		If you need X amount of space for your save, specify it here
-		//@return	Whether or not the flush was successful
+		/**
+		 * Writes the local shared object to disk immediately.
+		 *
+		 * @param	MinFileSize		If you need X amount of space for your save, specify it here.
+		 *
+		 * @return	Whether or not the flush was successful.
+		 */
 		public function forceSave(MinFileSize:uint=0):Boolean
 		{
 			if(_so == null)
@@ -98,9 +127,13 @@ package org.flixel
 			return status == SharedObjectFlushStatus.FLUSHED;
 		}
 		
-		//@desc		Erases everything stored in the local shared object
-		//@param	MinFileSize		If you need X amount of space for your save, specify it here
-		//@return	Whether or not the clear and flush was successful
+		/**
+		 * Erases everything stored in the local shared object.
+		 * 
+		 * @param	MinFileSize		If you need X amount of space for your save, specify it here.
+		 * 
+		 * @return	Whether or not the clear and flush was successful.
+		 */
 		public function erase(MinFileSize:uint=0):Boolean
 		{
 			if(_so == null)

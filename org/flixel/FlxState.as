@@ -3,16 +3,35 @@ package org.flixel
 	import flash.display.Sprite;
 	import flash.geom.Rectangle;
 
-	//@desc		This is the basic game "state" object - e.g. in a simple game you might have a menu state and a play state
+	/**
+	 * This is the basic game "state" object - e.g. in a simple game
+	 * you might have a menu state and a play state.
+	 * It acts as a kind of container for all your game objects.
+	 * You can also access the game's background color
+	 * and screen buffer through this object.
+	 */
 	public class FlxState extends Sprite
 	{
-		//@desc		This variable holds the screen buffer, so you can draw to it directly if you want
+		/**
+		 * This static variable holds the screen buffer,
+		 * so you can draw to it directly if you want.
+		 */
 		static public var screen:FlxSprite;
-		//@desc		This variable indicates the "clear color" or default background color of the game
+		/**
+		 * This static variable indicates the "clear color"
+		 * or default background color of the game.
+		 * Change it at ANY time using <code>FlxState.bgColor</code>.
+		 */
 		static public var bgColor:uint;
+		/**
+		 * Internal layer used to organize and display objects you add to this state.
+		 */
 		protected var _layer:FlxLayer;
 		
-		//@desc		Constructor		
+		/**
+		 * Creates a new <code>FlxState</code> object,
+		 * instantiating <code>screen</code> if necessary.
+		 */
 		virtual public function FlxState()
 		{
 			super();
@@ -27,35 +46,58 @@ package org.flixel
 			}
 		}
 		
-		//@desc		Adds a new FlxCore subclass (FlxSprite, FlxBlock, etc) to the game loop
-		//@param	Core	The object you want to add to the game loop
+		/**
+		 * Adds a new FlxCore subclass (FlxSprite, FlxBlock, etc) to the game loop.
+		 * 
+		 * @param	Core	The object you want to add to the game loop.
+		 */
 		virtual public function add(Core:FlxCore):FlxCore
 		{
 			return _layer.add(Core);
 		}
 		
-		//@desc		Override this function to do special pre-processing FX on FlxG.buffer (like motion blur)
+		/**
+		 * Override this function to do special pre-processing FX like motion blur.
+		 * You can use scaling or blending modes or whatever you want against
+		 * <code>FlxState.screen</code> to achieve all sorts of cool FX.
+		 */
 		virtual public function preProcess():void
 		{
 			screen.fill(bgColor);	//Default behavior - just overwrite buffer with background color
 		}
 		
-		//@desc		Automatically goes through and calls update on everything you added to the game loop, override this function to handle custom input and perform collisions
+		/**
+		 * Automatically goes through and calls update on everything you added to the game loop,
+		 * override this function to handle custom input and perform collisions/
+		 */
 		virtual public function update():void
 		{
 			_layer.update();
 		}
 		
-		//@desc		Automatically goes through and calls render on everything you added to the game loop, override this loop to do crazy graphical stuffs I guess?
+		/**
+		 * Automatically goes through and calls render on everything you added to the game loop,
+		 * override this loop to manually control the rendering process.
+		 */
 		virtual public function render():void
 		{
 			_layer.render();
 		}
-		
-		//@desc		Override this function and use the 'screen' variable to do special post-processing FX (like light bloom)
+
+		/**
+		 * Override this function to do special pre-processing FX like light bloom.
+		 * You can use scaling or blending modes or whatever you want against
+		 * <code>FlxState.screen</code> to achieve all sorts of cool FX.
+		 */
 		virtual public function postProcess():void { }
 		
-		//@desc		Override this function to handle any deleting or "shutdown" type operations you might need (such as removing traditional Flash children like Sprite objects)
-		virtual public function destroy():void { _layer.destroy(); }
+		/**
+		 * Override this function to handle any deleting or "shutdown" type operations you
+		 * might need (such as removing traditional Flash children like Sprite objects).
+		 */
+		virtual public function destroy():void
+		{
+			_layer.destroy();
+		}
 	}
 }

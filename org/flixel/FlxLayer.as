@@ -1,19 +1,31 @@
 package org.flixel
 {
-	//@desc		This is an organizational class that can update and render a bunch of FlxCore objects
+	/**
+	 * This is an organizational class that can update and render a bunch of FlxCore objects
+	 */
 	public class FlxLayer extends FlxCore
 	{
+		/**
+		 * Array of all the FlxCore objects that exist in this layer.
+		 */
 		protected var _children:Array;
 
-		//@desc		Constructor		
+		/**
+		 * Constructor
+		 */
 		virtual public function FlxLayer()
 		{
 			_children = new Array();
 		}
 		
-		//@desc		Adds a new FlxCore subclass (FlxSprite, FlxBlock, etc) to the list of children
-		//@param	Core			The object you want to add
-		//@param	ShareScroll		Whether or not this FlxCore should sync up with this layer's scrollFactor
+		/**
+		 * Adds a new FlxCore subclass (FlxSprite, FlxBlock, etc) to the list of children
+		 *
+		 * @param	Core			The object you want to add
+		 * @param	ShareScroll		Whether or not this FlxCore should sync up with this layer's scrollFactor
+		 *
+		 * @return	The same <code>FlxCore</code> object that was passed in.
+		 */
 		virtual public function add(Core:FlxCore,ShareScroll:Boolean=false):FlxCore
 		{
 			_children.push(Core);
@@ -24,7 +36,10 @@ package org.flixel
 			return Core;
 		}
 		
-		//@desc		Automatically goes through and calls update on everything you added, override this function to handle custom input and perform collisions
+		/**
+		 * Automatically goes through and calls update on everything you added,
+		 * override this function to handle custom input and perform collisions.
+		 */
 		override public function update():void
 		{
 			super.update();
@@ -55,7 +70,10 @@ package org.flixel
 			}
 		}
 		
-		//@desc		Automatically goes through and calls render on everything you added, override this loop to do crazy graphical stuffs I guess?
+		/**
+		 * Automatically goes through and calls render on everything you added,
+		 * override this loop to control render order manually.
+		 */
 		override public function render():void
 		{
 			super.render();
@@ -68,7 +86,10 @@ package org.flixel
 			}
 		}
 		
-		//@desc		Override this function to handle any deleting or "shutdown" type operations you might need (such as removing traditional Flash children like Sprite objects)
+		/**
+		 * Override this function to handle any deleting or "shutdown" type operations you might need,
+		 * such as removing traditional Flash children like Sprite objects.
+		 */
 		override public function destroy():void
 		{
 			super.destroy();
@@ -78,7 +99,9 @@ package org.flixel
 			_children.length = 0;
 		}
 		
-		//@desc		Returns the array of children
+		/**
+		 * Returns the array of children
+		 */
 		public function children():Array { return _children; }
 	}
 }

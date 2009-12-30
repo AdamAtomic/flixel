@@ -17,21 +17,39 @@ package org.flixel.data
 	
 	import org.flixel.FlxG;
 
-	//@desc		This class handles the 8-bit style preloader
+	/**
+	 * This class handles the 8-bit style preloader.
+	 */
 	public class FlxFactory extends MovieClip
 	{
 		[Embed(source="loading_bar.png")] private var ImgBar:Class;
 		[Embed(source="loading_bit.png")] private var ImgBit:Class;
 		
-		private var Buffer:Sprite;
-		private var bmpBar:Bitmap;
-		private var bits:Array;
+		/**
+		 * @private
+		 */
+		protected var _buffer:Sprite;
+		/**
+		 * @private
+		 */
+		protected var _bmpBar:Bitmap;
+		/**
+		 * @private
+		 */
+		protected var _bits:Array;
 		
-		//@desc	This should always be the name of your main project/document class (e.g. GravityHook)
-		protected var className:String;
-		//@desc	If you want to use site-locking, set your website URL here
-		protected var myURL:String;
+		/**
+		 * This should always be the name of your main project/document class (e.g. GravityHook).
+		 */
+		public var className:String;
+		/**
+		 * Set this to your game's URL to use built-in site-locking.
+		 */
+		public var myURL:String;
 		
+		/**
+		 * Constructor
+		 */
 		public function FlxFactory()
 		{
 			stop();
@@ -68,7 +86,7 @@ package org.flixel.data
 				txt.multiline = true;
 				txt.wordWrap = true;
 				txt.defaultTextFormat = fmt;
-				txt.text = "Hi there!  It looks like somebody copied this game without my permission.  It is meant to be played ad-free!  If you would like to play it at my site with NO annoying ads, just click anywhere, or copy-paste this URL into your browser.\n\n"+myURL+"\n\nThanks, and have fun!";
+				txt.text = "Hi there!  It looks like somebody copied this game without my permission.  If you would like to play it at my site with NO annoying ads, just click anywhere, or copy-paste this URL into your browser.\n\n"+myURL+"\n\nThanks, and have fun!";
 				addChild(txt);
 				
 				txt.addEventListener(MouseEvent.CLICK,goToMyURL);
@@ -76,23 +94,23 @@ package org.flixel.data
 				return;
 			}
 			
-			Buffer = new Sprite();
-            Buffer.scaleX = 2;
-            Buffer.scaleY = 2;
-            addChild(Buffer);
-			bmpBar = new ImgBar();
-			bmpBar.x = (stage.stageWidth/Buffer.scaleX-bmpBar.width)/2;
-			bmpBar.y = (stage.stageHeight/Buffer.scaleY-bmpBar.height)/2;
-			Buffer.addChild(bmpBar);
-			bits = new Array();
+			_buffer = new Sprite();
+            _buffer.scaleX = 2;
+            _buffer.scaleY = 2;
+            addChild(_buffer);
+			_bmpBar = new ImgBar();
+			_bmpBar.x = (stage.stageWidth/_buffer.scaleX-_bmpBar.width)/2;
+			_bmpBar.y = (stage.stageHeight/_buffer.scaleY-_bmpBar.height)/2;
+			_buffer.addChild(_bmpBar);
+			_bits = new Array();
 			for(var i:uint = 0; i < 9; i++)
 			{
 				tmp = new ImgBit();
 				tmp.visible = false;
-				tmp.x = bmpBar.x+2+i*3;
-				tmp.y = bmpBar.y+2;
-				bits.push(tmp);
-				Buffer.addChild(tmp);
+				tmp.x = _bmpBar.x+2+i*3;
+				tmp.y = _bmpBar.y+2;
+				_bits.push(tmp);
+				_buffer.addChild(tmp);
 			}
 			
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
@@ -117,16 +135,16 @@ package org.flixel.data
 	                var app:Object = new mainClass();
 	                addChild(app as DisplayObject);
 	            }
-	            for(i = bits.length-1; i >= 0; i--)
-					bits.pop();
-                removeChild(Buffer);
+	            for(i = _bits.length-1; i >= 0; i--)
+					_bits.pop();
+                removeChild(_buffer);
             }
             
             else
             {
             	var limit:uint = (root.loaderInfo.bytesLoaded/root.loaderInfo.bytesTotal)*10;
-				for(i = 0; (i < limit) && (i < bits.length); i++)
-					bits[i].visible = true;
+				for(i = 0; (i < limit) && (i < _bits.length); i++)
+					_bits[i].visible = true;
             }
         }
 	}

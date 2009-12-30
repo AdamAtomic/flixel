@@ -7,10 +7,14 @@ package org.flixel
 	import flash.media.SoundTransform;
 	import flash.net.URLRequest;
 	
-	//@desc		This is the universal flixel sound object, used for streaming, music, and sound effects
+	/**
+	 * This is the universal flixel sound object, used for streaming, music, and sound effects.
+	 */
 	public class FlxSound extends FlxCore
 	{
-		//@desc		Whether or not this sound should be automatically destroyed when you switch states
+		/**
+		 * Whether or not this sound should be automatically destroyed when you switch states.
+		 */
 		public var survive:Boolean;
 		
 		protected var _init:Boolean;
@@ -30,7 +34,9 @@ package org.flixel
 		protected var _fadeInTimer:Number;
 		protected var _fadeInTotal:Number;
 		
-		//@desc		The FlxSound constructor gets all the variables initialized, but NOT ready to play a sound yet
+		/**
+		 * The FlxSound constructor gets all the variables initialized, but NOT ready to play a sound yet.
+		 */
 		public function FlxSound()
 		{
 			super();
@@ -38,7 +44,9 @@ package org.flixel
 			init();
 		}
 		
-		//@desc		An internal function for clearing all the variables used by sounds
+		/**
+		 * An internal function for clearing all the variables used by sounds.
+		 */
 		protected function init():void
 		{
 			_transform.pan = 0;
@@ -60,10 +68,14 @@ package org.flixel
 			dead = true;
 		}
 		
-		//@desc		One of two main setup functions for sounds, this function loads a sound from an embedded MP3
-		//@param	EmbeddedSound	An embedded Class object representing an MP3 file
-		//@param	Looped			Whether or not this sound should loop endlessly
-		//@return	This FlxSound instance (nice for chaining stuff together, if you're into that)
+		/**
+		 * One of two main setup functions for sounds, this function loads a sound from an embedded MP3.
+		 * 
+		 * @param	EmbeddedSound	An embedded Class object representing an MP3 file.
+		 * @param	Looped			Whether or not this sound should loop endlessly.
+		 * 
+		 * @return	This <code>FlxSound</code> instance (nice for chaining stuff together, if you're into that).
+		 */
 		public function loadEmbedded(EmbeddedSound:Class, Looped:Boolean=false):FlxSound
 		{
 			stop();
@@ -75,10 +87,14 @@ package org.flixel
 			return this;
 		}
 		
-		//@desc		One of two main setup functions for sounds, this function loads a sound from a URL
-		//@param	EmbeddedSound	A string representing the URL of the MP3 file you want to play
-		//@param	Looped			Whether or not this sound should loop endlessly
-		//@return	This FlxSound instance (nice for chaining stuff together, if you're into that)
+		/**
+		 * One of two main setup functions for sounds, this function loads a sound from a URL.
+		 * 
+		 * @param	EmbeddedSound	A string representing the URL of the MP3 file you want to play.
+		 * @param	Looped			Whether or not this sound should loop endlessly.
+		 * 
+		 * @return	This <code>FlxSound</code> instance (nice for chaining stuff together, if you're into that).
+		 */
 		public function loadStream(SoundURL:String, Looped:Boolean=false):FlxSound
 		{
 			stop();
@@ -90,12 +106,17 @@ package org.flixel
 			return this;
 		}
 		
-		//@desc		Call this function if you want this sound's volume to change based on distance from a particular FlxCore object
-		//@param	X		The X position of the sound
-		//@param	Y		The Y position of the sound
-		//@param	Core	The object you want to track
-		//@param	Radius	The maximum distance this sound can travel
-		//@return	This FlxSound instance (nice for chaining stuff together, if you're into that)
+		/**
+		 * Call this function if you want this sound's volume to change
+		 * based on distance from a particular FlxCore object.
+		 * 
+		 * @param	X		The X position of the sound.
+		 * @param	Y		The Y position of the sound.
+		 * @param	Core	The object you want to track.
+		 * @param	Radius	The maximum distance this sound can travel.
+		 * 
+		 * @return	This FlxSound instance (nice for chaining stuff together, if you're into that).
+		 */
 		public function proximity(X:Number,Y:Number,Core:FlxCore,Radius:Number,Pan:Boolean=true):FlxSound
 		{
 			x = X;
@@ -106,7 +127,9 @@ package org.flixel
 			return this;
 		}
 		
-		//@desc		Call this function to play the sound
+		/**
+		 * Call this function to play the sound.
+		 */
 		public function play():void
 		{
 			if(_position < 0)
@@ -140,7 +163,9 @@ package org.flixel
 			_position = 0;
 		}
 		
-		//@desc		Call this function to pause this sound
+		/**
+		 * Call this function to pause this sound.
+		 */
 		public function pause():void
 		{
 			if(_channel == null)
@@ -158,7 +183,9 @@ package org.flixel
 			_channel = null;
 		}
 		
-		//@desc		Call this function to stop this sound
+		/**
+		 * Call this function to stop this sound.
+		 */
 		public function stop():void
 		{
 			_position = 0;
@@ -169,8 +196,12 @@ package org.flixel
 			}
 		}
 		
-		//@desc		Call this function to make this sound fade out over a certain time interval
-		//@param	Seconds		The amount of time the fade out operation should take
+		/**
+		 * Call this function to make this sound fade out over a certain time interval.
+		 * 
+		 * @param	Seconds			The amount of time the fade out operation should take.
+		 * @param	PauseInstead	Tells the sound to pause on fadeout, instead of stopping.
+		 */
 		public function fadeOut(Seconds:Number,PauseInstead:Boolean=false):void
 		{
 			_pauseOnFadeOut = PauseInstead;
@@ -179,8 +210,12 @@ package org.flixel
 			_fadeOutTotal = _fadeOutTimer;
 		}
 		
-		//@desc		Call this function to make a sound fade in over a certain time interval (calls play() automatically)
-		//@param	Seconds		The amount of time the fade in operation should take
+		/**
+		 * Call this function to make a sound fade in over a certain
+		 * time interval (calls <code>play()</code> automatically).
+		 * 
+		 * @param	Seconds		The amount of time the fade-in operation should take.
+		 */
 		public function fadeIn(Seconds:Number):void
 		{
 			_fadeOutTimer = 0;
@@ -189,8 +224,17 @@ package org.flixel
 			play();
 		}
 		
-		//@desc		This is the setter for FlxSound.volume
-		//@param	Volume		The new volume for this sound (a number between 0 and 1.0)
+		/**
+		 * Set <code>volume</code> to a value between 0 and 1 to change how this sound is.
+		 */
+		public function get volume():Number
+		{
+			return _volume;
+		}
+		
+		/**
+		 * @private
+		 */
 		public function set volume(Volume:Number):void
 		{
 			_volume = Volume;
@@ -200,15 +244,11 @@ package org.flixel
 				_volume = 1;
 			updateTransform();
 		}
-		
-		//@desc		This is the getter for FlxSound.volume
-		//@return	The volume of this sound (a number between 0 and 1.0)
-		public function get volume():Number
-		{
-			return _volume;
-		}
-		
-		//@desc		The basic game loop update function - doesn't do much except optional proximity and fade calculations
+
+		/**
+		 * The basic game loop update function.
+		 * Doesn't do much except optional proximity and fade calculations.
+		 */
 		override public function update():void
 		{
 			if(_position != 0)
@@ -267,14 +307,18 @@ package org.flixel
 			updateTransform();
 		}
 		
-		//@desc		The basic class destructor, stops the music and removes any leftover events
+		/**
+		 * The basic class destructor, stops the music and removes any leftover events.
+		 */
 		override public function destroy():void
 		{
 			if(active)
 				stop();
 		}
 		
-		//@desc		An internal function used to help organize and change the volume of the sound
+		/**
+		 * An internal function used to help organize and change the volume of the sound.
+		 */
 		internal function updateTransform():void
 		{
 			_transform.volume = FlxG.getMuteValue()*FlxG.volume*_volume*_volumeAdjust;
@@ -282,8 +326,11 @@ package org.flixel
 				_channel.soundTransform = _transform;
 		}
 		
-		//@desc		An internal helper function used to help Flash resume playing a looped sound
-		//@param	event		An Event object
+		/**
+		 * An internal helper function used to help Flash resume playing a looped sound.
+		 * 
+		 * @param	event		An <code>Event</code> object.
+		 */
 		protected function looped(event:Event=null):void
 		{
 		    if (_channel == null)
@@ -292,9 +339,12 @@ package org.flixel
 	        _channel = null;
 			play();
 		}
-		
-		//@desc		An internal helper function used to help clean up and re-use finished sounds
-		//@param	event		An Event object
+
+		/**
+		 * An internal helper function used to help Flash clean up and re-use finished sounds.
+		 * 
+		 * @param	event		An <code>Event</code> object.
+		 */
 		protected function stopped(event:Event=null):void
 		{
 			if(!_looped)

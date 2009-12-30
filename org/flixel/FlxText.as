@@ -5,17 +5,26 @@ package org.flixel
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
-	//@desc		A basic text display class, can do some fun stuff though like flicker and rotate
+	/**
+	 * Extends <code>FlxSprite</code> to support rendering text.
+	 * Can tint, fade, rotate and scale just like a sprite.
+	 * Doesn't really animate though, as far as I know.
+	 * Also does nice pixel-perfect centering on pixel fonts
+	 * as long as they are only one liners.
+	 */
 	public class FlxText extends FlxSprite
 	{
 		protected var _tf:TextField;
 		protected var _regen:Boolean;
 		
-		//@desc		Constructor
-		//@param	X		The X position of the text
-		//@param	Y		The Y position of the text
-		//@param	Width	The width of the text object (height is determined automatically)
-		//@param	Text	The actual text you would like to display initially
+		/**
+		 * Creates a new <code>FlxText</code> object at the specified position.
+		 * 
+		 * @param	X		The X position of the text.
+		 * @param	Y		The Y position of the text.
+		 * @param	Width	The width of the text object (height is determined automatically).
+		 * @param	Text	The actual text you would like to display initially.
+		 */
 		public function FlxText(X:Number, Y:Number, Width:uint, Text:String=null)
 		{
 			if(Text == null)
@@ -34,12 +43,17 @@ package org.flixel
 			calcFrame();
 		}
 		
-		//@desc		You can use this if you have a lot of text parameters to set instead of the individual properties
-		//@param	Font		The name of the font face for the text display
-		//@param	Size		The size of the font (in pixels essentially)
-		//@param	Color		The color of the text in traditional flash 0xAARRGGBB format
-		//@param	Alignment	A string representing the desired alignment ("left,"right" or "center")
-		//@return	This FlxText instance (nice for chaining stuff together, if you're into that)
+		/**
+		 * You can use this if you have a lot of text parameters
+		 * to set instead of the individual properties.
+		 * 
+		 * @param	Font		The name of the font face for the text display.
+		 * @param	Size		The size of the font (in pixels essentially).
+		 * @param	Color		The color of the text in traditional flash 0xAARRGGBB format.
+		 * @param	Alignment	A string representing the desired alignment ("left,"right" or "center").
+		 * 
+		 * @return	This FlxText instance (nice for chaining stuff together, if you're into that).
+		 */
 		public function setFormat(Font:String=null,Size:Number=8,Color:uint=0xffffff,Alignment:String=null):FlxText
 		{
 			if(Font == null)
@@ -56,8 +70,17 @@ package org.flixel
 			return this;
 		}
 		
-		//@desc		Changes the text being displayed
-		//@param	Text	The new string you want to display
+		/**
+		 * The text being displayed.
+		 */
+		public function get text():String
+		{
+			return _tf.text;
+		}
+		
+		/**
+		 * @private
+		 */
 		public function set text(Text:String):void
 		{
 			_tf.text = Text;
@@ -65,15 +88,17 @@ package org.flixel
 			calcFrame();
 		}
 		
-		//@desc		Getter to retrieve the text being displayed
-		//@return	The text string being displayed
-		public function get text():String
+		/**
+		 * The size of the text being displayed.
+		 */
+		 public function get size():Number
 		{
-			return _tf.text;
+			return _tf.defaultTextFormat.size as Number;
 		}
 		
-		//@desc		Changes the size of the text being displayed
-		//@param	Size	The new font size you want to use
+		/**
+		 * @private
+		 */
 		public function set size(Size:Number):void
 		{
 			var tf:TextFormat = dtfCopy();
@@ -84,15 +109,17 @@ package org.flixel
 			calcFrame();
 		}
 		
-		//@desc		Getter to retrieve the size of the text
-		//@return	The size of the font
-		public function get size():Number
+		/**
+		 * The font used for this text.
+		 */
+		public function get font():String
 		{
-			return _tf.defaultTextFormat.size as Number;
+			return _tf.defaultTextFormat.font;
 		}
 		
-		//@desc		Sets the font face being used
-		//@param	Font	The name of the font face
+		/**
+		 * @private
+		 */
 		public function set font(Font:String):void
 		{
 			var tf:TextFormat = dtfCopy();
@@ -103,15 +130,17 @@ package org.flixel
 			calcFrame();
 		}
 		
-		//@desc		Gets the name of the font face being used
-		//@return	The name of the font face
-		public function get font():String
+		/**
+		 * The alignment of the font ("left", "right", or "center").
+		 */
+		public function get alignment():String
 		{
-			return _tf.defaultTextFormat.font;
+			return _tf.defaultTextFormat.align;
 		}
 		
-		//@desc		Sets the alignment of the text being displayed
-		//@param	A string indicating the desired alignment - acceptable values are "left", "right" and "center"
+		/**
+		 * @private
+		 */
 		public function set alignment(Alignment:String):void
 		{
 			var tf:TextFormat = dtfCopy();
@@ -121,14 +150,9 @@ package org.flixel
 			calcFrame();
 		}
 		
-		//@desc		Gets the alignment of the text being displayed
-		//@return	A string indicating the current alignment
-		public function get alignment():String
-		{
-			return _tf.defaultTextFormat.align;
-		}
-		
-		//@desc		Internal function to update the current animation frame
+		/**
+		 * Internal function to update the current animation frame.
+		 */
 		override protected function calcFrame():void
 		{
 			//Just leave if there's no text to render
@@ -167,8 +191,11 @@ package org.flixel
 			_tf.setTextFormat(new TextFormat(tf.font,tf.size,tf.color,null,null,null,null,null,tf.align));
 		}
 		
-		//@desc		A helper function for updating the flash TextField that we use for rendering
-		//@return	A writable copy of TextField.defaultTextFormat
+		/**
+		 * A helper function for updating the <code>TextField</code> that we use for rendering.
+		 * 
+		 * @return	A writable copy of <code>TextField.defaultTextFormat</code>.
+		 */
 		protected function dtfCopy():TextFormat
 		{
 			var dtf:TextFormat = _tf.defaultTextFormat;

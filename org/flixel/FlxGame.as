@@ -18,7 +18,12 @@ package org.flixel
 	
 	import org.flixel.data.*;
 
-	//@desc		FlxGame is the heart of all flixel games, and contains a bunch of basic game loops and things.  It is a long and sloppy file that you shouldn't have to worry about too much!
+	/**
+	 * FlxGame is the heart of all flixel games, and contains a bunch of basic game loops and things.
+	 * It is a long and sloppy file that you shouldn't have to worry about too much!
+	 * It is basically only used to create your game object in the first place,
+	 * after that FlxG and FlxState have all the useful stuff you actually need.
+	 */
 	public class FlxGame extends Sprite
 	{
 		[Embed(source="data/nokiafc22.ttf",fontFamily="system")] protected var junk:String;
@@ -26,14 +31,27 @@ package org.flixel
 		[Embed(source="data/beep.mp3")] protected var SndBeep:Class;
 		[Embed(source="data/flixel.mp3")] protected var SndFlixel:Class;
 
+		/**
+		 * Essentially locks the framerate to 30 FPS minimum
+		 */
 		internal const MAX_ELAPSED:Number = 0.0333;
 		
-		//@desc		Whether or not to display the flixel logo on startup
-		protected var showLogo:Boolean;
-		//@desc		Sets 0, -, and + to global volume and P to pause (off by default)
-		protected var useDefaultHotKeys:Boolean;
-		//@desc		Displayed whenever the game is paused - can be overridden with whatever!
-		protected var pause:FlxLayer;
+		/**
+		 * Whether or not to display the flixel logo on startup.
+		 * @default true
+		 */
+		public var showLogo:Boolean;
+		/**
+		 * Sets 0, -, and + to control the global volume and P to pause.
+		 * @default true
+		 */
+		public var useDefaultHotKeys:Boolean;
+		/**
+		 * Displayed whenever the game is paused.
+		 * Override with your own <code>FlxLayer</code> for hot custom pause action!
+		 * Defaults to <code>data.FlxPause</code>.
+		 */
+		public var pause:FlxLayer;
 		
 		//startup
 		internal var _iState:Class;
@@ -77,11 +95,14 @@ package org.flixel
 		internal var _logoFade:Bitmap;
 		internal var _fSound:Class;
 		
-		//@desc		Game object constructor - sets up the basic properties of your game
-		//@param	GameSizeX		The width of your game in pixels (e.g. 320)
-		//@param	GameSizeY		The height of your game in pixels (e.g. 240)
-		//@param	InitialState	The class name of the state you want to create and switch to first (e.g. MenuState)
-		//@param	Zoom			The level of zoom (e.g. 2 means all pixels are now rendered twice as big)
+		/**
+		 * Game object constructor - sets up the basic properties of your game.
+		 * 
+		 * @param	GameSizeX		The width of your game in pixels (e.g. 320).
+		 * @param	GameSizeY		The height of your game in pixels (e.g. 240).
+		 * @param	InitialState	The class name of the state you want to create and switch to first (e.g. MenuState).
+		 * @param	Zoom			The level of zoom (e.g. 2 means all pixels are now rendered twice as big).
+		 */
 		public function FlxGame(GameSizeX:uint,GameSizeY:uint,InitialState:Class,Zoom:uint=2)
 		{
 			flash.ui.Mouse.hide();
@@ -125,10 +146,14 @@ package org.flixel
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
 		
-		//@desc		Allows you to customize the sound and appearance of the flixel 'f'
-		//@param	FlixelColor		The color of the great big 'f' in the flixel logo
-		//@param	FlixelSound		The sound that is played over the flixel 'f' logo
-		//@return	This FlxGame instance (nice for chaining stuff together, if you're into that)
+		/**
+		 * Allows you to customize the sound and appearance of the flixel 'f'.
+		 * 
+		 * @param	FlixelColor		The color of the great big 'f' in the flixel logo.
+		 * @param	FlixelSound		The sound that is played over the flixel 'f' logo.
+		 * 
+		 * @return	This <code>FlxGame</code> instance.
+		 */
 		protected function setLogoFX(FlixelColor:Number,FlixelSound:Class=null):FlxGame
 		{
 			_fc = FlixelColor;
@@ -137,11 +162,15 @@ package org.flixel
 			return this;
 		}
 		
-		//@desc		Adds a frame around your game for presentation purposes (see Canabalt, Gravity Hook)
-		//@param	Frame			If you want you can add a little graphical frame to the outside edges of your game
-		//@param	ScreenOffsetX	If you use a frame, you're probably going to want to scoot your game down to fit properly inside it
-		//@param	ScreenOffsetY	These variables do exactly that :)
-		//@return	This FlxGame instance (nice for chaining stuff together, if you're into that)
+		/**
+		 * Adds a frame around your game for presentation purposes (see Canabalt, Gravity Hook).
+		 * 
+		 * @param	Frame			If you want you can add a little graphical frame to the outside edges of your game.
+		 * @param	ScreenOffsetX	Width in pixels of left side of frame.
+		 * @param	ScreenOffsetY	Height in pixels of top of frame.
+		 * 
+		 * @return	This <code>FlxGame</code> instance.
+		 */
 		protected function addFrame(Frame:Class,ScreenOffsetX:uint,ScreenOffsetY:uint):FlxGame
 		{
 			_frame = Frame;
@@ -150,8 +179,31 @@ package org.flixel
 			return this;
 		}
 		
-		//@desc		Switch from one FlxState to another
-		//@param	State		The class name of the state you want (e.g. PlayState)
+		/**
+		 * Makes the little volume tray slide out.
+		 */
+		public function showSoundTray():void
+		{
+			FlxG.play(SndBeep);
+			_soundTrayTimer = 1;
+			_soundTray.y = _gameYOffset*_zoom;
+			_soundTray.visible = true;
+			var gv:uint = Math.round(FlxG.volume*10);
+			if(FlxG.mute)
+				gv = 0;
+			for (var i:uint = 0; i < _soundTrayBars.length; i++)
+			{
+				if(i < gv) _soundTrayBars[i].alpha = 1;
+				else _soundTrayBars[i].alpha = 0.5;
+			}
+		}
+		
+		/**
+		 * Switch from one <code>FlxState</code> to another.
+		 * Usually called from <code>FlxG</code>.
+		 * 
+		 * @param	State		The class name of the state you want (e.g. PlayState)
+		 */
 		internal function switchState(State:Class):void
 		{ 
 			_panel.hide();
@@ -176,24 +228,18 @@ package org.flixel
 			_curState = newState;
 		}
 		
-		//@desc		Sets up the strings that are displayed on the left side of the pause game popup
-		//@param	X		What to display next to the X button
-		//@param	C		What to display next to the C button
-		//@param	Mouse	What to display next to the mouse icon
-		//@param	Arrows	What to display next to the arrows icon
-		protected function help(X:String=null,C:String=null,Mouse:String=null,Arrows:String=null):void
+		/**
+		 * Sets up the support panel (<code>data.FlxPanel</code>) with donation and aggregation info.
+		 * Usually called from <code>FlxG</code>.
+		 */
+		protected function setupSupportPanel(PayPalID:String,PayPalAmount:Number,GameTitle:String,GameURL:String,Caption:String):void
 		{
-			if(X != null)
-				_helpStrings[0] = X;
-			if(C != null)
-				_helpStrings[1] = C;
-			if(Mouse != null)
-				_helpStrings[2] = Mouse;
-			if(Arrows != null)
-				_helpStrings[3] = Arrows;
+			_panel.init(PayPalID,PayPalAmount,GameTitle,GameURL,Caption);
 		}
-		
-		//@desc		This function is only used by the FlxGame class to do important internal management stuff
+
+		/**
+		 * Internal event handler for input and focus.
+		 */
 		protected function onKeyUp(event:KeyboardEvent):void
 		{
 			if(event.keyCode == 192)
@@ -229,39 +275,51 @@ package org.flixel
 			FlxG.keys.handleKeyUp(event);
 		}
 		
-		//@desc		This function is only used by the FlxGame class to do important internal management stuff
+		/**
+		 * Internal event handler for input and focus.
+		 */
 		protected function onKeyDown(event:KeyboardEvent):void
 		{
 			FlxG.keys.handleKeyDown(event);
 		}
 		
-		//@desc		This function is only used by the FlxGame class to do important internal management stuff
+		/**
+		 * Internal event handler for input and focus.
+		 */
 		protected function onMouseUp(event:MouseEvent):void
 		{
 			FlxG.mouse.handleMouseUp(event);
 		}
 		
-		//@desc		This function is only used by the FlxGame class to do important internal management stuff
+		/**
+		 * Internal event handler for input and focus.
+		 */
 		protected function onMouseDown(event:MouseEvent):void
 		{
 			FlxG.mouse.handleMouseDown(event);
 		}
 		
-		//@desc		This function is only used by the FlxGame class to do important internal management stuff
+		/**
+		 * Internal event handler for input and focus.
+		 */
 		protected function onFocus(event:Event=null):void
 		{
 			if(FlxG.pause)
 				FlxG.pause = false;
 		}
 		
-		//@desc		This function is only used by the FlxGame class to do important internal management stuff
+		/**
+		 * Internal event handler for input and focus.
+		 */
 		protected function onFocusLost(event:Event=null):void
 		{
 			if(_logoComplete)
 				FlxG.pause = true;
 		}
 		
-		//@desc		internal function to help with basic pause game functionality
+		/**
+		 * Internal function to help with basic pause game functionality.
+		 */
 		internal function unpauseGame():void
 		{
 			if(!_panel.visible) flash.ui.Mouse.hide();
@@ -270,7 +328,9 @@ package org.flixel
 			stage.frameRate = 90;
 		}
 		
-		//@desc		internal function to help with basic pause game functionality
+		/**
+		 * Internal function to help with basic pause game functionality.
+		 */
 		internal function pauseGame():void
 		{
 			if((x != 0) || (y != 0))
@@ -287,7 +347,9 @@ package org.flixel
 			stage.frameRate = 10;
 		}
 		
-		//@desc		This is the main game loop, but only once creation and logo playback is finished
+		/**
+		 * This is the main game loop, but only once creation and logo playback is finished.
+		 */
 		protected function onEnterFrame(event:Event):void
 		{
 			var i:uint;
@@ -523,33 +585,6 @@ package org.flixel
 				_created = true;
 				_logoTimer = 0;
 			}
-		}
-		
-		//@desc		Makes the little volume tray slide out
-		public function showSoundTray():void
-		{
-			FlxG.play(SndBeep);
-			_soundTrayTimer = 1;
-			_soundTray.y = _gameYOffset*_zoom;
-			_soundTray.visible = true;
-			var gv:uint = Math.round(FlxG.volume*10);
-			if(FlxG.mute)
-				gv = 0;
-			for (var i:uint = 0; i < _soundTrayBars.length; i++)
-			{
-				if(i < gv) _soundTrayBars[i].alpha = 1;
-				else _soundTrayBars[i].alpha = 0.5;
-			}
-		}
-		
-		//@desc		Set up the support panel thingy with donation and aggregation info
-		//@param	PayPalID		Your paypal username, usually your email address (leave it blank to disable donations)
-		//@param	PayPalAmount	The default amount of the donation
-		//@param	GameTitle		The text that you would like to appear in the aggregation services (usually just the name of your game)
-		//@param	GameURL			The URL you would like people to use when trying to find your game
-		protected function setupSupportPanel(PayPalID:String,PayPalAmount:Number,GameTitle:String,GameURL:String,Caption:String):void
-		{
-			_panel.init(PayPalID,PayPalAmount,GameTitle,GameURL,Caption);
 		}
 	}
 }

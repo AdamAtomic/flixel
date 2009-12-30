@@ -10,23 +10,72 @@ package org.flixel.data
 	
 	import org.flixel.FlxG;
 
-	//@desc		Contains all the logic for the developer console
+	/**
+	 * Contains all the logic for the developer console.
+	 * This class is automatically created by FlxGame.
+	 */
 	public class FlxConsole extends Sprite
 	{
+		/**
+		 * @private
+		 */
 		protected const MAX_CONSOLE_LINES:uint = 256;
+		/**
+		 * @private
+		 */
 		protected var _console:Sprite;
+		/**
+		 * @private
+		 */
 		protected var _text:TextField;
+		/**
+		 * @private
+		 */
 		protected var _fpsDisplay:TextField;
+		/**
+		 * @private
+		 */
 		protected var _fps:Array;
+		/**
+		 * @private
+		 */
 		protected var _curFPS:uint;
+		/**
+		 * @private
+		 */
 		protected var _lines:Array;
+		/**
+		 * @private
+		 */
 		protected var _Y:Number;
+		/**
+		 * @private
+		 */
 		protected var _YT:Number;
+		/**
+		 * @private
+		 */
 		protected var _fpsUpdate:Boolean;
+		/**
+		 * @private
+		 */
 		protected var _bx:int;
+		/**
+		 * @private
+		 */
 		protected var _by:int;
+		/**
+		 * @private
+		 */
 		protected var _byt:int;
 		
+		/**
+		 * Constructor
+		 * 
+		 * @param	X		X position of the console
+		 * @param	Y		Y position of the console
+		 * @param	Zoom	The game's zoom level
+		 */
 		public function FlxConsole(X:uint,Y:uint,Zoom:uint)
 		{
 			super();
@@ -68,14 +117,17 @@ package org.flixel.data
 			_lines = new Array();
 		}
 		
-		//@desc		Log data to the developer console
-		//@param	Data		The data (in string format) that you wanted to write to the console
-		public function log(Data:String):void
+		/**
+		 * Logs data to the developer console
+		 * 
+		 * @param	Text	The text that you wanted to write to the console
+		 */
+		public function log(Text:String):void
 		{
-			if(Data == null)
-				Data = "NULL";
-			trace(Data);
-			_lines.push(Data);
+			if(Text == null)
+				Text = "NULL";
+			trace(Text);
+			_lines.push(Text);
 			if(_lines.length > MAX_CONSOLE_LINES)
 			{
 				_lines.shift();
@@ -85,11 +137,13 @@ package org.flixel.data
 				_text.text = newText;
 			}
 			else
-				_text.appendText(Data+"\n");
+				_text.appendText(Text+"\n");
 			_text.scrollV = _text.height;
 		}
 		
-		//@desc		Shows/hides the console
+		/**
+		 * Shows/hides the console.
+		 */
 		public function toggle():void
 		{
 			if(_YT == _by)
@@ -101,7 +155,9 @@ package org.flixel.data
 			}
 		}
 		
-		//@desc		Updates and/or animates the dev console
+		/**
+		 * Updates and/or animates the dev console.
+		 */
 		public function update():void
 		{
 			if(visible)

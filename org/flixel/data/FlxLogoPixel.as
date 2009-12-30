@@ -4,7 +4,11 @@ package org.flixel.data
 	import flash.display.BitmapData;
 	import flash.display.Sprite;
 
-	//@desc		This automates the color-rotation effect on the 'f' logo during game launch, not used in actual game code
+	/**
+	 * @private
+	 * This automates the color-rotation effect on the 'f' logo during game launch,
+	 * not used in actual game code.
+	 */
 	public class FlxLogoPixel extends Sprite
 	{
 		private var _layers:Array;
