@@ -38,8 +38,8 @@ package org.flixel
 		public function FlxBlock(X:int,Y:int,Width:uint,Height:uint)
 		{
 			super();
-			x = X;
-			y = Y;
+			last.x = x = X;
+			last.y = y = Y;
 			width = Width;
 			height = Height;
 			fixed = true;

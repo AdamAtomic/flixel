@@ -68,7 +68,7 @@ package org.flixel
 			x = X;
 			y = Y;
 			width = 100;
-			height = 10;
+			height = 20;
 			_off = new FlxSprite();
 			_off.createGraphic(width,height,0xff7f7f7f);
 			_off.scrollFactor = scrollFactor;
