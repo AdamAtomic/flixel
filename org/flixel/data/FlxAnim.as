@@ -33,7 +33,9 @@ package org.flixel.data
 		public function FlxAnim(Name:String, Frames:Array, FrameRate:Number=0, Looped:Boolean=true)
 		{
 			name = Name;
-			delay = 1.0/FrameRate;
+			delay = 0;
+			if(FrameRate > 0)
+				delay = 1.0/FrameRate;
 			frames = Frames;
 			looped = Looped;
 		}

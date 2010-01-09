@@ -54,6 +54,10 @@ package org.flixel
 		 */
 		static public var elapsed:Number;
 		/**
+		 * How fast or slow time should pass in the game; default is 1.0.
+		 */
+		static public var dilation:Number;
+		/**
 		 * A reference or pointer to the current FlxState object being used by the game.
 		 */
 		static public var state:FlxState;
@@ -603,10 +607,12 @@ package org.flixel
 		 * @param	Cores		An array of <code>FlxCore</code> objects.
 		 * @param	Core		A <code>FlxCore</code> object.
 		 * @param	Collide		A function that takes two <code>FlxCores</code> as parameters (first the one from <code>Cores</code>, then <code>Core</code>)
+		 * @return	Whether or not any of these objects overlapped.
 		 */
-		static public function overlapArray(Cores:Array,Core:FlxCore,Collide:Function=null):void
+		static public function overlapArray(Cores:Array,Core:FlxCore,Collide:Function=null):Boolean
 		{
-			if((Core == null) || !Core.exists || Core.dead) return;
+			if((Core == null) || !Core.exists || Core.dead) return false;
+			var o:Boolean = false;
 			var c:FlxCore;
 			var l:uint = Cores.length;
 			for(var i:uint = 0; i < l; i++)
@@ -615,6 +621,7 @@ package org.flixel
 				if((c === Core) || (c == null) || !c.exists || c.dead) continue;
 				if(c.overlaps(Core))
 				{
+					o = true;
 					if(Collide != null)
 						Collide(c,Core);
 					else
@@ -624,6 +631,7 @@ package org.flixel
 					}
 				}
 			}
+			return o;
 		}
 		
 		/**
@@ -633,9 +641,11 @@ package org.flixel
 		 * @param	Cores1		An array of <code>FlxCore</code> objects
 		 * @param	Cores2		Another array of <code>FlxCore</code> objects
 		 * @param	Collide		A function that takes two <code>FlxCore</code> objects as parameters (first the one from Cores1, then the one from Cores2)
+		 * @return Whether or not any of these objects overlapped.
 		 */
-		static public function overlapArrays(Cores1:Array,Cores2:Array,Collide:Function=null):void
+		static public function overlapArrays(Cores1:Array,Cores2:Array,Collide:Function=null):Boolean
 		{
+			var o:Boolean = false;
 			var i:uint;
 			var j:uint;
 			var core1:FlxCore;
@@ -654,6 +664,7 @@ package org.flixel
 						if((core2 == null) || !core2.exists || core2.dead) continue;
 						if(core1.overlaps(core2))
 						{
+							o = true;
 							if(Collide != null)
 								Collide(core1,core2);
 							else
@@ -677,6 +688,7 @@ package org.flixel
 						if((core1 === core2) || (core2 == null) || !core2.exists || core2.dead) continue;
 						if(core1.overlaps(core2))
 						{
+							o = true;
 							if(Collide != null)
 								Collide(core1,core2);
 							else
@@ -688,42 +700,51 @@ package org.flixel
 					}
 				}
 			}
+			return o;
 		}
 		
 		/**
 		 * Collides a <code>FlxCore</code> against the <code>FlxCores</code> in the array.
 		 * @param	Cores		An array of <code>FlxCore</code> objects.
 		 * @param	Core		A <code>FlxCore</code> object.
+		 * @return	Whether or not any collisions happened.
 		 */
-		static public function collideArray(Cores:Array,Core:FlxCore):void
+		static public function collideArray(Cores:Array,Core:FlxCore):Boolean
 		{
-			if((Core == null) || !Core.exists || Core.dead) return;
+			if((Core == null) || !Core.exists || Core.dead) return false;
+			var c:Boolean = false;
 			var core:FlxCore;
 			var l:uint = Cores.length;
 			for(var i:uint = 0; i < l; i++)
 			{
 				core = Cores[i];
 				if((core === Core) || (core == null) || !core.exists || core.dead) continue;
-				core.collide(Core);
+				if(core.collide(Core))
+					c = true;
 			}
+			return c;
 		}
 		
 		/** Collides a <code>FlxCore</code> against the <code>FlxCores</code> in the array on the X axis ONLY.
 		 * 
 		 * @param	Cores		An array of <code>FlxCore</code> objects.
 		 * @param	Core		A <code>FlxCore</code> object.
+		 * @return	Whether or not any collisions happened.
 		 */
-		static public function collideArrayX(Cores:Array,Core:FlxCore):void
+		static public function collideArrayX(Cores:Array,Core:FlxCore):Boolean
 		{
-			if((Core == null) || !Core.exists || Core.dead) return;
+			if((Core == null) || !Core.exists || Core.dead) return false;
+			var c:Boolean = false;
 			var core:FlxCore;
 			var l:uint = Cores.length;
 			for(var i:uint = 0; i < l; i++)
 			{
 				core = Cores[i];
 				if((core === Core) || (core == null) || !core.exists || core.dead) continue;
-				core.collideX(Core);
+				if(core.collideX(Core))
+					c = true;
 			}
+			return c;
 		}
 		
 		/**
@@ -731,18 +752,22 @@ package org.flixel
 		 * 
 		 * @param	Cores		An array of <code>FlxCore</code> objects.
 		 * @param	Core		A <code>FlxCore</code> object.
+		 * @return	Whether or not any collisions happened.
 		 */
-		static public function collideArrayY(Cores:Array,Core:FlxCore):void
+		static public function collideArrayY(Cores:Array,Core:FlxCore):Boolean
 		{
-			if((Core == null) || !Core.exists || Core.dead) return;
+			if((Core == null) || !Core.exists || Core.dead) return false;
+			var c:Boolean = false;
 			var core:FlxCore;
 			var l:uint = Cores.length;
 			for(var i:uint = 0; i < l; i++)
 			{
 				core = Cores[i];
 				if((core === Core) || (core == null) || !core.exists || core.dead) continue;
-				core.collideY(Core);
+				if(core.collideY(Core))
+					c = true;
 			}
+			return c;
 		}
 		
 		/**
@@ -750,9 +775,11 @@ package org.flixel
 		 * 
 		 * @param	Cores1		An array of <code>FlxCore</code> objects.
 		 * @param	Cores2		An array of <code>FlxCore</code> objects.
+		 * @return	Whether or not any collisions happened.
 		 */
-		static public function collideArrays(Cores1:Array,Cores2:Array):void
+		static public function collideArrays(Cores1:Array,Cores2:Array):Boolean
 		{
+			var c:Boolean = false;
 			var i:uint;
 			var j:uint;
 			var core1:FlxCore;
@@ -769,7 +796,8 @@ package org.flixel
 					{
 						core2 = Cores2[j];
 						if((core2 == null) || !core2.exists || core2.dead) continue;
-						core1.collide(core2);
+						if(core1.collide(core2))
+							c = true;
 					}
 				}
 			}
@@ -783,10 +811,12 @@ package org.flixel
 					{
 						core2 = Cores2[j];
 						if((core1 === core2) || (core2 == null) || !core2.exists || core2.dead) continue;
-						core1.collide(core2);
+						if(core1.collide(core2))
+							c = true;
 					}
 				}
 			}
+			return c;
 		}
 		
 		/**
@@ -794,9 +824,11 @@ package org.flixel
 		 * 
 		 * @param	Cores1		An array of <code>FlxCore</code> objects.
 		 * @param	Cores2		An array of <code>FlxCore</code> objects.
+		 * @return	Whether or not any collisions happened.
 		 */
-		static public function collideArraysX(Cores1:Array,Cores2:Array):void
+		static public function collideArraysX(Cores1:Array,Cores2:Array):Boolean
 		{
+			var c:Boolean = false;
 			var i:uint;
 			var j:uint;
 			var core1:FlxCore;
@@ -813,7 +845,8 @@ package org.flixel
 					{
 						core2 = Cores2[j];
 						if((core2 == null) || !core2.exists || core2.dead) continue;
-						core1.collideX(core2);
+						if(core1.collideX(core2))
+							c = true;
 					}
 				}
 			}
@@ -827,10 +860,12 @@ package org.flixel
 					{
 						core2 = Cores2[j];
 						if((core1 === core2) || (core2 == null) || !core2.exists || core2.dead) continue;
-						core1.collideX(core2);
+						if(core1.collideX(core2))
+							c = true;
 					}
 				}
 			}
+			return c;
 		}
 		
 		/**
@@ -838,9 +873,11 @@ package org.flixel
 		 * 
 		 * @param	Cores1		An array of <code>FlxCore</code> objects.
 		 * @param	Cores2		An array of <code>FlxCore</code> objects.
+		 * @return	Whether or not any collisions happened.
 		 */
-		static public function collideArraysY(Cores1:Array,Cores2:Array):void
+		static public function collideArraysY(Cores1:Array,Cores2:Array):Boolean
 		{
+			var c:Boolean = false;
 			var i:uint;
 			var j:uint;
 			var core1:FlxCore;
@@ -857,7 +894,8 @@ package org.flixel
 					{
 						core2 = Cores2[j];
 						if((core2 == null) || !core2.exists || core2.dead) continue;
-						core1.collideY(core2);
+						if(core1.collideY(core2))
+							c = true;
 					}
 				}
 			}
@@ -871,10 +909,12 @@ package org.flixel
 					{
 						core2 = Cores2[j];
 						if((core1 === core2) || (core2 == null) || !core2.exists || core2.dead) continue;
-						core1.collideY(core2);
+						if(core1.collideY(core2))
+							c = true;
 					}
 				}
 			}
+			return c;
 		}
 		
 		/**
@@ -1076,6 +1116,7 @@ package org.flixel
 			seed = NaN;
 			kong = null;
 			pause = false;
+			dilation = 1.0;
 		}
 
 		/**

@@ -588,8 +588,11 @@ package org.flixel
 			{
 				if(_animations[i].name == AnimName)
 				{
-					finished = false;
 					_curAnim = _animations[i];
+					if(_curAnim.delay <= 0)
+						finished = true;
+					else
+						finished = false;
 					_caf = _curAnim.frames[_curFrame];
 					calcFrame();
 					return;

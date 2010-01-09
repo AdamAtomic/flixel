@@ -408,6 +408,90 @@ package org.flixel
 		}
 		
 		/**
+		 * Shoots a ray from the start point to the end point.
+		 * If/when it passes through a tile, it stores and returns that point.
+		 * 
+		 * @param	StartX		The X component of the ray's start.
+		 * @param	StartY		The Y component of the ray's start.
+		 * @param	EndX		The X component of the ray's end.
+		 * @param	EndY		The Y component of the ray's end.
+		 * @param	Result		A <code>Point</code> object containing the first wall impact.
+		 * @param	Resolution	Defaults to 1, meaning check every tile or so.  Higher means more checks!
+		 * @return	Whether or not there was a collision between the ray and a colliding tile.
+		 */
+		public function ray(StartX:Number, StartY:Number, EndX:Number, EndY:Number, Result:Point, Resolution:Number=1):Boolean
+		{
+			var step:Number = _tileWidth;
+			if(_tileHeight < _tileWidth)
+				step = _tileHeight;
+			step /= Resolution;
+			var dx:Number = EndX - StartX;
+			var dy:Number = EndY - StartY;
+			var distance:Number = Math.sqrt(dx*dx + dy*dy);
+			var steps:uint = Math.ceil(distance/step);
+			var stepX:Number = dx/steps;
+			var stepY:Number = dy/steps;
+			var curX:Number = StartX - stepX;
+			var curY:Number = StartY - stepY;
+			var tx:uint;
+			var ty:uint;
+			for(var i:uint = 0; i < steps; i++)
+			{
+				curX += stepX;
+				curY += stepY;
+				
+				if((curX < 0) || (curX > width) || (curY < 0) || (curY > height))
+					continue;
+				
+				tx = curX/_tileWidth;
+				ty = curY/_tileHeight;
+				if(_data[ty*widthInTiles+tx] >= collideIndex)
+				{
+					//Some basic helper stuff
+					tx *= _tileWidth;
+					ty *= _tileHeight;
+					var rx:Number = 0;
+					var ry:Number = 0;
+					var q:Number;
+					var lx:Number = curX-stepX;
+					var ly:Number = curY-stepY;
+					
+					//Figure out if it crosses the X boundary
+					q = tx;
+					if(dx < 0)
+						q += _tileWidth;
+					rx = q;
+					ry = ly + stepY*((q-lx)/stepX);
+					if((ry > ty) && (ry < ty + _tileHeight))
+					{
+						if(Result == null)
+							Result = new Point();
+						Result.x = rx;
+						Result.y = ry;
+						return true;
+					}
+					
+					//Else, figure out if it crosses the Y boundary
+					q = ty;
+					if(dy < 0)
+						q += _tileHeight;
+					rx = lx + stepX*((q-ly)/stepY);
+					ry = q;
+					if((rx > tx) && (rx < tx + _tileWidth))
+					{
+						if(Result == null)
+							Result = new Point();
+						Result.x = rx;
+						Result.y = ry;
+						return true;
+					}
+					return false;
+				}
+			}
+			return false;
+		}
+		
+		/**
 		 * Converts a one-dimensional array of tile data to a comma-separated string.
 		 * 
 		 * @param	Data		An array full of integer tile references.

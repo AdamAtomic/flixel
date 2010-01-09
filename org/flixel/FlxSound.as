@@ -140,11 +140,16 @@ package org.flixel
 				{
 					if(_channel == null)
 						_channel = _sound.play(0,9999,_transform);
+					if(_channel == null)
+						active = false;
 				}
 				else
 				{
 					_channel = _sound.play(_position,0,_transform);
-					_channel.addEventListener(Event.SOUND_COMPLETE, looped);
+					if(_channel == null)
+						active = false;
+					else
+						_channel.addEventListener(Event.SOUND_COMPLETE, looped);
 				}
 			}
 			else
@@ -154,11 +159,18 @@ package org.flixel
 					if(_channel == null)
 					{
 						_channel = _sound.play(0,0,_transform);
-						_channel.addEventListener(Event.SOUND_COMPLETE, stopped);
+						if(_channel == null)
+							active = false;
+						else
+							_channel.addEventListener(Event.SOUND_COMPLETE, stopped);
 					}
 				}
 				else
+				{
 					_channel = _sound.play(_position,0,_transform);
+					if(_channel == null)
+						active = false;
+				}
 			}
 			_position = 0;
 		}

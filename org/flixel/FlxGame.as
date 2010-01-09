@@ -76,7 +76,6 @@ package org.flixel
 		internal var _paused:Boolean;
 		
 		//Pause screen, sound tray, support panel, dev console, and special effects objects
-		internal var _helpStrings:Array;
 		internal var _soundTray:Sprite;
 		internal var _soundTrayTimer:Number;
 		internal var _soundTrayBars:Array;
@@ -120,12 +119,6 @@ package org.flixel
 			
 			_curState = null;
 			_iState = InitialState;
-			
-			_helpStrings = new Array();
-			_helpStrings.push("Button 1");
-			_helpStrings.push("Button 2");
-			_helpStrings.push("Mouse");
-			_helpStrings.push("Move");
 
 			_panel = new FlxPanel();
 			
@@ -361,6 +354,7 @@ package org.flixel
 			FlxG.elapsed = _elapsed;
 			if(FlxG.elapsed > MAX_ELAPSED)
 				FlxG.elapsed = MAX_ELAPSED;
+			FlxG.elapsed *= FlxG.dilation;
 			
 			if(_logoComplete)
 			{

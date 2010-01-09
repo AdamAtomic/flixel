@@ -42,7 +42,6 @@ package org.flixel
 		 */
 		override public function update():void
 		{
-			super.update();
 			var mx:Number;
 			var my:Number;
 			var moved:Boolean = false;
@@ -52,6 +51,8 @@ package org.flixel
 				mx = x - last.x;
 				my = y - last.y;
 			}
+			super.update();
+			
 			var c:FlxCore;
 			var cl:uint = _children.length;
 			for(var i:uint = 0; i < cl; i++)
