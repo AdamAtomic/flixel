@@ -4,7 +4,7 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="../../style.css" type="text/css" media="screen">
 <link rel="stylesheet" href="../../print.css" type="text/css" media="print">
-<meta content="FlxG,org.flixel.FlxG,ImgDefaultCursor,LIBRARY_MAJOR_VERSION,LIBRARY_MINOR_VERSION,LIBRARY_NAME,_cache,_game,_mute,_originalSeed,_pause,_scrollTarget,_seed,_volume,buffer,debug,elapsed,followLead,followLerp,followMax,followMin,followTarget,height,keys,kong,level,levels,mouse,music,save,saves,score,scores,scroll,sounds,state,width,mute,pause,seed,volume,addBitmap,changeSounds,collideArray,collideArrayX,collideArrayY,collideArrays,collideArraysX,collideArraysY,computeVelocity,createBitmap,destroySounds,doFollow,fade,flash,follow,followAdjust,followBounds,getAngle,getMuteValue,getNonexist,getRandom,hideCursor,hideSupportPanel,log,mutate,openURL,overlapArray,overlapArrays,pauseSounds,play,playMusic,playSounds,quake,random,randomize,resetInput,rotatePoint,setGameData,showCursor,showSupportPanel,stream,switchState,unfollow,updateInput,updateSounds" name="keywords">
+<meta content="FlxG,org.flixel.FlxG,ImgDefaultCursor,LIBRARY_MAJOR_VERSION,LIBRARY_MINOR_VERSION,LIBRARY_NAME,_cache,_game,_mute,_originalSeed,_pause,_scrollTarget,_seed,_volume,buffer,debug,dilation,elapsed,followLead,followLerp,followMax,followMin,followTarget,height,keys,kong,level,levels,mouse,music,save,saves,score,scores,scroll,sounds,state,width,mute,pause,seed,volume,addBitmap,changeSounds,collideArray,collideArrayX,collideArrayY,collideArrays,collideArraysX,collideArraysY,computeVelocity,createBitmap,destroySounds,doFollow,fade,flash,follow,followAdjust,followBounds,getAngle,getMuteValue,getNonexist,getRandom,hideCursor,hideSupportPanel,log,mutate,openURL,overlapArray,overlapArrays,pauseSounds,play,playMusic,playSounds,quake,random,randomize,resetInput,rotatePoint,setGameData,showCursor,showSupportPanel,stream,switchState,unfollow,updateInput,updateSounds" name="keywords">
 <title>org.flixel.FlxG</title>
 </head>
 <body>
@@ -60,6 +60,11 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#debug">debug</a> : Boolean<div class="summaryTableDescription">[static]
    Whether you are running in Debug or Release mode.</div>
+</td><td class="summaryTableOwnerCol">FlxG</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#dilation">dilation</a> : Number<div class="summaryTableDescription">[static]
+   How fast or slow time should pass in the game; default is 1.0.</div>
 </td><td class="summaryTableOwnerCol">FlxG</td>
 </tr>
 <tr class="">
@@ -282,7 +287,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#collideArray()">collideArray</a>(Cores:Array, Core:<a href="FlxCore.html">FlxCore</a>):void</div>
+<a class="signatureLink" href="#collideArray()">collideArray</a>(Cores:Array, Core:<a href="FlxCore.html">FlxCore</a>):Boolean</div>
 <div class="summaryTableDescription">[static]
    Collides a <code>FlxCore</code> against the <code>FlxCores</code> in the array.</div>
 </td><td class="summaryTableOwnerCol">FlxG</td>
@@ -290,7 +295,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#collideArrays()">collideArrays</a>(Cores1:Array, Cores2:Array):void</div>
+<a class="signatureLink" href="#collideArrays()">collideArrays</a>(Cores1:Array, Cores2:Array):Boolean</div>
 <div class="summaryTableDescription">[static]
    Collides the first array of <code>FlxCores</code> against the second array of <code>FlxCores</code>.</div>
 </td><td class="summaryTableOwnerCol">FlxG</td>
@@ -298,7 +303,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#collideArraysX()">collideArraysX</a>(Cores1:Array, Cores2:Array):void</div>
+<a class="signatureLink" href="#collideArraysX()">collideArraysX</a>(Cores1:Array, Cores2:Array):Boolean</div>
 <div class="summaryTableDescription">[static]
    Collides the first array of <code>FlxCores</code> against the second array of <code>FlxCores</code> on the X axis only.</div>
 </td><td class="summaryTableOwnerCol">FlxG</td>
@@ -306,7 +311,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#collideArraysY()">collideArraysY</a>(Cores1:Array, Cores2:Array):void</div>
+<a class="signatureLink" href="#collideArraysY()">collideArraysY</a>(Cores1:Array, Cores2:Array):Boolean</div>
 <div class="summaryTableDescription">[static]
    Collides the first array of <code>FlxCores</code> against the second array of <code>FlxCores</code> on the Y axis only.</div>
 </td><td class="summaryTableOwnerCol">FlxG</td>
@@ -314,14 +319,14 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#collideArrayX()">collideArrayX</a>(Cores:Array, Core:<a href="FlxCore.html">FlxCore</a>):void</div>
+<a class="signatureLink" href="#collideArrayX()">collideArrayX</a>(Cores:Array, Core:<a href="FlxCore.html">FlxCore</a>):Boolean</div>
 <div class="summaryTableDescription">[static] Collides a <code>FlxCore</code> against the <code>FlxCores</code> in the array on the X axis ONLY.</div>
 </td><td class="summaryTableOwnerCol">FlxG</td>
 </tr>
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#collideArrayY()">collideArrayY</a>(Cores:Array, Core:<a href="FlxCore.html">FlxCore</a>):void</div>
+<a class="signatureLink" href="#collideArrayY()">collideArrayY</a>(Cores:Array, Core:<a href="FlxCore.html">FlxCore</a>):Boolean</div>
 <div class="summaryTableDescription">[static]
    Collides a <code>FlxCore</code> against the <code>FlxCores</code> in the array on the Y axis ONLY.</div>
 </td><td class="summaryTableOwnerCol">FlxG</td>
@@ -477,7 +482,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#overlapArray()">overlapArray</a>(Cores:Array, Core:<a href="FlxCore.html">FlxCore</a>, Collide:Function = null):void</div>
+<a class="signatureLink" href="#overlapArray()">overlapArray</a>(Cores:Array, Core:<a href="FlxCore.html">FlxCore</a>, Collide:Function = null):Boolean</div>
 <div class="summaryTableDescription">[static]
    Checks to see if a <code>FlxCore</code> overlaps any of the <code>FlxCores</code> in the array,
    and calls a function when they do.</div>
@@ -486,7 +491,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#overlapArrays()">overlapArrays</a>(Cores1:Array, Cores2:Array, Collide:Function = null):void</div>
+<a class="signatureLink" href="#overlapArrays()">overlapArrays</a>(Cores1:Array, Cores2:Array, Collide:Function = null):Boolean</div>
 <div class="summaryTableDescription">[static]
    Checks to see if any <code>FlxCore</code> in Cores1 overlaps any <code>FlxCore</code> in Cores2,
    and calls Collide when they do.</div>
@@ -688,6 +693,16 @@ showHideInherited();
 <code>public static var debug:Boolean</code><p>
    Whether you are running in Debug or Release mode.
    Set automatically by <code>FlxFactory</code> during startup.
+   </p></div>
+<a name="dilation"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">dilation</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static var dilation:Number</code><p>
+   How fast or slow time should pass in the game; default is 1.0.
    </p></div>
 <a name="elapsed"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
@@ -1133,7 +1148,7 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public static function collideArray(Cores:Array, Core:<a href="FlxCore.html">FlxCore</a>):void</code><p>
+<code>public static function collideArray(Cores:Array, Core:<a href="FlxCore.html">FlxCore</a>):Boolean</code><p>
    Collides a <code>FlxCore</code> against the <code>FlxCores</code> in the array.
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
@@ -1149,6 +1164,14 @@ showHideInherited();
    </td>
 </tr>
 </table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code> &mdash; Whether or not any collisions happened.
+   </td>
+</tr>
+</table>
 </div>
 <a name="collideArrays()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
@@ -1157,7 +1180,7 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public static function collideArrays(Cores1:Array, Cores2:Array):void</code><p>
+<code>public static function collideArrays(Cores1:Array, Cores2:Array):Boolean</code><p>
    Collides the first array of <code>FlxCores</code> against the second array of <code>FlxCores</code>.
    
    </p><span class="label">Parameters</span>
@@ -1174,6 +1197,14 @@ showHideInherited();
    </td>
 </tr>
 </table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code> &mdash; Whether or not any collisions happened.
+   </td>
+</tr>
+</table>
 </div>
 <a name="collideArraysX()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
@@ -1182,7 +1213,7 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public static function collideArraysX(Cores1:Array, Cores2:Array):void</code><p>
+<code>public static function collideArraysX(Cores1:Array, Cores2:Array):Boolean</code><p>
    Collides the first array of <code>FlxCores</code> against the second array of <code>FlxCores</code> on the X axis only.
    
    </p><span class="label">Parameters</span>
@@ -1199,6 +1230,14 @@ showHideInherited();
    </td>
 </tr>
 </table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code> &mdash; Whether or not any collisions happened.
+   </td>
+</tr>
+</table>
 </div>
 <a name="collideArraysY()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
@@ -1207,7 +1246,7 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public static function collideArraysY(Cores1:Array, Cores2:Array):void</code><p>
+<code>public static function collideArraysY(Cores1:Array, Cores2:Array):Boolean</code><p>
    Collides the first array of <code>FlxCores</code> against the second array of <code>FlxCores</code> on the Y axis only.
    
    </p><span class="label">Parameters</span>
@@ -1224,6 +1263,14 @@ showHideInherited();
    </td>
 </tr>
 </table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code> &mdash; Whether or not any collisions happened.
+   </td>
+</tr>
+</table>
 </div>
 <a name="collideArrayX()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
@@ -1232,7 +1279,7 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public static function collideArrayX(Cores:Array, Core:<a href="FlxCore.html">FlxCore</a>):void</code><p> Collides a <code>FlxCore</code> against the <code>FlxCores</code> in the array on the X axis ONLY.
+<code>public static function collideArrayX(Cores:Array, Core:<a href="FlxCore.html">FlxCore</a>):Boolean</code><p> Collides a <code>FlxCore</code> against the <code>FlxCores</code> in the array on the X axis ONLY.
    
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
@@ -1248,6 +1295,14 @@ showHideInherited();
    </td>
 </tr>
 </table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code> &mdash; Whether or not any collisions happened.
+   </td>
+</tr>
+</table>
 </div>
 <a name="collideArrayY()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
@@ -1256,7 +1311,7 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public static function collideArrayY(Cores:Array, Core:<a href="FlxCore.html">FlxCore</a>):void</code><p>
+<code>public static function collideArrayY(Cores:Array, Core:<a href="FlxCore.html">FlxCore</a>):Boolean</code><p>
    Collides a <code>FlxCore</code> against the <code>FlxCores</code> in the array on the Y axis ONLY.
    
    </p><span class="label">Parameters</span>
@@ -1270,6 +1325,14 @@ showHideInherited();
 </tr>
 <tr>
 <td width="20px"></td><td><code><span class="label">Core</span>:<a href="FlxCore.html">FlxCore</a></code> &mdash;  A <code>FlxCore</code> object.
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code> &mdash; Whether or not any collisions happened.
    </td>
 </tr>
 </table>
@@ -1773,7 +1836,7 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public static function overlapArray(Cores:Array, Core:<a href="FlxCore.html">FlxCore</a>, Collide:Function = null):void</code><p>
+<code>public static function overlapArray(Cores:Array, Core:<a href="FlxCore.html">FlxCore</a>, Collide:Function = null):Boolean</code><p>
    Checks to see if a <code>FlxCore</code> overlaps any of the <code>FlxCores</code> in the array,
    and calls a function when they do.  If no function is specified, <code>kill()</code> is called on both objects.
    
@@ -1798,6 +1861,14 @@ showHideInherited();
    </td>
 </tr>
 </table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code> &mdash; Whether or not any of these objects overlapped.
+   </td>
+</tr>
+</table>
 </div>
 <a name="overlapArrays()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
@@ -1806,7 +1877,7 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public static function overlapArrays(Cores1:Array, Cores2:Array, Collide:Function = null):void</code><p>
+<code>public static function overlapArrays(Cores1:Array, Cores2:Array, Collide:Function = null):Boolean</code><p>
    Checks to see if any <code>FlxCore</code> in Cores1 overlaps any <code>FlxCore</code> in Cores2,
    and calls Collide when they do.  If no function is specified, <code>kill()</code> is called on both objects.
    
@@ -1828,6 +1899,14 @@ showHideInherited();
 </tr>
 <tr>
 <td width="20px"></td><td><code><span class="label">Collide</span>:Function</code> (default = <code>null</code>)<code></code> &mdash;  A function that takes two <code>FlxCore</code> objects as parameters (first the one from Cores1, then the one from Cores2)
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code> &mdash; Whether or not any of these objects overlapped.
    </td>
 </tr>
 </table>

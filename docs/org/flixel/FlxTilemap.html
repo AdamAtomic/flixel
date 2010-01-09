@@ -4,7 +4,7 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="../../style.css" type="text/css" media="screen">
 <link rel="stylesheet" href="../../print.css" type="text/css" media="print">
-<meta content="FlxTilemap,org.flixel.FlxTilemap,ALT,AUTO,ImgAuto,ImgAutoAlt,OFF,_block,_callbacks,_data,_p,_pixels,_rects,_screenCols,_screenRows,_tileHeight,_tileWidth,auto,collideIndex,drawIndex,heightInTiles,startingIndex,totalTiles,widthInTiles,arrayToCSV,autoTile,collide,follow,getTile,getTileByIndex,loadMap,overlaps,pngToCSV,render,setCallback,setTile,setTileByIndex,updateTile" name="keywords">
+<meta content="FlxTilemap,org.flixel.FlxTilemap,ALT,AUTO,ImgAuto,ImgAutoAlt,OFF,_block,_callbacks,_data,_p,_pixels,_rects,_screenCols,_screenRows,_tileHeight,_tileWidth,auto,collideIndex,drawIndex,heightInTiles,startingIndex,totalTiles,widthInTiles,arrayToCSV,autoTile,collide,follow,getTile,getTileByIndex,loadMap,overlaps,pngToCSV,ray,render,setCallback,setTile,setTileByIndex,updateTile" name="keywords">
 <title>org.flixel.FlxTilemap</title>
 </head>
 <body>
@@ -444,6 +444,14 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <a class="signatureLink" href="#pngToCSV()">pngToCSV</a>(PNGFile:Class, Invert:Boolean = false, Scale:uint = 1):String</div>
 <div class="summaryTableDescription">[static]
    Converts a PNG file to a comma-separated string.</div>
+</td><td class="summaryTableOwnerCol">FlxTilemap</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#ray()">ray</a>(StartX:Number, StartY:Number, EndX:Number, EndY:Number, Result:Point, Resolution:Number = 1):Boolean</div>
+<div class="summaryTableDescription">
+   Shoots a ray from the start point to the end point.</div>
 </td><td class="summaryTableOwnerCol">FlxTilemap</td>
 </tr>
 <tr class="">
@@ -1008,6 +1016,68 @@ showHideInherited();
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
 <td width="20"></td><td><code>String</code> &mdash; A comma-separated string containing the level data in a <code>FlxTilemap</code>-friendly format.
+   </td>
+</tr>
+</table>
+</div>
+<a name="ray()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">ray</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function ray(StartX:Number, StartY:Number, EndX:Number, EndY:Number, Result:Point, Resolution:Number = 1):Boolean</code><p>
+   Shoots a ray from the start point to the end point.
+   If/when it passes through a tile, it stores and returns that point.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">StartX</span>:Number</code> &mdash;  The X component of the ray's start.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">StartY</span>:Number</code> &mdash;  The Y component of the ray's start.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">EndX</span>:Number</code> &mdash;  The X component of the ray's end.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">EndY</span>:Number</code> &mdash;  The Y component of the ray's end.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Result</span>:Point</code> &mdash;  A <code>Point</code> object containing the first wall impact.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Resolution</span>:Number</code> (default = <code>1</code>)<code></code> &mdash; Defaults to 1, meaning check every tile or so.  Higher means more checks!
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code> &mdash; Whether or not there was a collision between the ray and a colliding tile.
    </td>
 </tr>
 </table>
