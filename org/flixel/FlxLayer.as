@@ -29,8 +29,6 @@ package org.flixel
 		virtual public function add(Core:FlxCore,ShareScroll:Boolean=false):FlxCore
 		{
 			_children.push(Core);
-			Core.x += x;
-			Core.y += y;
 			if(ShareScroll)
 				Core.scrollFactor = scrollFactor;
 			return Core;
