@@ -33,7 +33,7 @@ package org.flixel
 		 * Assign a minor version to your library.
 		 * Appears after the decimal in the console.
 		 */
-		static public var LIBRARY_MINOR_VERSION:uint = 53;
+		static public var LIBRARY_MINOR_VERSION:uint = 54;
 
 		/**
 		 * Internal tracker for game pause state.
@@ -432,19 +432,21 @@ package org.flixel
 		 * 
 		 * @return	The <code>BitmapData</code> we just created.
 		 */
-		static public function createBitmap(Width:uint, Height:uint, Color:uint,Unique:Boolean):BitmapData
+		static public function createBitmap(Width:uint, Height:uint, Color:uint, Unique:Boolean):BitmapData
 		{
 			var key:String = Width+"x"+Height+":"+Color;
-			var gen:Boolean = false;
-			if(Unique && (_cache[ukey] != undefined) && (_cache[ukey] != null))
+			if(Unique && (_cache[key] != undefined) && (_cache[key] != null))
 			{
+				//Generate a unique key
 				var inc:uint = 0;
 				var ukey:String;
 				do { ukey = key + inc++;
 				} while((_cache[ukey] != undefined) && (_cache[ukey] != null));
 				key = ukey;
 			}
-			_cache[key] = new BitmapData(Width,Height,true,Color);
+			//If there is no data for this key, generate the requested graphic
+			if((_cache[key] == undefined) || (_cache[key] == null))
+				_cache[key] = new BitmapData(Width,Height,true,Color);
 			return _cache[key];
 		}
 		
@@ -456,10 +458,20 @@ package org.flixel
 		 * 
 		 * @return	The <code>BitmapData</code> we just created.
 		 */
-		static public function addBitmap(Graphic:Class,Reverse:Boolean=false):BitmapData
+		static public function addBitmap(Graphic:Class, Reverse:Boolean=false, Unique:Boolean=false):BitmapData
 		{
 			var needReverse:Boolean = false;
 			var key:String = String(Graphic);
+			if(Unique && (_cache[key] != undefined) && (_cache[key] != null))
+			{
+				//Generate a unique key
+				var inc:uint = 0;
+				var ukey:String;
+				do { ukey = key + inc++;
+				} while((_cache[ukey] != undefined) && (_cache[ukey] != null));
+				key = ukey;
+			}
+			//If there is no data for this key, generate the requested graphic
 			if((_cache[key] == undefined) || (_cache[key] == null))
 			{
 				_cache[key] = (new Graphic).bitmapData;
