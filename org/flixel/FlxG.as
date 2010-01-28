@@ -6,6 +6,8 @@ package org.flixel
 	import flash.geom.Point;
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
+	import flash.utils.getQualifiedClassName;
+	import flash.utils.getDefinitionByName;
 	
 	import org.flixel.data.FlxKeyboard;
 	import org.flixel.data.FlxKong;
@@ -33,7 +35,7 @@ package org.flixel
 		 * Assign a minor version to your library.
 		 * Appears after the decimal in the console.
 		 */
-		static public var LIBRARY_MINOR_VERSION:uint = 54;
+		static public var LIBRARY_MINOR_VERSION:uint = 55;
 
 		/**
 		 * Internal tracker for game pause state.
@@ -528,6 +530,35 @@ package org.flixel
 		{
 			return Math.atan2(Y,X) * 180 / Math.PI;
 		};
+		
+		/**
+		 * Get the <code>String</code> name of any <code>Object</code>.
+		 * 
+		 * @param	Obj		The <code>Object</code> object in question.
+		 * @param	Simple	Returns only the class name, not the package or packages.
+		 * 
+		 * @return	The name of the <code>Class</code> as a <code>String</code> object.
+		 */
+		static public function getClassName(Obj:Object,Simple:Boolean=false):String
+		{
+			var s:String = getQualifiedClassName(Obj);
+			s = s.replace("::",".");
+			if(Simple)
+				s = s.substr(s.lastIndexOf(".")+1);
+			return s;
+		};
+		
+		/**
+		 * Look up a <code>Class</code> object by its string name.
+		 * 
+		 * @param	Name	The <code>String</code> name of the <code>Class</code> you are interested in.
+		 * 
+		 * @return	A <code>Class</code> object.
+		 */
+		static public function getClass(Name:String):Class
+		{
+			return getDefinitionByName(Name) as Class;
+		}
 
 		/**
 		 * Tells the camera subsystem what <code>FlxCore</code> object to follow.

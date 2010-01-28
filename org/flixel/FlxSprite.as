@@ -223,6 +223,8 @@ package org.flixel
 			{
 				if(Animated)
 					Width = _pixels.height;
+				else if(_flipped > 0)
+					Width = _pixels.width/2;
 				else
 					Width = _pixels.width;
 			}
