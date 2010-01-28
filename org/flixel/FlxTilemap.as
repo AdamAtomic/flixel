@@ -340,24 +340,29 @@ package org.flixel
 		/**
 		 * Change the data and graphic of a tile in the tilemap.
 		 * 
-		 * @param	X		The X coordinate of the tile (in tiles, not pixels).
-		 * @param	Y		The Y coordinate of the tile (in tiles, not pixels).
-		 * @param	Tile	The new integer data you wish to inject.
+		 * @param	X				The X coordinate of the tile (in tiles, not pixels).
+		 * @param	Y				The Y coordinate of the tile (in tiles, not pixels).
+		 * @param	Tile			The new integer data you wish to inject.
+		 * @param	UpdateGraphics	Whether the graphical representation of this tile should change.
 		 */ 
-		public function setTile(X:uint,Y:uint,Tile:uint):void
+		public function setTile(X:uint,Y:uint,Tile:uint,UpdateGraphics:Boolean=true):void
 		{
-			setTileByIndex(Y * widthInTiles + X,Tile);
+			setTileByIndex(Y * widthInTiles + X,Tile,UpdateGraphics);
 		}
 		
 		/**
 		 * Change the data and graphic of a tile in the tilemap.
 		 * 
-		 * @param	Index	The slot in the data array (Y * widthInTiles + X) where this tile is stored.
-		 * @param	Tile	The new integer data you wish to inject.
+		 * @param	Index			The slot in the data array (Y * widthInTiles + X) where this tile is stored.
+		 * @param	Tile			The new integer data you wish to inject.
+		 * @param	UpdateGraphics	Whether the graphical representation of this tile should change.
 		 */
-		public function setTileByIndex(Index:uint,Tile:uint):void
+		public function setTileByIndex(Index:uint,Tile:uint,UpdateGraphics:Boolean=true):void
 		{
 			_data[Index] = Tile;
+			
+			if(!UpdateGraphics)
+				return;
 			
 			if(auto == OFF)
 			{

@@ -309,7 +309,29 @@ package org.flixel
 					}
 				}
 			}
-			return false;
+			else
+			{
+				//Catch-all de-separation behavior
+				var cbmx:Number = coreBounds.x + coreBounds.width/2;
+				var cbmy:Number = coreBounds.y + coreBounds.height/2;
+				var tbmx:Number = thisBounds.x + thisBounds.width/2;
+				var tbmy:Number = thisBounds.y + thisBounds.height/2;
+				if(Math.abs(cbmx-tbmx) > Math.abs(cbmy-tbmy))
+				{
+					if(cbmx > tbmx)
+						Core.x = x + width;
+					else
+						Core.x = x - Core.width;
+				}
+				else
+				{
+					if(cbmy > tbmy)
+						Core.y = y + height;
+					else
+						Core.y = y - Core.height;
+				}
+			}
+			return true;
 		}
 		
 		/**
@@ -428,7 +450,29 @@ package org.flixel
 					}
 				}
 			}
-			return false;
+			else
+			{
+				//Catch-all de-separation behavior
+				var cbmx:Number = coreBounds.x + coreBounds.width/2;
+				var cbmy:Number = coreBounds.y + coreBounds.height/2;
+				var tbmx:Number = thisBounds.x + thisBounds.width/2;
+				var tbmy:Number = thisBounds.y + thisBounds.height/2;
+				if(Math.abs(cbmx-tbmx) > Math.abs(cbmy-tbmy))
+				{
+					if(cbmx > tbmx)
+						Core.x = x + width;
+					else
+						Core.x = x - Core.width;
+				}
+				else
+				{
+					if(cbmy > tbmy)
+						Core.y = y + height;
+					else
+						Core.y = y - Core.height;
+				}
+			}
+			return true;
 		}
 		
 		/**
