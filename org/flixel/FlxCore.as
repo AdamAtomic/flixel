@@ -318,17 +318,117 @@ package org.flixel
 				var tbmy:Number = thisBounds.y + thisBounds.height/2;
 				if(Math.abs(cbmx-tbmx) > Math.abs(cbmy-tbmy))
 				{
+					
 					if(cbmx > tbmx)
-						Core.x = x + width;
+					{
+						if(fixed && !Core.fixed)
+						{
+							if(Core.hitWall(this))
+							{
+								Core.x = x + width;
+								return true;
+							}
+						}
+						else if(!fixed && Core.fixed)
+						{
+							if(hitWall(Core))
+							{
+								x = Core.x - width;
+								return true;
+							}
+						}
+						else if(Core.hitWall(this) && hitWall(Core))
+						{
+							split = (thisBounds.right - coreBounds.left) / 2;
+							Core.x += split;
+							x -= split;
+							return true;
+						}
+					}
 					else
-						Core.x = x - Core.width;
+					{
+						if(fixed && !Core.fixed)
+						{	
+							if(Core.hitWall(this))
+							{
+								Core.x = x - Core.width;
+								return true;
+							}
+						}
+						else if(!fixed && Core.fixed)
+						{
+							if(hitWall(Core))
+							{
+								x = Core.x + Core.width;
+								return true;
+							}
+						}
+						else if(Core.hitWall(this) && hitWall(Core))
+						{
+							split = (coreBounds.right - thisBounds.left) / 2;
+							Core.x -= split;
+							x += split;
+							return true;
+						}
+					}
 				}
 				else
 				{
 					if(cbmy > tbmy)
-						Core.y = y + height;
+					{
+						if(coreBounds.top < thisBounds.bottom)
+						{
+							if(fixed && !Core.fixed)
+							{
+								if(Core.hitCeiling(this))
+								{
+									Core.y = y + height;
+									return true;
+								}
+							}
+							else if(!fixed && Core.fixed)
+							{
+								if(hitFloor(Core))
+								{
+									y = Core.y - height;
+									return true;
+								}
+							}
+							else if(Core.hitCeiling(this) && hitFloor(Core))
+							{
+								split = (thisBounds.bottom - coreBounds.top) / 2;
+								Core.y += split;
+								y -= split;
+								return true;
+							}
+						}
+					}
 					else
-						Core.y = y - Core.height;
+					{
+						if(fixed && !Core.fixed)
+						{
+							if(Core.hitFloor(this))
+							{
+								Core.y = y - Core.height;
+								return true;
+							}
+						}
+						else if(!fixed && Core.fixed)
+						{
+							if(hitCeiling(Core))
+							{
+								y = Core.y + Core.height;
+								return true;
+							}
+						}
+						else if(Core.hitFloor(this) && hitCeiling(Core))
+						{
+							split = (coreBounds.bottom - thisBounds.top) / 2;
+							Core.y -= split;
+							y += split;
+							return true;
+						}
+					}
 				}
 			}
 			return true;
@@ -459,17 +559,117 @@ package org.flixel
 				var tbmy:Number = thisBounds.y + thisBounds.height/2;
 				if(Math.abs(cbmx-tbmx) > Math.abs(cbmy-tbmy))
 				{
+					
 					if(cbmx > tbmx)
-						Core.x = x + width;
+					{
+						if(fixed && !Core.fixed)
+						{
+							if(Core.hitWall(this))
+							{
+								Core.x = x + width;
+								return true;
+							}
+						}
+						else if(!fixed && Core.fixed)
+						{
+							if(hitWall(Core))
+							{
+								x = Core.x - width;
+								return true;
+							}
+						}
+						else if(Core.hitWall(this) && hitWall(Core))
+						{
+							split = (thisBounds.right - coreBounds.left) / 2;
+							Core.x += split;
+							x -= split;
+							return true;
+						}
+					}
 					else
-						Core.x = x - Core.width;
+					{
+						if(fixed && !Core.fixed)
+						{	
+							if(Core.hitWall(this))
+							{
+								Core.x = x - Core.width;
+								return true;
+							}
+						}
+						else if(!fixed && Core.fixed)
+						{
+							if(hitWall(Core))
+							{
+								x = Core.x + Core.width;
+								return true;
+							}
+						}
+						else if(Core.hitWall(this) && hitWall(Core))
+						{
+							split = (coreBounds.right - thisBounds.left) / 2;
+							Core.x -= split;
+							x += split;
+							return true;
+						}
+					}
 				}
 				else
 				{
 					if(cbmy > tbmy)
-						Core.y = y + height;
+					{
+						if(coreBounds.top < thisBounds.bottom)
+						{
+							if(fixed && !Core.fixed)
+							{
+								if(Core.hitCeiling(this))
+								{
+									Core.y = y + height;
+									return true;
+								}
+							}
+							else if(!fixed && Core.fixed)
+							{
+								if(hitFloor(Core))
+								{
+									y = Core.y - height;
+									return true;
+								}
+							}
+							else if(Core.hitCeiling(this) && hitFloor(Core))
+							{
+								split = (thisBounds.bottom - coreBounds.top) / 2;
+								Core.y += split;
+								y -= split;
+								return true;
+							}
+						}
+					}
 					else
-						Core.y = y - Core.height;
+					{
+						if(fixed && !Core.fixed)
+						{
+							if(Core.hitFloor(this))
+							{
+								Core.y = y - Core.height;
+								return true;
+							}
+						}
+						else if(!fixed && Core.fixed)
+						{
+							if(hitCeiling(Core))
+							{
+								y = Core.y + Core.height;
+								return true;
+							}
+						}
+						else if(Core.hitFloor(this) && hitCeiling(Core))
+						{
+							split = (coreBounds.bottom - thisBounds.top) / 2;
+							Core.y -= split;
+							y += split;
+							return true;
+						}
+					}
 				}
 			}
 			return true;
