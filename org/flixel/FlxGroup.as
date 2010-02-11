@@ -27,7 +27,6 @@ package org.flixel
 			members = new Array();
 			_last = new FlxPoint();
 			_first = true;
-			moves = false;
 		}
 		
 		/**

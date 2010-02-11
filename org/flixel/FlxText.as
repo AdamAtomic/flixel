@@ -43,7 +43,6 @@ package org.flixel
 			createGraphic(Width,1);
 			_regen = true;
 			_shadow = 0;
-			moves = false;
 			solid = false;
 			calcFrame();
 		}

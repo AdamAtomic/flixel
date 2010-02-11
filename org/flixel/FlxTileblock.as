@@ -42,7 +42,6 @@ package org.flixel
 			width = Width;
 			height = Height;
 			fixed = true;
-			moves = false;
 			refreshHulls();
 		}
 		

@@ -98,7 +98,6 @@ package org.flixel
 			_block.fixed = true;
 			_callbacks = new Array();
 			fixed = true;
-			moves = false;
 		}
 		
 		/**
