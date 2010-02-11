@@ -1,0 +1,766 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../../style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="../../print.css" type="text/css" media="print">
+<meta content="FlxQuadTree,org.flixel.FlxQuadTree,A_LIST,B_LIST,MIN,_b,_canSubdivide,_headA,_headB,_hh,_hw,_l,_mx,_my,_ne,_nw,_o,_oa,_ob,_oc,_ol,_or,_ot,_r,_se,_sw,_t,_tailA,_tailB,add,addObject,addToList,overlap,overlapNode" name="keywords">
+<title>org.flixel.FlxQuadTree</title>
+</head>
+<body>
+<script type="text/javascript" language="javascript" src="../../asdoc.js"></script><script type="text/javascript" language="javascript" src="../../cookies.js"></script><script type="text/javascript" language="javascript">
+<!--
+				asdocTitle = 'FlxQuadTree - API Documentation';
+				var baseRef = '../../';
+				window.onload = configPage;
+			--></script>
+<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" class="titleTable">
+<tr>
+<td align="left" class="titleTableTitle">API Documentation</td><td align="right" class="titleTableTopNav"><a onclick="loadClassListFrame('../../all-classes.html')" href="../../package-summary.html">All&nbsp;Packages</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../all-classes.html')" href="../../class-summary.html">All&nbsp;Classes</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../index-list.html')" href="../../all-index-A.html">Index</a>&nbsp;|&nbsp;<a href="../../index.html?org/flixel/FlxQuadTree.html&amp;org/flixel/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></td><td rowspan="3" align="right" class="titleTableLogo"><img alt="Adobe Logo" title="Adobe Logo" class="logoImage" src="../../images/logo.jpg"></td>
+</tr>
+<tr class="titleTableRow2">
+<td align="left" id="subTitle" class="titleTableSubTitle">Class&nbsp;FlxQuadTree</td><td align="right" id="subNav" class="titleTableSubNav"><a href="#propertySummary">Properties</a>&nbsp;| <a href="#methodSummary">Methods</a>&nbsp;| <a href="#constantSummary">Constants</a></td>
+</tr>
+<tr class="titleTableRow3">
+<td colspan="2">&nbsp;</td>
+</tr>
+</table>
+<script type="text/javascript" language="javascript">
+<!--
+if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Class FlxQuadTree"); titleBar_setSubNav(true,true,false,false,false,false,true,false,false,false,false,false,false,false);}
+--></script>
+<div class="MainContent">
+<table cellspacing="0" cellpadding="0" class="classHeaderTable">
+<tr>
+<td class="classHeaderTableLabel">Package</td><td><a onclick="javascript:loadClassListFrame('class-list.html')" href="package-detail.html">org.flixel</a></td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Class</td><td class="classSignature">public class FlxQuadTree</td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Inheritance</td><td class="inheritanceList">FlxQuadTree <img class="inheritArrow" alt="Inheritance" title="Inheritance" src="../../images/inherit-arrow.gif"> <a href="FlxRect.html">FlxRect</a> <img class="inheritArrow" alt="Inheritance" title="Inheritance" src="../../images/inherit-arrow.gif"> <a href="FlxPoint.html">FlxPoint</a></td>
+</tr>
+</table>
+<p></p>
+  A fairly generic quad tree structure for rapid overlap checks.
+  FlxQuadTree is also configured for single or dual list operation.
+  You can add items either to its A list or its B list.
+  When you do an overlap check, you can compare the A list to itself,
+  or the A list against the B list.  Handy for different things!
+  <p></p>
+<br>
+<hr>
+</div>
+<a name="propertySummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Properties</div>
+<div class="showHideLinks">
+<div class="hideInheritedProperty" id="hideInheritedProperty">
+<a onclick="javascript:setInheritedVisible(false,'Property');" href="#propertySummary" class="showHideLink"><img src="../../images/expanded.gif" class="showHideLinkImage"> Hide Inherited Public Properties</a>
+</div>
+<div class="showInheritedProperty" id="showInheritedProperty">
+<a onclick="javascript:setInheritedVisible(true,'Property');" href="#propertySummary" class="showHideLink"><img src="../../images/collapsed.gif" class="showHideLinkImage"> Show Inherited Public Properties</a>
+</div>
+</div>
+<table id="summaryTableProperty" class="summaryTable hideInheritedProperty" cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxRect.html#bottom">bottom</a> : Number<div class="summaryTableDescription">
+   The Y coordinate of the bottom of the rectangle.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxRect.html">FlxRect</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxRect.html#height">height</a> : Number<div class="summaryTableDescription">
+   </div>
+</td><td class="summaryTableOwnerCol"><a href="FlxRect.html">FlxRect</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxRect.html#left">left</a> : Number<div class="summaryTableDescription">
+   The X coordinate of the left side of the rectangle.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxRect.html">FlxRect</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxRect.html#right">right</a> : Number<div class="summaryTableDescription">
+   The X coordinate of the right side of the rectangle.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxRect.html">FlxRect</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxRect.html#top">top</a> : Number<div class="summaryTableDescription">
+   The Y coordinate of the top of the rectangle.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxRect.html">FlxRect</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxRect.html#width">width</a> : Number<div class="summaryTableDescription">
+   </div>
+</td><td class="summaryTableOwnerCol"><a href="FlxRect.html">FlxRect</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxPoint.html#x">x</a> : Number<div class="summaryTableDescription">
+   </div>
+</td><td class="summaryTableOwnerCol"><a href="FlxPoint.html">FlxPoint</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxPoint.html#y">y</a> : Number<div class="summaryTableDescription">
+   </div>
+</td><td class="summaryTableOwnerCol"><a href="FlxPoint.html">FlxPoint</a></td>
+</tr>
+</table>
+</div>
+<a name="protectedPropertySummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Protected Properties</div>
+<table id="summaryTableProtectedProperty" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_b">_b</a> : Number<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">FlxQuadTree</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_canSubdivide">_canSubdivide</a> : Boolean<div class="summaryTableDescription">
+   Whether this branch of the tree can be subdivided or not.</div>
+</td><td class="summaryTableOwnerCol">FlxQuadTree</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_headA">_headA</a> : <a href="data/FlxList.html">FlxList</a>
+<div class="summaryTableDescription">
+   These variables refer to the internal A and B linked lists,
+   which are used to store objects in the leaves.</div>
+</td><td class="summaryTableOwnerCol">FlxQuadTree</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_headB">_headB</a> : <a href="data/FlxList.html">FlxList</a>
+<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">FlxQuadTree</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_hh">_hh</a> : Number<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">FlxQuadTree</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_hw">_hw</a> : Number<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">FlxQuadTree</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_l">_l</a> : Number<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">FlxQuadTree</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_mx">_mx</a> : Number<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">FlxQuadTree</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_my">_my</a> : Number<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">FlxQuadTree</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_ne">_ne</a> : <a href="../flixel/FlxQuadTree.html">FlxQuadTree</a>
+<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">FlxQuadTree</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_nw">_nw</a> : <a href="../flixel/FlxQuadTree.html">FlxQuadTree</a>
+<div class="summaryTableDescription">
+   These variables refer to the potential child quadrants for this node.</div>
+</td><td class="summaryTableOwnerCol">FlxQuadTree</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_o">_o</a> : <a href="../flixel/FlxObject.html">FlxObject</a>
+<div class="summaryTableDescription">[static]
+   These objects are used to reduce recursive parameters internally.</div>
+</td><td class="summaryTableOwnerCol">FlxQuadTree</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_oa">_oa</a> : uint<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">FlxQuadTree</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_ob">_ob</a> : Number<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">FlxQuadTree</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_oc">_oc</a> : Function<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">FlxQuadTree</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_ol">_ol</a> : Number<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">FlxQuadTree</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_or">_or</a> : Number<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">FlxQuadTree</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_ot">_ot</a> : Number<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">FlxQuadTree</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_r">_r</a> : Number<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">FlxQuadTree</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_se">_se</a> : <a href="../flixel/FlxQuadTree.html">FlxQuadTree</a>
+<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">FlxQuadTree</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_sw">_sw</a> : <a href="../flixel/FlxQuadTree.html">FlxQuadTree</a>
+<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">FlxQuadTree</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_t">_t</a> : Number<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">FlxQuadTree</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_tailA">_tailA</a> : <a href="data/FlxList.html">FlxList</a>
+<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">FlxQuadTree</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_tailB">_tailB</a> : <a href="data/FlxList.html">FlxList</a>
+<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">FlxQuadTree</td>
+</tr>
+</table>
+</div>
+<a name="methodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Methods</div>
+<div class="showHideLinks">
+<div class="hideInheritedMethod" id="hideInheritedMethod">
+<a onclick="javascript:setInheritedVisible(false,'Method');" href="#methodSummary" class="showHideLink"><img src="../../images/expanded.gif" class="showHideLinkImage"> Hide Inherited Public Methods</a>
+</div>
+<div class="showInheritedMethod" id="showInheritedMethod">
+<a onclick="javascript:setInheritedVisible(true,'Method');" href="#methodSummary" class="showHideLink"><img src="../../images/collapsed.gif" class="showHideLinkImage"> Show Inherited Public Methods</a>
+</div>
+</div>
+<table id="summaryTableMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#FlxQuadTree()">FlxQuadTree</a>(X:Number, Y:Number, Width:Number, Height:Number, Parent:<a href="FlxQuadTree.html">FlxQuadTree</a> = null)</div>
+<div class="summaryTableDescription">
+   Instantiate a new Quad Tree node.</div>
+</td><td class="summaryTableOwnerCol">FlxQuadTree</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#add()">add</a>(Object:<a href="FlxObject.html">FlxObject</a>, List:uint):void</div>
+<div class="summaryTableDescription">
+   Call this function to add an object to the root of the tree.</div>
+</td><td class="summaryTableOwnerCol">FlxQuadTree</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#addToList()">addToList</a>():void</div>
+<div class="summaryTableDescription">
+   Internal function for recursively adding objects to leaf lists.</div>
+</td><td class="summaryTableOwnerCol">FlxQuadTree</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#overlap()">overlap</a>(BothLists:Boolean = true, Callback:Function = null):Boolean</div>
+<div class="summaryTableDescription">
+   <code>FlxQuadTree</code>'s other main function.</div>
+</td><td class="summaryTableOwnerCol">FlxQuadTree</td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxPoint.html#toString()">toString</a>():String</div>
+<div class="summaryTableDescription">
+   Convert object to readable string name.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxPoint.html">FlxPoint</a></td>
+</tr>
+</table>
+</div>
+<a name="protectedMethodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Protected Methods</div>
+<table id="summaryTableProtectedMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#addObject()">addObject</a>():void</div>
+<div class="summaryTableDescription">
+   Internal function for recursively navigating and creating the tree
+   while adding objects to the appropriate nodes.</div>
+</td><td class="summaryTableOwnerCol">FlxQuadTree</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#overlapNode()">overlapNode</a>(Iterator:<a href="data/FlxList.html">FlxList</a> = null):Boolean</div>
+<div class="summaryTableDescription">
+   An internal function for comparing an object against the contents of a node.</div>
+</td><td class="summaryTableOwnerCol">FlxQuadTree</td>
+</tr>
+</table>
+</div>
+<a name="constantSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Constants</div>
+<table id="summaryTableConstant" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Constant</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#A_LIST">A_LIST</a> : uint = 0<div class="summaryTableDescription">[static]
+   Flag for specifying that you want to add an object to the A list.</div>
+</td><td class="summaryTableOwnerCol">FlxQuadTree</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#B_LIST">B_LIST</a> : uint = 1<div class="summaryTableDescription">[static]
+   Flag for specifying that you want to add an object to the B list.</div>
+</td><td class="summaryTableOwnerCol">FlxQuadTree</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#MIN">MIN</a> : Number = 48<div class="summaryTableDescription">[static]
+   The minimum quadrant or leaf size.</div>
+</td><td class="summaryTableOwnerCol">FlxQuadTree</td>
+</tr>
+</table>
+</div>
+<script type="text/javascript" language="javascript">
+<!--
+showHideInherited();
+--></script>
+<div class="MainContent">
+<a name="propertyDetail"></a>
+<div class="detailSectionHeader">Property detail</div>
+<a name="_b"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_b</td><td class="detailHeaderType">property</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _b:Number</code>
+</div>
+<a name="_canSubdivide"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_canSubdivide</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _canSubdivide:Boolean</code><p>
+   Whether this branch of the tree can be subdivided or not.
+   </p></div>
+<a name="_headA"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_headA</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _headA:<a href="data/FlxList.html">FlxList</a></code><p>
+   These variables refer to the internal A and B linked lists,
+   which are used to store objects in the leaves.
+   </p></div>
+<a name="_headB"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_headB</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _headB:<a href="data/FlxList.html">FlxList</a></code>
+</div>
+<a name="_hh"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_hh</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _hh:Number</code>
+</div>
+<a name="_hw"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_hw</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _hw:Number</code>
+</div>
+<a name="_l"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_l</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _l:Number</code>
+</div>
+<a name="_mx"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_mx</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _mx:Number</code>
+</div>
+<a name="_my"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_my</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _my:Number</code>
+</div>
+<a name="_ne"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_ne</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _ne:<a href="../flixel/FlxQuadTree.html">FlxQuadTree</a></code>
+</div>
+<a name="_nw"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_nw</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _nw:<a href="../flixel/FlxQuadTree.html">FlxQuadTree</a></code><p>
+   These variables refer to the potential child quadrants for this node.
+   </p></div>
+<a name="_o"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_o</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected static var _o:<a href="../flixel/FlxObject.html">FlxObject</a></code><p>
+   These objects are used to reduce recursive parameters internally.
+   </p></div>
+<a name="_oa"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_oa</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected static var _oa:uint</code>
+</div>
+<a name="_ob"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_ob</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected static var _ob:Number</code>
+</div>
+<a name="_oc"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_oc</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected static var _oc:Function</code>
+</div>
+<a name="_ol"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_ol</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected static var _ol:Number</code>
+</div>
+<a name="_or"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_or</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected static var _or:Number</code>
+</div>
+<a name="_ot"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_ot</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected static var _ot:Number</code>
+</div>
+<a name="_r"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_r</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _r:Number</code>
+</div>
+<a name="_se"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_se</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _se:<a href="../flixel/FlxQuadTree.html">FlxQuadTree</a></code>
+</div>
+<a name="_sw"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_sw</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _sw:<a href="../flixel/FlxQuadTree.html">FlxQuadTree</a></code>
+</div>
+<a name="_t"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_t</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _t:Number</code>
+</div>
+<a name="_tailA"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_tailA</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _tailA:<a href="data/FlxList.html">FlxList</a></code>
+</div>
+<a name="_tailB"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_tailB</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _tailB:<a href="data/FlxList.html">FlxList</a></code>
+</div>
+<a name="constructorDetail"></a>
+<div class="detailSectionHeader">Constructor detail</div>
+<a name="FlxQuadTree()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">FlxQuadTree</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">constructor</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function FlxQuadTree(X:Number, Y:Number, Width:Number, Height:Number, Parent:<a href="FlxQuadTree.html">FlxQuadTree</a> = null)</code><p>
+   Instantiate a new Quad Tree node.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">X</span>:Number</code> &mdash;  The X-coordinate of the point in space.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Y</span>:Number</code> &mdash;  The Y-coordinate of the point in space.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Width</span>:Number</code> &mdash; Desired width of this node.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Height</span>:Number</code> &mdash; Desired height of this node.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Parent</span>:<a href="FlxQuadTree.html">FlxQuadTree</a></code> (default = <code>null</code>)<code></code> &mdash; The parent branch or node.  Pass null to create a root.
+   </td>
+</tr>
+</table>
+</div>
+<a name="methodDetail"></a>
+<div class="detailSectionHeader">Method detail</div>
+<a name="add()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">add</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function add(Object:<a href="FlxObject.html">FlxObject</a>, List:uint):void</code><p>
+   Call this function to add an object to the root of the tree.
+   This function will recursively add all group members, but
+   not the groups themselves.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">Object</span>:<a href="FlxObject.html">FlxObject</a></code> &mdash;  The <code>FlxObject</code> you want to add.  <code>FlxGroup</code> objects will be recursed and their applicable members added automatically.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">List</span>:uint</code> &mdash;  A <code>uint</code> flag indicating the list to which you want to add the objects.  Options are <code>A_LIST</code> and <code>B_LIST</code>.
+   </td>
+</tr>
+</table>
+</div>
+<a name="addObject()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">addObject</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected function addObject():void</code><p>
+   Internal function for recursively navigating and creating the tree
+   while adding objects to the appropriate nodes.
+   </p></div>
+<a name="addToList()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">addToList</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function addToList():void</code><p>
+   Internal function for recursively adding objects to leaf lists.
+   </p></div>
+<a name="overlap()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">overlap</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function overlap(BothLists:Boolean = true, Callback:Function = null):Boolean</code><p>
+   <code>FlxQuadTree</code>'s other main function.  Call this after adding objects
+   using <code>FlxQuadTree.add()</code> to compare the objects that you loaded.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">BothLists</span>:Boolean</code> (default = <code>true</code>)<code></code> &mdash; Whether you are doing an A-B list comparison, or comparing A against itself.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Callback</span>:Function</code> (default = <code>null</code>)<code></code> &mdash; A function with two <code>FlxObject</code> parameters - e.g. <code>myOverlapFunction(Object1:FlxObject,Object2:FlxObject);</code>  If no function is provided, <code>FlxQuadTree</code> will call <code>kill()</code> on both objects.
+      </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code> &mdash; Whether or not any overlaps were found.
+   </td>
+</tr>
+</table>
+</div>
+<a name="overlapNode()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">overlapNode</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected function overlapNode(Iterator:<a href="data/FlxList.html">FlxList</a> = null):Boolean</code><p>
+   An internal function for comparing an object against the contents of a node.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">Iterator</span>:<a href="data/FlxList.html">FlxList</a></code> (default = <code>null</code>)<code></code> &mdash; An optional pointer to a linked list entry (for comparing A against itself).
+   
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code> &mdash; Whether or not any overlaps were found.
+   </td>
+</tr>
+</table>
+</div>
+<a name="constantDetail"></a>
+<div class="detailSectionHeader">Constant detail</div>
+<a name="A_LIST"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">A_LIST</td><td class="detailHeaderType">constant</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const A_LIST:uint = 0</code><p>
+   Flag for specifying that you want to add an object to the A list.
+   </p></div>
+<a name="B_LIST"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">B_LIST</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const B_LIST:uint = 1</code><p>
+   Flag for specifying that you want to add an object to the B list.
+   </p></div>
+<a name="MIN"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">MIN</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const MIN:Number = 48</code><p>
+   The minimum quadrant or leaf size.  This size seems to yield the best performance.
+   </p></div>
+<br>
+<br>
+<hr>
+<br>
+<p></p>
+<center class="copyright"> 
+</center>
+</div>
+</body>
+</html>
+<!-- -->

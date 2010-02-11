@@ -1,0 +1,900 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../../style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="../../print.css" type="text/css" media="print">
+<meta content="FlxU,org.flixel.FlxU,_originalSeed,_seed,quadTree,quadTreeBounds,roundingError,seed,abs,ceil,collide,computeVelocity,floor,getAngle,getClass,getClassName,mutate,openURL,overlap,random,randomize,rotatePoint,setWorldBounds,solveXCollision,solveYCollision" name="keywords">
+<title>org.flixel.FlxU</title>
+</head>
+<body>
+<script type="text/javascript" language="javascript" src="../../asdoc.js"></script><script type="text/javascript" language="javascript" src="../../cookies.js"></script><script type="text/javascript" language="javascript">
+<!--
+				asdocTitle = 'FlxU - API Documentation';
+				var baseRef = '../../';
+				window.onload = configPage;
+			--></script>
+<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" class="titleTable">
+<tr>
+<td align="left" class="titleTableTitle">API Documentation</td><td align="right" class="titleTableTopNav"><a onclick="loadClassListFrame('../../all-classes.html')" href="../../package-summary.html">All&nbsp;Packages</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../all-classes.html')" href="../../class-summary.html">All&nbsp;Classes</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../index-list.html')" href="../../all-index-A.html">Index</a>&nbsp;|&nbsp;<a href="../../index.html?org/flixel/FlxU.html&amp;org/flixel/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></td><td rowspan="3" align="right" class="titleTableLogo"><img alt="Adobe Logo" title="Adobe Logo" class="logoImage" src="../../images/logo.jpg"></td>
+</tr>
+<tr class="titleTableRow2">
+<td align="left" id="subTitle" class="titleTableSubTitle">Class&nbsp;FlxU</td><td align="right" id="subNav" class="titleTableSubNav"><a href="#propertySummary">Properties</a>&nbsp;| <a href="#methodSummary">Methods</a></td>
+</tr>
+<tr class="titleTableRow3">
+<td colspan="2">&nbsp;</td>
+</tr>
+</table>
+<script type="text/javascript" language="javascript">
+<!--
+if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Class FlxU"); titleBar_setSubNav(false,true,false,false,false,false,true,false,false,false,false,false,false,false);}
+--></script>
+<div class="MainContent">
+<table cellspacing="0" cellpadding="0" class="classHeaderTable">
+<tr>
+<td class="classHeaderTableLabel">Package</td><td><a onclick="javascript:loadClassListFrame('class-list.html')" href="package-detail.html">org.flixel</a></td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Class</td><td class="classSignature">public class FlxU</td>
+</tr>
+</table>
+<p></p>
+<p></p>
+<br>
+<hr>
+</div>
+<a name="propertySummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Properties</div>
+<table id="summaryTableProperty" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#quadTree">quadTree</a> : <a href="../flixel/FlxQuadTree.html">FlxQuadTree</a>
+<div class="summaryTableDescription">[static]
+   The global quad tree (stored here since it is used primarily by FlxU functions).</div>
+</td><td class="summaryTableOwnerCol">FlxU</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#quadTreeBounds">quadTreeBounds</a> : <a href="../flixel/FlxRect.html">FlxRect</a>
+<div class="summaryTableDescription">[static]
+   This variable stores the dimensions of the root of the quad tree.</div>
+</td><td class="summaryTableOwnerCol">FlxU</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#roundingError">roundingError</a> : Number = 0.0000001<div class="summaryTableDescription">[static]
+   Helps to eliminate false collisions and/or rendering glitches caused by rounding errors
+   </div>
+</td><td class="summaryTableOwnerCol">FlxU</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#seed">seed</a> : Number<div class="summaryTableDescription">[static]
+   Set <code>seed</code> to a number between 0 and 1 if you want
+   <code>FlxG.random()</code> to generate a predictable series of numbers.</div>
+</td><td class="summaryTableOwnerCol">FlxU</td>
+</tr>
+</table>
+</div>
+<a name="protectedPropertySummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Protected Properties</div>
+<table id="summaryTableProtectedProperty" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_originalSeed">_originalSeed</a> : Number<div class="summaryTableDescription">[static]
+   Internal random number calculation helpers.</div>
+</td><td class="summaryTableOwnerCol">FlxU</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_seed">_seed</a> : Number<div class="summaryTableDescription">[static]
+   Internal random number calculation helpers.</div>
+</td><td class="summaryTableOwnerCol">FlxU</td>
+</tr>
+</table>
+</div>
+<a name="methodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Methods</div>
+<table id="summaryTableMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#abs()">abs</a>(N:Number):Number</div>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">FlxU</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#ceil()">ceil</a>(N:Number):Number</div>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">FlxU</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#collide()">collide</a>(Object1:<a href="FlxObject.html">FlxObject</a>, Object2:<a href="FlxObject.html">FlxObject</a>):Boolean</div>
+<div class="summaryTableDescription">[static]
+   Call this function to see if one <code>FlxObject</code> collides with another.</div>
+</td><td class="summaryTableOwnerCol">FlxU</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#computeVelocity()">computeVelocity</a>(Velocity:Number, Acceleration:Number = 0, Drag:Number = 0, Max:Number = 10000):Number</div>
+<div class="summaryTableDescription">[static]
+   A tween-like function that takes a starting velocity
+   and some other factors and returns an altered velocity.</div>
+</td><td class="summaryTableOwnerCol">FlxU</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#floor()">floor</a>(N:Number):Number</div>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">FlxU</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getAngle()">getAngle</a>(X:Number, Y:Number):Number</div>
+<div class="summaryTableDescription">[static]
+   Calculates the angle between a point and the origin (0,0).</div>
+</td><td class="summaryTableOwnerCol">FlxU</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getClass()">getClass</a>(Name:String):Class</div>
+<div class="summaryTableDescription">[static]
+   Look up a <code>Class</code> object by its string name.</div>
+</td><td class="summaryTableOwnerCol">FlxU</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getClassName()">getClassName</a>(Obj:Object, Simple:Boolean = false):String</div>
+<div class="summaryTableDescription">[static]
+   Get the <code>String</code> name of any <code>Object</code>.</div>
+</td><td class="summaryTableOwnerCol">FlxU</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#mutate()">mutate</a>(Seed:Number, Mutator:Number):Number</div>
+<div class="summaryTableDescription">[static]
+   Mutates a seed or other number, useful when combined with <code>randomize()</code>.</div>
+</td><td class="summaryTableOwnerCol">FlxU</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#openURL()">openURL</a>(URL:String):void</div>
+<div class="summaryTableDescription">[static]
+   Opens a web page in a new tab or window.</div>
+</td><td class="summaryTableOwnerCol">FlxU</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#overlap()">overlap</a>(Object1:<a href="FlxObject.html">FlxObject</a>, Object2:<a href="FlxObject.html">FlxObject</a>, Callback:Function = null):Boolean</div>
+<div class="summaryTableDescription">[static]
+   Call this function to see if one <code>FlxObject</code> overlaps another.</div>
+</td><td class="summaryTableOwnerCol">FlxU</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#random()">random</a>(UseGlobalSeed:Boolean = true):Number</div>
+<div class="summaryTableDescription">[static]
+   Generate a pseudo-random number.</div>
+</td><td class="summaryTableOwnerCol">FlxU</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#randomize()">randomize</a>(Seed:Number):Number</div>
+<div class="summaryTableDescription">[static]
+   Generate a pseudo-random number.</div>
+</td><td class="summaryTableOwnerCol">FlxU</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#rotatePoint()">rotatePoint</a>(X:Number, Y:Number, PivotX:Number, PivotY:Number, Angle:Number, P:<a href="FlxPoint.html">FlxPoint</a> = null):<a href="../flixel/FlxPoint.html">FlxPoint</a>
+</div>
+<div class="summaryTableDescription">[static]
+   Rotates a point in 2D space around another point by the given angle.</div>
+</td><td class="summaryTableOwnerCol">FlxU</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#setWorldBounds()">setWorldBounds</a>(X:Number = 0, Y:Number = 0, Width:Number = 0, Height:Number = 0):void</div>
+<div class="summaryTableDescription">[static]
+   Call this function to specify a more efficient boundary for your game world.</div>
+</td><td class="summaryTableOwnerCol">FlxU</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#solveXCollision()">solveXCollision</a>(Object1:<a href="FlxObject.html">FlxObject</a>, Object2:<a href="FlxObject.html">FlxObject</a>):Boolean</div>
+<div class="summaryTableDescription">[static]
+   This quad tree callback function can be used externally as well.</div>
+</td><td class="summaryTableOwnerCol">FlxU</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#solveYCollision()">solveYCollision</a>(Object1:<a href="FlxObject.html">FlxObject</a>, Object2:<a href="FlxObject.html">FlxObject</a>):Boolean</div>
+<div class="summaryTableDescription">[static]
+   This quad tree callback function can be used externally as well.</div>
+</td><td class="summaryTableOwnerCol">FlxU</td>
+</tr>
+</table>
+</div>
+<script type="text/javascript" language="javascript">
+<!--
+showHideInherited();
+--></script>
+<div class="MainContent">
+<a name="propertyDetail"></a>
+<div class="detailSectionHeader">Property detail</div>
+<a name="_originalSeed"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_originalSeed</td><td class="detailHeaderType">property</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected static var _originalSeed:Number</code><p>
+   Internal random number calculation helpers.
+   </p></div>
+<a name="quadTree"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">quadTree</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static var quadTree:<a href="../flixel/FlxQuadTree.html">FlxQuadTree</a></code><p>
+   The global quad tree (stored here since it is used primarily by FlxU functions).
+   Set this to null to force it to refresh on the next collide.
+   </p></div>
+<a name="quadTreeBounds"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">quadTreeBounds</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static var quadTreeBounds:<a href="../flixel/FlxRect.html">FlxRect</a></code><p>
+   This variable stores the dimensions of the root of the quad tree.
+   This is the eligible game collision space.
+   </p></div>
+<a name="roundingError"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">roundingError</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static var roundingError:Number = 0.0000001</code><p>
+   Helps to eliminate false collisions and/or rendering glitches caused by rounding errors
+   </p></div>
+<a name="_seed"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_seed</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected static var _seed:Number</code><p>
+   Internal random number calculation helpers.
+   </p></div>
+<a name="seed"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">seed</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>seed:Number</code>&nbsp;&nbsp;[read-write]<p>
+   Set <code>seed</code> to a number between 0 and 1 if you want
+   <code>FlxG.random()</code> to generate a predictable series of numbers.
+   NOTE: reading the seed will return the original value passed in,
+   not the current mutation.
+   </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public static function get seed():Number</code>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set seed(value:Number):void</code>
+<br>
+</div>
+<a name="methodDetail"></a>
+<div class="detailSectionHeader">Method detail</div>
+<a name="abs()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">abs</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function abs(N:Number):Number</code><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">N</span>:Number</code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Number</code></td>
+</tr>
+</table>
+</div>
+<a name="ceil()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">ceil</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function ceil(N:Number):Number</code><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">N</span>:Number</code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Number</code></td>
+</tr>
+</table>
+</div>
+<a name="collide()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">collide</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function collide(Object1:<a href="FlxObject.html">FlxObject</a>, Object2:<a href="FlxObject.html">FlxObject</a>):Boolean</code><p>
+   Call this function to see if one <code>FlxObject</code> collides with another.
+   Can be called with one object and one group, or two groups, or two objects,
+   whatever floats your boat!  It will put everything into a quad tree and then
+   check for collisions.  For maximum performance try bundling a lot of objects
+   together using a <code>FlxGroup</code> (even bundling groups together!)
+   NOTE: does NOT take objects' scrollfactor into account.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">Object1</span>:<a href="FlxObject.html">FlxObject</a></code> &mdash;  The first object or group you want to check.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Object2</span>:<a href="FlxObject.html">FlxObject</a></code> &mdash;  The second object or group you want to check.  If it is the same as the first, flixel knows to just do a comparison within that group.
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code></td>
+</tr>
+</table>
+</div>
+<a name="computeVelocity()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">computeVelocity</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function computeVelocity(Velocity:Number, Acceleration:Number = 0, Drag:Number = 0, Max:Number = 10000):Number</code><p>
+   A tween-like function that takes a starting velocity
+   and some other factors and returns an altered velocity.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">Velocity</span>:Number</code> &mdash;  Any component of velocity (e.g. 20).
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Acceleration</span>:Number</code> (default = <code>0</code>)<code></code> &mdash; Rate at which the velocity is changing.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Drag</span>:Number</code> (default = <code>0</code>)<code></code> &mdash;   Really kind of a deceleration, this is how much the velocity changes if Acceleration is not set.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Max</span>:Number</code> (default = <code>10000</code>)<code></code> &mdash;    An absolute value cap for the velocity.
+   
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Number</code> &mdash; The altered Velocity value.
+   </td>
+</tr>
+</table>
+</div>
+<a name="floor()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">floor</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function floor(N:Number):Number</code><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">N</span>:Number</code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Number</code></td>
+</tr>
+</table>
+</div>
+<a name="getAngle()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getAngle</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function getAngle(X:Number, Y:Number):Number</code><p>
+   Calculates the angle between a point and the origin (0,0).
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">X</span>:Number</code> &mdash;  The X coordinate of the point.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Y</span>:Number</code> &mdash;  The Y coordinate of the point.
+   
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Number</code> &mdash; The angle in degrees.
+   </td>
+</tr>
+</table>
+</div>
+<a name="getClass()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getClass</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function getClass(Name:String):Class</code><p>
+   Look up a <code>Class</code> object by its string name.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">Name</span>:String</code> &mdash; The <code>String</code> name of the <code>Class</code> you are interested in.
+   
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Class</code> &mdash; A <code>Class</code> object.
+   </td>
+</tr>
+</table>
+</div>
+<a name="getClassName()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getClassName</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function getClassName(Obj:Object, Simple:Boolean = false):String</code><p>
+   Get the <code>String</code> name of any <code>Object</code>.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">Obj</span>:Object</code> &mdash;  The <code>Object</code> object in question.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Simple</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash; Returns only the class name, not the package or packages.
+   
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>String</code> &mdash; The name of the <code>Class</code> as a <code>String</code> object.
+   </td>
+</tr>
+</table>
+</div>
+<a name="mutate()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">mutate</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function mutate(Seed:Number, Mutator:Number):Number</code><p>
+   Mutates a seed or other number, useful when combined with <code>randomize()</code>.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">Seed</span>:Number</code> &mdash;  The number to mutate.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Mutator</span>:Number</code> &mdash;  The value to use in the mutation.
+   
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Number</code> &mdash; A predictably-altered version of the Seed.
+   </td>
+</tr>
+</table>
+</div>
+<a name="openURL()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">openURL</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function openURL(URL:String):void</code><p>
+   Opens a web page in a new tab or window.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">URL</span>:String</code> &mdash;  The address of the web page.
+   </td>
+</tr>
+</table>
+</div>
+<a name="overlap()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">overlap</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function overlap(Object1:<a href="FlxObject.html">FlxObject</a>, Object2:<a href="FlxObject.html">FlxObject</a>, Callback:Function = null):Boolean</code><p>
+   Call this function to see if one <code>FlxObject</code> overlaps another.
+   Can be called with one object and one group, or two groups, or two objects,
+   whatever floats your boat!  It will put everything into a quad tree and then
+   check for overlaps.  For maximum performance try bundling a lot of objects
+   together using a <code>FlxGroup</code> (even bundling groups together!)
+   NOTE: does NOT take objects' scrollfactor into account.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">Object1</span>:<a href="FlxObject.html">FlxObject</a></code> &mdash;  The first object or group you want to check.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Object2</span>:<a href="FlxObject.html">FlxObject</a></code> &mdash;  The second object or group you want to check.  If it is the same as the first, flixel knows to just do a comparison within that group.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Callback</span>:Function</code> (default = <code>null</code>)<code></code> &mdash; A function with two <code>FlxObject</code> parameters - e.g. <code>myOverlapFunction(Object1:FlxObject,Object2:FlxObject);</code>  If no function is provided, <code>FlxQuadTree</code> will call <code>kill()</code> on both objects.
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code></td>
+</tr>
+</table>
+</div>
+<a name="random()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">random</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function random(UseGlobalSeed:Boolean = true):Number</code><p>
+   Generate a pseudo-random number.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">UseGlobalSeed</span>:Boolean</code> (default = <code>true</code>)<code></code> &mdash;  Whether or not to use the stored FlxG.seed value to calculate it.
+   
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Number</code> &mdash; A pseudo-random Number object.
+   </td>
+</tr>
+</table>
+</div>
+<a name="randomize()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">randomize</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function randomize(Seed:Number):Number</code><p>
+   Generate a pseudo-random number.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">Seed</span>:Number</code> &mdash;  The number to use to generate a new random value.
+   
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Number</code> &mdash; A pseudo-random Number object.
+   </td>
+</tr>
+</table>
+</div>
+<a name="rotatePoint()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">rotatePoint</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function rotatePoint(X:Number, Y:Number, PivotX:Number, PivotY:Number, Angle:Number, P:<a href="FlxPoint.html">FlxPoint</a> = null):<a href="../flixel/FlxPoint.html">FlxPoint</a></code><p>
+   Rotates a point in 2D space around another point by the given angle.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">X</span>:Number</code> &mdash;  The X coordinate of the point you want to rotate.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Y</span>:Number</code> &mdash;  The Y coordinate of the point you want to rotate.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">PivotX</span>:Number</code> &mdash; The X coordinate of the point you want to rotate around.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">PivotY</span>:Number</code> &mdash; The Y coordinate of the point you want to rotate around.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Angle</span>:Number</code> &mdash; Rotate the point by this many degrees.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">P</span>:<a href="FlxPoint.html">FlxPoint</a></code> (default = <code>null</code>)<code></code> &mdash;  Optional <code>FlxPoint</code> to store the results in.
+   
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="../flixel/FlxPoint.html">FlxPoint</a></code> &mdash; 
+                        A <code>FlxPoint</code> containing the coordinates of the rotated point.
+   
+                        
+                     </td>
+</tr>
+</table>
+</div>
+<a name="setWorldBounds()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">setWorldBounds</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function setWorldBounds(X:Number = 0, Y:Number = 0, Width:Number = 0, Height:Number = 0):void</code><p>
+   Call this function to specify a more efficient boundary for your game world.
+   This boundary is used by <code>overlap()</code> and <code>collide()</code>, so it
+   can't hurt to have it be the right size!  Flixel will invent a size for you, but
+   it's pretty huge - 256x the size of the screen, whatever that may be.
+   Leave width and height empty if you want to just update the game world's position.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">X</span>:Number</code> (default = <code>0</code>)<code></code> &mdash;  The X-coordinate of the left side of the game world.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Y</span>:Number</code> (default = <code>0</code>)<code></code> &mdash;  The Y-coordinate of the top of the game world.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Width</span>:Number</code> (default = <code>0</code>)<code></code> &mdash; Desired width of the game world.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Height</span>:Number</code> (default = <code>0</code>)<code></code> &mdash; Desired height of the game world.
+   </td>
+</tr>
+</table>
+</div>
+<a name="solveXCollision()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">solveXCollision</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function solveXCollision(Object1:<a href="FlxObject.html">FlxObject</a>, Object2:<a href="FlxObject.html">FlxObject</a>):Boolean</code><p>
+   This quad tree callback function can be used externally as well.
+   Takes two objects and separates them along their X axis (if possible/reasonable).
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">Object1</span>:<a href="FlxObject.html">FlxObject</a></code> &mdash;  The first object or group you want to check.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Object2</span>:<a href="FlxObject.html">FlxObject</a></code> &mdash;  The second object or group you want to check.
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code></td>
+</tr>
+</table>
+</div>
+<a name="solveYCollision()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">solveYCollision</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function solveYCollision(Object1:<a href="FlxObject.html">FlxObject</a>, Object2:<a href="FlxObject.html">FlxObject</a>):Boolean</code><p>
+   This quad tree callback function can be used externally as well.
+   Takes two objects and separates them along their Y axis (if possible/reasonable).
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">Object1</span>:<a href="FlxObject.html">FlxObject</a></code> &mdash;  The first object or group you want to check.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Object2</span>:<a href="FlxObject.html">FlxObject</a></code> &mdash;  The second object or group you want to check.
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code></td>
+</tr>
+</table>
+</div>
+<br>
+<br>
+<hr>
+<br>
+<p></p>
+<center class="copyright"> 
+</center>
+</div>
+</body>
+</html>
+<!-- -->

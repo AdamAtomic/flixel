@@ -1,0 +1,1416 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../../style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="../../print.css" type="text/css" media="print">
+<meta content="FlxObject,org.flixel.FlxObject,_flashPoint,_flicker,_flickerTimer,_group,_pZero,_point,_rect,acceleration,active,angle,angularAcceleration,angularDrag,angularVelocity,colHullX,colHullY,colOffsets,colVector,collideBottom,collideLeft,collideRight,collideTop,dead,drag,exists,fixed,health,maxAngular,maxThrust,maxVelocity,moves,onFloor,origin,scrollFactor,solid,thrust,velocity,visible,collide,destroy,flicker,flickering,getScreenXY,hitBottom,hitLeft,hitRight,hitTop,hurt,kill,onScreen,overlaps,overlapsPoint,preCollide,refreshHulls,render,reset,update,updateFlickering,updateMotion" name="keywords">
+<title>org.flixel.FlxObject</title>
+</head>
+<body>
+<script type="text/javascript" language="javascript" src="../../asdoc.js"></script><script type="text/javascript" language="javascript" src="../../cookies.js"></script><script type="text/javascript" language="javascript">
+<!--
+				asdocTitle = 'FlxObject - API Documentation';
+				var baseRef = '../../';
+				window.onload = configPage;
+			--></script>
+<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" class="titleTable">
+<tr>
+<td align="left" class="titleTableTitle">API Documentation</td><td align="right" class="titleTableTopNav"><a onclick="loadClassListFrame('../../all-classes.html')" href="../../package-summary.html">All&nbsp;Packages</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../all-classes.html')" href="../../class-summary.html">All&nbsp;Classes</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../index-list.html')" href="../../all-index-A.html">Index</a>&nbsp;|&nbsp;<a href="../../index.html?org/flixel/FlxObject.html&amp;org/flixel/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></td><td rowspan="3" align="right" class="titleTableLogo"><img alt="Adobe Logo" title="Adobe Logo" class="logoImage" src="../../images/logo.jpg"></td>
+</tr>
+<tr class="titleTableRow2">
+<td align="left" id="subTitle" class="titleTableSubTitle">Class&nbsp;FlxObject</td><td align="right" id="subNav" class="titleTableSubNav"><a href="#propertySummary">Properties</a>&nbsp;| <a href="#methodSummary">Methods</a>&nbsp;| <a href="#constantSummary">Constants</a></td>
+</tr>
+<tr class="titleTableRow3">
+<td colspan="2">&nbsp;</td>
+</tr>
+</table>
+<script type="text/javascript" language="javascript">
+<!--
+if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Class FlxObject"); titleBar_setSubNav(true,true,false,false,false,false,true,false,false,false,false,false,false,false);}
+--></script>
+<div class="MainContent">
+<table cellspacing="0" cellpadding="0" class="classHeaderTable">
+<tr>
+<td class="classHeaderTableLabel">Package</td><td><a onclick="javascript:loadClassListFrame('class-list.html')" href="package-detail.html">org.flixel</a></td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Class</td><td class="classSignature">public class FlxObject</td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Inheritance</td><td class="inheritanceList">FlxObject <img class="inheritArrow" alt="Inheritance" title="Inheritance" src="../../images/inherit-arrow.gif"> <a href="FlxRect.html">FlxRect</a> <img class="inheritArrow" alt="Inheritance" title="Inheritance" src="../../images/inherit-arrow.gif"> <a href="FlxPoint.html">FlxPoint</a></td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Subclasses</td><td><a href="../flixel/FlxGroup.html">FlxGroup</a>, <a href="data/FlxPanel.html">FlxPanel</a>, <a href="../flixel/FlxSound.html">FlxSound</a>, <a href="../flixel/FlxSprite.html">FlxSprite</a>, <a href="../flixel/FlxTileblock.html">FlxTileblock</a>, <a href="../flixel/FlxTilemap.html">FlxTilemap</a></td>
+</tr>
+</table>
+<p></p>
+  This is the base class for most of the display objects (<code>FlxSprite</code>, <code>FlxText</code>, etc).
+  It includes some basic attributes about game objects, including retro-style flickering,
+  basic state information, sizes, scrolling, and basic physics & motion.
+  <p></p>
+<br>
+<hr>
+</div>
+<a name="propertySummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Properties</div>
+<div class="showHideLinks">
+<div class="hideInheritedProperty" id="hideInheritedProperty">
+<a onclick="javascript:setInheritedVisible(false,'Property');" href="#propertySummary" class="showHideLink"><img src="../../images/expanded.gif" class="showHideLinkImage"> Hide Inherited Public Properties</a>
+</div>
+<div class="showInheritedProperty" id="showInheritedProperty">
+<a onclick="javascript:setInheritedVisible(true,'Property');" href="#propertySummary" class="showHideLink"><img src="../../images/collapsed.gif" class="showHideLinkImage"> Show Inherited Public Properties</a>
+</div>
+</div>
+<table id="summaryTableProperty" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#acceleration">acceleration</a> : <a href="../flixel/FlxPoint.html">FlxPoint</a>
+<div class="summaryTableDescription">
+   How fast the speed of this object is changing.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#active">active</a> : Boolean<div class="summaryTableDescription">
+   If an object is not alive, the game loop will not automatically call <code>update()</code> on it.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#angle">angle</a> : Number<div class="summaryTableDescription">
+   Set the angle of a sprite to rotate it.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#angularAcceleration">angularAcceleration</a> : Number<div class="summaryTableDescription">
+   How fast the spin speed should change.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#angularDrag">angularDrag</a> : Number<div class="summaryTableDescription">
+   Like <code>drag</code> but for spinning.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#angularVelocity">angularVelocity</a> : Number<div class="summaryTableDescription">
+   This is how fast you want this sprite to spin.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxRect.html#bottom">bottom</a> : Number<div class="summaryTableDescription">
+   The Y coordinate of the bottom of the rectangle.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxRect.html">FlxRect</a></td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#colHullX">colHullX</a> : <a href="../flixel/FlxRect.html">FlxRect</a>
+<div class="summaryTableDescription">
+   These store a couple of useful numbers for speeding up collision resolution.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#colHullY">colHullY</a> : <a href="../flixel/FlxRect.html">FlxRect</a>
+<div class="summaryTableDescription">
+   These store a couple of useful numbers for speeding up collision resolution.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#collideBottom">collideBottom</a> : Boolean<div class="summaryTableDescription">
+   Flag for direction collision resolution.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#collideLeft">collideLeft</a> : Boolean<div class="summaryTableDescription">
+   Flag for direction collision resolution.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#collideRight">collideRight</a> : Boolean<div class="summaryTableDescription">
+   Flag for direction collision resolution.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#collideTop">collideTop</a> : Boolean<div class="summaryTableDescription">
+   Flag for direction collision resolution.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#colOffsets">colOffsets</a> : Array<div class="summaryTableDescription">
+   An array of <code>FlxPoint</code> objects.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#colVector">colVector</a> : <a href="../flixel/FlxPoint.html">FlxPoint</a>
+<div class="summaryTableDescription">
+   These store a couple of useful numbers for speeding up collision resolution.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#dead">dead</a> : Boolean<div class="summaryTableDescription">
+   Handy for tracking gameplay or animations.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#drag">drag</a> : <a href="../flixel/FlxPoint.html">FlxPoint</a>
+<div class="summaryTableDescription">
+   This isn't drag exactly, more like deceleration that is only applied
+   when acceleration is not affecting the sprite.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#exists">exists</a> : Boolean<div class="summaryTableDescription">
+   Kind of a global on/off switch for any objects descended from <code>FlxObject</code>.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#fixed">fixed</a> : Boolean<div class="summaryTableDescription">
+   If an object is 'fixed' in space, it will not budge when it collides with a not-fixed object.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_group">_group</a> : Boolean<div class="summaryTableDescription">
+   Dedicated internal flag for whether or not this class is a FlxGroup.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#health">health</a> : Number<div class="summaryTableDescription">
+   Handy for storing health percentage or armor points or whatever.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxRect.html#height">height</a> : Number<div class="summaryTableDescription">
+   </div>
+</td><td class="summaryTableOwnerCol"><a href="FlxRect.html">FlxRect</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxRect.html#left">left</a> : Number<div class="summaryTableDescription">
+   The X coordinate of the left side of the rectangle.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxRect.html">FlxRect</a></td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#maxAngular">maxAngular</a> : Number<div class="summaryTableDescription">
+   Use in conjunction with <code>angularAcceleration</code> for fluid spin speed control.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#maxThrust">maxThrust</a> : Number<div class="summaryTableDescription">
+   Used to cap <code>thrust</code>, helpful and easy!
+   </div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#maxVelocity">maxVelocity</a> : <a href="../flixel/FlxPoint.html">FlxPoint</a>
+<div class="summaryTableDescription">
+   If you are using <code>acceleration</code>, you can use <code>maxVelocity</code> with it
+   to cap the speed automatically (very useful!).</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#moves">moves</a> : Boolean<div class="summaryTableDescription">
+   Set this to false if you want to skip the automatic motion/movement stuff (see <code>updateMotion()</code>).</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#onFloor">onFloor</a> : Boolean<div class="summaryTableDescription">
+   Flag that indicates whether or not you just hit the floor.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#origin">origin</a> : <a href="../flixel/FlxPoint.html">FlxPoint</a>
+<div class="summaryTableDescription">
+   WARNING: The origin of the sprite will default to its center.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxRect.html#right">right</a> : Number<div class="summaryTableDescription">
+   The X coordinate of the right side of the rectangle.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxRect.html">FlxRect</a></td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#scrollFactor">scrollFactor</a> : <a href="../flixel/FlxPoint.html">FlxPoint</a>
+<div class="summaryTableDescription">
+   A point that can store numbers from 0 to 1 (for X and Y independently)
+   that governs how much this object is affected by the camera subsystem.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#solid">solid</a> : Boolean<div class="summaryTableDescription">
+   If an object is dead, the functions that automate collisions will skip it (see <code>FlxG.overlapArrays()</code> and <code>FlxG.collideArrays()</code>).</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#thrust">thrust</a> : Number<div class="summaryTableDescription">
+   If you want to do Asteroids style stuff, check out thrust,
+   instead of directly accessing the object's velocity or acceleration.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxRect.html#top">top</a> : Number<div class="summaryTableDescription">
+   The Y coordinate of the top of the rectangle.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxRect.html">FlxRect</a></td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#velocity">velocity</a> : <a href="../flixel/FlxPoint.html">FlxPoint</a>
+<div class="summaryTableDescription">
+   The basic speed of this object.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#visible">visible</a> : Boolean<div class="summaryTableDescription">
+   If an object is not visible, the game loop will not automatically call <code>render()</code> on it.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxRect.html#width">width</a> : Number<div class="summaryTableDescription">
+   </div>
+</td><td class="summaryTableOwnerCol"><a href="FlxRect.html">FlxRect</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxPoint.html#x">x</a> : Number<div class="summaryTableDescription">
+   </div>
+</td><td class="summaryTableOwnerCol"><a href="FlxPoint.html">FlxPoint</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxPoint.html#y">y</a> : Number<div class="summaryTableDescription">
+   </div>
+</td><td class="summaryTableOwnerCol"><a href="FlxPoint.html">FlxPoint</a></td>
+</tr>
+</table>
+</div>
+<a name="protectedPropertySummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Protected Properties</div>
+<table id="summaryTableProtectedProperty" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_flashPoint">_flashPoint</a> : Point<div class="summaryTableDescription">
+   This is a pre-allocated Flash Point object, which is useful for certain Flash graphics API calls
+   </div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_flicker">_flicker</a> : Boolean<div class="summaryTableDescription">
+   Internal helper used for retro-style flickering.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_flickerTimer">_flickerTimer</a> : Number<div class="summaryTableDescription">
+   Internal helper used for retro-style flickering.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_point">_point</a> : <a href="../flixel/FlxPoint.html">FlxPoint</a>
+<div class="summaryTableDescription">
+   This is just a pre-allocated x-y point container to be used however you like
+   </div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_rect">_rect</a> : <a href="../flixel/FlxRect.html">FlxRect</a>
+<div class="summaryTableDescription">
+   This is just a pre-allocated rectangle container to be used however you like
+   </div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+</table>
+</div>
+<a name="methodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Methods</div>
+<div class="showHideLinks">
+<div class="hideInheritedMethod" id="hideInheritedMethod">
+<a onclick="javascript:setInheritedVisible(false,'Method');" href="#methodSummary" class="showHideLink"><img src="../../images/expanded.gif" class="showHideLinkImage"> Hide Inherited Public Methods</a>
+</div>
+<div class="showInheritedMethod" id="showInheritedMethod">
+<a onclick="javascript:setInheritedVisible(true,'Method');" href="#methodSummary" class="showHideLink"><img src="../../images/collapsed.gif" class="showHideLinkImage"> Show Inherited Public Methods</a>
+</div>
+</div>
+<table id="summaryTableMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#FlxObject()">FlxObject</a>(X:Number = 0, Y:Number = 0, Width:Number = 0, Height:Number = 0)</div>
+<div class="summaryTableDescription">
+   Creates a new <code>FlxObject</code>.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#collide()">collide</a>(Object:<a href="FlxObject.html">FlxObject</a> = null):Boolean</div>
+<div class="summaryTableDescription">
+   If you don't want to call <code>FlxU.collide()</code> you can use this instead.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#destroy()">destroy</a>():void</div>
+<div class="summaryTableDescription">
+   Called by <code>FlxGroup</code>, commonly when game states are changed.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#flicker()">flicker</a>(Duration:Number = 1):void</div>
+<div class="summaryTableDescription">
+   Tells this object to flicker, retro-style.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#flickering()">flickering</a>():Boolean</div>
+<div class="summaryTableDescription">
+   Check to see if the object is still flickering.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getScreenXY()">getScreenXY</a>(Point:<a href="FlxPoint.html">FlxPoint</a> = null):<a href="../flixel/FlxPoint.html">FlxPoint</a>
+</div>
+<div class="summaryTableDescription">
+   Call this function to figure out the on-screen position of the object.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#hitBottom()">hitBottom</a>(Contact:<a href="FlxObject.html">FlxObject</a>, Velocity:Number):void</div>
+<div class="summaryTableDescription">
+   Called when this object's bottom edge collides with the top of another <code>FlxObject</code>.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#hitLeft()">hitLeft</a>(Contact:<a href="FlxObject.html">FlxObject</a>, Velocity:Number):void</div>
+<div class="summaryTableDescription">
+   Called when this object's left side collides with another <code>FlxObject</code>'s right.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#hitRight()">hitRight</a>(Contact:<a href="FlxObject.html">FlxObject</a>, Velocity:Number):void</div>
+<div class="summaryTableDescription">
+   Called when this object's right side collides with another <code>FlxObject</code>'s left.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#hitTop()">hitTop</a>(Contact:<a href="FlxObject.html">FlxObject</a>, Velocity:Number):void</div>
+<div class="summaryTableDescription">
+   Called when this object's top collides with the bottom of another <code>FlxObject</code>.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#hurt()">hurt</a>(Damage:Number):void</div>
+<div class="summaryTableDescription">
+   Call this function to "damage" (or give health bonus) to this sprite.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#kill()">kill</a>():void</div>
+<div class="summaryTableDescription">
+   Call this function to "kill" a sprite so that it no longer 'exists'.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#onScreen()">onScreen</a>():Boolean</div>
+<div class="summaryTableDescription">
+   Check and see if this object is currently on screen.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#overlaps()">overlaps</a>(Object:<a href="FlxObject.html">FlxObject</a>):Boolean</div>
+<div class="summaryTableDescription">
+   Checks to see if some <code>FlxObject</code> object overlaps this <code>FlxObject</code> object.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#overlapsPoint()">overlapsPoint</a>(X:Number, Y:Number, PerPixel:Boolean = false):Boolean</div>
+<div class="summaryTableDescription">
+   Checks to see if a point in 2D space overlaps this <code>FlxObject</code> object.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#preCollide()">preCollide</a>(Object:<a href="FlxObject.html">FlxObject</a>):void</div>
+<div class="summaryTableDescription">
+   <code>FlxU.collide()</code> (and thus <code>FlxObject.collide()</code>) call
+   this function each time two objects are compared to see if they collide.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#refreshHulls()">refreshHulls</a>():void</div>
+<div class="summaryTableDescription">
+   Called by <code>FlxObject.updateMotion()</code> and some constructors to
+   rebuild the basic collision data for this object.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#render()">render</a>():void</div>
+<div class="summaryTableDescription">
+   Override this function to draw graphics (see <code>FlxSprite</code>).</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#reset()">reset</a>(X:Number, Y:Number):void</div>
+<div class="summaryTableDescription">
+   Handy function for reviving game objects.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxPoint.html#toString()">toString</a>():String</div>
+<div class="summaryTableDescription">
+   Convert object to readable string name.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxPoint.html">FlxPoint</a></td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#update()">update</a>():void</div>
+<div class="summaryTableDescription">
+   Called by the main game loop, handles motion/physics and game logic
+   </div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+</table>
+</div>
+<a name="protectedMethodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Protected Methods</div>
+<table id="summaryTableProtectedMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#updateFlickering()">updateFlickering</a>():void</div>
+<div class="summaryTableDescription">
+   Just updates the retro-style flickering.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#updateMotion()">updateMotion</a>():void</div>
+<div class="summaryTableDescription">
+   Internal function for updating the position and speed of this object.</div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+</table>
+</div>
+<a name="constantSummary"></a><a name="protectedConstantSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Protected Constants</div>
+<table id="summaryTableProtectedConstant" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Constant</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_pZero">_pZero</a> : <a href="../flixel/FlxPoint.html">FlxPoint</a>
+<div class="summaryTableDescription">[static]
+   A handy "empty point" object
+   </div>
+</td><td class="summaryTableOwnerCol">FlxObject</td>
+</tr>
+</table>
+</div>
+<script type="text/javascript" language="javascript">
+<!--
+showHideInherited();
+--></script>
+<div class="MainContent">
+<a name="propertyDetail"></a>
+<div class="detailSectionHeader">Property detail</div>
+<a name="acceleration"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">acceleration</td><td class="detailHeaderType">property</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var acceleration:<a href="../flixel/FlxPoint.html">FlxPoint</a></code><p>
+   How fast the speed of this object is changing.
+   Useful for smooth movement and gravity.
+   </p></div>
+<a name="active"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">active</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var active:Boolean</code><p>
+   If an object is not alive, the game loop will not automatically call <code>update()</code> on it.
+   </p></div>
+<a name="angle"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">angle</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var angle:Number</code><p>
+   Set the angle of a sprite to rotate it.
+   WARNING: rotating sprites decreases rendering
+   performance for this sprite by a factor of 10x!
+   </p></div>
+<a name="angularAcceleration"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">angularAcceleration</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var angularAcceleration:Number</code><p>
+   How fast the spin speed should change.
+   </p></div>
+<a name="angularDrag"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">angularDrag</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var angularDrag:Number</code><p>
+   Like <code>drag</code> but for spinning.
+   </p></div>
+<a name="angularVelocity"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">angularVelocity</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var angularVelocity:Number</code><p>
+   This is how fast you want this sprite to spin.
+   </p></div>
+<a name="colHullX"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">colHullX</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var colHullX:<a href="../flixel/FlxRect.html">FlxRect</a></code><p>
+   These store a couple of useful numbers for speeding up collision resolution.
+   </p></div>
+<a name="colHullY"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">colHullY</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var colHullY:<a href="../flixel/FlxRect.html">FlxRect</a></code><p>
+   These store a couple of useful numbers for speeding up collision resolution.
+   </p></div>
+<a name="collideBottom"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">collideBottom</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var collideBottom:Boolean</code><p>
+   Flag for direction collision resolution.
+   </p></div>
+<a name="collideLeft"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">collideLeft</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var collideLeft:Boolean</code><p>
+   Flag for direction collision resolution.
+   </p></div>
+<a name="collideRight"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">collideRight</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var collideRight:Boolean</code><p>
+   Flag for direction collision resolution.
+   </p></div>
+<a name="collideTop"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">collideTop</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var collideTop:Boolean</code><p>
+   Flag for direction collision resolution.
+   </p></div>
+<a name="colOffsets"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">colOffsets</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var colOffsets:Array</code><p>
+   An array of <code>FlxPoint</code> objects.  By default contains a single offset (0,0).
+   </p></div>
+<a name="colVector"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">colVector</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var colVector:<a href="../flixel/FlxPoint.html">FlxPoint</a></code><p>
+   These store a couple of useful numbers for speeding up collision resolution.
+   </p></div>
+<a name="dead"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">dead</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var dead:Boolean</code><p>
+   Handy for tracking gameplay or animations.
+   </p></div>
+<a name="drag"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">drag</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var drag:<a href="../flixel/FlxPoint.html">FlxPoint</a></code><p>
+   This isn't drag exactly, more like deceleration that is only applied
+   when acceleration is not affecting the sprite.
+   </p></div>
+<a name="exists"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">exists</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var exists:Boolean</code><p>
+   Kind of a global on/off switch for any objects descended from <code>FlxObject</code>.
+   </p></div>
+<a name="fixed"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">fixed</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var fixed:Boolean</code><p>
+   If an object is 'fixed' in space, it will not budge when it collides with a not-fixed object.
+   Fixed objects also shortcut out of updateMotion by default.
+   </p></div>
+<a name="_flashPoint"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_flashPoint</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _flashPoint:Point</code><p>
+   This is a pre-allocated Flash Point object, which is useful for certain Flash graphics API calls
+   </p></div>
+<a name="_flicker"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_flicker</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _flicker:Boolean</code><p>
+   Internal helper used for retro-style flickering.
+   </p></div>
+<a name="_flickerTimer"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_flickerTimer</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _flickerTimer:Number</code><p>
+   Internal helper used for retro-style flickering.
+   </p></div>
+<a name="_group"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_group</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var _group:Boolean</code><p>
+   Dedicated internal flag for whether or not this class is a FlxGroup.
+   </p></div>
+<a name="health"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">health</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var health:Number</code><p>
+   Handy for storing health percentage or armor points or whatever.
+   </p></div>
+<a name="maxAngular"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">maxAngular</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var maxAngular:Number</code><p>
+   Use in conjunction with <code>angularAcceleration</code> for fluid spin speed control.
+   </p></div>
+<a name="maxThrust"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">maxThrust</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var maxThrust:Number</code><p>
+   Used to cap <code>thrust</code>, helpful and easy!
+   </p></div>
+<a name="maxVelocity"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">maxVelocity</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var maxVelocity:<a href="../flixel/FlxPoint.html">FlxPoint</a></code><p>
+   If you are using <code>acceleration</code>, you can use <code>maxVelocity</code> with it
+   to cap the speed automatically (very useful!).
+   </p></div>
+<a name="moves"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">moves</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var moves:Boolean</code><p>
+   Set this to false if you want to skip the automatic motion/movement stuff (see <code>updateMotion()</code>).
+   FlxObject and FlxSprite default to true.
+   FlxText, FlxTileblock, FlxTilemap and FlxSound default to false.
+   </p></div>
+<a name="onFloor"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">onFloor</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var onFloor:Boolean</code><p>
+   Flag that indicates whether or not you just hit the floor.
+   Primarily useful for platformers, this flag is reset during the <code>updateMotion()</code>.
+   </p></div>
+<a name="origin"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">origin</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var origin:<a href="../flixel/FlxPoint.html">FlxPoint</a></code><p>
+   WARNING: The origin of the sprite will default to its center.
+   If you change this, the visuals and the collisions will likely be
+   pretty out-of-sync if you do any rotation.
+   </p></div>
+<a name="_point"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_point</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _point:<a href="../flixel/FlxPoint.html">FlxPoint</a></code><p>
+   This is just a pre-allocated x-y point container to be used however you like
+   </p></div>
+<a name="_rect"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_rect</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _rect:<a href="../flixel/FlxRect.html">FlxRect</a></code><p>
+   This is just a pre-allocated rectangle container to be used however you like
+   </p></div>
+<a name="scrollFactor"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">scrollFactor</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var scrollFactor:<a href="../flixel/FlxPoint.html">FlxPoint</a></code><p>
+   A point that can store numbers from 0 to 1 (for X and Y independently)
+   that governs how much this object is affected by the camera subsystem.
+   0 means it never moves, like a HUD element or far background graphic.
+   1 means it scrolls along a the same speed as the foreground layer.
+   scrollFactor is initialized as (1,1) by default.
+   </p></div>
+<a name="solid"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">solid</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var solid:Boolean</code><p>
+   If an object is dead, the functions that automate collisions will skip it (see <code>FlxG.overlapArrays()</code> and <code>FlxG.collideArrays()</code>).
+   </p></div>
+<a name="thrust"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">thrust</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var thrust:Number</code><p>
+   If you want to do Asteroids style stuff, check out thrust,
+   instead of directly accessing the object's velocity or acceleration.
+   </p></div>
+<a name="velocity"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">velocity</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var velocity:<a href="../flixel/FlxPoint.html">FlxPoint</a></code><p>
+   The basic speed of this object.
+   </p></div>
+<a name="visible"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">visible</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var visible:Boolean</code><p>
+   If an object is not visible, the game loop will not automatically call <code>render()</code> on it.
+   </p></div>
+<a name="constructorDetail"></a>
+<div class="detailSectionHeader">Constructor detail</div>
+<a name="FlxObject()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">FlxObject</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">constructor</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function FlxObject(X:Number = 0, Y:Number = 0, Width:Number = 0, Height:Number = 0)</code><p>
+   Creates a new <code>FlxObject</code>.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">X</span>:Number</code> (default = <code>0</code>)<code></code> &mdash;  The X-coordinate of the point in space.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Y</span>:Number</code> (default = <code>0</code>)<code></code> &mdash;  The Y-coordinate of the point in space.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Width</span>:Number</code> (default = <code>0</code>)<code></code> &mdash; Desired width of the rectangle.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Height</span>:Number</code> (default = <code>0</code>)<code></code> &mdash; Desired height of the rectangle.
+   </td>
+</tr>
+</table>
+</div>
+<a name="methodDetail"></a>
+<div class="detailSectionHeader">Method detail</div>
+<a name="collide()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">collide</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function collide(Object:<a href="FlxObject.html">FlxObject</a> = null):Boolean</code><p>
+   If you don't want to call <code>FlxU.collide()</code> you can use this instead.
+   Just calls <code>FlxU.collide(this,Object);</code>.  Will collide against itself
+   if Object==null.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">Object</span>:<a href="FlxObject.html">FlxObject</a></code> (default = <code>null</code>)<code></code> &mdash;  The <FlxObject> you want to collide with.
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code></td>
+</tr>
+</table>
+</div>
+<a name="destroy()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">destroy</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function destroy():void</code><p>
+   Called by <code>FlxGroup</code>, commonly when game states are changed.
+   </p></div>
+<a name="flicker()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">flicker</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function flicker(Duration:Number = 1):void</code><p>
+   Tells this object to flicker, retro-style.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">Duration</span>:Number</code> (default = <code>1</code>)<code></code> &mdash; How many seconds to flicker for.
+   </td>
+</tr>
+</table>
+</div>
+<a name="flickering()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">flickering</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function flickering():Boolean</code><p>
+   Check to see if the object is still flickering.
+   
+   </p><p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code> &mdash; Whether the object is flickering or not.
+   </td>
+</tr>
+</table>
+</div>
+<a name="getScreenXY()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getScreenXY</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function getScreenXY(Point:<a href="FlxPoint.html">FlxPoint</a> = null):<a href="../flixel/FlxPoint.html">FlxPoint</a></code><p>
+   Call this function to figure out the on-screen position of the object.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">Point</span>:<a href="FlxPoint.html">FlxPoint</a></code> (default = <code>null</code>)<code></code> &mdash; Takes a <code>Point</code> object and assigns the post-scrolled X and Y values of this object to it.
+   
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="../flixel/FlxPoint.html">FlxPoint</a></code> &mdash; 
+                        The <code>Point</code> you passed in, or a new <code>Point</code> if you didn't pass one, containing the screen X and Y position of this object.
+   
+                        
+                     </td>
+</tr>
+</table>
+</div>
+<a name="hitBottom()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">hitBottom</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function hitBottom(Contact:<a href="FlxObject.html">FlxObject</a>, Velocity:Number):void</code><p>
+   Called when this object's bottom edge collides with the top of another <code>FlxObject</code>.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">Contact</span>:<a href="FlxObject.html">FlxObject</a></code> &mdash;  The <code>FlxObject</code> you just ran into.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Velocity</span>:Number</code> &mdash; The suggested new velocity for this object.
+   </td>
+</tr>
+</table>
+</div>
+<a name="hitLeft()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">hitLeft</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function hitLeft(Contact:<a href="FlxObject.html">FlxObject</a>, Velocity:Number):void</code><p>
+   Called when this object's left side collides with another <code>FlxObject</code>'s right.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">Contact</span>:<a href="FlxObject.html">FlxObject</a></code> &mdash;  The <code>FlxObject</code> you just ran into.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Velocity</span>:Number</code> &mdash; The suggested new velocity for this object.
+   </td>
+</tr>
+</table>
+</div>
+<a name="hitRight()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">hitRight</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function hitRight(Contact:<a href="FlxObject.html">FlxObject</a>, Velocity:Number):void</code><p>
+   Called when this object's right side collides with another <code>FlxObject</code>'s left.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">Contact</span>:<a href="FlxObject.html">FlxObject</a></code> &mdash;  The <code>FlxObject</code> you just ran into.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Velocity</span>:Number</code> &mdash; The suggested new velocity for this object.
+   </td>
+</tr>
+</table>
+</div>
+<a name="hitTop()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">hitTop</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function hitTop(Contact:<a href="FlxObject.html">FlxObject</a>, Velocity:Number):void</code><p>
+   Called when this object's top collides with the bottom of another <code>FlxObject</code>.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">Contact</span>:<a href="FlxObject.html">FlxObject</a></code> &mdash;  The <code>FlxObject</code> you just ran into.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Velocity</span>:Number</code> &mdash; The suggested new velocity for this object.
+   </td>
+</tr>
+</table>
+</div>
+<a name="hurt()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">hurt</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function hurt(Damage:Number):void</code><p>
+   Call this function to "damage" (or give health bonus) to this sprite.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">Damage</span>:Number</code> &mdash;  How much health to take away (use a negative number to give a health bonus).
+   </td>
+</tr>
+</table>
+</div>
+<a name="kill()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">kill</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function kill():void</code><p>
+   Call this function to "kill" a sprite so that it no longer 'exists'.
+   </p></div>
+<a name="onScreen()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">onScreen</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function onScreen():Boolean</code><p>
+   Check and see if this object is currently on screen.
+   
+   </p><p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code> &mdash; Whether the object is on screen or not.
+   </td>
+</tr>
+</table>
+</div>
+<a name="overlaps()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">overlaps</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function overlaps(Object:<a href="FlxObject.html">FlxObject</a>):Boolean</code><p>
+   Checks to see if some <code>FlxObject</code> object overlaps this <code>FlxObject</code> object.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">Object</span>:<a href="FlxObject.html">FlxObject</a></code> &mdash; The object being tested.
+   
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code> &mdash; Whether or not the two objects overlap.
+   </td>
+</tr>
+</table>
+</div>
+<a name="overlapsPoint()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">overlapsPoint</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function overlapsPoint(X:Number, Y:Number, PerPixel:Boolean = false):Boolean</code><p>
+   Checks to see if a point in 2D space overlaps this <code>FlxObject</code> object.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">X</span>:Number</code> &mdash;   The X coordinate of the point.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Y</span>:Number</code> &mdash;   The Y coordinate of the point.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">PerPixel</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash; Whether or not to use per pixel collision checking (only available in <code>FlxSprite</code> subclass).
+   
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code> &mdash; Whether or not the point overlaps this object.
+   </td>
+</tr>
+</table>
+</div>
+<a name="preCollide()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">preCollide</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function preCollide(Object:<a href="FlxObject.html">FlxObject</a>):void</code><p>
+   <code>FlxU.collide()</code> (and thus <code>FlxObject.collide()</code>) call
+   this function each time two objects are compared to see if they collide.
+   It doesn't necessarily mean these objects WILL collide, however.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">Object</span>:<a href="FlxObject.html">FlxObject</a></code> &mdash; The <code>FlxObject</code> you're about to run into.
+   </td>
+</tr>
+</table>
+</div>
+<a name="refreshHulls()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">refreshHulls</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function refreshHulls():void</code><p>
+   Called by <code>FlxObject.updateMotion()</code> and some constructors to
+   rebuild the basic collision data for this object.
+   </p></div>
+<a name="render()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">render</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function render():void</code><p>
+   Override this function to draw graphics (see <code>FlxSprite</code>).
+   </p></div>
+<a name="reset()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">reset</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function reset(X:Number, Y:Number):void</code><p>
+   Handy function for reviving game objects.
+   Resets their existence flags and position, including LAST position.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">X</span>:Number</code> &mdash; The new X position of this object.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Y</span>:Number</code> &mdash; The new Y position of this object.
+   </td>
+</tr>
+</table>
+</div>
+<a name="update()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">update</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function update():void</code><p>
+   Called by the main game loop, handles motion/physics and game logic
+   </p></div>
+<a name="updateFlickering()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">updateFlickering</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected function updateFlickering():void</code><p>
+   Just updates the retro-style flickering.
+   Considered update logic rather than rendering because it toggles visibility.
+   </p></div>
+<a name="updateMotion()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">updateMotion</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected function updateMotion():void</code><p>
+   Internal function for updating the position and speed of this object.
+   Useful for cases when you need to update this but are buried down in too many supers.
+   </p></div>
+<a name="constantDetail"></a>
+<div class="detailSectionHeader">Constant detail</div>
+<a name="_pZero"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_pZero</td><td class="detailHeaderType">constant</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected static const _pZero:<a href="../flixel/FlxPoint.html">FlxPoint</a></code><p>
+   A handy "empty point" object
+   </p></div>
+<br>
+<br>
+<hr>
+<br>
+<p></p>
+<center class="copyright"> 
+</center>
+</div>
+</body>
+</html>
+<!-- -->
