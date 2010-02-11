@@ -54,11 +54,11 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("DÂ
 <td width="20"></td><td></td>
 </tr>
 <tr>
-<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxCore.html#dead">dead</a> &mdash; Property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxCore.html">FlxCore</a></td>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxObject.html#dead">dead</a> &mdash; Property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxObject.html">FlxObject</a></td>
 </tr>
 <tr>
 <td width="20"></td><td>
-   If an object is dead, the functions that automate collisions will skip it (see <code>FlxG.overlapArrays()</code> and <code>FlxG.collideArrays()</code>).</td>
+   Handy for tracking gameplay or animations.</td>
 </tr>
 <tr>
 <td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxG.html#debug">debug</a> &mdash; Static property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxG.html">FlxG</a></td>
@@ -68,11 +68,18 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("DÂ
    Whether you are running in Debug or Release mode.</td>
 </tr>
 <tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxState.html#defaultGroup">defaultGroup</a> &mdash; Property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxState.html">FlxState</a></td>
+</tr>
+<tr>
+<td width="20"></td><td>
+   Internal group used to organize and display objects you add to this state.</td>
+</tr>
+<tr>
 <td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxEmitter.html#delay">delay</a> &mdash; Property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxEmitter.html">FlxEmitter</a></td>
 </tr>
 <tr>
 <td width="20"></td><td>
-   How long to wait between particle emissions.</td>
+   This variable has different effects depending on what kind of emission it is.</td>
 </tr>
 <tr>
 <td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/data/class-list.html');" href="org/flixel/data/FlxAnim.html#delay">delay</a> &mdash; Property in class org.flixel.data.<a onclick="javascript:loadClassListFrame('org/flixel/data/class-list.html');" href="org/flixel/data/FlxAnim.html">FlxAnim</a></td>
@@ -111,20 +118,19 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("DÂ
    </td>
 </tr>
 <tr>
-<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxCore.html#destroy()">destroy</a>() &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxCore.html">FlxCore</a></td>
-</tr>
-<tr>
-<td width="20"></td><td>
-   Called by <code>FlxLayer</code> when states are changed (if it belongs to a layer)
-   </td>
-</tr>
-<tr>
-<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxLayer.html#destroy()">destroy</a>() &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxLayer.html">FlxLayer</a></td>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxGroup.html#destroy()">destroy</a>() &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxGroup.html">FlxGroup</a></td>
 </tr>
 <tr>
 <td width="20"></td><td>
    Override this function to handle any deleting or "shutdown" type operations you might need,
    such as removing traditional Flash children like Sprite objects.</td>
+</tr>
+<tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxObject.html#destroy()">destroy</a>() &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxObject.html">FlxObject</a></td>
+</tr>
+<tr>
+<td width="20"></td><td>
+   Called by <code>FlxGroup</code>, commonly when game states are changed.</td>
 </tr>
 <tr>
 <td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxSound.html#destroy()">destroy</a>() &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxSound.html">FlxSound</a></td>
@@ -142,18 +148,18 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("DÂ
    might need (such as removing traditional Flash children like Sprite objects).</td>
 </tr>
 <tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxGroup.html#destroyMembers()">destroyMembers</a>() &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxGroup.html">FlxGroup</a></td>
+</tr>
+<tr>
+<td width="20"></td><td>
+   Internal function that actually loops through and destroys each member.</td>
+</tr>
+<tr>
 <td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxG.html#destroySounds()">destroySounds</a>(ForceDestroy) &mdash; Static method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxG.html">FlxG</a></td>
 </tr>
 <tr>
 <td width="20"></td><td>
    Called by FlxGame on state changes to stop and destroy sounds.</td>
-</tr>
-<tr>
-<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxG.html#dilation">dilation</a> &mdash; Static property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxG.html">FlxG</a></td>
-</tr>
-<tr>
-<td width="20"></td><td>
-   How fast or slow time should pass in the game; default is 1.0.</td>
 </tr>
 <tr>
 <td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxG.html#doFollow()">doFollow</a>() &mdash; Static method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxG.html">FlxG</a></td>
@@ -176,19 +182,12 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("DÂ
 <td width="20"></td><td></td>
 </tr>
 <tr>
-<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxEmitter.html#drag">drag</a> &mdash; Property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxEmitter.html">FlxEmitter</a></td>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxObject.html#drag">drag</a> &mdash; Property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxObject.html">FlxObject</a></td>
 </tr>
 <tr>
 <td width="20"></td><td>
-   Sets the x and y drag of each particle to this value on launch.</td>
-</tr>
-<tr>
-<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxSprite.html#drag">drag</a> &mdash; Property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxSprite.html">FlxSprite</a></td>
-</tr>
-<tr>
-<td width="20"></td><td>
-  This isn't drag exactly, more like deceleration that is only applied
-  when acceleration is not affecting the sprite.</td>
+   This isn't drag exactly, more like deceleration that is only applied
+   when acceleration is not affecting the sprite.</td>
 </tr>
 <tr>
 <td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxSprite.html#draw()">draw</a>(Brush:<a href="org/flixel/FlxSprite.html" onclick="javascript:loadClassListFrame('org/flixel./class-list.html');">org.flixel:FlxSprite</a>, X, Y) &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxSprite.html">FlxSprite</a></td>

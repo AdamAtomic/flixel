@@ -1,7 +1,6 @@
 package org.flixel
 {
 	import flash.events.Event;
-	import flash.geom.Point;
 	import flash.media.Sound;
 	import flash.media.SoundChannel;
 	import flash.media.SoundTransform;
@@ -10,7 +9,7 @@ package org.flixel
 	/**
 	 * This is the universal flixel sound object, used for streaming, music, and sound effects.
 	 */
-	public class FlxSound extends FlxCore
+	public class FlxSound extends FlxObject
 	{
 		/**
 		 * Whether or not this sound should be automatically destroyed when you switch states.
@@ -25,7 +24,7 @@ package org.flixel
 		protected var _volume:Number;
 		protected var _volumeAdjust:Number;
 		protected var _looped:Boolean;
-		protected var _core:FlxCore;
+		protected var _core:FlxObject;
 		protected var _radius:Number;
 		protected var _pan:Boolean;
 		protected var _fadeOutTimer:Number;
@@ -33,6 +32,7 @@ package org.flixel
 		protected var _pauseOnFadeOut:Boolean;
 		protected var _fadeInTimer:Number;
 		protected var _fadeInTotal:Number;
+		protected var _point2:FlxPoint;
 		
 		/**
 		 * The FlxSound constructor gets all the variables initialized, but NOT ready to play a sound yet.
@@ -40,8 +40,10 @@ package org.flixel
 		public function FlxSound()
 		{
 			super();
+			_point2 = new FlxPoint();
 			_transform = new SoundTransform();
 			init();
+			fixed = true; //no movement usually
 		}
 		
 		/**
@@ -65,7 +67,7 @@ package org.flixel
 			_fadeInTotal = 0;
 			active = false;
 			visible = false;
-			dead = true;
+			solid = false;
 		}
 		
 		/**
@@ -117,7 +119,7 @@ package org.flixel
 		 * 
 		 * @return	This FlxSound instance (nice for chaining stuff together, if you're into that).
 		 */
-		public function proximity(X:Number,Y:Number,Core:FlxCore,Radius:Number,Pan:Boolean=true):FlxSound
+		public function proximity(X:Number,Y:Number,Core:FlxObject,Radius:Number,Pan:Boolean=true):FlxSound
 		{
 			x = X;
 			y = Y;
@@ -256,17 +258,15 @@ package org.flixel
 				_volume = 1;
 			updateTransform();
 		}
-
+		
 		/**
-		 * The basic game loop update function.
+		 * Internal function that performs the actual logical updates to the sound object.
 		 * Doesn't do much except optional proximity and fade calculations.
 		 */
-		override public function update():void
+		protected function updateSound():void
 		{
 			if(_position != 0)
 				return;
-				
-			super.update();
 			
 			var radial:Number = 1.0;
 			var fade:Number = 1.0;
@@ -274,12 +274,12 @@ package org.flixel
 			//Distance-based volume control
 			if(_core != null)
 			{
-				var pc:Point = new Point();
-				var pt:Point = new Point();
-				_core.getScreenXY(pc);
-				getScreenXY(pt);
-				var dx:Number = pc.x - pt.x;
-				var dy:Number = pc.y - pt.y;
+				var _point:FlxPoint = new FlxPoint();
+				var _point2:FlxPoint = new FlxPoint();
+				_core.getScreenXY(_point);
+				getScreenXY(_point2);
+				var dx:Number = _point.x - _point2.x;
+				var dy:Number = _point.y - _point2.y;
 				radial = (_radius - Math.sqrt(dx*dx + dy*dy))/_radius;
 				if(radial < 0) radial = 0;
 				if(radial > 1) radial = 1;
@@ -317,6 +317,15 @@ package org.flixel
 			
 			_volumeAdjust = radial*fade;
 			updateTransform();
+		}
+
+		/**
+		 * The basic game loop update function.  Just calls <code>updateSound()</code>.
+		 */
+		override public function update():void
+		{
+			super.update();
+			updateSound();			
 		}
 		
 		/**

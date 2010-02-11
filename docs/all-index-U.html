@@ -48,6 +48,13 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("UÂ
    Stops and resets the camera.</td>
 </tr>
 <tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/data/class-list.html');" href="org/flixel/data/FlxMouse.html#unload()">unload</a>() &mdash; Method in class org.flixel.data.<a onclick="javascript:loadClassListFrame('org/flixel/data/class-list.html');" href="org/flixel/data/FlxMouse.html">FlxMouse</a></td>
+</tr>
+<tr>
+<td width="20"></td><td>
+   Unload the current cursor graphic.</td>
+</tr>
+<tr>
 <td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxGame.html#unpauseGame()">unpauseGame</a>() &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxGame.html">FlxGame</a></td>
 </tr>
 <tr>
@@ -82,13 +89,6 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("UÂ
    Called by the game loop automatically, handles mouseover and click detection.</td>
 </tr>
 <tr>
-<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxCore.html#update()">update</a>() &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxCore.html">FlxCore</a></td>
-</tr>
-<tr>
-<td width="20"></td><td>
-   Just updates the flickering.</td>
-</tr>
-<tr>
 <td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxEmitter.html#update()">update</a>() &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxEmitter.html">FlxEmitter</a></td>
 </tr>
 <tr>
@@ -96,12 +96,20 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("UÂ
    Called automatically by the game loop, decides when to launch particles and when to "die".</td>
 </tr>
 <tr>
-<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxLayer.html#update()">update</a>() &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxLayer.html">FlxLayer</a></td>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxGroup.html#update()">update</a>() &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxGroup.html">FlxGroup</a></td>
 </tr>
 <tr>
 <td width="20"></td><td>
    Automatically goes through and calls update on everything you added,
    override this function to handle custom input and perform collisions.</td>
+</tr>
+<tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxObject.html#update()">update</a>() &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxObject.html">FlxObject</a></td>
+</tr>
+<tr>
+<td width="20"></td><td>
+   Called by the main game loop, handles motion/physics and game logic
+   </td>
 </tr>
 <tr>
 <td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxSound.html#update()">update</a>() &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxSound.html">FlxSound</a></td>
@@ -115,7 +123,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("UÂ
 </tr>
 <tr>
 <td width="20"></td><td>
-  Called by game loop, handles animation and physics.</td>
+   Main game loop update function.</td>
 </tr>
 <tr>
 <td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxState.html#update()">update</a>() &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxState.html">FlxState</a></td>
@@ -157,7 +165,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("UÂ
    Updates the key states (for tracking just pressed, just released, etc).</td>
 </tr>
 <tr>
-<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/data/class-list.html');" href="org/flixel/data/FlxMouse.html#update()">update</a>(X, Y) &mdash; Method in class org.flixel.data.<a onclick="javascript:loadClassListFrame('org/flixel/data/class-list.html');" href="org/flixel/data/FlxMouse.html">FlxMouse</a></td>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/data/class-list.html');" href="org/flixel/data/FlxMouse.html#update()">update</a>(X, Y, XScroll, YScroll) &mdash; Method in class org.flixel.data.<a onclick="javascript:loadClassListFrame('org/flixel/data/class-list.html');" href="org/flixel/data/FlxMouse.html">FlxMouse</a></td>
 </tr>
 <tr>
 <td width="20"></td><td>
@@ -178,6 +186,27 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("UÂ
    Updates and/or animates this special effect.</td>
 </tr>
 <tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxSprite.html#updateAnimation()">updateAnimation</a>() &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr>
+<td width="20"></td><td>
+   Internal function for updating the sprite's animation.</td>
+</tr>
+<tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxEmitter.html#updateEmitter()">updateEmitter</a>() &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxEmitter.html">FlxEmitter</a></td>
+</tr>
+<tr>
+<td width="20"></td><td>
+   Internal function that actually performs the emitter update (called by update()).</td>
+</tr>
+<tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxObject.html#updateFlickering()">updateFlickering</a>() &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxObject.html">FlxObject</a></td>
+</tr>
+<tr>
+<td width="20"></td><td>
+   Just updates the retro-style flickering.</td>
+</tr>
+<tr>
 <td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxG.html#updateInput()">updateInput</a>() &mdash; Static method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxG.html">FlxG</a></td>
 </tr>
 <tr>
@@ -185,11 +214,32 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("UÂ
    Calls update on the keyboard and mouse input tracking objects.</td>
 </tr>
 <tr>
-<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxButton.html#updatePositions()">updatePositions</a>() &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxButton.html">FlxButton</a></td>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxEmitter.html#updateMembers()">updateMembers</a>() &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxEmitter.html">FlxEmitter</a></td>
 </tr>
 <tr>
 <td width="20"></td><td>
-   Internal function that just updates the X and Y position of the button's graphics.</td>
+   Internal function that actually goes through and updates all the group members.</td>
+</tr>
+<tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxGroup.html#updateMembers()">updateMembers</a>() &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxGroup.html">FlxGroup</a></td>
+</tr>
+<tr>
+<td width="20"></td><td>
+   Internal function that actually goes through and updates all the group members.</td>
+</tr>
+<tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxObject.html#updateMotion()">updateMotion</a>() &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxObject.html">FlxObject</a></td>
+</tr>
+<tr>
+<td width="20"></td><td>
+   Internal function for updating the position and speed of this object.</td>
+</tr>
+<tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxSound.html#updateSound()">updateSound</a>() &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxSound.html">FlxSound</a></td>
+</tr>
+<tr>
+<td width="20"></td><td>
+   Internal function that performs the actual logical updates to the sound object.</td>
 </tr>
 <tr>
 <td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxG.html#updateSounds()">updateSounds</a>() &mdash; Static method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxG.html">FlxG</a></td>

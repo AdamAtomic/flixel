@@ -3,7 +3,6 @@ package org.flixel
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.geom.Matrix;
-	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
 	/**
@@ -13,7 +12,7 @@ package org.flixel
 	 * It also includes some handy static parsers that can convert
 	 * arrays or PNG files into strings that can be successfully loaded.
 	 */
-	public class FlxTilemap extends FlxCore
+	public class FlxTilemap extends FlxObject
 	{
 		[Embed(source="data/autotiles.png")] static public var ImgAuto:Class;
 		[Embed(source="data/autotiles_alt.png")] static public var ImgAutoAlt:Class;
@@ -61,14 +60,17 @@ package org.flixel
 		 * Read-only variable, do NOT recommend changing after the map is loaded!
 		 */
 		public var totalTiles:uint;
+		/**
+		 * Rendering helper.
+		 */
+		protected var _flashRect:Rectangle;
 		
 		protected var _pixels:BitmapData;
 		protected var _data:Array;
 		protected var _rects:Array;
 		protected var _tileWidth:uint;
 		protected var _tileHeight:uint;
-		protected var _p:Point;
-		protected var _block:FlxCore;
+		protected var _block:FlxObject;
 		protected var _callbacks:Array;
 		protected var _screenRows:uint;
 		protected var _screenCols:uint;
@@ -87,15 +89,16 @@ package org.flixel
 			heightInTiles = 0;
 			totalTiles = 0;
 			_data = new Array();
-			_p = new Point();
 			_tileWidth = 0;
 			_tileHeight = 0;
 			_rects = null;
 			_pixels = null;
-			_block = new FlxCore();
+			_block = new FlxObject();
 			_block.width = _block.height = 0;
-			_block.fixed = true;			
+			_block.fixed = true;
 			_callbacks = new Array();
+			fixed = true;
+			moves = false;
 		}
 		
 		/**
@@ -165,26 +168,29 @@ package org.flixel
 			if(_screenCols > widthInTiles)
 				_screenCols = widthInTiles;
 			
+			refreshHulls();
+			
 			return this;
 		}
 		
 		/**
-		 * Draws the tilemap.
+		 * Internal function that actually renders the tilemap.  Called by render().
 		 */
-		override public function render():void
+		protected function renderTilemap():void
 		{
-			super.render();
-			getScreenXY(_p);
-			var tx:int = Math.floor(-_p.x/_tileWidth);
-			var ty:int = Math.floor(-_p.y/_tileHeight);
+			getScreenXY(_point);
+			_flashPoint.x = _point.x;
+			_flashPoint.y = _point.y;
+			var tx:int = Math.floor(-_flashPoint.x/_tileWidth);
+			var ty:int = Math.floor(-_flashPoint.y/_tileHeight);
 			if(tx < 0) tx = 0;
 			if(tx > widthInTiles-_screenCols) tx = widthInTiles-_screenCols;
 			if(ty < 0) ty = 0;
 			if(ty > heightInTiles-_screenRows) ty = heightInTiles-_screenRows;
 			var ri:int = ty*widthInTiles+tx;
-			_p.x += tx*_tileWidth;
-			_p.y += ty*_tileHeight;
-			var opx:int = _p.x;
+			_flashPoint.x += tx*_tileWidth;
+			_flashPoint.y += ty*_tileHeight;
+			var opx:int = _flashPoint.x;
 			var c:uint;
 			var cri:uint;
 			for(var r:uint = 0; r < _screenRows; r++)
@@ -192,15 +198,23 @@ package org.flixel
 				cri = ri;
 				for(c = 0; c < _screenCols; c++)
 				{
-					if(_rects[cri] != null)
-						FlxG.buffer.copyPixels(_pixels,_rects[cri],_p,null,null,true);
-					cri++;
-					_p.x += _tileWidth;
+					_flashRect = _rects[cri++] as Rectangle;
+					if(_flashRect != null)
+						FlxG.buffer.copyPixels(_pixels,_flashRect,_flashPoint,null,null,true);
+					_flashPoint.x += _tileWidth;
 				}
 				ri += widthInTiles;
-				_p.x = opx;
-				_p.y += _tileHeight;
+				_flashPoint.x = opx;
+				_flashPoint.y += _tileHeight;
 			}
+		}
+		
+		/**
+		 * Draws the tilemap.
+		 */
+		override public function render():void
+		{
+			renderTilemap();
 		}
 		
 		/**
@@ -208,7 +222,7 @@ package org.flixel
 		 * 
 		 * @param	Core		The <code>FlxCore</code> you want to check against.
 		 */
-		override public function overlaps(Core:FlxCore):Boolean
+		override public function overlaps(Core:FlxObject):Boolean
 		{
 			var c:uint;
 			var d:uint;
@@ -228,7 +242,7 @@ package org.flixel
 				for(c = 0; c < iw; c++)
 				{
 					if((c < 0) || (c >= widthInTiles)) break;
-					dd = _data[d+c];
+					dd = _data[d+c] as uint;
 					if(dd >= collideIndex)
 						blocks.push({x:x+(ix+c)*_tileWidth,y:y+(iy+r)*_tileHeight,data:dd});
 				}
@@ -239,8 +253,8 @@ package org.flixel
 			var hx:Boolean = false;
 			for(i = 0; i < bl; i++)
 			{
-				_block.last.x = _block.x = blocks[i].x;
-				_block.last.y = _block.y = blocks[i].y;
+				_block.x = blocks[i].x;
+				_block.y = blocks[i].y;
 				if(_block.overlaps(Core))
 					return true;
 			}
@@ -248,23 +262,37 @@ package org.flixel
 		}
 		
 		/**
-		 * Collides a <code>FlxCore</code> object against the tilemap.
-		 * 
-		 * @param	Core		The <code>FlxCore</code> you want to collide against.
+		 * Called by <code>FlxObject.updateMotion()</code> and some constructors to
+		 * rebuild the basic collision data for this object.
 		 */
-		override public function collide(Core:FlxCore):Boolean
+		override public function refreshHulls():void
+		{
+			colHullX.x = 0;
+			colHullX.y = 0;
+			colHullX.width = _tileWidth;
+			colHullX.height = _tileHeight;
+			colHullY.x = 0;
+			colHullY.y = 0;
+			colHullY.width = _tileWidth;
+			colHullY.height = _tileHeight;
+		}
+		
+		/**
+		 * <code>FlxU.collide()</code> (and thus <code>FlxObject.collide()</code>) call
+		 * this function each time two objects are compared to see if they collide.
+		 * It doesn't necessarily mean these objects WILL collide, however.
+		 * 
+		 * @param	Object	The <code>FlxObject</code> you're about to run into.
+		 */
+		override public function preCollide(Object:FlxObject):void
 		{
 			var c:uint;
 			var d:uint;
-			var i:uint;
-			var dd:uint;
-			var blocks:Array = new Array();
-			
-			//First make a list of all the blocks we'll use for collision
-			var ix:uint = Math.floor((Core.x - x)/_tileWidth);
-			var iy:uint = Math.floor((Core.y - y)/_tileHeight);
-			var iw:uint = Math.ceil(Core.width/_tileWidth)+1;
-			var ih:uint = Math.ceil(Core.height/_tileHeight)+1;
+			colOffsets.length = 0;
+			var ix:uint = FlxU.floor((Object.x - x)/_tileWidth);
+			var iy:uint = FlxU.floor((Object.y - y)/_tileHeight);
+			var iw:uint = FlxU.ceil(Object.width/_tileWidth)+1;
+			var ih:uint = FlxU.ceil(Object.height/_tileHeight)+1;
 			for(var r:uint = 0; r < ih; r++)
 			{
 				if((r < 0) || (r >= heightInTiles)) break;
@@ -272,44 +300,10 @@ package org.flixel
 				for(c = 0; c < iw; c++)
 				{
 					if((c < 0) || (c >= widthInTiles)) break;
-					dd = _data[d+c];
-					if(dd >= collideIndex)
-						blocks.push({x:x+(ix+c)*_tileWidth,y:y+(iy+r)*_tileHeight,data:dd});
+					if((_data[d+c] as uint) >= collideIndex)
+						colOffsets.push(new FlxPoint(x+(ix+c)*_tileWidth, y+(iy+r)*_tileHeight));
 				}
 			}
-			
-			//Then do all the X collisions
-			var bl:uint = blocks.length;
-			var hx:Boolean = false;
-			for(i = 0; i < bl; i++)
-			{
-				_block.last.x = _block.x = blocks[i].x;
-				_block.last.y = _block.y = blocks[i].y;
-				if(_block.collideX(Core))
-				{
-					d = blocks[i].data;
-					if(_callbacks[d] != null)
-						_callbacks[d](Core,_block.x/_tileWidth,_block.y/_tileHeight,d);
-					hx = true;
-				}
-			}
-			
-			//Then do all the Y collisions
-			var hy:Boolean = false;
-			for(i = 0; i < bl; i++)
-			{
-				_block.last.x = _block.x = blocks[i].x;
-				_block.last.y = _block.y = blocks[i].y;
-				if(_block.collideY(Core))
-				{
-					d = blocks[i].data;
-					if(_callbacks[d] != null)
-						_callbacks[d](Core,_block.x/_tileWidth,_block.y/_tileHeight,d);
-					hy = true;
-				}
-			}
-			
-			return hx || hy;
 		}
 		
 		/**
@@ -334,7 +328,7 @@ package org.flixel
 		 */
 		public function getTileByIndex(Index:uint):uint
 		{
-			return _data[Index];
+			return _data[Index] as uint;
 		}
 		
 		/**
@@ -424,7 +418,7 @@ package org.flixel
 		 * @param	Resolution	Defaults to 1, meaning check every tile or so.  Higher means more checks!
 		 * @return	Whether or not there was a collision between the ray and a colliding tile.
 		 */
-		public function ray(StartX:Number, StartY:Number, EndX:Number, EndY:Number, Result:Point, Resolution:Number=1):Boolean
+		public function ray(StartX:Number, StartY:Number, EndX:Number, EndY:Number, Result:FlxPoint, Resolution:Number=1):Boolean
 		{
 			var step:Number = _tileWidth;
 			if(_tileHeight < _tileWidth)
@@ -450,7 +444,7 @@ package org.flixel
 				
 				tx = curX/_tileWidth;
 				ty = curY/_tileHeight;
-				if(_data[ty*widthInTiles+tx] >= collideIndex)
+				if((_data[ty*widthInTiles+tx] as uint) >= collideIndex)
 				{
 					//Some basic helper stuff
 					tx *= _tileWidth;
@@ -470,7 +464,7 @@ package org.flixel
 					if((ry > ty) && (ry < ty + _tileHeight))
 					{
 						if(Result == null)
-							Result = new Point();
+							Result = new FlxPoint();
 						Result.x = rx;
 						Result.y = ry;
 						return true;
@@ -485,7 +479,7 @@ package org.flixel
 					if((rx > tx) && (rx < tx + _tileWidth))
 					{
 						if(Result == null)
-							Result = new Point();
+							Result = new FlxPoint();
 						Result.x = rx;
 						Result.y = ry;
 						return true;

@@ -35,7 +35,7 @@ package org.flixel.data
 		public function FlxQuake(Zoom:uint)
 		{
 			_zoom = Zoom;
-			reset(0);
+			start(0);
 		}
 		
 		/**
@@ -44,17 +44,22 @@ package org.flixel.data
 		 * @param	Intensity	Percentage of screen size representing the maximum distance that the screen can move during the 'quake'.
 		 * @param	Duration	The length in seconds that the "quake" should last.
 		 */
-		public function reset(Intensity:Number,Duration:Number=0.5):void
+		public function start(Intensity:Number=0.05,Duration:Number=0.5):void
+		{
+			stop();
+			_intensity = Intensity;
+			_timer = Duration;
+		}
+		
+		/**
+		 * Stops this screen effect.
+		 */
+		public function stop():void
 		{
 			x = 0;
 			y = 0;
-			_intensity = Intensity;
-			if(_intensity == 0)
-			{
-				_timer = 0;
-				return;
-			}
-			_timer = Duration;
+			_intensity = 0;
+			_timer = 0;
 		}
 		
 		/**

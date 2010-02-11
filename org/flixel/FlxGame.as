@@ -16,7 +16,9 @@ package org.flixel
 	import flash.ui.Mouse;
 	import flash.utils.getTimer;
 	
-	import org.flixel.data.*;
+	import org.flixel.data.FlxConsole;
+	import org.flixel.data.FlxLogoPixel;
+	import org.flixel.data.FlxPause;
 
 	/**
 	 * FlxGame is the heart of all flixel games, and contains a bunch of basic game loops and things.
@@ -51,13 +53,14 @@ package org.flixel
 		 * Override with your own <code>FlxLayer</code> for hot custom pause action!
 		 * Defaults to <code>data.FlxPause</code>.
 		 */
-		public var pause:FlxLayer;
+		public var pause:FlxGroup;
 		
 		//startup
 		internal var _iState:Class;
 		internal var _created:Boolean;
 		
 		//basic display stuff
+		internal var _state:FlxState;
 		internal var _buffer:Sprite;
 		internal var _bmpBack:Bitmap;
 		internal var _bmpFront:Bitmap;
@@ -67,8 +70,6 @@ package org.flixel
 		internal var _gameXOffset:int;
 		internal var _gameYOffset:int;
 		internal var _frame:Class;
-		internal var _curState:FlxState;
-		internal var _cursor:Bitmap;
 		
 		//basic update stuff
 		internal var _elapsed:Number;
@@ -79,11 +80,7 @@ package org.flixel
 		internal var _soundTray:Sprite;
 		internal var _soundTrayTimer:Number;
 		internal var _soundTrayBars:Array;
-		internal var _panel:FlxPanel;
 		internal var _console:FlxConsole;
-		internal var _quake:FlxQuake;
-		internal var _flash:FlxFlash;
-		internal var _fade:FlxFade;
 		
 		//logo stuff
 		internal var _f:Array;
@@ -108,19 +105,12 @@ package org.flixel
 			
 			_zoom = Zoom;
 			FlxState.bgColor = 0xff000000;
-			FlxG.setGameData(this,GameSizeX,GameSizeY);
+			FlxG.setGameData(this,GameSizeX,GameSizeY,Zoom);
 			_elapsed = 0;
 			_total = 0;
 			pause = new FlxPause();
-
-			_quake = new FlxQuake(_zoom);
-			_flash = new FlxFlash();
-			_fade = new FlxFade();
-			
-			_curState = null;
+			_state = null;
 			_iState = InitialState;
-
-			_panel = new FlxPanel();
 			
 			useDefaultHotKeys = true;
 			
@@ -174,10 +164,13 @@ package org.flixel
 		
 		/**
 		 * Makes the little volume tray slide out.
+		 * 
+		 * @param	Silent	Whether or not it should beep.
 		 */
-		public function showSoundTray():void
+		public function showSoundTray(Silent:Boolean=false):void
 		{
-			FlxG.play(SndBeep);
+			if(!Silent)
+				FlxG.play(SndBeep);
 			_soundTrayTimer = 1;
 			_soundTray.y = _gameYOffset*_zoom;
 			_soundTray.visible = true;
@@ -197,37 +190,31 @@ package org.flixel
 		 * 
 		 * @param	State		The class name of the state you want (e.g. PlayState)
 		 */
-		internal function switchState(State:Class):void
+		public function switchState(State:FlxState):void
 		{ 
-			_panel.hide();
+			//Basic reset stuff
+			FlxG.panel.hide();
 			FlxG.unfollow();
-			FlxG.keys.reset();
-			FlxG.mouse.reset();
-			FlxG.hideCursor();
+			FlxG.resetInput();
 			FlxG.destroySounds();
-			_flash.restart(0,0);
-			_fade.restart(0,0);
-			_quake.reset(0);
+			FlxG.flash.stop();
+			FlxG.fade.stop();
+			FlxG.quake.stop();
 			_buffer.x = 0;
 			_buffer.y = 0;
-			var newState:FlxState = new State;
-			_buffer.addChild(newState);
-			if(_curState != null)
+			
+			//Swap the new state for the old one and dispose of it
+			_buffer.addChild(State);
+			if(_state != null)
 			{
-				_buffer.swapChildren(newState,_curState);
-				_buffer.removeChild(_curState);
-				_curState.destroy();
+				_state.destroy(); //important that it is destroyed while still in the display list
+				_buffer.swapChildren(State,_state);
+				_buffer.removeChild(_state);
 			}
-			_curState = newState;
-		}
-		
-		/**
-		 * Sets up the support panel (<code>data.FlxPanel</code>) with donation and aggregation info.
-		 * Usually called from <code>FlxG</code>.
-		 */
-		protected function setupSupportPanel(PayPalID:String,PayPalAmount:Number,GameTitle:String,GameURL:String,Caption:String):void
-		{
-			_panel.init(PayPalID,PayPalAmount,GameTitle,GameURL,Caption);
+			_state = State;
+			
+			//Finally, create the new state
+			_state.create();
 		}
 
 		/**
@@ -235,7 +222,7 @@ package org.flixel
 		 */
 		protected function onKeyUp(event:KeyboardEvent):void
 		{
-			if(event.keyCode == 192)
+			if((event.keyCode == 192) || (event.keyCode == 220)) //FOR ZE GERMANZ
 			{
 				_console.toggle();
 				return;
@@ -271,30 +258,6 @@ package org.flixel
 		/**
 		 * Internal event handler for input and focus.
 		 */
-		protected function onKeyDown(event:KeyboardEvent):void
-		{
-			FlxG.keys.handleKeyDown(event);
-		}
-		
-		/**
-		 * Internal event handler for input and focus.
-		 */
-		protected function onMouseUp(event:MouseEvent):void
-		{
-			FlxG.mouse.handleMouseUp(event);
-		}
-		
-		/**
-		 * Internal event handler for input and focus.
-		 */
-		protected function onMouseDown(event:MouseEvent):void
-		{
-			FlxG.mouse.handleMouseDown(event);
-		}
-		
-		/**
-		 * Internal event handler for input and focus.
-		 */
 		protected function onFocus(event:Event=null):void
 		{
 			if(FlxG.pause)
@@ -315,10 +278,10 @@ package org.flixel
 		 */
 		internal function unpauseGame():void
 		{
-			if(!_panel.visible) flash.ui.Mouse.hide();
+			if(!FlxG.panel.visible) flash.ui.Mouse.hide();
 			FlxG.resetInput();
 			_paused = false;
-			stage.frameRate = 90;
+			stage.frameRate = 60;
 		}
 		
 		/**
@@ -346,37 +309,52 @@ package org.flixel
 		protected function onEnterFrame(event:Event):void
 		{
 			var i:uint;
+			var soundPrefs:FlxSave;
 			
 			//Frame timing
 			var t:uint = getTimer();
 			_elapsed = (t-_total)/1000;
+			if(_logoComplete)
+				_console.lastElapsed = _elapsed;
 			_total = t;
 			FlxG.elapsed = _elapsed;
 			if(FlxG.elapsed > MAX_ELAPSED)
 				FlxG.elapsed = MAX_ELAPSED;
-			FlxG.elapsed *= FlxG.dilation;
+			FlxG.elapsed *= FlxG.timeScale;
 			
-			if(_logoComplete)
+			if(_soundTray != null)
 			{
-				//Animate flixel HUD elements
-				_panel.update();
-				_console.update();
 				if(_soundTrayTimer > 0)
 					_soundTrayTimer -= _elapsed;
 				else if(_soundTray.y > -_soundTray.height)
 				{
 					_soundTray.y -= _elapsed*FlxG.height*2;
-					if(_soundTray.y < -_soundTray.height)
+					if(_soundTray.y <= -_soundTray.height)
+					{
 						_soundTray.visible = false;
+						
+						//Save sound preferences
+						soundPrefs = new FlxSave();
+						if(soundPrefs.bind("flixel"))
+						{
+							if(soundPrefs.data.sound == null)
+								soundPrefs.data.sound = new Object;
+							soundPrefs.data.mute = FlxG.mute;
+							soundPrefs.data.volume = FlxG.volume;
+							soundPrefs.forceSave();
+						}
+					}
 				}
+			}
+			
+			if(_logoComplete)
+			{
+				//Animate flixel HUD elements
+				FlxG.panel.update();
+				_console.update();
 				
 				//State updating
 				FlxG.updateInput();
-				if(_cursor != null)
-				{
-					_cursor.x = FlxG.mouse.x+FlxG.scroll.x;
-					_cursor.y = FlxG.mouse.y+FlxG.scroll.y;
-				}
 				FlxG.updateSounds();
 				if(_paused)
 				{
@@ -395,27 +373,34 @@ package org.flixel
 					else
 						FlxG.buffer = _bmpBack.bitmapData;
 					FlxState.screen.unsafeBind(FlxG.buffer);
-					_curState.preProcess();
+					_state.preProcess();
 					
 					//Update the camera and game state
 					FlxG.doFollow();
-					_curState.update();
+					_state.update();
 					
 					//Update the various special effects
-					_flash.update()
-					_fade.update();
-					_quake.update();
-					_buffer.x = _quake.x;
-					_buffer.y = _quake.y;
+					if(FlxG.flash.exists)
+						FlxG.flash.update();
+					if(FlxG.fade.exists)
+						FlxG.fade.update();
+					FlxG.quake.update();
+					_buffer.x = FlxG.quake.x;
+					_buffer.y = FlxG.quake.y;
 					
 					//Render game content, special fx, and overlays
-					_curState.render();
-					_flash.render();
-					_fade.render();
-					_panel.render();
+					_state.render();
+					if(FlxG.flash.exists)
+						FlxG.flash.render();
+					if(FlxG.fade.exists)
+						FlxG.fade.render();
+					if(FlxG.panel.visible)
+						FlxG.panel.render();
+					if((FlxG.mouse.cursor != null) && (FlxG.mouse.cursor.visible))
+						FlxG.mouse.cursor.render();
 					
 					//Post-processing hook
-					_curState.postProcess();
+					_state.postProcess();
 					
 					//Swap video buffers
 					_bmpBack.visible = !(_bmpFront.visible = _flipped);
@@ -427,7 +412,7 @@ package org.flixel
 				if(!showLogo)
 				{
 					_logoComplete = true;
-					FlxG.switchState(_iState);
+					switchState(new _iState());
 				}
 				else
 				{
@@ -479,7 +464,7 @@ package org.flixel
 							removeChild(_f[i]);
 						_f.length = 0;
 						removeChild(_logoFade);
-						FlxG.switchState(_iState);
+						switchState(new _iState());
 						_logoComplete = true;
 					}
 				}
@@ -489,7 +474,7 @@ package org.flixel
 				//Set up the view window and double buffering
 				stage.scaleMode = StageScaleMode.NO_SCALE;
 	            stage.align = StageAlign.TOP_LEFT;
-	            stage.frameRate = 90;
+	            stage.frameRate = 60;
 	            _buffer = new Sprite();
 	            _buffer.scaleX = _zoom;
 	            _buffer.scaleY = _zoom;
@@ -520,11 +505,13 @@ package org.flixel
 				FlxG.log(underline);
 				
 				//Add basic input even listeners
-				stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+				stage.addEventListener(KeyboardEvent.KEY_DOWN, FlxG.keys.handleKeyDown);
 				stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
-				stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
-				stage.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
-				
+				stage.addEventListener(MouseEvent.MOUSE_DOWN, FlxG.mouse.handleMouseDown);
+				stage.addEventListener(MouseEvent.MOUSE_UP, FlxG.mouse.handleMouseUp);
+				stage.addEventListener(MouseEvent.MOUSE_OUT, FlxG.mouse.handleMouseOut);
+				stage.addEventListener(MouseEvent.MOUSE_OVER, FlxG.mouse.handleMouseOver);
+								
 				//Initialize the pause screen
 				stage.addEventListener(Event.DEACTIVATE, onFocusLost);
 				stage.addEventListener(Event.ACTIVATE, onFocus);
@@ -573,6 +560,17 @@ package org.flixel
 					bmp.scaleX = _zoom;
 					bmp.scaleY = _zoom;
 					addChild(bmp);
+				}
+				
+				//Check for saved sound preference data
+				soundPrefs = new FlxSave();
+				if(soundPrefs.bind("flixel") && (soundPrefs.data.sound != null))
+				{
+					if(soundPrefs.data.volume != null)
+						FlxG.volume = soundPrefs.data.volume;
+					if(soundPrefs.data.mute != null)
+						FlxG.mute = soundPrefs.data.mute;
+					showSoundTray(true);
 				}
 				
 				//All set!

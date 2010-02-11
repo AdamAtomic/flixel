@@ -25,7 +25,7 @@ package org.flixel.data
 			createGraphic(FlxG.width,FlxG.height,0,true);
 			scrollFactor.x = 0;
 			scrollFactor.y = 0;
-			visible = false;
+			exists = false;
 		}
 		
 		/**
@@ -36,19 +36,22 @@ package org.flixel.data
 		 * @param	FadeComplete	A function you want to run when the fade finishes
 		 * @param	Force			Force the effect to reset
 		 */
-		public function restart(Color:uint=0, Duration:Number=1, FadeComplete:Function=null, Force:Boolean=false):void
+		public function start(Color:uint=0xff000000, Duration:Number=1, FadeComplete:Function=null, Force:Boolean=false):void
 		{
-			if(Duration == 0)
-			{
-				visible = false;
-				return;
-			}
-			if(!Force && visible) return;
+			if(!Force && exists) return;
 			fill(Color);
 			_delay = Duration;
 			_complete = FadeComplete;
 			alpha = 0;
-			visible = true;
+			exists = true;
+		}
+		
+		/**
+		 * Stops and hides this screen effect.
+		 */
+		public function stop():void
+		{
+			exists = false;
 		}
 			
 		/**
@@ -56,15 +59,12 @@ package org.flixel.data
 		 */
 		override public function update():void
 		{
-			if(visible && (alpha != 1))
+			alpha += FlxG.elapsed/_delay;
+			if(alpha >= 1)
 			{
-				alpha += FlxG.elapsed/_delay;
-				if(alpha >= 1)
-				{
-					alpha = 1;
-					if(_complete != null)
-						_complete();
-				}
+				alpha = 1;
+				if(_complete != null)
+					_complete();
 			}
 		}
 	}

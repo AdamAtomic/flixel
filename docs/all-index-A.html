@@ -41,29 +41,42 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("AÂ
 <td width="20"></td><td></td>
 </tr>
 <tr>
-<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxSprite.html#acceleration">acceleration</a> &mdash; Property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxSprite.html">FlxSprite</a></td>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxU.html#abs()">abs</a>(N) &mdash; Static method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxU.html">FlxU</a></td>
+</tr>
+<tr>
+<td width="20"></td><td></td>
+</tr>
+<tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxObject.html#acceleration">acceleration</a> &mdash; Property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxObject.html">FlxObject</a></td>
 </tr>
 <tr>
 <td width="20"></td><td>
    How fast the speed of this object is changing.</td>
 </tr>
 <tr>
-<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxCore.html#active">active</a> &mdash; Property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxCore.html">FlxCore</a></td>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxObject.html#active">active</a> &mdash; Property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxObject.html">FlxObject</a></td>
 </tr>
 <tr>
 <td width="20"></td><td>
    If an object is not alive, the game loop will not automatically call <code>update()</code> on it.</td>
 </tr>
 <tr>
-<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxLayer.html#add()">add</a>(Core:<a href="org/flixel/FlxCore.html" onclick="javascript:loadClassListFrame('org/flixel./class-list.html');">org.flixel:FlxCore</a>, ShareScroll) &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxLayer.html">FlxLayer</a></td>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxGroup.html#add()">add</a>(Object:<a href="org/flixel/FlxObject.html" onclick="javascript:loadClassListFrame('org/flixel./class-list.html');">org.flixel:FlxObject</a>, ShareScroll) &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxGroup.html">FlxGroup</a></td>
 </tr>
 <tr>
 <td width="20"></td><td>
-   Adds a new FlxCore subclass (FlxSprite, FlxBlock, etc) to the list of children
+   Adds a new <code>FlxObject</code> subclass (FlxSprite, FlxBlock, etc) to the list of children
       </td>
 </tr>
 <tr>
-<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxState.html#add()">add</a>(Core:<a href="org/flixel/FlxCore.html" onclick="javascript:loadClassListFrame('org/flixel./class-list.html');">org.flixel:FlxCore</a>) &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxState.html">FlxState</a></td>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxQuadTree.html#add()">add</a>(Object:<a href="org/flixel/FlxObject.html" onclick="javascript:loadClassListFrame('org/flixel./class-list.html');">org.flixel:FlxObject</a>, List) &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxQuadTree.html">FlxQuadTree</a></td>
+</tr>
+<tr>
+<td width="20"></td><td>
+   Call this function to add an object to the root of the tree.</td>
+</tr>
+<tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxState.html#add()">add</a>(Core:<a href="org/flixel/FlxObject.html" onclick="javascript:loadClassListFrame('org/flixel./class-list.html');">org.flixel:FlxObject</a>) &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxState.html">FlxState</a></td>
 </tr>
 <tr>
 <td width="20"></td><td>
@@ -84,7 +97,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("AÂ
    Pass in a function to be called whenever this sprite's animation changes.</td>
 </tr>
 <tr>
-<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxG.html#addBitmap()">addBitmap</a>(Graphic, Reverse) &mdash; Static method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxG.html">FlxG</a></td>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxG.html#addBitmap()">addBitmap</a>(Graphic, Reverse, Unique, Key) &mdash; Static method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxG.html">FlxG</a></td>
 </tr>
 <tr>
 <td width="20"></td><td>
@@ -105,11 +118,33 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("AÂ
    An internal helper function used to build the key array.</td>
 </tr>
 <tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxQuadTree.html#addObject()">addObject</a>() &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxQuadTree.html">FlxQuadTree</a></td>
+</tr>
+<tr>
+<td width="20"></td><td>
+   Internal function for recursively navigating and creating the tree
+   while adding objects to the appropriate nodes.</td>
+</tr>
+<tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxQuadTree.html#addToList()">addToList</a>() &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxQuadTree.html">FlxQuadTree</a></td>
+</tr>
+<tr>
+<td width="20"></td><td>
+   Internal function for recursively adding objects to leaf lists.</td>
+</tr>
+<tr>
 <td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxText.html#alignment">alignment</a> &mdash; Property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxText.html">FlxText</a></td>
 </tr>
 <tr>
 <td width="20"></td><td>
    The alignment of the font ("left", "right", or "center").</td>
+</tr>
+<tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxQuadTree.html#A_LIST">A_LIST</a> &mdash; Constant static property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxQuadTree.html">FlxQuadTree</a></td>
+</tr>
+<tr>
+<td width="20"></td><td>
+   Flag for specifying that you want to add an object to the A list.</td>
 </tr>
 <tr>
 <td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxSprite.html#_alpha">_alpha</a> &mdash; Property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxSprite.html">FlxSprite</a></td>
@@ -138,28 +173,28 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("AÂ
 <td width="20"></td><td></td>
 </tr>
 <tr>
-<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxSprite.html#angle">angle</a> &mdash; Property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxSprite.html">FlxSprite</a></td>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxObject.html#angle">angle</a> &mdash; Property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxObject.html">FlxObject</a></td>
 </tr>
 <tr>
 <td width="20"></td><td>
    Set the angle of a sprite to rotate it.</td>
 </tr>
 <tr>
-<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxSprite.html#angularAcceleration">angularAcceleration</a> &mdash; Property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxSprite.html">FlxSprite</a></td>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxObject.html#angularAcceleration">angularAcceleration</a> &mdash; Property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxObject.html">FlxObject</a></td>
 </tr>
 <tr>
 <td width="20"></td><td>
    How fast the spin speed should change.</td>
 </tr>
 <tr>
-<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxSprite.html#angularDrag">angularDrag</a> &mdash; Property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxSprite.html">FlxSprite</a></td>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxObject.html#angularDrag">angularDrag</a> &mdash; Property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxObject.html">FlxObject</a></td>
 </tr>
 <tr>
 <td width="20"></td><td>
    Like <code>drag</code> but for spinning.</td>
 </tr>
 <tr>
-<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxSprite.html#angularVelocity">angularVelocity</a> &mdash; Property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxSprite.html">FlxSprite</a></td>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxObject.html#angularVelocity">angularVelocity</a> &mdash; Property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxObject.html">FlxObject</a></td>
 </tr>
 <tr>
 <td width="20"></td><td>
@@ -198,6 +233,13 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("AÂ
 <tr>
 <td width="20"></td><td>
    Converts a one-dimensional array of tile data to a comma-separated string.</td>
+</tr>
+<tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxEmitter.html#at()">at</a>(Object:<a href="org/flixel/FlxObject.html" onclick="javascript:loadClassListFrame('org/flixel./class-list.html');">org.flixel:FlxObject</a>) &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxEmitter.html">FlxEmitter</a></td>
+</tr>
+<tr>
+<td width="20"></td><td>
+   Change the emitter's position to the origin of a <code>FlxObject</code>.</td>
 </tr>
 <tr>
 <td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxTilemap.html#auto">auto</a> &mdash; Property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxTilemap.html">FlxTilemap</a></td>

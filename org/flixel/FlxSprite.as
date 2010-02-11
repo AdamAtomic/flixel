@@ -11,7 +11,7 @@ package org.flixel
 	/**
 	* The main "game object" class, handles basic physics and animation.
 	*/
-	public class FlxSprite extends FlxCore
+	public class FlxSprite extends FlxObject
 	{
 		/**
 		 * Useful for controlling flipped animations and checking player orientation.
@@ -29,80 +29,20 @@ package org.flixel
 		 * Useful for checking player orientation.
 		 */
 		static public const DOWN:uint = 3;
-		static protected const _pZero:Point = new Point();
 		 
 		/**
 		* If you changed the size of your sprite object to shrink the bounding box,
 		* you might need to offset the new bounding box from the top-left corner of the sprite.
 		*/
-		public var offset:Point;
-		/**
-		 * The basic speed of this object.
-		 */
-		public var velocity:Point;
-		/**
-		 * How fast the speed of this object is changing.
-		 * Useful for smooth movement and gravity.
-		 */
-		public var acceleration:Point;
-		/**
-		* This isn't drag exactly, more like deceleration that is only applied
-		* when acceleration is not affecting the sprite.
-		*/
-		public var drag:Point;
-		/**
-		 * If you are using <code>acceleration</code>, you can use <code>maxVelocity</code> with it
-		 * to cap the speed automatically (very useful!).
-		 */
-		public var maxVelocity:Point;
-		/**
-		 * Set the angle of a sprite to rotate it.
-		 * WARNING: rotating sprites decreases rendering
-		 * performance for this sprite by a factor of 10x!
-		 */
-		public var angle:Number;
-		/**
-		 * This is how fast you want this sprite to spin.
-		 */
-		public var angularVelocity:Number;
-		/**
-		 * How fast the spin speed should change.
-		 */
-		public var angularAcceleration:Number;
-		/**
-		 * Like <code>drag</code> but for spinning.
-		 */
-		public var angularDrag:Number;
-		/**
-		 * Use in conjunction with <code>angularAcceleration</code> for fluid spin speed control.
-		 */
-		public var maxAngular:Number;
-		/**
-		* WARNING: The origin of the sprite will default to its center.
-		* If you change this, the visuals and the collisions will likely be
-		* pretty out-of-sync if you do any rotation.
-		*/
-		public var origin:Point;
-		/**
-		* If you want to do Asteroids style stuff, check out thrust,
-		* instead of directly accessing the object's velocity or acceleration.
-		*/
-		public var thrust:Number;
-		/**
-		 * Used to cap <code>thrust</code>, helpful and easy!
-		 */
-		public var maxThrust:Number;
-		/**
-		 * Handy for storing health percentage or armor points or whatever.
-		 */
-		public var health:Number;
+		public var offset:FlxPoint;
+		
 		/**
 		 * Change the size of your sprite's graphic.
 		 * NOTE: Scale doesn't currently affect collisions automatically,
 		 * you will need to adjust the width, height and offset manually.
 		 * WARNING: scaling sprites decreases rendering performance for this sprite by a factor of 10x!
 		 */
-		public var scale:Point;
+		public var scale:FlxPoint;
 		/**
 		 * Blending modes, just like Photoshop!
 		 * E.g. "multiply", "screen", etc.
@@ -114,11 +54,20 @@ package org.flixel
 		 * @default false
 		 */
 		public var antialiasing:Boolean;
-		
 		/**
 		 * Whether the current animation has finished its first (or only) loop.
 		 */
 		public var finished:Boolean;
+		/**
+		 * The width of the actual graphic or image being displayed (not necessarily the game object/bounding box).
+		 * NOTE: Edit at your own risk!!  This is intended to be read-only.
+		 */
+		public var frameWidth:uint;
+		/**
+		 * The height of the actual graphic or image being displayed (not necessarily the game object/bounding box).
+		 * NOTE: Edit at your own risk!!  This is intended to be read-only.
+		 */
+		public var frameHeight:uint;
 		
 		//Animation helpers
 		protected var _animations:Array;
@@ -129,13 +78,12 @@ package org.flixel
 		protected var _frameTimer:Number;
 		protected var _callback:Function;
 		protected var _facing:uint;
+		protected var _bakedRotation:Number;
 		
 		//Various rendering helpers
-		protected var _bw:uint;
-		protected var _bh:uint;
-		protected var _r:Rectangle;
-		protected var _r2:Rectangle;
-		protected var _p:Point;
+		protected var _flashRect:Rectangle;
+		protected var _flashRect2:Rectangle;
+		protected var _flashPointZero:Point;
 		protected var _pixels:BitmapData;
 		protected var _framePixels:BitmapData;
 		protected var _alpha:Number;
@@ -151,36 +99,23 @@ package org.flixel
 		 * @param	Y				The initial Y position of the sprite.
 		 * @param	SimpleGraphic	The graphic you want to display (OPTIONAL - for simple stuff only, do NOT use for animated images!).
 		 */
-		public function FlxSprite(X:int=0,Y:int=0,SimpleGraphic:Class=null)
+		public function FlxSprite(X:Number=0,Y:Number=0,SimpleGraphic:Class=null)
 		{
 			super();
-			
-			last.x = x = X;
-			last.y = y = Y;
-			_p = new Point();
-			_r = new Rectangle();
-			_r2 = new Rectangle();
-			origin = new Point();
+			x = X;
+			y = Y;
+
+			_flashRect = new Rectangle();
+			_flashRect2 = new Rectangle();
+			_flashPointZero = new Point();
+			origin = new FlxPoint();
 			if(SimpleGraphic == null)
 				createGraphic(8,8);
 			else
 				loadGraphic(SimpleGraphic);
-			offset = new Point();
+			offset = new FlxPoint();
 			
-			velocity = new Point();
-			acceleration = new Point();
-			drag = new Point();
-			maxVelocity = new Point(10000,10000);
-			
-			angle = 0;
-			angularVelocity = 0;
-			angularAcceleration = 0;
-			angularDrag = 0;
-			maxAngular = 10000;
-			
-			thrust = 0;
-			
-			scale = new Point(1,1);
+			scale = new FlxPoint(1,1);
 			_alpha = 1;
 			_color = 0x00ffffff;
 			blend = null;
@@ -196,7 +131,6 @@ package org.flixel
 			_frameTimer = 0;
 
 			_mtx = new Matrix();
-			health = 1;
 			_callback = null;
 		}
 		
@@ -214,6 +148,7 @@ package org.flixel
 		 */
 		public function loadGraphic(Graphic:Class,Animated:Boolean=false,Reverse:Boolean=false,Width:uint=0,Height:uint=0,Unique:Boolean=false):FlxSprite
 		{
+			_bakedRotation = 0;
 			_pixels = FlxG.addBitmap(Graphic,Reverse,Unique);
 			if(Reverse)
 				_flipped = _pixels.width>>1;
@@ -228,7 +163,7 @@ package org.flixel
 				else
 					Width = _pixels.width;
 			}
-			width = _bw = Width;
+			width = frameWidth = Width;
 			if(Height == 0)
 			{
 				if(Animated)
@@ -236,7 +171,64 @@ package org.flixel
 				else
 					Height = _pixels.height;
 			}
-			height = _bh = Height;
+			height = frameHeight = Height;
+			resetHelpers();
+			return this;
+		}
+		
+		/**
+		 * Create a pre-rotated sprite sheet from a simple sprite.
+		 * This can make a huge difference in graphical performance!
+		 * 
+		 * @param	Graphic			The image you want to rotate & stamp.
+		 * @param	Frames			The number of frames you want to use (more == smoother rotations).
+		 * @param	Offset			Use this to select a specific frame to draw from the graphic.
+		 * @param	AntiAliasing	Whether to use high quality rotations when creating the graphic.
+		 * @param	AutoBuffer		Whether to automatically increase the image size to accomodate rotated corners.
+		 * 
+		 * @return	This FlxSprite instance (nice for chaining stuff together, if you're into that).
+		 */
+		public function loadRotatedGraphic(Graphic:Class, Rotations:uint=16, Frame:int=-1, AntiAliasing:Boolean=false, AutoBuffer:Boolean=false):FlxSprite
+		{
+			//Create the brush and canvas
+			var rows:uint = 4;
+			var brush:FlxSprite = new FlxSprite().loadGraphic(Graphic,(Frame >= 0));
+			if(Frame >= 0)
+				brush.frame = Frame;
+			brush.antialiasing = AntiAliasing;
+			var max:uint = brush.width;
+			if(brush.height > max)
+				max = brush.height;
+			if(AutoBuffer)
+				max *= 1.5;
+			var cols:uint = Math.ceil(Rotations/rows);
+			width = max*cols;
+			height = max*rows;
+			var key:String = String(Graphic) + ":" + Frame + ":" + width + "x" + height;
+			var skipGen:Boolean = FlxG.checkBitmapCache(key);
+			createGraphic(width, height, 0, true, key);
+			_bakedRotation = 360/Rotations;
+			
+			//Generate a new sheet if necessary, then fix up the width & height
+			if(!skipGen)
+			{
+				var r:uint;
+				var c:uint;
+				var bw2:uint = brush.width/2;
+				var bh2:uint = brush.height/2;
+				var gxc:uint = max/2;
+				var gyc:uint = max/2;
+				for(r = 0; r < rows; r++)
+				{
+					for(c = 0; c < cols; c++)
+					{
+						draw(brush, gxc + max*c - bw2, gyc - bh2);
+						brush.angle += _bakedRotation;
+					}
+					gyc += max;
+				}
+			}
+			frameWidth = frameHeight = width = height = max;
 			resetHelpers();
 			return this;
 		}
@@ -248,14 +240,16 @@ package org.flixel
 		 * @param	Height		The height of the sprite you want to generate.
 		 * @param	Color		Specifies the color of the generated block.
 		 * @param	Unique		Whether the graphic should be a unique instance in the graphics cache.
+		 * @param	Key			Optional parameter - specify a string key to identify this graphic in the cache.  Trumps Unique flag.
 		 * 
 		 * @return	This FlxSprite instance (nice for chaining stuff together, if you're into that).
 		 */
-		public function createGraphic(Width:uint,Height:uint,Color:uint=0xffffffff,Unique:Boolean=false):FlxSprite
+		public function createGraphic(Width:uint,Height:uint,Color:uint=0xffffffff,Unique:Boolean=false,Key:String=null):FlxSprite
 		{
-			_pixels = FlxG.createBitmap(Width,Height,Color,Unique);
-			width = _bw = _pixels.width;
-			height = _bh = _pixels.height;
+			_bakedRotation = 0;
+			_pixels = FlxG.createBitmap(Width,Height,Color,Unique,Key);
+			width = frameWidth = _pixels.width;
+			height = frameHeight = _pixels.height;
 			resetHelpers();
 			return this;
 		}
@@ -275,8 +269,8 @@ package org.flixel
 		public function set pixels(Pixels:BitmapData):void
 		{
 			_pixels = Pixels;
-			width = _bw = _pixels.width;
-			height = _bh = _pixels.height;
+			width = frameWidth = _pixels.width;
+			height = frameHeight = _pixels.height;
 			resetHelpers();
 		}
 		
@@ -285,19 +279,20 @@ package org.flixel
 		 */
 		protected function resetHelpers():void
 		{
-			_r.x = 0;
-			_r.y = 0;
-			_r.width = _bw;
-			_r.height = _bh;
-			_r2.x = 0;
-			_r2.y = 0;
-			_r2.width = _pixels.width;
-			_r2.height = _pixels.height;
+			_flashRect.x = 0;
+			_flashRect.y = 0;
+			_flashRect.width = frameWidth;
+			_flashRect.height = frameHeight;
+			_flashRect2.x = 0;
+			_flashRect2.y = 0;
+			_flashRect2.width = _pixels.width;
+			_flashRect2.height = _pixels.height;
 			if((_framePixels == null) || (_framePixels.width != width) || (_framePixels.height != height))
 				_framePixels = new BitmapData(width,height);
-			origin.x = _bw/2;
-			origin.y = _bh/2;
-			_framePixels.copyPixels(_pixels,_r,_pZero);
+			origin.x = frameWidth/2;
+			origin.y = frameHeight/2;
+			_framePixels.copyPixels(_pixels,_flashRect,_flashPointZero);
+			refreshHulls();
 		}
 		
 		/**
@@ -379,15 +374,15 @@ package org.flixel
 			var b:BitmapData = Brush._framePixels;
 			
 			//Simple draw
-			if((Brush.angle == 0) && (Brush.scale.x == 1) && (Brush.scale.y == 1) && (Brush.blend == null))
+			if(((Brush.angle == 0) || (Brush._bakedRotation > 0)) && (Brush.scale.x == 1) && (Brush.scale.y == 1) && (Brush.blend == null))
 			{
-				_p.x = X;
-				_p.y = Y;
-				_r2.width = b.width;
-				_r2.height = b.height;
-				_pixels.copyPixels(b,_r2,_p,null,null,true);
-				_r2.width = _pixels.width;
-				_r2.height = _pixels.height;
+				_flashPoint.x = X;
+				_flashPoint.y = Y;
+				_flashRect2.width = b.width;
+				_flashRect2.height = b.height;
+				_pixels.copyPixels(b,_flashRect2,_flashPoint,null,null,true);
+				_flashRect2.width = _pixels.width;
+				_flashRect2.height = _pixels.height;
 				calcFrame();
 				return;
 			}
@@ -409,20 +404,25 @@ package org.flixel
 		 */
 		public function fill(Color:uint):void
 		{
-			_pixels.fillRect(_r2,Color);
+			_pixels.fillRect(_flashRect2,Color);
 			calcFrame();
 		}
 		
 		/**
-		* Called by game loop, handles animation and physics.
-		*/
-		override public function update():void
+		 * Internal function for updating the sprite's animation.
+		 * Useful for cases when you need to update this but are buried down in too many supers.
+		 * This function is called automatically by <code>FlxSprite.update()</code>.
+		 */
+		protected function updateAnimation():void
 		{
-			super.update();
-			
-			if(!active) return;
-			
-			//animation
+			if(_bakedRotation)
+			{
+				var oc:uint = _caf;
+				_caf = (angle % 360)/_bakedRotation;
+				if(oc != _caf)
+					calcFrame();
+				return;
+			}
 			if((_curAnim != null) && (_curAnim.delay > 0) && (_curAnim.looped || !finished))
 			{
 				_frameTimer += FlxG.elapsed;
@@ -440,41 +440,32 @@ package org.flixel
 					calcFrame();
 				}
 			}
-			
-			//motion + physics
-			angle += (angularVelocity = FlxG.computeVelocity(angularVelocity,angularAcceleration,angularDrag,maxAngular))*FlxG.elapsed;
-			var thrustComponents:Point;
-			if(thrust != 0)
-			{
-				thrustComponents = FlxG.rotatePoint(-thrust,0,0,0,angle);
-				var maxComponents:Point = FlxG.rotatePoint(-maxThrust,0,0,0,angle);
-				var max:Number = Math.abs(maxComponents.x);
-				if(max > Math.abs(maxComponents.y))
-					maxComponents.y = max;
-				else
-					max = Math.abs(maxComponents.y);
-				maxVelocity.x = Math.abs(max);
-				maxVelocity.y = Math.abs(max);
-			}
-			else
-				thrustComponents = _pZero;
-			x += (velocity.x = FlxG.computeVelocity(velocity.x,acceleration.x+thrustComponents.x,drag.x,maxVelocity.x))*FlxG.elapsed;
-			y += (velocity.y = FlxG.computeVelocity(velocity.y,acceleration.y+thrustComponents.y,drag.y,maxVelocity.y))*FlxG.elapsed;
 		}
 		
 		/**
-		 * Called by game loop, blits or renders current frame of animation to the screen
+		 * Main game loop update function.  Override this to create your own sprite logic!
+		 * Just don't forget to call super.update() or any of the helper functions.
 		 */
-		override public function render():void
+		override public function update():void
 		{
-			if(!visible)
-				return;
-			getScreenXY(_p);
+			updateMotion();
+			updateAnimation();
+			updateFlickering();
+		}
+		
+		/**
+		 * Internal function that performs the actual sprite rendering, called by render().
+		 */
+		protected function renderSprite():void
+		{
+			getScreenXY(_point);
+			_flashPoint.x = _point.x;
+			_flashPoint.y = _point.y;
 			
 			//Simple render
-			if((angle == 0) && (scale.x == 1) && (scale.y == 1) && (blend == null))
+			if(((angle == 0) || (_bakedRotation > 0)) && (scale.x == 1) && (scale.y == 1) && (blend == null))
 			{
-				FlxG.buffer.copyPixels(_framePixels,_r,_p,null,null,true);
+				FlxG.buffer.copyPixels(_framePixels,_flashRect,_flashPoint,null,null,true);
 				return;
 			}
 			
@@ -483,8 +474,16 @@ package org.flixel
 			_mtx.translate(-origin.x,-origin.y);
 			_mtx.scale(scale.x,scale.y);
 			if(angle != 0) _mtx.rotate(Math.PI * 2 * (angle / 360));
-			_mtx.translate(_p.x+origin.x,_p.y+origin.y);
+			_mtx.translate(_point.x+origin.x,_point.y+origin.y);
 			FlxG.buffer.draw(_framePixels,_mtx,null,blend,null,antialiasing);
+		}
+		
+		/**
+		 * Called by game loop, updates then blits or renders current frame of animation to the screen
+		 */
+		override public function render():void
+		{
+			renderSprite();
 		}
 		
 		/**
@@ -498,50 +497,12 @@ package org.flixel
 		 */
 		override public function overlapsPoint(X:Number,Y:Number,PerPixel:Boolean = false):Boolean
 		{
-			var tx:Number = x;
-			var ty:Number = y;
-			if((scrollFactor.x != 1) || (scrollFactor.y != 1))
-			{
-				tx -= Math.floor(FlxG.scroll.x*(1-scrollFactor.x));
-				ty -= Math.floor(FlxG.scroll.y*(1-scrollFactor.y));
-			}
+			getScreenXY(_point);
 			if(PerPixel)
-				return _framePixels.hitTest(new Point(0,0),0xFF,new Point(X-tx,Y-ty));
-			else if((X <= tx) || (X >= tx+width) || (Y <= ty) || (Y >= ty+height))
+				return _framePixels.hitTest(new Point(0,0),0xFF,new Point(X-_point.x,Y-_point.y));
+			else if((X <= _point.x) || (X >= _point.x+frameWidth) || (Y <= _point.y) || (Y >= _point.y+frameHeight))
 				return false;
 			return true;
-		}
-		
-		/**
-		 * Called when this object collides with another <code>FlxCore</code> on one of its sides.
-		 * 
-		 * @return	Whether you wish the <code>FlxCore</code> to collide with it or not.
-		 */
-		override public function hitWall(Contact:FlxCore=null):Boolean { velocity.x = 0; return true; }
-		
-		/**
-		 * Called when this object collides with the top of another <code>FlxCore</code>.
-		 * 
-		 * @return	Whether you wish the <code>FlxCore</code> to collide with it or not.
-		 */
-		override public function hitFloor(Contact:FlxCore=null):Boolean { velocity.y = 0; return true; }
-		
-		/**
-		 * Called when this object collides with the bottom of another <code>FlxCore</code>.
-		 * 
-		 * @return	Whether you wish the <code>FlxCore</code> to collide with it or not.
-		 */
-		override public function hitCeiling(Contact:FlxCore=null):Boolean { velocity.y = 0; return true; }
-		
-		/**
-		 * Call this function to "damage" (or give health bonus) to this sprite.
-		 * 
-		 * @param	Damage		How much health to take away (use a negative number to give a health bonus).
-		 */
-		virtual public function hurt(Damage:Number):void
-		{
-			if((health -= Damage) <= 0)
-				kill();
 		}
 		
 		/**
@@ -609,7 +570,7 @@ package org.flixel
 		public function randomFrame():void
 		{
 			_curAnim = null;
-			_caf = int(FlxG.random()*(_pixels.width/_bw));
+			_caf = int(FlxU.random()*(_pixels.width/frameWidth));
 			calcFrame();
 		}
 		
@@ -618,7 +579,15 @@ package org.flixel
 		 * 
 		 * @param	Frame	The frame you want to display.
 		 */
-		public function specificFrame(Frame:uint):void
+		public function get frame():uint
+		{
+			return _caf;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set frame(Frame:uint):void
 		{
 			_curAnim = null;
 			_caf = Frame;
@@ -627,18 +596,17 @@ package org.flixel
 		
 		/**
 		 * Call this function to figure out the on-screen position of the object.
-		 * Takes parallax scrolling into account.
 		 * 
-		 * @param	P	A <code>Point</code> object
-		 *
-		 * @return	Either the <code>Point</code> that was passed in, or the one that was created, containing the X and Y screen coordinates of this object.
+		 * @param	P	Takes a <code>Point</code> object and assigns the post-scrolled X and Y values of this object to it.
+		 * 
+		 * @return	The <code>Point</code> you passed in, or a new <code>Point</code> if you didn't pass one, containing the screen X and Y position of this object.
 		 */
-		override public function getScreenXY(P:Point=null):Point
+		override public function getScreenXY(Point:FlxPoint=null):FlxPoint
 		{
-			if(P == null) P = new Point();
-			P.x = Math.floor(x-offset.x)+Math.floor(FlxG.scroll.x*scrollFactor.x);
-			P.y = Math.floor(y-offset.y)+Math.floor(FlxG.scroll.y*scrollFactor.y);
-			return P;
+			if(Point == null) Point = new FlxPoint();
+			Point.x = FlxU.floor(x + FlxU.roundingError)+FlxU.floor(FlxG.scroll.x*scrollFactor.x) - offset.x;
+			Point.y = FlxU.floor(y + FlxU.roundingError)+FlxU.floor(FlxG.scroll.y*scrollFactor.y) - offset.y;
+			return Point;
 		}
 		
 		/**
@@ -646,27 +614,27 @@ package org.flixel
 		 */
 		protected function calcFrame():void
 		{
-			var rx:uint = _caf*_bw;
+			var rx:uint = _caf*frameWidth;
 			var ry:uint = 0;
 
 			//Handle sprite sheets
 			var w:uint = _flipped?_flipped:_pixels.width;
 			if(rx >= w)
 			{
-				ry = uint(rx/w)*_bh;
+				ry = uint(rx/w)*frameHeight;
 				rx %= w;
 			}
 			
 			//handle reversed sprites
 			if(_flipped && (_facing == LEFT))
-				rx = (_flipped<<1)-rx-_bw;
+				rx = (_flipped<<1)-rx-frameWidth;
 			
 			//Update display bitmap
-			_r.x = rx;
-			_r.y = ry;
-			_framePixels.copyPixels(_pixels,_r,_pZero);
-			_r.x = _r.y = 0;
-			if(_ct != null) _framePixels.colorTransform(_r,_ct);
+			_flashRect.x = rx;
+			_flashRect.y = ry;
+			_framePixels.copyPixels(_pixels,_flashRect,_flashPointZero);
+			_flashRect.x = _flashRect.y = 0;
+			if(_ct != null) _framePixels.colorTransform(_flashRect,_ct);
 			if(_callback != null) _callback(_curAnim.name,_curFrame,_caf);
 		}
 		

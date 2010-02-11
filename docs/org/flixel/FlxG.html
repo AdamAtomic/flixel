@@ -4,7 +4,7 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="../../style.css" type="text/css" media="screen">
 <link rel="stylesheet" href="../../print.css" type="text/css" media="print">
-<meta content="FlxG,org.flixel.FlxG,ImgDefaultCursor,LIBRARY_MAJOR_VERSION,LIBRARY_MINOR_VERSION,LIBRARY_NAME,_cache,_game,_mute,_originalSeed,_pause,_scrollTarget,_seed,_volume,buffer,debug,dilation,elapsed,followLead,followLerp,followMax,followMin,followTarget,height,keys,kong,level,levels,mouse,music,save,saves,score,scores,scroll,sounds,state,width,mute,pause,seed,volume,addBitmap,changeSounds,collideArray,collideArrayX,collideArrayY,collideArrays,collideArraysX,collideArraysY,computeVelocity,createBitmap,destroySounds,doFollow,fade,flash,follow,followAdjust,followBounds,getAngle,getMuteValue,getNonexist,getRandom,hideCursor,hideSupportPanel,log,mutate,openURL,overlapArray,overlapArrays,pauseSounds,play,playMusic,playSounds,quake,random,randomize,resetInput,rotatePoint,setGameData,showCursor,showSupportPanel,stream,switchState,unfollow,updateInput,updateSounds" name="keywords">
+<meta content="FlxG,org.flixel.FlxG,LIBRARY_MAJOR_VERSION,LIBRARY_MINOR_VERSION,LIBRARY_NAME,_cache,_game,_mute,_pause,_scrollTarget,_volume,buffer,debug,elapsed,fade,flash,followLead,followLerp,followMax,followMin,followTarget,height,keys,kong,level,levels,mouse,music,panel,quake,save,saves,score,scores,scroll,sounds,timeScale,width,mute,pause,stage,state,volume,addBitmap,changeSounds,checkBitmapCache,createBitmap,destroySounds,doFollow,follow,followAdjust,followBounds,getMuteValue,log,pauseSounds,play,playMusic,playSounds,resetInput,setGameData,stream,unfollow,updateInput,updateSounds" name="keywords">
 <title>org.flixel.FlxG</title>
 </head>
 <body>
@@ -63,13 +63,20 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol">FlxG</td>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#dilation">dilation</a> : Number<div class="summaryTableDescription">[static]
-   How fast or slow time should pass in the game; default is 1.0.</div>
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#elapsed">elapsed</a> : Number<div class="summaryTableDescription">[static]
+   Represents the amount of time in seconds that passed since last frame.</div>
 </td><td class="summaryTableOwnerCol">FlxG</td>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#elapsed">elapsed</a> : Number<div class="summaryTableDescription">[static]
-   Represents the amount of time in seconds that passed since last frame.</div>
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#fade">fade</a> : <a href="data/FlxFade.html">FlxFade</a>
+<div class="summaryTableDescription">[static]
+   A special effect that fades a color onto the screen.</div>
+</td><td class="summaryTableOwnerCol">FlxG</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#flash">flash</a> : <a href="data/FlxFlash.html">FlxFlash</a>
+<div class="summaryTableDescription">[static]
+   A special effect that flashes a color on the screen.</div>
 </td><td class="summaryTableOwnerCol">FlxG</td>
 </tr>
 <tr class="">
@@ -93,7 +100,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol">FlxG</td>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#followTarget">followTarget</a> : <a href="../flixel/FlxCore.html">FlxCore</a>
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#followTarget">followTarget</a> : <a href="../flixel/FlxObject.html">FlxObject</a>
 <div class="summaryTableDescription">[static]
    Tells the camera to follow this <code>FlxCore</code> object around.</div>
 </td><td class="summaryTableOwnerCol">FlxG</td>
@@ -126,12 +133,12 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol">FlxG</td>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#LIBRARY_MAJOR_VERSION">LIBRARY_MAJOR_VERSION</a> : uint = 1<div class="summaryTableDescription">[static]
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#LIBRARY_MAJOR_VERSION">LIBRARY_MAJOR_VERSION</a> : uint = 2<div class="summaryTableDescription">[static]
    Assign a major version to your library.</div>
 </td><td class="summaryTableOwnerCol">FlxG</td>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#LIBRARY_MINOR_VERSION">LIBRARY_MINOR_VERSION</a> : uint = 51<div class="summaryTableDescription">[static]
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#LIBRARY_MINOR_VERSION">LIBRARY_MINOR_VERSION</a> : uint = 0<div class="summaryTableDescription">[static]
    Assign a minor version to your library.</div>
 </td><td class="summaryTableOwnerCol">FlxG</td>
 </tr>
@@ -159,8 +166,21 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol">FlxG</td>
 </tr>
 <tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#panel">panel</a> : <a href="data/FlxPanel.html">FlxPanel</a>
+<div class="summaryTableDescription">[static]
+   The support panel (twitter, reddit, stumbleupon, paypal, etc) visor thing
+   </div>
+</td><td class="summaryTableOwnerCol">FlxG</td>
+</tr>
+<tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#pause">pause</a> : Boolean<div class="summaryTableDescription">[static]
    Set <code>pause</code> to true to pause the game, all sounds, and display the pause popup.</div>
+</td><td class="summaryTableOwnerCol">FlxG</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#quake">quake</a> : <a href="data/FlxQuake.html">FlxQuake</a>
+<div class="summaryTableDescription">[static]
+   A special effect that shakes the screen.</div>
 </td><td class="summaryTableOwnerCol">FlxG</td>
 </tr>
 <tr class="">
@@ -187,20 +207,26 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol">FlxG</td>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#seed">seed</a> : Number<div class="summaryTableDescription">[static]
-   Set <code>seed</code> to a number between 0 and 1 if you want
-   <code>FlxG.random()</code> to generate a predictable series of numbers.</div>
-</td><td class="summaryTableOwnerCol">FlxG</td>
-</tr>
-<tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#sounds">sounds</a> : Array<div class="summaryTableDescription">[static]
    A list of all the sounds being played in the game.</div>
 </td><td class="summaryTableOwnerCol">FlxG</td>
 </tr>
 <tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#stage">stage</a> : Stage<div class="summaryTableDescription">[static][read-only]
+   Retrieves the Flash stage object (required for event listeners)
+   
+   </div>
+</td><td class="summaryTableOwnerCol">FlxG</td>
+</tr>
+<tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#state">state</a> : <a href="../flixel/FlxState.html">FlxState</a>
 <div class="summaryTableDescription">[static]
-   A reference or pointer to the current FlxState object being used by the game.</div>
+   Safely access the current game state.</div>
+</td><td class="summaryTableOwnerCol">FlxG</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#timeScale">timeScale</a> : Number<div class="summaryTableDescription">[static]
+   How fast or slow time should pass in the game; default is 1.0.</div>
 </td><td class="summaryTableOwnerCol">FlxG</td>
 </tr>
 <tr class="">
@@ -230,21 +256,13 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_game">_game</a> : <a href="../flixel/FlxGame.html">FlxGame</a>
 <div class="summaryTableDescription">[static]
-   Internal reference to the instantiated game object.</div>
-</td><td class="summaryTableOwnerCol">FlxG</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#ImgDefaultCursor">ImgDefaultCursor</a> : Class<div class="summaryTableDescription">[static]</div>
+   Internal tracker for game object (so we can pause & unpause)
+   </div>
 </td><td class="summaryTableOwnerCol">FlxG</td>
 </tr>
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_mute">_mute</a> : Boolean<div class="summaryTableDescription">[static]
    Internal flag for whether or not the game is muted.</div>
-</td><td class="summaryTableOwnerCol">FlxG</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_originalSeed">_originalSeed</a> : Number<div class="summaryTableDescription">[static]
-   Internal random number calculation helpers.</div>
 </td><td class="summaryTableOwnerCol">FlxG</td>
 </tr>
 <tr class="">
@@ -255,11 +273,6 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_scrollTarget">_scrollTarget</a> : Point<div class="summaryTableDescription">[static]
    Internal, used to assist camera and scrolling.</div>
-</td><td class="summaryTableOwnerCol">FlxG</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_seed">_seed</a> : Number<div class="summaryTableDescription">[static]
-   Internal random number calculation helpers.</div>
 </td><td class="summaryTableOwnerCol">FlxG</td>
 </tr>
 <tr class="">
@@ -279,7 +292,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#addBitmap()">addBitmap</a>(Graphic:Class, Reverse:Boolean = false):BitmapData</div>
+<a class="signatureLink" href="#addBitmap()">addBitmap</a>(Graphic:Class, Reverse:Boolean = false, Unique:Boolean = false, Key:String = null):BitmapData</div>
 <div class="summaryTableDescription">[static]
    Loads a bitmap from a file, caches it, and generates a horizontally flipped version if necessary.</div>
 </td><td class="summaryTableOwnerCol">FlxG</td>
@@ -287,63 +300,15 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#collideArray()">collideArray</a>(Cores:Array, Core:<a href="FlxCore.html">FlxCore</a>):Boolean</div>
+<a class="signatureLink" href="#checkBitmapCache()">checkBitmapCache</a>(Key:String):Boolean</div>
 <div class="summaryTableDescription">[static]
-   Collides a <code>FlxCore</code> against the <code>FlxCores</code> in the array.</div>
+   Check the local bitmap cache to see if a bitmap with this key has been loaded already.</div>
 </td><td class="summaryTableOwnerCol">FlxG</td>
 </tr>
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#collideArrays()">collideArrays</a>(Cores1:Array, Cores2:Array):Boolean</div>
-<div class="summaryTableDescription">[static]
-   Collides the first array of <code>FlxCores</code> against the second array of <code>FlxCores</code>.</div>
-</td><td class="summaryTableOwnerCol">FlxG</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#collideArraysX()">collideArraysX</a>(Cores1:Array, Cores2:Array):Boolean</div>
-<div class="summaryTableDescription">[static]
-   Collides the first array of <code>FlxCores</code> against the second array of <code>FlxCores</code> on the X axis only.</div>
-</td><td class="summaryTableOwnerCol">FlxG</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#collideArraysY()">collideArraysY</a>(Cores1:Array, Cores2:Array):Boolean</div>
-<div class="summaryTableDescription">[static]
-   Collides the first array of <code>FlxCores</code> against the second array of <code>FlxCores</code> on the Y axis only.</div>
-</td><td class="summaryTableOwnerCol">FlxG</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#collideArrayX()">collideArrayX</a>(Cores:Array, Core:<a href="FlxCore.html">FlxCore</a>):Boolean</div>
-<div class="summaryTableDescription">[static] Collides a <code>FlxCore</code> against the <code>FlxCores</code> in the array on the X axis ONLY.</div>
-</td><td class="summaryTableOwnerCol">FlxG</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#collideArrayY()">collideArrayY</a>(Cores:Array, Core:<a href="FlxCore.html">FlxCore</a>):Boolean</div>
-<div class="summaryTableDescription">[static]
-   Collides a <code>FlxCore</code> against the <code>FlxCores</code> in the array on the Y axis ONLY.</div>
-</td><td class="summaryTableOwnerCol">FlxG</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#computeVelocity()">computeVelocity</a>(Velocity:Number, Acceleration:Number = 0, Drag:Number = 0, Max:Number = 10000):Number</div>
-<div class="summaryTableDescription">[static]
-   A tween-like function that takes a starting velocity
-   and some other factors and returns an altered velocity.</div>
-</td><td class="summaryTableOwnerCol">FlxG</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#createBitmap()">createBitmap</a>(Width:uint, Height:uint, Color:uint, Unique:Boolean):BitmapData</div>
+<a class="signatureLink" href="#createBitmap()">createBitmap</a>(Width:uint, Height:uint, Color:uint, Unique:Boolean = false, Key:String = null):BitmapData</div>
 <div class="summaryTableDescription">[static]
    Generates a new <code>BitmapData</code> object (a colored square) and caches it.</div>
 </td><td class="summaryTableOwnerCol">FlxG</td>
@@ -367,23 +332,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#fade()">fade</a>(Color:uint, Duration:Number = 1, FadeComplete:Function = null, Force:Boolean = false):void</div>
-<div class="summaryTableDescription">[static]
-   Fade the screen out to this color.</div>
-</td><td class="summaryTableOwnerCol">FlxG</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#flash()">flash</a>(Color:uint, Duration:Number = 1, FlashComplete:Function = null, Force:Boolean = false):void</div>
-<div class="summaryTableDescription">[static]
-   Temporarily fill the screen with a certain color, then fade it out.</div>
-</td><td class="summaryTableOwnerCol">FlxG</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#follow()">follow</a>(Target:<a href="FlxCore.html">FlxCore</a>, Lerp:Number = 1):void</div>
+<a class="signatureLink" href="#follow()">follow</a>(Target:<a href="FlxObject.html">FlxObject</a>, Lerp:Number = 1):void</div>
 <div class="summaryTableDescription">[static]
    Tells the camera subsystem what <code>FlxCore</code> object to follow.</div>
 </td><td class="summaryTableOwnerCol">FlxG</td>
@@ -400,17 +349,9 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#followBounds()">followBounds</a>(MinX:int = 0, MinY:int = 0, MaxX:int = 0, MaxY:int = 0):void</div>
+<a class="signatureLink" href="#followBounds()">followBounds</a>(MinX:int = 0, MinY:int = 0, MaxX:int = 0, MaxY:int = 0, UpdateWorldBounds:Boolean = true):void</div>
 <div class="summaryTableDescription">[static]
    Specify the boundaries of the level or where the camera is allowed to move.</div>
-</td><td class="summaryTableOwnerCol">FlxG</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#getAngle()">getAngle</a>(X:Number, Y:Number):Number</div>
-<div class="summaryTableDescription">[static]
-   Calculates the angle between a point and the origin (0,0).</div>
 </td><td class="summaryTableOwnerCol">FlxG</td>
 </tr>
 <tr class="">
@@ -424,77 +365,9 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#getNonexist()">getNonexist</a>(A:Array):<a href="../flixel/FlxCore.html">FlxCore</a>
-</div>
-<div class="summaryTableDescription">[static]
-   Find the first entry in the array that doesn't "exist".</div>
-</td><td class="summaryTableOwnerCol">FlxG</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#getRandom()">getRandom</a>(A:Array):Object</div>
-<div class="summaryTableDescription">[static]
-   Picks an entry at random from an array.</div>
-</td><td class="summaryTableOwnerCol">FlxG</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#hideCursor()">hideCursor</a>():void</div>
-<div class="summaryTableDescription">[static]
-   Hides the mouse cursor
-   </div>
-</td><td class="summaryTableOwnerCol">FlxG</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#hideSupportPanel()">hideSupportPanel</a>():void</div>
-<div class="summaryTableDescription">[static]
-   Conceals the support/syndication panel (<code>data.FlxPanel</code>).</div>
-</td><td class="summaryTableOwnerCol">FlxG</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
 <a class="signatureLink" href="#log()">log</a>(Data:Object):void</div>
 <div class="summaryTableDescription">[static]
    Log data to the developer console.</div>
-</td><td class="summaryTableOwnerCol">FlxG</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#mutate()">mutate</a>(Seed:Number, Mutator:Number):Number</div>
-<div class="summaryTableDescription">[static]
-   Mutates a seed or other number, useful when combined with <code>randomize()</code>.</div>
-</td><td class="summaryTableOwnerCol">FlxG</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#openURL()">openURL</a>(URL:String):void</div>
-<div class="summaryTableDescription">[static]
-   Opens a web page in a new tab or window.</div>
-</td><td class="summaryTableOwnerCol">FlxG</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#overlapArray()">overlapArray</a>(Cores:Array, Core:<a href="FlxCore.html">FlxCore</a>, Collide:Function = null):Boolean</div>
-<div class="summaryTableDescription">[static]
-   Checks to see if a <code>FlxCore</code> overlaps any of the <code>FlxCores</code> in the array,
-   and calls a function when they do.</div>
-</td><td class="summaryTableOwnerCol">FlxG</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#overlapArrays()">overlapArrays</a>(Cores1:Array, Cores2:Array, Collide:Function = null):Boolean</div>
-<div class="summaryTableDescription">[static]
-   Checks to see if any <code>FlxCore</code> in Cores1 overlaps any <code>FlxCore</code> in Cores2,
-   and calls Collide when they do.</div>
 </td><td class="summaryTableOwnerCol">FlxG</td>
 </tr>
 <tr class="">
@@ -517,30 +390,6 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#quake()">quake</a>(Intensity:Number, Duration:Number = 0.5):void</div>
-<div class="summaryTableDescription">[static]
-   Shake the screen.</div>
-</td><td class="summaryTableOwnerCol">FlxG</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#random()">random</a>(UseGlobalSeed:Boolean = true):Number</div>
-<div class="summaryTableDescription">[static]
-   Generate a pseudo-random number.</div>
-</td><td class="summaryTableOwnerCol">FlxG</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#randomize()">randomize</a>(Seed:Number):Number</div>
-<div class="summaryTableDescription">[static]
-   Generate a pseudo-random number.</div>
-</td><td class="summaryTableOwnerCol">FlxG</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
 <a class="signatureLink" href="#resetInput()">resetInput</a>():void</div>
 <div class="summaryTableDescription">[static]
    Reset the input helper objects (useful when changing screens or states)
@@ -550,33 +399,9 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#rotatePoint()">rotatePoint</a>(X:Number, Y:Number, PivotX:Number, PivotY:Number, Angle:Number, P:Point = null):Point</div>
-<div class="summaryTableDescription">[static]
-   Rotates a point in 2D space around another point by the given angle.</div>
-</td><td class="summaryTableOwnerCol">FlxG</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#setGameData()">setGameData</a>(Game:<a href="FlxGame.html">FlxGame</a>, Width:uint, Height:uint):void</div>
+<a class="signatureLink" href="#setGameData()">setGameData</a>(Game:<a href="FlxGame.html">FlxGame</a>, Width:uint, Height:uint, Zoom:uint):void</div>
 <div class="summaryTableDescription">[static]
    Called by <code>FlxGame</code> to set up <code>FlxG</code> during <code>FlxGame</code>'s constructor.</div>
-</td><td class="summaryTableOwnerCol">FlxG</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#showCursor()">showCursor</a>(CursorGraphic:Class = null):void</div>
-<div class="summaryTableDescription">[static]
-   Set the mouse cursor to some graphic file.</div>
-</td><td class="summaryTableOwnerCol">FlxG</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#showSupportPanel()">showSupportPanel</a>(Top:Boolean = true):void</div>
-<div class="summaryTableDescription">[static]
-   Reveals the support/syndication panel (<code>data.FlxPanel</code>).</div>
 </td><td class="summaryTableOwnerCol">FlxG</td>
 </tr>
 <tr class="">
@@ -586,14 +411,6 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </div>
 <div class="summaryTableDescription">[static]
    Creates a new sound object from a URL.</div>
-</td><td class="summaryTableOwnerCol">FlxG</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#switchState()">switchState</a>(State:Class):void</div>
-<div class="summaryTableDescription">[static]
-   Switch from one <code>FlxState</code> to another.</div>
 </td><td class="summaryTableOwnerCol">FlxG</td>
 </tr>
 <tr class="">
@@ -694,16 +511,6 @@ showHideInherited();
    Whether you are running in Debug or Release mode.
    Set automatically by <code>FlxFactory</code> during startup.
    </p></div>
-<a name="dilation"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">dilation</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static var dilation:Number</code><p>
-   How fast or slow time should pass in the game; default is 1.0.
-   </p></div>
 <a name="elapsed"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -713,6 +520,26 @@ showHideInherited();
 <div class="detailBody">
 <code>public static var elapsed:Number</code><p>
    Represents the amount of time in seconds that passed since last frame.
+   </p></div>
+<a name="fade"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">fade</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static var fade:<a href="data/FlxFade.html">FlxFade</a></code><p>
+   A special effect that fades a color onto the screen.  Usage: FlxG.fade.start();
+   </p></div>
+<a name="flash"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">flash</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static var flash:<a href="data/FlxFlash.html">FlxFlash</a></code><p>
+   A special effect that flashes a color on the screen.  Usage: FlxG.flash.start();
    </p></div>
 <a name="followLead"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
@@ -761,7 +588,7 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public static var followTarget:<a href="../flixel/FlxCore.html">FlxCore</a></code><p>
+<code>public static var followTarget:<a href="../flixel/FlxObject.html">FlxObject</a></code><p>
    Tells the camera to follow this <code>FlxCore</code> object around.
    </p></div>
 <a name="_game"></a>
@@ -772,7 +599,7 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>protected static var _game:<a href="../flixel/FlxGame.html">FlxGame</a></code><p>
-   Internal reference to the instantiated game object.
+   Internal tracker for game object (so we can pause & unpause)
    </p></div>
 <a name="height"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
@@ -784,15 +611,6 @@ showHideInherited();
 <code>public static var height:uint</code><p>
    The height of the screen in game pixels.
    </p></div>
-<a name="ImgDefaultCursor"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">ImgDefaultCursor</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>protected static var ImgDefaultCursor:Class</code>
-</div>
 <a name="keys"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -840,7 +658,7 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public static var LIBRARY_MAJOR_VERSION:uint = 1</code><p>
+<code>public static var LIBRARY_MAJOR_VERSION:uint = 2</code><p>
    Assign a major version to your library.
    Appears before the decimal in the console.
    </p></div>
@@ -851,7 +669,7 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public static var LIBRARY_MINOR_VERSION:uint = 51</code><p>
+<code>public static var LIBRARY_MINOR_VERSION:uint = 0</code><p>
    Assign a minor version to your library.
    Appears after the decimal in the console.
    </p></div>
@@ -914,15 +732,15 @@ showHideInherited();
 <code>&nbsp;&nbsp;&nbsp;&nbsp;public function set mute(value:Boolean):void</code>
 <br>
 </div>
-<a name="_originalSeed"></a>
+<a name="panel"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
-<td class="detailHeaderName">_originalSeed</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+<td class="detailHeaderName">panel</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
 </tr>
 </table>
 <div class="detailBody">
-<code>protected static var _originalSeed:Number</code><p>
-   Internal random number calculation helpers.
+<code>public static var panel:<a href="data/FlxPanel.html">FlxPanel</a></code><p>
+   The support panel (twitter, reddit, stumbleupon, paypal, etc) visor thing
    </p></div>
 <a name="_pause"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
@@ -950,6 +768,16 @@ showHideInherited();
 <code>&nbsp;&nbsp;&nbsp;&nbsp;public function set pause(value:Boolean):void</code>
 <br>
 </div>
+<a name="quake"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">quake</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static var quake:<a href="data/FlxQuake.html">FlxQuake</a></code><p>
+   A special effect that shakes the screen.  Usage: FlxG.quake.start();
+   </p></div>
 <a name="save"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -1008,35 +836,6 @@ showHideInherited();
 <code>protected static var _scrollTarget:Point</code><p>
    Internal, used to assist camera and scrolling.
    </p></div>
-<a name="_seed"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">_seed</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>protected static var _seed:Number</code><p>
-   Internal random number calculation helpers.
-   </p></div>
-<a name="seed"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">seed</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>seed:Number</code>&nbsp;&nbsp;[read-write]<p>
-   Set <code>seed</code> to a number between 0 and 1 if you want
-   <code>FlxG.random()</code> to generate a predictable series of numbers.
-   NOTE: reading the seed will return the original value passed in,
-   not the current mutation.
-   </p><span class="label">Implementation</span>
-<br>
-<code>&nbsp;&nbsp;&nbsp;&nbsp;public static function get seed():Number</code>
-<br>
-<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set seed(value:Number):void</code>
-<br>
-</div>
 <a name="sounds"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -1047,6 +846,21 @@ showHideInherited();
 <code>public static var sounds:Array</code><p>
    A list of all the sounds being played in the game.
    </p></div>
+<a name="stage"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">stage</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>stage:Stage</code>&nbsp;&nbsp;[read-only]<p>
+   Retrieves the Flash stage object (required for event listeners)
+   
+   </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public static function get stage():Stage</code>
+<br>
+</div>
 <a name="state"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -1054,8 +868,24 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public static var state:<a href="../flixel/FlxState.html">FlxState</a></code><p>
-   A reference or pointer to the current FlxState object being used by the game.
+<code>state:<a href="../flixel/FlxState.html">FlxState</a></code>&nbsp;&nbsp;[read-write]<p>
+   Safely access the current game state.
+   </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public static function get state():<a href="../flixel/FlxState.html">FlxState</a></code>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set state(value:<a href="../flixel/FlxState.html">FlxState</a>):void</code>
+<br>
+</div>
+<a name="timeScale"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">timeScale</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static var timeScale:Number</code><p>
+   How fast or slow time should pass in the game; default is 1.0.
    </p></div>
 <a name="_volume"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
@@ -1104,7 +934,7 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public static function addBitmap(Graphic:Class, Reverse:Boolean = false):BitmapData</code><p>
+<code>public static function addBitmap(Graphic:Class, Reverse:Boolean = false, Unique:Boolean = false, Key:String = null):BitmapData</code><p>
    Loads a bitmap from a file, caches it, and generates a horizontally flipped version if necessary.
    
    </p><span class="label">Parameters</span>
@@ -1120,6 +950,18 @@ showHideInherited();
 <td width="20px"></td><td><code><span class="label">Reverse</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash;  Whether to generate a flipped version.
    
    </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Unique</span>:Boolean</code> (default = <code>false</code>)<code></code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Key</span>:String</code> (default = <code>null</code>)<code></code></td>
 </tr>
 </table>
 <p></p>
@@ -1141,238 +983,19 @@ showHideInherited();
 <code>protected static function changeSounds():void</code><p>
    An internal function that adjust the volume levels and the music channel after a change.
    </p></div>
-<a name="collideArray()"></a>
+<a name="checkBitmapCache()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
-<td class="detailHeaderName">collideArray</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+<td class="detailHeaderName">checkBitmapCache</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
 </tr>
 </table>
 <div class="detailBody">
-<code>public static function collideArray(Cores:Array, Core:<a href="FlxCore.html">FlxCore</a>):Boolean</code><p>
-   Collides a <code>FlxCore</code> against the <code>FlxCores</code> in the array.
-   </p><span class="label">Parameters</span>
+<code>public static function checkBitmapCache(Key:String):Boolean</code><p>
+   Check the local bitmap cache to see if a bitmap with this key has been loaded already.
+      </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td width="20px"></td><td><code><span class="label">Cores</span>:Array</code> &mdash;  An array of <code>FlxCore</code> objects.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Core</span>:<a href="FlxCore.html">FlxCore</a></code> &mdash;  A <code>FlxCore</code> object.
-   </td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>Boolean</code> &mdash; Whether or not any collisions happened.
-   </td>
-</tr>
-</table>
-</div>
-<a name="collideArrays()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">collideArrays</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function collideArrays(Cores1:Array, Cores2:Array):Boolean</code><p>
-   Collides the first array of <code>FlxCores</code> against the second array of <code>FlxCores</code>.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">Cores1</span>:Array</code> &mdash;  An array of <code>FlxCore</code> objects.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Cores2</span>:Array</code> &mdash;  An array of <code>FlxCore</code> objects.
-   </td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>Boolean</code> &mdash; Whether or not any collisions happened.
-   </td>
-</tr>
-</table>
-</div>
-<a name="collideArraysX()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">collideArraysX</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function collideArraysX(Cores1:Array, Cores2:Array):Boolean</code><p>
-   Collides the first array of <code>FlxCores</code> against the second array of <code>FlxCores</code> on the X axis only.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">Cores1</span>:Array</code> &mdash;  An array of <code>FlxCore</code> objects.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Cores2</span>:Array</code> &mdash;  An array of <code>FlxCore</code> objects.
-   </td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>Boolean</code> &mdash; Whether or not any collisions happened.
-   </td>
-</tr>
-</table>
-</div>
-<a name="collideArraysY()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">collideArraysY</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function collideArraysY(Cores1:Array, Cores2:Array):Boolean</code><p>
-   Collides the first array of <code>FlxCores</code> against the second array of <code>FlxCores</code> on the Y axis only.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">Cores1</span>:Array</code> &mdash;  An array of <code>FlxCore</code> objects.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Cores2</span>:Array</code> &mdash;  An array of <code>FlxCore</code> objects.
-   </td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>Boolean</code> &mdash; Whether or not any collisions happened.
-   </td>
-</tr>
-</table>
-</div>
-<a name="collideArrayX()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">collideArrayX</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function collideArrayX(Cores:Array, Core:<a href="FlxCore.html">FlxCore</a>):Boolean</code><p> Collides a <code>FlxCore</code> against the <code>FlxCores</code> in the array on the X axis ONLY.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">Cores</span>:Array</code> &mdash;  An array of <code>FlxCore</code> objects.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Core</span>:<a href="FlxCore.html">FlxCore</a></code> &mdash;  A <code>FlxCore</code> object.
-   </td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>Boolean</code> &mdash; Whether or not any collisions happened.
-   </td>
-</tr>
-</table>
-</div>
-<a name="collideArrayY()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">collideArrayY</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function collideArrayY(Cores:Array, Core:<a href="FlxCore.html">FlxCore</a>):Boolean</code><p>
-   Collides a <code>FlxCore</code> against the <code>FlxCores</code> in the array on the Y axis ONLY.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">Cores</span>:Array</code> &mdash;  An array of <code>FlxCore</code> objects.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Core</span>:<a href="FlxCore.html">FlxCore</a></code> &mdash;  A <code>FlxCore</code> object.
-   </td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>Boolean</code> &mdash; Whether or not any collisions happened.
-   </td>
-</tr>
-</table>
-</div>
-<a name="computeVelocity()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">computeVelocity</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function computeVelocity(Velocity:Number, Acceleration:Number = 0, Drag:Number = 0, Max:Number = 10000):Number</code><p>
-   A tween-like function that takes a starting velocity
-   and some other factors and returns an altered velocity.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">Velocity</span>:Number</code> &mdash;  Any component of velocity (e.g. 20).
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Acceleration</span>:Number</code> (default = <code>0</code>)<code></code> &mdash; Rate at which the velocity is changing.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Drag</span>:Number</code> (default = <code>0</code>)<code></code> &mdash;   Really kind of a deceleration, this is how much the velocity changes if Acceleration is not set.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Max</span>:Number</code> (default = <code>10000</code>)<code></code> &mdash;    An absolute value cap for the velocity.
+<td width="20px"></td><td><code><span class="label">Key</span>:String</code> &mdash;  The string key identifying the bitmap.
    
    </td>
 </tr>
@@ -1381,7 +1004,7 @@ showHideInherited();
 <span class="label">Returns</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td width="20"></td><td><code>Number</code> &mdash; The altered Velocity value.
+<td width="20"></td><td><code>Boolean</code> &mdash; Whether or not this file can be found in the cache.
    </td>
 </tr>
 </table>
@@ -1393,7 +1016,7 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public static function createBitmap(Width:uint, Height:uint, Color:uint, Unique:Boolean):BitmapData</code><p>
+<code>public static function createBitmap(Width:uint, Height:uint, Color:uint, Unique:Boolean = false, Key:String = null):BitmapData</code><p>
    Generates a new <code>BitmapData</code> object (a colored square) and caches it.
    
    </p><span class="label">Parameters</span>
@@ -1421,7 +1044,13 @@ showHideInherited();
 <td class="paramSpacer">&nbsp;</td>
 </tr>
 <tr>
-<td width="20px"></td><td><code><span class="label">Unique</span>:Boolean</code></td>
+<td width="20px"></td><td><code><span class="label">Unique</span>:Boolean</code> (default = <code>false</code>)<code></code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Key</span>:String</code> (default = <code>null</code>)<code></code></td>
 </tr>
 </table>
 <p></p>
@@ -1461,84 +1090,6 @@ showHideInherited();
 <code>public static function doFollow():void</code><p>
    Internal function that updates the camera and parallax scrolling.
    </p></div>
-<a name="fade()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">fade</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function fade(Color:uint, Duration:Number = 1, FadeComplete:Function = null, Force:Boolean = false):void</code><p>
-   Fade the screen out to this color.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">Color</span>:uint</code> &mdash;   The color you want to use.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Duration</span>:Number</code> (default = <code>1</code>)<code></code> &mdash;  How long it should take to fade the screen out.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">FadeComplete</span>:Function</code> (default = <code>null</code>)<code></code> &mdash; A function you want to run when the fade finishes.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Force</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash;   Force the effect to reset.
-   </td>
-</tr>
-</table>
-</div>
-<a name="flash()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">flash</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function flash(Color:uint, Duration:Number = 1, FlashComplete:Function = null, Force:Boolean = false):void</code><p>
-   Temporarily fill the screen with a certain color, then fade it out.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">Color</span>:uint</code> &mdash;   The color you want to use.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Duration</span>:Number</code> (default = <code>1</code>)<code></code> &mdash;  How long it takes for the flash to fade.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">FlashComplete</span>:Function</code> (default = <code>null</code>)<code></code> &mdash; A function you want to run when the flash finishes.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Force</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash;   Force the effect to reset.
-   </td>
-</tr>
-</table>
-</div>
 <a name="follow()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -1546,13 +1097,13 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public static function follow(Target:<a href="FlxCore.html">FlxCore</a>, Lerp:Number = 1):void</code><p>
+<code>public static function follow(Target:<a href="FlxObject.html">FlxObject</a>, Lerp:Number = 1):void</code><p>
    Tells the camera subsystem what <code>FlxCore</code> object to follow.
    
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td width="20px"></td><td><code><span class="label">Target</span>:<a href="FlxCore.html">FlxCore</a></code> &mdash;  The object to follow.
+<td width="20px"></td><td><code><span class="label">Target</span>:<a href="FlxObject.html">FlxObject</a></code> &mdash;  The object to follow.
    </td>
 </tr>
 <tr>
@@ -1597,68 +1148,41 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public static function followBounds(MinX:int = 0, MinY:int = 0, MaxX:int = 0, MaxY:int = 0):void</code><p>
+<code>public static function followBounds(MinX:int = 0, MinY:int = 0, MaxX:int = 0, MaxY:int = 0, UpdateWorldBounds:Boolean = true):void</code><p>
    Specify the boundaries of the level or where the camera is allowed to move.
    
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td width="20px"></td><td><code><span class="label">MinX</span>:int</code> (default = <code>0</code>)<code></code> &mdash; The smallest X value of your level (usually 0).
+<td width="20px"></td><td><code><span class="label">MinX</span>:int</code> (default = <code>0</code>)<code></code> &mdash;    The smallest X value of your level (usually 0).
    </td>
 </tr>
 <tr>
 <td class="paramSpacer">&nbsp;</td>
 </tr>
 <tr>
-<td width="20px"></td><td><code><span class="label">MinY</span>:int</code> (default = <code>0</code>)<code></code> &mdash; The smallest Y value of your level (usually 0).
+<td width="20px"></td><td><code><span class="label">MinY</span>:int</code> (default = <code>0</code>)<code></code> &mdash;    The smallest Y value of your level (usually 0).
    </td>
 </tr>
 <tr>
 <td class="paramSpacer">&nbsp;</td>
 </tr>
 <tr>
-<td width="20px"></td><td><code><span class="label">MaxX</span>:int</code> (default = <code>0</code>)<code></code> &mdash; The largest X value of your level (usually the level width).
+<td width="20px"></td><td><code><span class="label">MaxX</span>:int</code> (default = <code>0</code>)<code></code> &mdash;    The largest X value of your level (usually the level width).
    </td>
 </tr>
 <tr>
 <td class="paramSpacer">&nbsp;</td>
 </tr>
 <tr>
-<td width="20px"></td><td><code><span class="label">MaxY</span>:int</code> (default = <code>0</code>)<code></code> &mdash; The largest Y value of your level (usually the level height).
-   </td>
-</tr>
-</table>
-</div>
-<a name="getAngle()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">getAngle</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function getAngle(X:Number, Y:Number):Number</code><p>
-   Calculates the angle between a point and the origin (0,0).
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">X</span>:Number</code> &mdash;  The X coordinate of the point.
+<td width="20px"></td><td><code><span class="label">MaxY</span>:int</code> (default = <code>0</code>)<code></code> &mdash;    The largest Y value of your level (usually the level height).
    </td>
 </tr>
 <tr>
 <td class="paramSpacer">&nbsp;</td>
 </tr>
 <tr>
-<td width="20px"></td><td><code><span class="label">Y</span>:Number</code> &mdash;  The Y coordinate of the point.
-   
-   </td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>Number</code> &mdash; The angle in degrees.
+<td width="20px"></td><td><code><span class="label">UpdateWorldBounds</span>:Boolean</code> (default = <code>true</code>)<code></code> &mdash; Whether the quad tree's dimensions should be updated to match.
    </td>
 </tr>
 </table>
@@ -1682,83 +1206,6 @@ showHideInherited();
 </tr>
 </table>
 </div>
-<a name="getNonexist()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">getNonexist</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function getNonexist(A:Array):<a href="../flixel/FlxCore.html">FlxCore</a></code><p>
-   Find the first entry in the array that doesn't "exist".
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">A</span>:Array</code> &mdash;  The array you want to search.
-   
-   </td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code><a href="../flixel/FlxCore.html">FlxCore</a></code> &mdash; 
-                        Anything based on FlxCore (FlxSprite, FlxText, FlxBlock, etc).
-   
-                        
-                     </td>
-</tr>
-</table>
-</div>
-<a name="getRandom()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">getRandom</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function getRandom(A:Array):Object</code><p>
-   Picks an entry at random from an array.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">A</span>:Array</code> &mdash;  The array you want to pick the object from.
-   
-   </td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>Object</code> &mdash; Any object.
-   </td>
-</tr>
-</table>
-</div>
-<a name="hideCursor()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">hideCursor</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function hideCursor():void</code><p>
-   Hides the mouse cursor
-   </p></div>
-<a name="hideSupportPanel()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">hideSupportPanel</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function hideSupportPanel():void</code><p>
-   Conceals the support/syndication panel (<code>data.FlxPanel</code>).
-   </p></div>
 <a name="log()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -1773,140 +1220,6 @@ showHideInherited();
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
 <td width="20px"></td><td><code><span class="label">Data</span>:Object</code> &mdash;  Anything you want to log to the console.
-   </td>
-</tr>
-</table>
-</div>
-<a name="mutate()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">mutate</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function mutate(Seed:Number, Mutator:Number):Number</code><p>
-   Mutates a seed or other number, useful when combined with <code>randomize()</code>.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">Seed</span>:Number</code> &mdash;  The number to mutate.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Mutator</span>:Number</code> &mdash;  The value to use in the mutation.
-   
-   </td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>Number</code> &mdash; A predictably-altered version of the Seed.
-   </td>
-</tr>
-</table>
-</div>
-<a name="openURL()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">openURL</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function openURL(URL:String):void</code><p>
-   Opens a web page in a new tab or window.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">URL</span>:String</code> &mdash;  The address of the web page.
-   </td>
-</tr>
-</table>
-</div>
-<a name="overlapArray()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">overlapArray</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function overlapArray(Cores:Array, Core:<a href="FlxCore.html">FlxCore</a>, Collide:Function = null):Boolean</code><p>
-   Checks to see if a <code>FlxCore</code> overlaps any of the <code>FlxCores</code> in the array,
-   and calls a function when they do.  If no function is specified, <code>kill()</code> is called on both objects.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">Cores</span>:Array</code> &mdash;  An array of <code>FlxCore</code> objects.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Core</span>:<a href="FlxCore.html">FlxCore</a></code> &mdash;  A <code>FlxCore</code> object.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Collide</span>:Function</code> (default = <code>null</code>)<code></code> &mdash;  A function that takes two <code>FlxCores</code> as parameters (first the one from <code>Cores</code>, then <code>Core</code>)
-   </td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>Boolean</code> &mdash; Whether or not any of these objects overlapped.
-   </td>
-</tr>
-</table>
-</div>
-<a name="overlapArrays()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">overlapArrays</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function overlapArrays(Cores1:Array, Cores2:Array, Collide:Function = null):Boolean</code><p>
-   Checks to see if any <code>FlxCore</code> in Cores1 overlaps any <code>FlxCore</code> in Cores2,
-   and calls Collide when they do.  If no function is specified, <code>kill()</code> is called on both objects.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">Cores1</span>:Array</code> &mdash;  An array of <code>FlxCore</code> objects
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Cores2</span>:Array</code> &mdash;  Another array of <code>FlxCore</code> objects
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Collide</span>:Function</code> (default = <code>null</code>)<code></code> &mdash;  A function that takes two <code>FlxCore</code> objects as parameters (first the one from Cores1, then the one from Cores2)
-   </td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>Boolean</code> &mdash; Whether or not any of these objects overlapped.
    </td>
 </tr>
 </table>
@@ -2000,85 +1313,6 @@ showHideInherited();
 <code>protected static function playSounds():void</code><p>
    Internal helper, pauses all game sounds.
    </p></div>
-<a name="quake()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">quake</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function quake(Intensity:Number, Duration:Number = 0.5):void</code><p>
-   Shake the screen.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">Intensity</span>:Number</code> &mdash; Percentage of screen size representing the maximum distance that the screen can move during the 'quake'.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Duration</span>:Number</code> (default = <code>0.5</code>)<code></code> &mdash; The length in seconds that the "quake" should last.
-   </td>
-</tr>
-</table>
-</div>
-<a name="random()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">random</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function random(UseGlobalSeed:Boolean = true):Number</code><p>
-   Generate a pseudo-random number.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">UseGlobalSeed</span>:Boolean</code> (default = <code>true</code>)<code></code> &mdash;  Whether or not to use the stored FlxG.seed value to calculate it.
-   
-   </td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>Number</code> &mdash; A pseudo-random Number object.
-   </td>
-</tr>
-</table>
-</div>
-<a name="randomize()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">randomize</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function randomize(Seed:Number):Number</code><p>
-   Generate a pseudo-random number.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">Seed</span>:Number</code> &mdash;  The number to use to generate a new random value.
-   
-   </td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>Number</code> &mdash; A pseudo-random Number object.
-   </td>
-</tr>
-</table>
-</div>
 <a name="resetInput()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -2089,68 +1323,6 @@ showHideInherited();
 <code>public static function resetInput():void</code><p>
    Reset the input helper objects (useful when changing screens or states)
    </p></div>
-<a name="rotatePoint()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">rotatePoint</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function rotatePoint(X:Number, Y:Number, PivotX:Number, PivotY:Number, Angle:Number, P:Point = null):Point</code><p>
-   Rotates a point in 2D space around another point by the given angle.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">X</span>:Number</code> &mdash;  The X coordinate of the point you want to rotate.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Y</span>:Number</code> &mdash;  The Y coordinate of the point you want to rotate.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">PivotX</span>:Number</code> &mdash; The X coordinate of the point you want to rotate around.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">PivotY</span>:Number</code> &mdash; The Y coordinate of the point you want to rotate around.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Angle</span>:Number</code> &mdash; Rotate the point by this many degrees.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">P</span>:Point</code> (default = <code>null</code>)<code></code> &mdash;  Optional <code>Point</code> to store the results in.
-   
-   </td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>Point</code> &mdash; A <code>Point</code> containing the coordinates of the rotated point.
-   </td>
-</tr>
-</table>
-</div>
 <a name="setGameData()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -2158,7 +1330,7 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public static function setGameData(Game:<a href="FlxGame.html">FlxGame</a>, Width:uint, Height:uint):void</code><p>
+<code>public static function setGameData(Game:<a href="FlxGame.html">FlxGame</a>, Width:uint, Height:uint, Zoom:uint):void</code><p>
    Called by <code>FlxGame</code> to set up <code>FlxG</code> during <code>FlxGame</code>'s constructor.
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
@@ -2177,42 +1349,11 @@ showHideInherited();
 <tr>
 <td width="20px"></td><td><code><span class="label">Height</span>:uint</code></td>
 </tr>
-</table>
-</div>
-<a name="showCursor()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
-<td class="detailHeaderName">showCursor</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+<td class="paramSpacer">&nbsp;</td>
 </tr>
-</table>
-<div class="detailBody">
-<code>public static function showCursor(CursorGraphic:Class = null):void</code><p>
-   Set the mouse cursor to some graphic file.
-   Pass "null" or no parameter to use the system cursor.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td width="20px"></td><td><code><span class="label">CursorGraphic</span>:Class</code> (default = <code>null</code>)<code></code> &mdash; The image you want to use for the cursor.
-   </td>
-</tr>
-</table>
-</div>
-<a name="showSupportPanel()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">showSupportPanel</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function showSupportPanel(Top:Boolean = true):void</code><p>
-   Reveals the support/syndication panel (<code>data.FlxPanel</code>).
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">Top</span>:Boolean</code> (default = <code>true</code>)<code></code> &mdash;  Whether to slide on from the top or the bottom.
-   </td>
+<td width="20px"></td><td><code><span class="label">Zoom</span>:uint</code></td>
 </tr>
 </table>
 </div>
@@ -2257,24 +1398,6 @@ showHideInherited();
    
                         
                      </td>
-</tr>
-</table>
-</div>
-<a name="switchState()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">switchState</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function switchState(State:Class):void</code><p>
-   Switch from one <code>FlxState</code> to another.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">State</span>:Class</code> &mdash;  The class name of the state you want (e.g. PlayState).
-   </td>
 </tr>
 </table>
 </div>

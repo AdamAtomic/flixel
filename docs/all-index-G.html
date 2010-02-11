@@ -45,7 +45,8 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("GÂ
 </tr>
 <tr>
 <td width="20"></td><td>
-   Internal reference to the instantiated game object.</td>
+   Internal tracker for game object (so we can pause & unpause)
+   </td>
 </tr>
 <tr>
 <td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxGame.html#_gameXOffset">_gameXOffset</a> &mdash; Property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxGame.html">FlxGame</a></td>
@@ -60,11 +61,53 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("GÂ
 <td width="20"></td><td></td>
 </tr>
 <tr>
-<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxG.html#getAngle()">getAngle</a>(X, Y) &mdash; Static method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxG.html">FlxG</a></td>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxU.html#getAngle()">getAngle</a>(X, Y) &mdash; Static method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxU.html">FlxU</a></td>
 </tr>
 <tr>
 <td width="20"></td><td>
    Calculates the angle between a point and the origin (0,0).</td>
+</tr>
+<tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxU.html#getClass()">getClass</a>(Name) &mdash; Static method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxU.html">FlxU</a></td>
+</tr>
+<tr>
+<td width="20"></td><td>
+   Look up a <code>Class</code> object by its string name.</td>
+</tr>
+<tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxU.html#getClassName()">getClassName</a>(Obj, Simple) &mdash; Static method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxU.html">FlxU</a></td>
+</tr>
+<tr>
+<td width="20"></td><td>
+   Get the <code>String</code> name of any <code>Object</code>.</td>
+</tr>
+<tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxGroup.html#getFirstAlive()">getFirstAlive</a>() &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxGroup.html">FlxGroup</a></td>
+</tr>
+<tr>
+<td width="20"></td><td>
+   Call this function to retrieve the first object with dead == false in the group.</td>
+</tr>
+<tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxGroup.html#getFirstAvail()">getFirstAvail</a>() &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxGroup.html">FlxGroup</a></td>
+</tr>
+<tr>
+<td width="20"></td><td>
+   Call this function to retrieve the first object with exists == false in the group.</td>
+</tr>
+<tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxGroup.html#getFirstDead()">getFirstDead</a>() &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxGroup.html">FlxGroup</a></td>
+</tr>
+<tr>
+<td width="20"></td><td>
+   Call this function to retrieve the first object with dead == true in the group.</td>
+</tr>
+<tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxGroup.html#getFirstExtant()">getFirstExtant</a>() &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxGroup.html">FlxGroup</a></td>
+</tr>
+<tr>
+<td width="20"></td><td>
+   Call this function to retrieve the first object with exists == true in the group.</td>
 </tr>
 <tr>
 <td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxG.html#getMuteValue()">getMuteValue</a>() &mdash; Static method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxG.html">FlxG</a></td>
@@ -74,28 +117,21 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("GÂ
    Get a number that represents the mute state that we can multiply into a sound transform.</td>
 </tr>
 <tr>
-<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxG.html#getNonexist()">getNonexist</a>(A) &mdash; Static method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxG.html">FlxG</a></td>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxGroup.html#getRandom()">getRandom</a>() &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxGroup.html">FlxGroup</a></td>
 </tr>
 <tr>
 <td width="20"></td><td>
-   Find the first entry in the array that doesn't "exist".</td>
+   Returns a member at random from the group.</td>
 </tr>
 <tr>
-<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxG.html#getRandom()">getRandom</a>(A) &mdash; Static method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxG.html">FlxG</a></td>
-</tr>
-<tr>
-<td width="20"></td><td>
-   Picks an entry at random from an array.</td>
-</tr>
-<tr>
-<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxCore.html#getScreenXY()">getScreenXY</a>(P) &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxCore.html">FlxCore</a></td>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxObject.html#getScreenXY()">getScreenXY</a>(Point:<a href="org/flixel/FlxPoint.html" onclick="javascript:loadClassListFrame('org/flixel./class-list.html');">org.flixel:FlxPoint</a>) &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxObject.html">FlxObject</a></td>
 </tr>
 <tr>
 <td width="20"></td><td>
    Call this function to figure out the on-screen position of the object.</td>
 </tr>
 <tr>
-<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxSprite.html#getScreenXY()">getScreenXY</a>(P) &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxSprite.html">FlxSprite</a></td>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxSprite.html#getScreenXY()">getScreenXY</a>(Point:<a href="org/flixel/FlxPoint.html" onclick="javascript:loadClassListFrame('org/flixel./class-list.html');">org.flixel:FlxPoint</a>) &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxSprite.html">FlxSprite</a></td>
 </tr>
 <tr>
 <td width="20"></td><td>
@@ -121,6 +157,13 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("GÂ
 <tr>
 <td width="20"></td><td>
    Sets the <code>acceleration.y</code> member of each particle to this value on launch.</td>
+</tr>
+<tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxObject.html#_group">_group</a> &mdash; Property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxObject.html">FlxObject</a></td>
+</tr>
+<tr>
+<td width="20"></td><td>
+   Dedicated internal flag for whether or not this class is a FlxGroup.</td>
 </tr>
 <tr>
 <td style="padding-bottom:20px" colspan="2"></td>

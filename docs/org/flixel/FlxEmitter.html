@@ -4,7 +4,7 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="../../style.css" type="text/css" media="screen">
 <link rel="stylesheet" href="../../print.css" type="text/css" media="print">
-<meta content="FlxEmitter,org.flixel.FlxEmitter,_particle,_sprites,_timer,delay,drag,gravity,maxRotation,maxVelocity,minRotation,minVelocity,createSprites,emit,kill,loadSprites,restart,setRotation,setSize,setXVelocity,setYVelocity,update" name="keywords">
+<meta content="FlxEmitter,org.flixel.FlxEmitter,_counter,_explode,_particle,_timer,delay,gravity,maxParticleSpeed,maxRotation,minParticleSpeed,minRotation,on,particleDrag,quantity,at,createSprites,emitParticle,kill,setRotation,setSize,setXSpeed,setYSpeed,start,stop,update,updateEmitter,updateMembers" name="keywords">
 <title>org.flixel.FlxEmitter</title>
 </head>
 <body>
@@ -19,7 +19,7 @@
 <td align="left" class="titleTableTitle">API Documentation</td><td align="right" class="titleTableTopNav"><a onclick="loadClassListFrame('../../all-classes.html')" href="../../package-summary.html">All&nbsp;Packages</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../all-classes.html')" href="../../class-summary.html">All&nbsp;Classes</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../index-list.html')" href="../../all-index-A.html">Index</a>&nbsp;|&nbsp;<a href="../../index.html?org/flixel/FlxEmitter.html&amp;org/flixel/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></td><td rowspan="3" align="right" class="titleTableLogo"><img alt="Adobe Logo" title="Adobe Logo" class="logoImage" src="../../images/logo.jpg"></td>
 </tr>
 <tr class="titleTableRow2">
-<td align="left" id="subTitle" class="titleTableSubTitle">Class&nbsp;FlxEmitter</td><td align="right" id="subNav" class="titleTableSubNav"><a href="#propertySummary">Properties</a>&nbsp;| <a href="#methodSummary">Methods</a></td>
+<td align="left" id="subTitle" class="titleTableSubTitle">Class&nbsp;FlxEmitter</td><td align="right" id="subNav" class="titleTableSubNav"><a href="#propertySummary">Properties</a>&nbsp;| <a href="#methodSummary">Methods</a>&nbsp;| <a href="#constantSummary">Constants</a></td>
 </tr>
 <tr class="titleTableRow3">
 <td colspan="2">&nbsp;</td>
@@ -27,7 +27,7 @@
 </table>
 <script type="text/javascript" language="javascript">
 <!--
-if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Class FlxEmitter"); titleBar_setSubNav(false,true,false,false,false,false,true,false,false,false,false,false,false,false);}
+if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Class FlxEmitter"); titleBar_setSubNav(true,true,false,false,false,false,true,false,false,false,false,false,false,false);}
 --></script>
 <div class="MainContent">
 <table cellspacing="0" cellpadding="0" class="classHeaderTable">
@@ -38,7 +38,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <td class="classHeaderTableLabel">Class</td><td class="classSignature">public class FlxEmitter</td>
 </tr>
 <tr>
-<td class="classHeaderTableLabel">Inheritance</td><td class="inheritanceList">FlxEmitter <img class="inheritArrow" alt="Inheritance" title="Inheritance" src="../../images/inherit-arrow.gif"> <a href="FlxCore.html">FlxCore</a></td>
+<td class="classHeaderTableLabel">Inheritance</td><td class="inheritanceList">FlxEmitter <img class="inheritArrow" alt="Inheritance" title="Inheritance" src="../../images/inherit-arrow.gif"> <a href="FlxGroup.html">FlxGroup</a> <img class="inheritArrow" alt="Inheritance" title="Inheritance" src="../../images/inherit-arrow.gif"> <a href="FlxObject.html">FlxObject</a> <img class="inheritArrow" alt="Inheritance" title="Inheritance" src="../../images/inherit-arrow.gif"> <a href="FlxRect.html">FlxRect</a> <img class="inheritArrow" alt="Inheritance" title="Inheritance" src="../../images/inherit-arrow.gif"> <a href="FlxPoint.html">FlxPoint</a></td>
 </tr>
 </table>
 <p></p>
@@ -49,7 +49,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
   <code>FlxSprite</code> objects out at set intervals
   by setting their positions and velocities accordingly.
   It is easy to use and relatively efficient, since it
-  automatically recycles its sprites and/or kills
+  automatically redelays its sprites and/or kills
   them once they've been launched.
   <p></p>
 <br>
@@ -71,34 +71,110 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
 </tr>
 <tr class="hideInheritedProperty">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxCore.html#active">active</a> : Boolean<div class="summaryTableDescription">
-   If an object is not alive, the game loop will not automatically call <code>update()</code> on it.</div>
-</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#acceleration">acceleration</a> : <a href="../flixel/FlxPoint.html">FlxPoint</a>
+<div class="summaryTableDescription">
+   How fast the speed of this object is changing.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
 </tr>
 <tr class="hideInheritedProperty">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxCore.html#dead">dead</a> : Boolean<div class="summaryTableDescription">
-   If an object is dead, the functions that automate collisions will skip it (see <code>FlxG.overlapArrays()</code> and <code>FlxG.collideArrays()</code>).</div>
-</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#active">active</a> : Boolean<div class="summaryTableDescription">
+   If an object is not alive, the game loop will not automatically call <code>update()</code> on it.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#angle">angle</a> : Number<div class="summaryTableDescription">
+   Set the angle of a sprite to rotate it.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#angularAcceleration">angularAcceleration</a> : Number<div class="summaryTableDescription">
+   How fast the spin speed should change.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#angularDrag">angularDrag</a> : Number<div class="summaryTableDescription">
+   Like <code>drag</code> but for spinning.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#angularVelocity">angularVelocity</a> : Number<div class="summaryTableDescription">
+   This is how fast you want this sprite to spin.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxRect.html#bottom">bottom</a> : Number<div class="summaryTableDescription">
+   The Y coordinate of the bottom of the rectangle.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxRect.html">FlxRect</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#colHullX">colHullX</a> : <a href="../flixel/FlxRect.html">FlxRect</a>
+<div class="summaryTableDescription">
+   These store a couple of useful numbers for speeding up collision resolution.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#colHullY">colHullY</a> : <a href="../flixel/FlxRect.html">FlxRect</a>
+<div class="summaryTableDescription">
+   These store a couple of useful numbers for speeding up collision resolution.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#collideBottom">collideBottom</a> : Boolean<div class="summaryTableDescription">
+   Flag for direction collision resolution.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#collideLeft">collideLeft</a> : Boolean<div class="summaryTableDescription">
+   Flag for direction collision resolution.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#collideRight">collideRight</a> : Boolean<div class="summaryTableDescription">
+   Flag for direction collision resolution.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#collideTop">collideTop</a> : Boolean<div class="summaryTableDescription">
+   Flag for direction collision resolution.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#colOffsets">colOffsets</a> : Array<div class="summaryTableDescription">
+   An array of <code>FlxPoint</code> objects.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#colVector">colVector</a> : <a href="../flixel/FlxPoint.html">FlxPoint</a>
+<div class="summaryTableDescription">
+   These store a couple of useful numbers for speeding up collision resolution.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#dead">dead</a> : Boolean<div class="summaryTableDescription">
+   Handy for tracking gameplay or animations.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
 </tr>
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#delay">delay</a> : Number<div class="summaryTableDescription">
-   How long to wait between particle emissions.</div>
-</td><td class="summaryTableOwnerCol">FlxEmitter</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#drag">drag</a> : Number<div class="summaryTableDescription">
-   Sets the x and y drag of each particle to this value on launch.</div>
+   This variable has different effects depending on what kind of emission it is.</div>
 </td><td class="summaryTableOwnerCol">FlxEmitter</td>
 </tr>
 <tr class="hideInheritedProperty">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxCore.html#exists">exists</a> : Boolean<div class="summaryTableDescription">
-   Kind of a global on/off switch for any objects descended from <code>FlxCore</code>.</div>
-</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#drag">drag</a> : <a href="../flixel/FlxPoint.html">FlxPoint</a>
+<div class="summaryTableDescription">
+   This isn't drag exactly, more like deceleration that is only applied
+   when acceleration is not affecting the sprite.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
 </tr>
 <tr class="hideInheritedProperty">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxCore.html#fixed">fixed</a> : Boolean<div class="summaryTableDescription">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#exists">exists</a> : Boolean<div class="summaryTableDescription">
+   Kind of a global on/off switch for any objects descended from <code>FlxObject</code>.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#fixed">fixed</a> : Boolean<div class="summaryTableDescription">
    If an object is 'fixed' in space, it will not budge when it collides with a not-fixed object.</div>
-</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
 </tr>
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#gravity">gravity</a> : Number<div class="summaryTableDescription">
@@ -106,23 +182,63 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol">FlxEmitter</td>
 </tr>
 <tr class="hideInheritedProperty">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxCore.html#height">height</a> : uint<div class="summaryTableDescription">
-   </div>
-</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#_group">_group</a> : Boolean<div class="summaryTableDescription">
+   Dedicated internal flag for whether or not this class is a FlxGroup.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
 </tr>
 <tr class="hideInheritedProperty">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxCore.html#last">last</a> : Point<div class="summaryTableDescription">
-   Stores the last position of the sprite, used by collision detection algorithm.</div>
-</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#health">health</a> : Number<div class="summaryTableDescription">
+   Handy for storing health percentage or armor points or whatever.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxRect.html#height">height</a> : Number<div class="summaryTableDescription">
+   </div>
+</td><td class="summaryTableOwnerCol"><a href="FlxRect.html">FlxRect</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxRect.html#left">left</a> : Number<div class="summaryTableDescription">
+   The X coordinate of the left side of the rectangle.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxRect.html">FlxRect</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#maxAngular">maxAngular</a> : Number<div class="summaryTableDescription">
+   Use in conjunction with <code>angularAcceleration</code> for fluid spin speed control.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#maxParticleSpeed">maxParticleSpeed</a> : <a href="../flixel/FlxPoint.html">FlxPoint</a>
+<div class="summaryTableDescription">
+   The maximum possible velocity of a particle.</div>
+</td><td class="summaryTableOwnerCol">FlxEmitter</td>
 </tr>
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#maxRotation">maxRotation</a> : Number<div class="summaryTableDescription">
    The maximum possible angular velocity of a particle.</div>
 </td><td class="summaryTableOwnerCol">FlxEmitter</td>
 </tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#maxThrust">maxThrust</a> : Number<div class="summaryTableDescription">
+   Used to cap <code>thrust</code>, helpful and easy!
+   </div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#maxVelocity">maxVelocity</a> : <a href="../flixel/FlxPoint.html">FlxPoint</a>
+<div class="summaryTableDescription">
+   If you are using <code>acceleration</code>, you can use <code>maxVelocity</code> with it
+   to cap the speed automatically (very useful!).</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxGroup.html#members">members</a> : Array<div class="summaryTableDescription">
+   Array of all the <code>FlxObject</code>s that exist in this layer.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxGroup.html">FlxGroup</a></td>
+</tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#maxVelocity">maxVelocity</a> : Point<div class="summaryTableDescription">
-   The maximum possible velocity of a particle.</div>
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#minParticleSpeed">minParticleSpeed</a> : <a href="../flixel/FlxPoint.html">FlxPoint</a>
+<div class="summaryTableDescription">
+   The minimum possible velocity of a particle.</div>
 </td><td class="summaryTableOwnerCol">FlxEmitter</td>
 </tr>
 <tr class="">
@@ -130,36 +246,91 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
    The minimum possible angular velocity of a particle.</div>
 </td><td class="summaryTableOwnerCol">FlxEmitter</td>
 </tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#moves">moves</a> : Boolean<div class="summaryTableDescription">
+   Set this to false if you want to skip the automatic motion/movement stuff (see <code>updateMotion()</code>).</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#minVelocity">minVelocity</a> : Point<div class="summaryTableDescription">
-   The minimum possible velocity of a particle.</div>
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#on">on</a> : Boolean<div class="summaryTableDescription">
+   Whether the emitter is currently "on", or emitting particles.</div>
 </td><td class="summaryTableOwnerCol">FlxEmitter</td>
 </tr>
 <tr class="hideInheritedProperty">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxCore.html#scrollFactor">scrollFactor</a> : Point<div class="summaryTableDescription">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#onFloor">onFloor</a> : Boolean<div class="summaryTableDescription">
+   Flag that indicates whether or not you just hit the floor.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#origin">origin</a> : <a href="../flixel/FlxPoint.html">FlxPoint</a>
+<div class="summaryTableDescription">
+   WARNING: The origin of the sprite will default to its center.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#particleDrag">particleDrag</a> : <a href="../flixel/FlxPoint.html">FlxPoint</a>
+<div class="summaryTableDescription">
+   The X and Y drag component of particles launched from the emitter.</div>
+</td><td class="summaryTableOwnerCol">FlxEmitter</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#quantity">quantity</a> : uint<div class="summaryTableDescription">
+   The number of particles to launch at a time.</div>
+</td><td class="summaryTableOwnerCol">FlxEmitter</td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxRect.html#right">right</a> : Number<div class="summaryTableDescription">
+   The X coordinate of the right side of the rectangle.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxRect.html">FlxRect</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#scrollFactor">scrollFactor</a> : <a href="../flixel/FlxPoint.html">FlxPoint</a>
+<div class="summaryTableDescription">
    A point that can store numbers from 0 to 1 (for X and Y independently)
    that governs how much this object is affected by the camera subsystem.</div>
-</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
 </tr>
 <tr class="hideInheritedProperty">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxCore.html#visible">visible</a> : Boolean<div class="summaryTableDescription">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#solid">solid</a> : Boolean<div class="summaryTableDescription">
+   If an object is dead, the functions that automate collisions will skip it (see <code>FlxG.overlapArrays()</code> and <code>FlxG.collideArrays()</code>).</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#thrust">thrust</a> : Number<div class="summaryTableDescription">
+   If you want to do Asteroids style stuff, check out thrust,
+   instead of directly accessing the object's velocity or acceleration.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxRect.html#top">top</a> : Number<div class="summaryTableDescription">
+   The Y coordinate of the top of the rectangle.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxRect.html">FlxRect</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#velocity">velocity</a> : <a href="../flixel/FlxPoint.html">FlxPoint</a>
+<div class="summaryTableDescription">
+   The basic speed of this object.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#visible">visible</a> : Boolean<div class="summaryTableDescription">
    If an object is not visible, the game loop will not automatically call <code>render()</code> on it.</div>
-</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
 </tr>
 <tr class="hideInheritedProperty">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxCore.html#width">width</a> : uint<div class="summaryTableDescription">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxRect.html#width">width</a> : Number<div class="summaryTableDescription">
    </div>
-</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</td><td class="summaryTableOwnerCol"><a href="FlxRect.html">FlxRect</a></td>
 </tr>
 <tr class="hideInheritedProperty">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxCore.html#x">x</a> : Number<div class="summaryTableDescription">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxPoint.html#x">x</a> : Number<div class="summaryTableDescription">
    </div>
-</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</td><td class="summaryTableOwnerCol"><a href="FlxPoint.html">FlxPoint</a></td>
 </tr>
 <tr class="hideInheritedProperty">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxCore.html#y">y</a> : Number<div class="summaryTableDescription">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxPoint.html#y">y</a> : Number<div class="summaryTableDescription">
    </div>
-</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</td><td class="summaryTableOwnerCol"><a href="FlxPoint.html">FlxPoint</a></td>
 </tr>
 </table>
 </div>
@@ -178,25 +349,60 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr>
 <th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
 </tr>
-<tr class="hideInheritedProtectedProperty">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxCore.html#_flicker">_flicker</a> : Boolean<div class="summaryTableDescription">
-   Internal helper used for retro-style flickering.</div>
-</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_counter">_counter</a> : uint<div class="summaryTableDescription">
+   Internal counter for figuring out how many particles to launch.</div>
+</td><td class="summaryTableOwnerCol">FlxEmitter</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_explode">_explode</a> : Boolean<div class="summaryTableDescription">
+   The style of particle emission (all at once, or one at a time).</div>
+</td><td class="summaryTableOwnerCol">FlxEmitter</td>
 </tr>
 <tr class="hideInheritedProtectedProperty">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxCore.html#_flickerTimer">_flickerTimer</a> : Number<div class="summaryTableDescription">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxGroup.html#_first">_first</a> : Boolean<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol"><a href="FlxGroup.html">FlxGroup</a></td>
+</tr>
+<tr class="hideInheritedProtectedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#_flashPoint">_flashPoint</a> : Point<div class="summaryTableDescription">
+   This is a pre-allocated Flash Point object, which is useful for certain Flash graphics API calls
+   </div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</tr>
+<tr class="hideInheritedProtectedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#_flicker">_flicker</a> : Boolean<div class="summaryTableDescription">
    Internal helper used for retro-style flickering.</div>
-</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</tr>
+<tr class="hideInheritedProtectedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#_flickerTimer">_flickerTimer</a> : Number<div class="summaryTableDescription">
+   Internal helper used for retro-style flickering.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</tr>
+<tr class="hideInheritedProtectedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxGroup.html#_last">_last</a> : <a href="../flixel/FlxPoint.html">FlxPoint</a>
+<div class="summaryTableDescription">
+   Helpers for moving/updating group members.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxGroup.html">FlxGroup</a></td>
 </tr>
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_particle">_particle</a> : uint<div class="summaryTableDescription">
    Internal marker for where we are in <code>_sprites</code>.</div>
 </td><td class="summaryTableOwnerCol">FlxEmitter</td>
 </tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_sprites">_sprites</a> : Array<div class="summaryTableDescription">
-   Internal list of all the particles.</div>
-</td><td class="summaryTableOwnerCol">FlxEmitter</td>
+<tr class="hideInheritedProtectedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#_point">_point</a> : <a href="../flixel/FlxPoint.html">FlxPoint</a>
+<div class="summaryTableDescription">
+   This is just a pre-allocated x-y point container to be used however you like
+   </div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</tr>
+<tr class="hideInheritedProtectedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#_rect">_rect</a> : <a href="../flixel/FlxRect.html">FlxRect</a>
+<div class="summaryTableDescription">
+   This is just a pre-allocated rectangle container to be used however you like
+   </div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
 </tr>
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_timer">_timer</a> : Number<div class="summaryTableDescription">
@@ -223,62 +429,57 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#FlxEmitter()">FlxEmitter</a>(X:Number = 0, Y:Number = 0, Delay:Number = 0.1)</div>
+<a class="signatureLink" href="#FlxEmitter()">FlxEmitter</a>(X:Number = 0, Y:Number = 0)</div>
 <div class="summaryTableDescription">
-   Creates a new <code>FlxEmitter</code> object at a specific position with a certain timing.</div>
+   Creates a new <code>FlxEmitter</code> object at a specific position.</div>
 </td><td class="summaryTableOwnerCol">FlxEmitter</td>
 </tr>
 <tr class="hideInheritedMethod">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="FlxCore.html#collide()">collide</a>(Core:<a href="../flixel/FlxCore.html">FlxCore</a>):Boolean</div>
+<a class="signatureLink" href="FlxGroup.html#add()">add</a>(Object:<a href="../flixel/FlxObject.html">FlxObject</a>, ShareScroll:Boolean = false):<a href="../flixel/FlxObject.html">FlxObject</a>
+</div>
 <div class="summaryTableDescription">
-   Collides a <code>FlxCore</code> against this object.</div>
-</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
-</tr>
-<tr class="hideInheritedMethod">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="FlxCore.html#collideArray()">collideArray</a>(Cores:Array):void</div>
-<div class="summaryTableDescription">
-   Collides an array of <code>FlxCore</code> objects against the tilemap.</div>
-</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
-</tr>
-<tr class="hideInheritedMethod">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="FlxCore.html#collideArrayX()">collideArrayX</a>(Cores:Array):void</div>
-<div class="summaryTableDescription">
-   Collides an array of <code>FlxCore</code> objects against the tilemap against the X axis only.</div>
-</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
-</tr>
-<tr class="hideInheritedMethod">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="FlxCore.html#collideArrayY()">collideArrayY</a>(Cores:Array):void</div>
-<div class="summaryTableDescription">Collides an array of <code>FlxCore</code> objects against the tilemap against the Y axis only.</div>
-</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
-</tr>
-<tr class="hideInheritedMethod">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="FlxCore.html#collideX()">collideX</a>(Core:<a href="../flixel/FlxCore.html">FlxCore</a>):Boolean</div>
-<div class="summaryTableDescription">
-   Collides a <code>FlxCore</code> against this object on the X axis ONLY.</div>
-</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
-</tr>
-<tr class="hideInheritedMethod">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="FlxCore.html#collideY()">collideY</a>(Core:<a href="../flixel/FlxCore.html">FlxCore</a>):Boolean</div>
-<div class="summaryTableDescription">
-   Collides a <code>FlxCore</code> against this object on the Y axis ONLY.</div>
-</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+   Adds a new <code>FlxObject</code> subclass (FlxSprite, FlxBlock, etc) to the list of children
+      </div>
+</td><td class="summaryTableOwnerCol"><a href="FlxGroup.html">FlxGroup</a></td>
 </tr>
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#createSprites()">createSprites</a>(Graphics:Class, Quantity:uint = 50, Multiple:Boolean = true, Parent:<a href="FlxLayer.html">FlxLayer</a> = null):<a href="../flixel/FlxEmitter.html">FlxEmitter</a>
+<a class="signatureLink" href="#at()">at</a>(Object:<a href="FlxObject.html">FlxObject</a>):void</div>
+<div class="summaryTableDescription">
+   Change the emitter's position to the origin of a <code>FlxObject</code>.</div>
+</td><td class="summaryTableOwnerCol">FlxEmitter</td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxObject.html#collide()">collide</a>(Object:<a href="../flixel/FlxObject.html">FlxObject</a> = null):Boolean</div>
+<div class="summaryTableDescription">
+   If you don't want to call <code>FlxU.collide()</code> you can use this instead.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxGroup.html#countDead()">countDead</a>():int</div>
+<div class="summaryTableDescription">
+   Call this function to find out how many members of the group are dead.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxGroup.html">FlxGroup</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxGroup.html#countLiving()">countLiving</a>():int</div>
+<div class="summaryTableDescription">
+   Call this function to find out how many members of the group are not dead.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxGroup.html">FlxGroup</a></td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#createSprites()">createSprites</a>(Graphics:Class, Quantity:uint = 50, BakedRotations:uint = 16, Multiple:Boolean = true, Collide:Number = 0):<a href="../flixel/FlxEmitter.html">FlxEmitter</a>
 </div>
 <div class="summaryTableDescription">
    This function generates a new array of sprites to attach to the emitter.</div>
@@ -287,16 +488,16 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="hideInheritedMethod">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="FlxCore.html#destroy()">destroy</a>():void</div>
+<a class="signatureLink" href="FlxGroup.html#destroy()">destroy</a>():void</div>
 <div class="summaryTableDescription">
-   Called by <code>FlxLayer</code> when states are changed (if it belongs to a layer)
-   </div>
-</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+   Override this function to handle any deleting or "shutdown" type operations you might need,
+   such as removing traditional Flash children like Sprite objects.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxGroup.html">FlxGroup</a></td>
 </tr>
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#emit()">emit</a>():void</div>
+<a class="signatureLink" href="#emitParticle()">emitParticle</a>():void</div>
 <div class="summaryTableDescription">
    This function can be used both internally and externally to emit the next particle.</div>
 </td><td class="summaryTableOwnerCol">FlxEmitter</td>
@@ -304,50 +505,112 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="hideInheritedMethod">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="FlxCore.html#flicker()">flicker</a>(Duration:Number = 1):void</div>
+<a class="signatureLink" href="FlxObject.html#flicker()">flicker</a>(Duration:Number = 1):void</div>
 <div class="summaryTableDescription">
    Tells this object to flicker, retro-style.</div>
-</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
 </tr>
 <tr class="hideInheritedMethod">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="FlxCore.html#flickering()">flickering</a>():Boolean</div>
+<a class="signatureLink" href="FlxObject.html#flickering()">flickering</a>():Boolean</div>
 <div class="summaryTableDescription">
    Check to see if the object is still flickering.</div>
-</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
 </tr>
 <tr class="hideInheritedMethod">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="FlxCore.html#getScreenXY()">getScreenXY</a>(P:Point = null):Point</div>
+<a class="signatureLink" href="FlxGroup.html#getFirstAlive()">getFirstAlive</a>():<a href="../flixel/FlxObject.html">FlxObject</a>
+</div>
+<div class="summaryTableDescription">
+   Call this function to retrieve the first object with dead == false in the group.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxGroup.html">FlxGroup</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxGroup.html#getFirstAvail()">getFirstAvail</a>():<a href="../flixel/FlxObject.html">FlxObject</a>
+</div>
+<div class="summaryTableDescription">
+   Call this function to retrieve the first object with exists == false in the group.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxGroup.html">FlxGroup</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxGroup.html#getFirstDead()">getFirstDead</a>():<a href="../flixel/FlxObject.html">FlxObject</a>
+</div>
+<div class="summaryTableDescription">
+   Call this function to retrieve the first object with dead == true in the group.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxGroup.html">FlxGroup</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxGroup.html#getFirstExtant()">getFirstExtant</a>():<a href="../flixel/FlxObject.html">FlxObject</a>
+</div>
+<div class="summaryTableDescription">
+   Call this function to retrieve the first object with exists == true in the group.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxGroup.html">FlxGroup</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxGroup.html#getRandom()">getRandom</a>():<a href="../flixel/FlxObject.html">FlxObject</a>
+</div>
+<div class="summaryTableDescription">
+   Returns a member at random from the group.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxGroup.html">FlxGroup</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxObject.html#getScreenXY()">getScreenXY</a>(Point:<a href="../flixel/FlxPoint.html">FlxPoint</a> = null):<a href="../flixel/FlxPoint.html">FlxPoint</a>
+</div>
 <div class="summaryTableDescription">
    Call this function to figure out the on-screen position of the object.</div>
-</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
 </tr>
 <tr class="hideInheritedMethod">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="FlxCore.html#hitCeiling()">hitCeiling</a>(Contact:<a href="../flixel/FlxCore.html">FlxCore</a> = null):Boolean</div>
+<a class="signatureLink" href="FlxObject.html#hitBottom()">hitBottom</a>(Contact:<a href="../flixel/FlxObject.html">FlxObject</a>, Velocity:Number):void</div>
 <div class="summaryTableDescription">
-   Called when this object collides with the bottom of another <code>FlxCore</code>.</div>
-</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+   Called when this object's bottom edge collides with the top of another <code>FlxObject</code>.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
 </tr>
 <tr class="hideInheritedMethod">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="FlxCore.html#hitFloor()">hitFloor</a>(Contact:<a href="../flixel/FlxCore.html">FlxCore</a> = null):Boolean</div>
+<a class="signatureLink" href="FlxObject.html#hitLeft()">hitLeft</a>(Contact:<a href="../flixel/FlxObject.html">FlxObject</a>, Velocity:Number):void</div>
 <div class="summaryTableDescription">
-   Called when this object collides with the top of another <code>FlxCore</code>.</div>
-</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+   Called when this object's left side collides with another <code>FlxObject</code>'s right.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
 </tr>
 <tr class="hideInheritedMethod">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="FlxCore.html#hitWall()">hitWall</a>(Contact:<a href="../flixel/FlxCore.html">FlxCore</a> = null):Boolean</div>
+<a class="signatureLink" href="FlxObject.html#hitRight()">hitRight</a>(Contact:<a href="../flixel/FlxObject.html">FlxObject</a>, Velocity:Number):void</div>
 <div class="summaryTableDescription">
-   Called when this object collides with another <code>FlxCore</code> on one of its sides.</div>
-</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+   Called when this object's right side collides with another <code>FlxObject</code>'s left.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxObject.html#hitTop()">hitTop</a>(Contact:<a href="../flixel/FlxObject.html">FlxObject</a>, Velocity:Number):void</div>
+<div class="summaryTableDescription">
+   Called when this object's top collides with the bottom of another <code>FlxObject</code>.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxObject.html#hurt()">hurt</a>(Damage:Number):void</div>
+<div class="summaryTableDescription">
+   Call this function to "damage" (or give health bonus) to this sprite.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
 </tr>
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
@@ -357,62 +620,90 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
    Call this function to turn off all the particles and the emitter.</div>
 </td><td class="summaryTableOwnerCol">FlxEmitter</td>
 </tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#loadSprites()">loadSprites</a>(Sprites:Array):<a href="../flixel/FlxEmitter.html">FlxEmitter</a>
-</div>
-<div class="summaryTableDescription">
-   This function attaches an existing array of sprites to this particle emitter.</div>
-</td><td class="summaryTableOwnerCol">FlxEmitter</td>
-</tr>
 <tr class="hideInheritedMethod">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="FlxCore.html#onScreen()">onScreen</a>():Boolean</div>
+<a class="signatureLink" href="FlxObject.html#onScreen()">onScreen</a>():Boolean</div>
 <div class="summaryTableDescription">
    Check and see if this object is currently on screen.</div>
-</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
 </tr>
 <tr class="hideInheritedMethod">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="FlxCore.html#overlaps()">overlaps</a>(Core:<a href="../flixel/FlxCore.html">FlxCore</a>):Boolean</div>
+<a class="signatureLink" href="FlxObject.html#overlaps()">overlaps</a>(Object:<a href="../flixel/FlxObject.html">FlxObject</a>):Boolean</div>
 <div class="summaryTableDescription">
-   Checks to see if some <code>FlxCore</code> object overlaps this <code>FlxCore</code> object.</div>
-</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+   Checks to see if some <code>FlxObject</code> object overlaps this <code>FlxObject</code> object.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
 </tr>
 <tr class="hideInheritedMethod">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="FlxCore.html#overlapsPoint()">overlapsPoint</a>(X:Number, Y:Number, PerPixel:Boolean = false):Boolean</div>
+<a class="signatureLink" href="FlxObject.html#overlapsPoint()">overlapsPoint</a>(X:Number, Y:Number, PerPixel:Boolean = false):Boolean</div>
 <div class="summaryTableDescription">
-   Checks to see if a point in 2D space overlaps this <code>FlxCore</code> object.</div>
-</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+   Checks to see if a point in 2D space overlaps this <code>FlxObject</code> object.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
 </tr>
 <tr class="hideInheritedMethod">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="FlxCore.html#render()">render</a>():void</div>
+<a class="signatureLink" href="FlxObject.html#preCollide()">preCollide</a>(Object:<a href="../flixel/FlxObject.html">FlxObject</a>):void</div>
 <div class="summaryTableDescription">
-   <code>FlxSprite</code> and other subclasses override this to draw their contents to the screen.</div>
-</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+   <code>FlxU.collide()</code> (and thus <code>FlxObject.collide()</code>) call
+   this function each time two objects are compared to see if they collide.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
 </tr>
 <tr class="hideInheritedMethod">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="FlxCore.html#reset()">reset</a>(X:Number, Y:Number):void</div>
+<a class="signatureLink" href="FlxObject.html#refreshHulls()">refreshHulls</a>():void</div>
 <div class="summaryTableDescription">
-   Handy function for reviving game objects.</div>
-</td><td class="summaryTableOwnerCol"><a href="FlxCore.html">FlxCore</a></td>
+   Called by <code>FlxObject.updateMotion()</code> and some constructors to
+   rebuild the basic collision data for this object.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
 </tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#restart()">restart</a>():void</div>
+<a class="signatureLink" href="FlxGroup.html#remove()">remove</a>(Object:<a href="../flixel/FlxObject.html">FlxObject</a>):<a href="../flixel/FlxObject.html">FlxObject</a>
+</div>
 <div class="summaryTableDescription">
-   Call this function to reset the emitter (if you used a negative delay, calling this function "explodes" the emitter again).</div>
-</td><td class="summaryTableOwnerCol">FlxEmitter</td>
+   Removes an object from the group.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxGroup.html">FlxGroup</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxGroup.html#render()">render</a>():void</div>
+<div class="summaryTableDescription">
+   Automatically goes through and calls render on everything you added,
+   override this loop to control render order manually.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxGroup.html">FlxGroup</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxGroup.html#replace()">replace</a>(OldObject:<a href="../flixel/FlxObject.html">FlxObject</a>, NewObject:<a href="../flixel/FlxObject.html">FlxObject</a>):<a href="../flixel/FlxObject.html">FlxObject</a>
+</div>
+<div class="summaryTableDescription">
+   Replaces an existing <code>FlxObject</code> with a new one.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxGroup.html">FlxGroup</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxGroup.html#reset()">reset</a>(X:Number, Y:Number):void</div>
+<div class="summaryTableDescription">
+   If the group's position is reset, we want to reset all its members too.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxGroup.html">FlxGroup</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxGroup.html#resetFirstAvail()">resetFirstAvail</a>(X:Number = 0, Y:Number = 0):Boolean</div>
+<div class="summaryTableDescription">
+   Finds the first object with exists == false and calls reset on it.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxGroup.html">FlxGroup</a></td>
 </tr>
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
@@ -433,7 +724,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#setXVelocity()">setXVelocity</a>(Min:Number = 0, Max:Number = 0):void</div>
+<a class="signatureLink" href="#setXSpeed()">setXSpeed</a>(Min:Number = 0, Max:Number = 0):void</div>
 <div class="summaryTableDescription">
    A more compact way of setting the X velocity range of the emitter.</div>
 </td><td class="summaryTableOwnerCol">FlxEmitter</td>
@@ -441,10 +732,34 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#setYVelocity()">setYVelocity</a>(Min:Number = 0, Max:Number = 0):void</div>
+<a class="signatureLink" href="#setYSpeed()">setYSpeed</a>(Min:Number = 0, Max:Number = 0):void</div>
 <div class="summaryTableDescription">
    A more compact way of setting the Y velocity range of the emitter.</div>
 </td><td class="summaryTableOwnerCol">FlxEmitter</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#start()">start</a>(Explode:Boolean = true, Quantity:uint = 0, Delay:Number = 0):void</div>
+<div class="summaryTableDescription">
+   Call this function to start emitting particles.</div>
+</td><td class="summaryTableOwnerCol">FlxEmitter</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#stop()">stop</a>(Delay:Number = 3):void</div>
+<div class="summaryTableDescription">
+   Call this function to stop the emitter without killing it.</div>
+</td><td class="summaryTableOwnerCol">FlxEmitter</td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxPoint.html#toString()">toString</a>():String</div>
+<div class="summaryTableDescription">
+   Convert object to readable string name.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxPoint.html">FlxPoint</a></td>
 </tr>
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
@@ -456,6 +771,103 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </tr>
 </table>
 </div>
+<a name="protectedMethodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Protected Methods</div>
+<div class="showHideLinks">
+<div class="hideInheritedProtectedMethod" id="hideInheritedProtectedMethod">
+<a onclick="javascript:setInheritedVisible(false,'ProtectedMethod');" href="#protectedMethodSummary" class="showHideLink"><img src="../../images/expanded.gif" class="showHideLinkImage"> Hide Inherited Protected Methods</a>
+</div>
+<div class="showInheritedProtectedMethod" id="showInheritedProtectedMethod">
+<a onclick="javascript:setInheritedVisible(true,'ProtectedMethod');" href="#protectedMethodSummary" class="showHideLink"><img src="../../images/collapsed.gif" class="showHideLinkImage"> Show Inherited Protected Methods</a>
+</div>
+</div>
+<table id="summaryTableProtectedMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="hideInheritedProtectedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxGroup.html#destroyMembers()">destroyMembers</a>():void</div>
+<div class="summaryTableDescription">
+   Internal function that actually loops through and destroys each member.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxGroup.html">FlxGroup</a></td>
+</tr>
+<tr class="hideInheritedProtectedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxGroup.html#renderMembers()">renderMembers</a>():void</div>
+<div class="summaryTableDescription">
+   Internal function that actually loops through and renders all the group members.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxGroup.html">FlxGroup</a></td>
+</tr>
+<tr class="hideInheritedProtectedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxGroup.html#saveOldPosition()">saveOldPosition</a>():void</div>
+<div class="summaryTableDescription">
+   Internal function, helps with the moving/updating of group members.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxGroup.html">FlxGroup</a></td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#updateEmitter()">updateEmitter</a>():void</div>
+<div class="summaryTableDescription">
+   Internal function that actually performs the emitter update (called by update()).</div>
+</td><td class="summaryTableOwnerCol">FlxEmitter</td>
+</tr>
+<tr class="hideInheritedProtectedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxObject.html#updateFlickering()">updateFlickering</a>():void</div>
+<div class="summaryTableDescription">
+   Just updates the retro-style flickering.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#updateMembers()">updateMembers</a>():void</div>
+<div class="summaryTableDescription">
+   Internal function that actually goes through and updates all the group members.</div>
+</td><td class="summaryTableOwnerCol">FlxEmitter</td>
+</tr>
+<tr class="hideInheritedProtectedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxObject.html#updateMotion()">updateMotion</a>():void</div>
+<div class="summaryTableDescription">
+   Internal function for updating the position and speed of this object.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</tr>
+</table>
+</div>
+<a name="constantSummary"></a><a name="protectedConstantSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Protected Constants</div>
+<div class="showHideLinks">
+<div class="hideInheritedProtectedConstant" id="hideInheritedProtectedConstant">
+<a onclick="javascript:setInheritedVisible(false,'ProtectedConstant');" href="#protectedConstantSummary" class="showHideLink"><img src="../../images/expanded.gif" class="showHideLinkImage"> Hide Inherited Protected Constants</a>
+</div>
+<div class="showInheritedProtectedConstant" id="showInheritedProtectedConstant">
+<a onclick="javascript:setInheritedVisible(true,'ProtectedConstant');" href="#protectedConstantSummary" class="showHideLink"><img src="../../images/collapsed.gif" class="showHideLinkImage"> Show Inherited Protected Constants</a>
+</div>
+</div>
+<table id="summaryTableProtectedConstant" class="summaryTable hideInheritedProtectedConstant" cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Constant</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="hideInheritedProtectedConstant">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#_pZero">_pZero</a> : <a href="../flixel/FlxPoint.html">FlxPoint</a>
+<div class="summaryTableDescription">[static]
+   A handy "empty point" object
+   </div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</tr>
+</table>
+</div>
 <script type="text/javascript" language="javascript">
 <!--
 showHideInherited();
@@ -463,29 +875,39 @@ showHideInherited();
 <div class="MainContent">
 <a name="propertyDetail"></a>
 <div class="detailSectionHeader">Property detail</div>
+<a name="_counter"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_counter</td><td class="detailHeaderType">property</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _counter:uint</code><p>
+   Internal counter for figuring out how many particles to launch.
+   </p></div>
 <a name="delay"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
-<td class="detailHeaderName">delay</td><td class="detailHeaderType">property</td>
+<td class="detailHeaderName">delay</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
 </tr>
 </table>
 <div class="detailBody">
 <code>public var delay:Number</code><p>
-   How long to wait between particle emissions.
-   Set this to a negative number to launch all particles at once.
-   Negative value defines the lifespan of the particle.
-   E.g. a delay of -1 means all the particles launch immediately,
-   but disappear after 1 second.
+   This variable has different effects depending on what kind of emission it is.
+   During an explosion, delay controls the lifespan of the particles.
+   During normal emission, delay controls the time between particle launches.
+   NOTE: In older builds, polarity (negative numbers) was used to define emitter behavior.
+   THIS IS NO LONGER THE CASE!  FlxEmitter.start() controls that now!
    </p></div>
-<a name="drag"></a>
+<a name="_explode"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
-<td class="detailHeaderName">drag</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+<td class="detailHeaderName">_explode</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
 </tr>
 </table>
 <div class="detailBody">
-<code>public var drag:Number</code><p>
-   Sets the x and y drag of each particle to this value on launch.
+<code>protected var _explode:Boolean</code><p>
+   The style of particle emission (all at once, or one at a time).
    </p></div>
 <a name="gravity"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
@@ -496,6 +918,17 @@ showHideInherited();
 <div class="detailBody">
 <code>public var gravity:Number</code><p>
    Sets the <code>acceleration.y</code> member of each particle to this value on launch.
+   </p></div>
+<a name="maxParticleSpeed"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">maxParticleSpeed</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var maxParticleSpeed:<a href="../flixel/FlxPoint.html">FlxPoint</a></code><p>
+   The maximum possible velocity of a particle.
+   The default value is (100,100).
    </p></div>
 <a name="maxRotation"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
@@ -508,16 +941,16 @@ showHideInherited();
    The maximum possible angular velocity of a particle.  The default value is 360.
    NOTE: rotating particles are more expensive to draw than non-rotating ones!
    </p></div>
-<a name="maxVelocity"></a>
+<a name="minParticleSpeed"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
-<td class="detailHeaderName">maxVelocity</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+<td class="detailHeaderName">minParticleSpeed</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
 </tr>
 </table>
 <div class="detailBody">
-<code>public var maxVelocity:Point</code><p>
-   The maximum possible velocity of a particle.
-   The default value is (100,100).
+<code>public var minParticleSpeed:<a href="../flixel/FlxPoint.html">FlxPoint</a></code><p>
+   The minimum possible velocity of a particle.
+   The default value is (-100,-100).
    </p></div>
 <a name="minRotation"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
@@ -530,16 +963,15 @@ showHideInherited();
    The minimum possible angular velocity of a particle.  The default value is -360.
    NOTE: rotating particles are more expensive to draw than non-rotating ones!
    </p></div>
-<a name="minVelocity"></a>
+<a name="on"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
-<td class="detailHeaderName">minVelocity</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+<td class="detailHeaderName">on</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
 </tr>
 </table>
 <div class="detailBody">
-<code>public var minVelocity:Point</code><p>
-   The minimum possible velocity of a particle.
-   The default value is (-100,-100).
+<code>public var on:Boolean</code><p>
+   Whether the emitter is currently "on", or emitting particles.
    </p></div>
 <a name="_particle"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
@@ -551,15 +983,25 @@ showHideInherited();
 <code>protected var _particle:uint</code><p>
    Internal marker for where we are in <code>_sprites</code>.
    </p></div>
-<a name="_sprites"></a>
+<a name="particleDrag"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
-<td class="detailHeaderName">_sprites</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+<td class="detailHeaderName">particleDrag</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
 </tr>
 </table>
 <div class="detailBody">
-<code>protected var _sprites:Array</code><p>
-   Internal list of all the particles.
+<code>public var particleDrag:<a href="../flixel/FlxPoint.html">FlxPoint</a></code><p>
+   The X and Y drag component of particles launched from the emitter.
+   </p></div>
+<a name="quantity"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">quantity</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var quantity:uint</code><p>
+   The number of particles to launch at a time.
    </p></div>
 <a name="_timer"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
@@ -580,9 +1022,9 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public function FlxEmitter(X:Number = 0, Y:Number = 0, Delay:Number = 0.1)</code><p>
-   Creates a new <code>FlxEmitter</code> object at a specific position with a certain timing.
-   WARNING: Does not automatically generate particles or attach particles!
+<code>public function FlxEmitter(X:Number = 0, Y:Number = 0)</code><p>
+   Creates a new <code>FlxEmitter</code> object at a specific position.
+   Does not automatically generate or attach particles!
    
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
@@ -597,25 +1039,36 @@ showHideInherited();
 <td width="20px"></td><td><code><span class="label">Y</span>:Number</code> (default = <code>0</code>)<code></code> &mdash;   The Y position of the emitter.
    </td>
 </tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Delay</span>:Number</code> (default = <code>0.1</code>)<code></code> &mdash;  The initial emitter timing.
-   </td>
-</tr>
 </table>
 </div>
 <a name="methodDetail"></a>
 <div class="detailSectionHeader">Method detail</div>
-<a name="createSprites()"></a>
+<a name="at()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
-<td class="detailHeaderName">createSprites</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td>
+<td class="detailHeaderName">at</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td>
 </tr>
 </table>
 <div class="detailBody">
-<code>public function createSprites(Graphics:Class, Quantity:uint = 50, Multiple:Boolean = true, Parent:<a href="FlxLayer.html">FlxLayer</a> = null):<a href="../flixel/FlxEmitter.html">FlxEmitter</a></code><p>
+<code>public function at(Object:<a href="FlxObject.html">FlxObject</a>):void</code><p>
+   Change the emitter's position to the origin of a <code>FlxObject</code>.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">Object</span>:<a href="FlxObject.html">FlxObject</a></code> &mdash;  The <code>FlxObject</code> that needs to spew particles.
+   </td>
+</tr>
+</table>
+</div>
+<a name="createSprites()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">createSprites</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function createSprites(Graphics:Class, Quantity:uint = 50, BakedRotations:uint = 16, Multiple:Boolean = true, Collide:Number = 0):<a href="../flixel/FlxEmitter.html">FlxEmitter</a></code><p>
    This function generates a new array of sprites to attach to the emitter.
    
    </p><span class="label">Parameters</span>
@@ -635,6 +1088,13 @@ showHideInherited();
 <td class="paramSpacer">&nbsp;</td>
 </tr>
 <tr>
+<td width="20px"></td><td><code><span class="label">BakedRotations</span>:uint</code> (default = <code>16</code>)<code></code> &mdash; How many frames of baked rotation to use (boosts performance).  Set to zero to not use baked rotations.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
 <td width="20px"></td><td><code><span class="label">Multiple</span>:Boolean</code> (default = <code>true</code>)<code></code> &mdash;  Whether the image in the Graphics param is a single particle or a bunch of particles (if it's a bunch, they need to be square!).
    </td>
 </tr>
@@ -642,7 +1102,7 @@ showHideInherited();
 <td class="paramSpacer">&nbsp;</td>
 </tr>
 <tr>
-<td width="20px"></td><td><code><span class="label">Parent</span>:<a href="FlxLayer.html">FlxLayer</a></code> (default = <code>null</code>)<code></code> &mdash;   A FlxLayer object that you can attach things to instead of the current state.
+<td width="20px"></td><td><code><span class="label">Collide</span>:Number</code> (default = <code>0</code>)<code></code> &mdash;   Whether the particles should be flagged as not 'dead' (non-colliding particles are higher performance).  0 means no collisions, 0-1 controls scale of particle's bounding box.
    
    </td>
 </tr>
@@ -659,14 +1119,14 @@ showHideInherited();
 </tr>
 </table>
 </div>
-<a name="emit()"></a>
+<a name="emitParticle()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
-<td class="detailHeaderName">emit</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+<td class="detailHeaderName">emitParticle</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
 </tr>
 </table>
 <div class="detailBody">
-<code>public function emit():void</code><p>
+<code>public function emitParticle():void</code><p>
    This function can be used both internally and externally to emit the next particle.
    </p></div>
 <a name="kill()"></a>
@@ -678,46 +1138,6 @@ showHideInherited();
 <div class="detailBody">
 <code>public override function kill():void</code><p>
    Call this function to turn off all the particles and the emitter.
-   </p></div>
-<a name="loadSprites()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">loadSprites</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public function loadSprites(Sprites:Array):<a href="../flixel/FlxEmitter.html">FlxEmitter</a></code><p>
-   This function attaches an existing array of sprites to this particle emitter.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">Sprites</span>:Array</code> &mdash;   A pre-configured FlxArray of FlxSprite objects for the emitter to use.
-   
-   </td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code><a href="../flixel/FlxEmitter.html">FlxEmitter</a></code> &mdash; 
-                        This FlxEmitter instance (nice for chaining stuff together, if you're into that).
-   
-                        
-                     </td>
-</tr>
-</table>
-</div>
-<a name="restart()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">restart</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public function restart():void</code><p>
-   Call this function to reset the emitter (if you used a negative delay, calling this function "explodes" the emitter again).
    </p></div>
 <a name="setRotation()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
@@ -769,14 +1189,14 @@ showHideInherited();
 </tr>
 </table>
 </div>
-<a name="setXVelocity()"></a>
+<a name="setXSpeed()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
-<td class="detailHeaderName">setXVelocity</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+<td class="detailHeaderName">setXSpeed</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
 </tr>
 </table>
 <div class="detailBody">
-<code>public function setXVelocity(Min:Number = 0, Max:Number = 0):void</code><p>
+<code>public function setXSpeed(Min:Number = 0, Max:Number = 0):void</code><p>
    A more compact way of setting the X velocity range of the emitter.
    
    </p><span class="label">Parameters</span>
@@ -794,14 +1214,14 @@ showHideInherited();
 </tr>
 </table>
 </div>
-<a name="setYVelocity()"></a>
+<a name="setYSpeed()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
-<td class="detailHeaderName">setYVelocity</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+<td class="detailHeaderName">setYSpeed</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
 </tr>
 </table>
 <div class="detailBody">
-<code>public function setYVelocity(Min:Number = 0, Max:Number = 0):void</code><p>
+<code>public function setYSpeed(Min:Number = 0, Max:Number = 0):void</code><p>
    A more compact way of setting the Y velocity range of the emitter.
    
    </p><span class="label">Parameters</span>
@@ -819,6 +1239,56 @@ showHideInherited();
 </tr>
 </table>
 </div>
+<a name="start()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">start</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function start(Explode:Boolean = true, Quantity:uint = 0, Delay:Number = 0):void</code><p>
+   Call this function to start emitting particles.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">Explode</span>:Boolean</code> (default = <code>true</code>)<code></code> &mdash;  Whether the particles should all burst out at once.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Quantity</span>:uint</code> (default = <code>0</code>)<code></code> &mdash; How many particles to launch.  Default value is 0, or "all the particles".
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Delay</span>:Number</code> (default = <code>0</code>)<code></code> &mdash;  You can set the delay (or lifespan) here if you want.
+   </td>
+</tr>
+</table>
+</div>
+<a name="stop()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">stop</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function stop(Delay:Number = 3):void</code><p>
+   Call this function to stop the emitter without killing it.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">Delay</span>:Number</code> (default = <code>3</code>)<code></code> &mdash; How long to wait before killing all the particles.  Set to 'zero' to never kill them.
+   </td>
+</tr>
+</table>
+</div>
 <a name="update()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -828,6 +1298,27 @@ showHideInherited();
 <div class="detailBody">
 <code>public override function update():void</code><p>
    Called automatically by the game loop, decides when to launch particles and when to "die".
+   </p></div>
+<a name="updateEmitter()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">updateEmitter</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected function updateEmitter():void</code><p>
+   Internal function that actually performs the emitter update (called by update()).
+   </p></div>
+<a name="updateMembers()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">updateMembers</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected override function updateMembers():void</code><p>
+   Internal function that actually goes through and updates all the group members.
+   Overridden here to remove the position update code normally used by a FlxGroup.
    </p></div>
 <br>
 <br>

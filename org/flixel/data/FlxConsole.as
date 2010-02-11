@@ -68,6 +68,7 @@ package org.flixel.data
 		 * @private
 		 */
 		protected var _byt:int;
+		public var lastElapsed:Number;
 		
 		/**
 		 * Constructor
@@ -162,7 +163,7 @@ package org.flixel.data
 		{
 			if(visible)
 			{
-				_fps[_curFPS] = 1/FlxG.elapsed;
+				_fps[_curFPS] = 1/lastElapsed;
 				if(++_curFPS >= _fps.length) _curFPS = 0;
 				_fpsUpdate = !_fpsUpdate;
 				if(_fpsUpdate)

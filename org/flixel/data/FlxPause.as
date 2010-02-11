@@ -6,7 +6,7 @@ package org.flixel.data
 	 * This is the default flixel pause screen.
 	 * It can be overridden with your own <code>FlxLayer</code> object.
 	 */
-	public class FlxPause extends FlxLayer
+	public class FlxPause extends FlxGroup
 	{
 		[Embed(source="key_minus.png")] private var ImgKeyMinus:Class;
 		[Embed(source="key_plus.png")] private var ImgKeyPlus:Class;

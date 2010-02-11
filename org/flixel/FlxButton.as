@@ -1,13 +1,12 @@
 package org.flixel
 {
 	import flash.events.MouseEvent;
-	import flash.geom.Point;
 	
 	/**
 	 * A simple button class that calls a function when clicked by the mouse.
 	 * Supports labels, highlight states, and parallax scrolling.
 	 */
-	public class FlxButton extends FlxCore
+	public class FlxButton extends FlxGroup
 	{
 		/**
 		 * Used for checkbox-style behavior.
@@ -26,17 +25,9 @@ package org.flixel
 		 */
 		protected var _offT:FlxText;
 		/**
-		 * Stores the off label offset.
-		 */
-		protected var _offTO:Point;
-		/**
 		 * Stores the 'on' or highlighted button state label.
 		 */
 		protected var _onT:FlxText;
-		/**
-		 * Stores the on label offset.
-		 */
-		protected var _onTO:Point;
 		/**
 		 * This function is called when the button is clicked.
 		 */
@@ -52,7 +43,7 @@ package org.flixel
 		/**
 		 * Helper variable for correcting its members' <code>scrollFactor</code> objects.
 		 */
-		protected var _sf:Point;
+		protected var _sf:FlxPoint;
 		
 		/**
 		 * Creates a new <code>FlxButton</code> object with a gray background
@@ -69,16 +60,15 @@ package org.flixel
 			y = Y;
 			width = 100;
 			height = 20;
-			_off = new FlxSprite();
-			_off.createGraphic(width,height,0xff7f7f7f);
-			_off.scrollFactor = scrollFactor;
-			_on  = new FlxSprite();
-			_on.createGraphic(width,height,0xffffffff);
-			_on.scrollFactor = scrollFactor;
+			_off = new FlxSprite().createGraphic(width,height,0xff7f7f7f);
+			add(_off,true);
+			_on  = new FlxSprite().createGraphic(width,height,0xffffffff);
+			add(_on,true);
+			_offT = null;
+			_onT = null;
 			_callback = Callback;
 			_onToggle = false;
 			_pressed = false;
-			updatePositions();
 			_initialized = false;
 			_sf = null;
 		}
@@ -93,14 +83,20 @@ package org.flixel
 		 */
 		public function loadGraphic(Image:FlxSprite,ImageHighlight:FlxSprite=null):FlxButton
 		{
-			_off = Image;
+			_off = replace(_off,Image) as FlxSprite;
+			if(ImageHighlight == null)
+			{
+				if(_on != _off)
+					remove(_on);
+				_on = _off;
+			}
+			else
+				_on = replace(_on,ImageHighlight) as FlxSprite;
 			_off.scrollFactor = scrollFactor;
-			if(ImageHighlight == null) _on = _off;
-			else _on = ImageHighlight;
 			_on.scrollFactor = scrollFactor;
 			width = _off.width;
 			height = _off.height;
-			updatePositions();
+			refreshHulls();
 			return this;
 		}
 
@@ -114,14 +110,30 @@ package org.flixel
 		 */
 		public function loadText(Text:FlxText,TextHighlight:FlxText=null):FlxButton
 		{
-			if(Text != null) _offT = Text;
-			if(TextHighlight == null) _onT = _offT;
-			else _onT = TextHighlight;
-			if(_offT != null) _offTO = new Point(_offT.x,_offT.y);
-			if(_onT != null) _onTO = new Point(_onT.x,_onT.y);
+			if(Text != null)
+			{
+				if(_offT == null)
+				{
+					_offT = Text;
+					add(_offT);
+				}
+				else
+					_offT = replace(_offT,Text) as FlxText;
+			}
+			if(TextHighlight == null)
+				_onT = _offT;
+			else
+			{
+				if(_onT == null)
+				{
+					_onT = TextHighlight;
+					add(_onT);
+				}
+				else
+					_onT = replace(_onT,TextHighlight) as FlxText;
+			}
 			_offT.scrollFactor = scrollFactor;
 			_onT.scrollFactor = scrollFactor;
-			updatePositions();
 			return this;
 		}
 		
@@ -132,38 +144,17 @@ package org.flixel
 		{
 			if(!_initialized)
 			{
-				if(FlxG.state == null) return;
-				if(FlxG.state.parent == null) return;
-				if(FlxG.state.parent.stage == null) return;
-				FlxG.state.parent.stage.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
-				_initialized = true;
-			}
-			
-			/*If the scrollFactor's member x and y variables
-			  change, the objects are automatically updated.
-			  BUT, if the button's scrollFactor object changes we
-			  need to update the rest of the object's scrollFactors.*/
-			if(_sf != scrollFactor)
-			{
-				_sf = scrollFactor;
-				if(_off != null) _off.scrollFactor = _sf;
-				if(_on != null) _on.scrollFactor = _sf;
-				if(_offT != null) _offT.scrollFactor = _sf;
-				if(_onT != null) _onT.scrollFactor = _sf;
+				if(FlxG.stage != null)
+				{
+					FlxG.stage.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
+					_initialized = true;
+				}
 			}
 			
 			super.update();
 
-			if((_off != null) && _off.exists && _off.active) _off.update();
-			if((_on != null) && _on.exists && _on.active) _on.update();
-			if(_offT != null)
-			{
-				if((_offT != null) && _offT.exists && _offT.active) _offT.update();
-				if((_onT != null) && _onT.exists && _onT.active) _onT.update();
-			}
-
 			visibility(false);
-			if(_off.overlapsPoint(FlxG.mouse.x,FlxG.mouse.y))
+			if(overlapsPoint(FlxG.mouse.screenX,FlxG.mouse.screenY))
 			{
 				if(!FlxG.mouse.pressed())
 					_pressed = false;
@@ -172,48 +163,23 @@ package org.flixel
 				visibility(!_pressed);
 			}
 			if(_onToggle) visibility(_off.visible);
-			updatePositions();
 		}
 		
 		/**
-		 * Called by the game loop automatically, renders button to screen.
+		 * Use this to toggle checkbox-style behavior.
 		 */
-		override public function render():void
-		{
-			super.render();
-			if((_off != null) && _off.exists && _off.visible) _off.render();
-			if((_on != null) && _on.exists && _on.visible) _on.render();
-			if(_offT != null)
-			{
-				if((_offT != null) && _offT.exists && _offT.visible) _offT.render();
-				if((_onT != null) && _onT.exists && _onT.visible) _onT.render();
-			}
-		}
-		
-		/**
-		 * Call this function from your callback to toggle the button off, like a checkbox.
-		 */
-		public function switchOff():void
-		{
-			_onToggle = false;
-		}
-		
-		/**
-		 * Call this function from your callback to toggle the button on, like a checkbox.
-		 */
-		public function switchOn():void
-		{
-			_onToggle = true;
-		}
-		
-		/**
-		 * Check to see if the button is toggled on, like a checkbox.
-		 * 
-		 * @return	Whether the button is toggled.
-		 */
-		public function on():Boolean
+		public function get on():Boolean
 		{
 			return _onToggle;
+			_onToggle = On;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set on(On:Boolean):void
+		{
+			_onToggle = On;
 		}
 		
 		/**
@@ -221,7 +187,8 @@ package org.flixel
 		 */
 		override public function destroy():void
 		{
-			FlxG.state.parent.stage.removeEventListener(MouseEvent.MOUSE_UP, onMouseUp);
+			if(FlxG.stage != null)
+				FlxG.stage.removeEventListener(MouseEvent.MOUSE_UP, onMouseUp);
 		}
 		
 		/**
@@ -248,33 +215,12 @@ package org.flixel
 		}
 		
 		/**
-		 * Internal function that just updates the X and Y position of the button's graphics.
-		 */
-		protected function updatePositions():void
-		{
-			_off.x = x;
-			_off.y = y;
-			if(_offT)
-			{
-				_offT.x = _offTO.x+x;
-				_offT.y = _offTO.y+y;
-			}
-			_on.x = x;
-			_on.y = y;
-			if(_onT)
-			{
-				_onT.x = _onTO.x+x;
-				_onT.y = _onTO.y+y;
-			}
-		}
-		
-		/**
-		 * Internal function for handling the actual callback call (for UI thread dependent calls).
+		 * Internal function for handling the actual callback call (for UI thread dependent calls like <code>FlxU.openURL()</code>).
 		 */
 		protected function onMouseUp(event:MouseEvent):void
 		{
 			if(!exists || !visible || !active || !FlxG.mouse.justReleased() || (_callback == null)) return;
-			if(_off.overlapsPoint(FlxG.mouse.x+(1-scrollFactor.x)*FlxG.scroll.x,FlxG.mouse.y+(1-scrollFactor.y)*FlxG.scroll.y)) _callback();
+			if(overlapsPoint(FlxG.mouse.screenX,FlxG.mouse.screenY)) _callback();
 		}
 	}
 }

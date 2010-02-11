@@ -1,7 +1,6 @@
 package org.flixel
 {
 	import flash.display.BitmapData;
-	import flash.geom.Rectangle;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
@@ -16,6 +15,7 @@ package org.flixel
 	{
 		protected var _tf:TextField;
 		protected var _regen:Boolean;
+		protected var _shadow:uint;
 		
 		/**
 		 * Creates a new <code>FlxText</code> object at the specified position.
@@ -35,11 +35,16 @@ package org.flixel
 			_tf.embedFonts = true;
 			_tf.selectable = false;
 			_tf.sharpness = 100;
+			_tf.multiline = true;
+			_tf.wordWrap = true;
 			_tf.defaultTextFormat = new TextFormat("system",8,0xffffff);
 			_tf.text = Text;
 			super(X,Y);
 			createGraphic(Width,1);
 			_regen = true;
+			_shadow = 0;
+			moves = false;
+			solid = false;
 			calcFrame();
 		}
 		
@@ -49,23 +54,25 @@ package org.flixel
 		 * 
 		 * @param	Font		The name of the font face for the text display.
 		 * @param	Size		The size of the font (in pixels essentially).
-		 * @param	Color		The color of the text in traditional flash 0xAARRGGBB format.
+		 * @param	Color		The color of the text in traditional flash 0xRRGGBB format.
 		 * @param	Alignment	A string representing the desired alignment ("left,"right" or "center").
+		 * @param	ShadowColow	A uint representing the desired text shadow color in flash 0xRRGGBB format.
 		 * 
 		 * @return	This FlxText instance (nice for chaining stuff together, if you're into that).
 		 */
-		public function setFormat(Font:String=null,Size:Number=8,Color:uint=0xffffff,Alignment:String=null):FlxText
+		public function setFormat(Font:String=null,Size:Number=8,Color:uint=0xffffff,Alignment:String=null,ShadowColor:uint=0):FlxText
 		{
 			if(Font == null)
 				Font = "";
 			var tf:TextFormat = dtfCopy();
 			tf.font = Font;
 			tf.size = Size;
+			tf.color = Color;
 			tf.align = Alignment;
 			_tf.defaultTextFormat = tf;
 			_tf.setTextFormat(tf);
+			_shadow = ShadowColor;
 			_regen = true;
-			color = Color;
 			calcFrame();
 			return this;
 		}
@@ -103,6 +110,27 @@ package org.flixel
 		{
 			var tf:TextFormat = dtfCopy();
 			tf.size = Size;
+			_tf.defaultTextFormat = tf;
+			_tf.setTextFormat(tf);
+			_regen = true;
+			calcFrame();
+		}
+		
+		/**
+		 * The color of the text being displayed.
+		 */
+		override public function get color():uint
+		{
+			return _tf.defaultTextFormat.color as uint;
+		}
+		
+		/**
+		 * @private
+		 */
+		override public function set color(Color:uint):void
+		{
+			var tf:TextFormat = dtfCopy();
+			tf.color = Color;
 			_tf.defaultTextFormat = tf;
 			_tf.setTextFormat(tf);
 			_regen = true;
@@ -151,6 +179,23 @@ package org.flixel
 		}
 		
 		/**
+		 * The alignment of the font ("left", "right", or "center").
+		 */
+		public function get shadow():uint
+		{
+			return _shadow;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set shadow(Color:uint):void
+		{
+			_shadow = Color;
+			calcFrame();
+		}
+		
+		/**
 		 * Internal function to update the current animation frame.
 		 */
 		override protected function calcFrame():void
@@ -158,7 +203,7 @@ package org.flixel
 			//Just leave if there's no text to render
 			if((_tf == null) || (_tf.text == null) || (_tf.text.length <= 0))
 			{
-				_framePixels.fillRect(_r,0);
+				_framePixels.fillRect(_flashRect,0);
 				return;
 			}
 			if(_regen)
@@ -170,25 +215,42 @@ package org.flixel
 					height += _tf.getLineMetrics(i).height;
 				height += 4; //account for 2px gutter on top and bottom
 				_framePixels = new BitmapData(width,height,true,0);
-				_bh = height;
-				_tf.height = height;
-				_r = new Rectangle(0,0,width,height);
+				frameHeight = height;
+				_tf.height = height*1.2;
+				_flashRect.x = 0;
+				_flashRect.y = 0;
+				_flashRect.width = width;
+				_flashRect.height = height;
 				_regen = false;
 			}
 			else	//Else just clear the old buffer before redrawing the text
-				_framePixels.fillRect(_r,0);
+				_framePixels.fillRect(_flashRect,0);
 			
 			//Now that we've cleared a buffer, we need to actually render the text to it
 			var tf:TextFormat = _tf.defaultTextFormat;
+			var tfa:TextFormat = tf;
 			_mtx.identity();
 			//If it's a single, centered line of text, we center it ourselves so it doesn't blur to hell
 			if((tf.align == "center") && (_tf.numLines == 1))
 			{
-				_tf.setTextFormat(new TextFormat(tf.font,tf.size,tf.color,null,null,null,null,null,"left"));				
+				tfa = new TextFormat(tf.font,tf.size,tf.color,null,null,null,null,null,"left");
+				_tf.setTextFormat(tfa);				
 				_mtx.translate(Math.floor((width - _tf.getLineMetrics(0).width)/2),0);
 			}
-			_framePixels.draw(_tf,_mtx,_ct);	//Actually draw the text onto the buffer
+			//Render a single pixel shadow beneath the text
+			if(_shadow > 0)
+			{
+				_tf.setTextFormat(new TextFormat(tfa.font,tfa.size,_shadow,null,null,null,null,null,tfa.align));				
+				_mtx.translate(1,1);
+				_framePixels.draw(_tf,_mtx,_ct);
+				_mtx.translate(-1,-1);
+				_tf.setTextFormat(new TextFormat(tfa.font,tfa.size,tfa.color,null,null,null,null,null,tfa.align));
+			}
+			//Actually draw the text onto the buffer
+			_framePixels.draw(_tf,_mtx,_ct);
 			_tf.setTextFormat(new TextFormat(tf.font,tf.size,tf.color,null,null,null,null,null,tf.align));
+			if(solid)
+				refreshHulls();
 		}
 		
 		/**

@@ -9,6 +9,11 @@ package org.flixel
 	 * It acts as a kind of container for all your game objects.
 	 * You can also access the game's background color
 	 * and screen buffer through this object.
+	 * FlxState is kind of a funny class from the technical side,
+	 * it is just a regular Flash Sprite display object,
+	 * with one member variable: a flixel <code>FlxGroup</code>.
+	 * This means you can load it up with regular Flash stuff
+	 * or with flixel elements, whatever works!
 	 */
 	public class FlxState extends Sprite
 	{
@@ -24,19 +29,18 @@ package org.flixel
 		 */
 		static public var bgColor:uint;
 		/**
-		 * Internal layer used to organize and display objects you add to this state.
+		 * Internal group used to organize and display objects you add to this state.
 		 */
-		protected var _layer:FlxLayer;
+		public var defaultGroup:FlxGroup;
 		
 		/**
 		 * Creates a new <code>FlxState</code> object,
 		 * instantiating <code>screen</code> if necessary.
 		 */
-		virtual public function FlxState()
+		public function FlxState()
 		{
 			super();
-			_layer = new FlxLayer();
-			FlxG.state = this;
+			defaultGroup = new FlxGroup();
 			if(screen == null)
 			{
 				screen = new FlxSprite();
@@ -47,13 +51,23 @@ package org.flixel
 		}
 		
 		/**
+		 * Override this function to set up your game state.
+		 * This is where you create your groups and game objects and all that good stuff.
+		 */
+		public function create():void
+		{
+			//nothing to create initially
+		}
+		
+		/**
 		 * Adds a new FlxCore subclass (FlxSprite, FlxBlock, etc) to the game loop.
+		 * FlxState is adding this object to its built-in FlxGroup to automate updating and rendering.
 		 * 
 		 * @param	Core	The object you want to add to the game loop.
 		 */
-		virtual public function add(Core:FlxCore):FlxCore
+		public function add(Core:FlxObject):FlxObject
 		{
-			return _layer.add(Core);
+			return defaultGroup.add(Core);
 		}
 		
 		/**
@@ -61,7 +75,7 @@ package org.flixel
 		 * You can use scaling or blending modes or whatever you want against
 		 * <code>FlxState.screen</code> to achieve all sorts of cool FX.
 		 */
-		virtual public function preProcess():void
+		public function preProcess():void
 		{
 			screen.fill(bgColor);	//Default behavior - just overwrite buffer with background color
 		}
@@ -70,18 +84,27 @@ package org.flixel
 		 * Automatically goes through and calls update on everything you added to the game loop,
 		 * override this function to handle custom input and perform collisions/
 		 */
-		virtual public function update():void
+		public function update():void
 		{
-			_layer.update();
+			defaultGroup.update();
+		}
+		
+		/**
+		 * This function collides <code>defaultGroup</code> against <code>defaultGroup</code>
+		 * (basically everything you added to this state).
+		 */
+		public function collide():void
+		{
+			defaultGroup.collide();
 		}
 		
 		/**
 		 * Automatically goes through and calls render on everything you added to the game loop,
 		 * override this loop to manually control the rendering process.
 		 */
-		virtual public function render():void
+		public function render():void
 		{
-			_layer.render();
+			defaultGroup.render();
 		}
 
 		/**
@@ -89,15 +112,18 @@ package org.flixel
 		 * You can use scaling or blending modes or whatever you want against
 		 * <code>FlxState.screen</code> to achieve all sorts of cool FX.
 		 */
-		virtual public function postProcess():void { }
+		public function postProcess():void
+		{
+			//no fx by default
+		}
 		
 		/**
 		 * Override this function to handle any deleting or "shutdown" type operations you
 		 * might need (such as removing traditional Flash children like Sprite objects).
 		 */
-		virtual public function destroy():void
+		public function destroy():void
 		{
-			_layer.destroy();
+			defaultGroup.destroy();
 		}
 	}
 }

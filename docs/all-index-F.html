@@ -134,17 +134,11 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("FÂ
    flipped sprites and/or just track player orientation more easily.</td>
 </tr>
 <tr>
-<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxG.html#fade()">fade</a>(Color, Duration, FadeComplete, Force) &mdash; Static method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxG.html">FlxG</a></td>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxG.html#fade">fade</a> &mdash; Static property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxG.html">FlxG</a></td>
 </tr>
 <tr>
 <td width="20"></td><td>
-   Fade the screen out to this color.</td>
-</tr>
-<tr>
-<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxGame.html#_fade">_fade</a> &mdash; Property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxGame.html">FlxGame</a></td>
-</tr>
-<tr>
-<td width="20"></td><td></td>
+   A special effect that fades a color onto the screen.</td>
 </tr>
 <tr>
 <td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxSound.html#fadeIn()">fadeIn</a>(Seconds) &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxSound.html">FlxSound</a></td>
@@ -206,54 +200,94 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("FÂ
    Whether the current animation has finished its first (or only) loop.</td>
 </tr>
 <tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxGroup.html#_first">_first</a> &mdash; Property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxGroup.html">FlxGroup</a></td>
+</tr>
+<tr>
+<td width="20"></td><td></td>
+</tr>
+<tr>
 <td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/data/class-list.html');" href="org/flixel/data/FlxKeyboard.html#FIVE">FIVE</a> &mdash; Property in class org.flixel.data.<a onclick="javascript:loadClassListFrame('org/flixel/data/class-list.html');" href="org/flixel/data/FlxKeyboard.html">FlxKeyboard</a></td>
 </tr>
 <tr>
 <td width="20"></td><td></td>
 </tr>
 <tr>
-<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxCore.html#fixed">fixed</a> &mdash; Property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxCore.html">FlxCore</a></td>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxObject.html#fixed">fixed</a> &mdash; Property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxObject.html">FlxObject</a></td>
 </tr>
 <tr>
 <td width="20"></td><td>
    If an object is 'fixed' in space, it will not budge when it collides with a not-fixed object.</td>
 </tr>
 <tr>
-<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxG.html#flash()">flash</a>(Color, Duration, FlashComplete, Force) &mdash; Static method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxG.html">FlxG</a></td>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxG.html#flash">flash</a> &mdash; Static property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxG.html">FlxG</a></td>
 </tr>
 <tr>
 <td width="20"></td><td>
-   Temporarily fill the screen with a certain color, then fade it out.</td>
+   A special effect that flashes a color on the screen.</td>
 </tr>
 <tr>
-<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxGame.html#_flash">_flash</a> &mdash; Property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxGame.html">FlxGame</a></td>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxObject.html#_flashPoint">_flashPoint</a> &mdash; Property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxObject.html">FlxObject</a></td>
+</tr>
+<tr>
+<td width="20"></td><td>
+   This is a pre-allocated Flash Point object, which is useful for certain Flash graphics API calls
+   </td>
+</tr>
+<tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxSprite.html#_flashPointZero">_flashPointZero</a> &mdash; Property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxSprite.html">FlxSprite</a></td>
 </tr>
 <tr>
 <td width="20"></td><td></td>
 </tr>
 <tr>
-<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxCore.html#flicker()">flicker</a>(Duration) &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxCore.html">FlxCore</a></td>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxSprite.html#_flashRect">_flashRect</a> &mdash; Property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr>
+<td width="20"></td><td></td>
+</tr>
+<tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxTileblock.html#_flashRect">_flashRect</a> &mdash; Property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxTileblock.html">FlxTileblock</a></td>
+</tr>
+<tr>
+<td width="20"></td><td>
+   Rendering helper.</td>
+</tr>
+<tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxTilemap.html#_flashRect">_flashRect</a> &mdash; Property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxTilemap.html">FlxTilemap</a></td>
+</tr>
+<tr>
+<td width="20"></td><td>
+   Rendering helper.</td>
+</tr>
+<tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxSprite.html#_flashRect2">_flashRect2</a> &mdash; Property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr>
+<td width="20"></td><td></td>
+</tr>
+<tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxObject.html#flicker()">flicker</a>(Duration) &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxObject.html">FlxObject</a></td>
 </tr>
 <tr>
 <td width="20"></td><td>
    Tells this object to flicker, retro-style.</td>
 </tr>
 <tr>
-<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxCore.html#_flicker">_flicker</a> &mdash; Property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxCore.html">FlxCore</a></td>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxObject.html#_flicker">_flicker</a> &mdash; Property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxObject.html">FlxObject</a></td>
 </tr>
 <tr>
 <td width="20"></td><td>
    Internal helper used for retro-style flickering.</td>
 </tr>
 <tr>
-<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxCore.html#flickering()">flickering</a>() &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxCore.html">FlxCore</a></td>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxObject.html#flickering()">flickering</a>() &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxObject.html">FlxObject</a></td>
 </tr>
 <tr>
 <td width="20"></td><td>
    Check to see if the object is still flickering.</td>
 </tr>
 <tr>
-<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxCore.html#_flickerTimer">_flickerTimer</a> &mdash; Property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxCore.html">FlxCore</a></td>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxObject.html#_flickerTimer">_flickerTimer</a> &mdash; Property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxObject.html">FlxObject</a></td>
 </tr>
 <tr>
 <td width="20"></td><td>
@@ -267,6 +301,12 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("FÂ
 </tr>
 <tr>
 <td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxSprite.html#_flipped">_flipped</a> &mdash; Property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr>
+<td width="20"></td><td></td>
+</tr>
+<tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxU.html#floor()">floor</a>(N) &mdash; Static method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxU.html">FlxU</a></td>
 </tr>
 <tr>
 <td width="20"></td><td></td>
@@ -287,20 +327,6 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("FÂ
    Constructor
    
    </td>
-</tr>
-<tr>
-<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxBlock.html">FlxBlock</a> &mdash; Class in package <a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/package-detail.html">org.flixel</a></td>
-</tr>
-<tr>
-<td width="20"></td><td>
-  This is the basic "environment object" class, used to create simple walls and floors.</td>
-</tr>
-<tr>
-<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxBlock.html#FlxBlock()">FlxBlock</a>(X, Y, Width, Height) &mdash; Constructor in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxBlock.html">FlxBlock</a></td>
-</tr>
-<tr>
-<td width="20"></td><td>
-   Creates a new <code>FlxBlock</code> object with the specified position and size.</td>
 </tr>
 <tr>
 <td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxButton.html">FlxButton</a> &mdash; Class in package <a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/package-detail.html">org.flixel</a></td>
@@ -334,20 +360,6 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("FÂ
    </td>
 </tr>
 <tr>
-<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxCore.html">FlxCore</a> &mdash; Class in package <a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/package-detail.html">org.flixel</a></td>
-</tr>
-<tr>
-<td width="20"></td><td>
-  This is the base class for most of the display objects (<code>FlxSprite</code>, <code>FlxText</code>, etc).</td>
-</tr>
-<tr>
-<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxCore.html#FlxCore()">FlxCore</a>() &mdash; Constructor in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxCore.html">FlxCore</a></td>
-</tr>
-<tr>
-<td width="20"></td><td>
-   Creates a new <code>FlxCore</code> object.</td>
-</tr>
-<tr>
 <td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxEmitter.html">FlxEmitter</a> &mdash; Class in package <a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/package-detail.html">org.flixel</a></td>
 </tr>
 <tr>
@@ -355,11 +367,11 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("FÂ
   <code>FlxEmitter</code> is a lightweight particle emitter.</td>
 </tr>
 <tr>
-<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxEmitter.html#FlxEmitter()">FlxEmitter</a>(X, Y, Delay) &mdash; Constructor in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxEmitter.html">FlxEmitter</a></td>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxEmitter.html#FlxEmitter()">FlxEmitter</a>(X, Y) &mdash; Constructor in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxEmitter.html">FlxEmitter</a></td>
 </tr>
 <tr>
 <td width="20"></td><td>
-   Creates a new <code>FlxEmitter</code> object at a specific position with a certain timing.</td>
+   Creates a new <code>FlxEmitter</code> object at a specific position.</td>
 </tr>
 <tr>
 <td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/data/class-list.html');" href="org/flixel/data/FlxFactory.html">FlxFactory</a> &mdash; Class in package <a onclick="javascript:loadClassListFrame('org/flixel/data/class-list.html');" href="org/flixel/data/package-detail.html">org.flixel.data</a></td>
@@ -430,6 +442,21 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("FÂ
    Game object constructor - sets up the basic properties of your game.</td>
 </tr>
 <tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxGroup.html">FlxGroup</a> &mdash; Class in package <a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/package-detail.html">org.flixel</a></td>
+</tr>
+<tr>
+<td width="20"></td><td>
+  This is an organizational class that can update and render a bunch of <code>FlxObject</code>s.</td>
+</tr>
+<tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxGroup.html#FlxGroup()">FlxGroup</a>() &mdash; Constructor in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxGroup.html">FlxGroup</a></td>
+</tr>
+<tr>
+<td width="20"></td><td>
+   Constructor
+   </td>
+</tr>
+<tr>
 <td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/data/class-list.html');" href="org/flixel/data/FlxKeyboard.html">FlxKeyboard</a> &mdash; Class in package <a onclick="javascript:loadClassListFrame('org/flixel/data/class-list.html');" href="org/flixel/data/package-detail.html">org.flixel.data</a></td>
 </tr>
 <tr>
@@ -458,20 +485,18 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("FÂ
    Constructor.</td>
 </tr>
 <tr>
-<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxLayer.html">FlxLayer</a> &mdash; Class in package <a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/package-detail.html">org.flixel</a></td>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/data/class-list.html');" href="org/flixel/data/FlxList.html">FlxList</a> &mdash; Class in package <a onclick="javascript:loadClassListFrame('org/flixel/data/class-list.html');" href="org/flixel/data/package-detail.html">org.flixel.data</a></td>
 </tr>
 <tr>
 <td width="20"></td><td>
-  This is an organizational class that can update and render a bunch of FlxCore objects
-  </td>
+  The world's smallest linked list class.</td>
 </tr>
 <tr>
-<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxLayer.html#FlxLayer()">FlxLayer</a>() &mdash; Constructor in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxLayer.html">FlxLayer</a></td>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/data/class-list.html');" href="org/flixel/data/FlxList.html#FlxList()">FlxList</a>() &mdash; Constructor in class org.flixel.data.<a onclick="javascript:loadClassListFrame('org/flixel/data/class-list.html');" href="org/flixel/data/FlxList.html">FlxList</a></td>
 </tr>
 <tr>
 <td width="20"></td><td>
-   Constructor
-   </td>
+   Creates a new link, and sets <code>object</code> and <code>next</code> to <code>null</null>.</td>
 </tr>
 <tr>
 <td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/data/class-list.html');" href="org/flixel/data/FlxMouse.html">FlxMouse</a> &mdash; Class in package <a onclick="javascript:loadClassListFrame('org/flixel/data/class-list.html');" href="org/flixel/data/package-detail.html">org.flixel.data</a></td>
@@ -486,6 +511,20 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("FÂ
 <tr>
 <td width="20"></td><td>
    Constructor.</td>
+</tr>
+<tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxObject.html">FlxObject</a> &mdash; Class in package <a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/package-detail.html">org.flixel</a></td>
+</tr>
+<tr>
+<td width="20"></td><td>
+  This is the base class for most of the display objects (<code>FlxSprite</code>, <code>FlxText</code>, etc).</td>
+</tr>
+<tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxObject.html#FlxObject()">FlxObject</a>(X, Y, Width, Height) &mdash; Constructor in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxObject.html">FlxObject</a></td>
+</tr>
+<tr>
+<td width="20"></td><td>
+   Creates a new <code>FlxObject</code>.</td>
 </tr>
 <tr>
 <td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/data/class-list.html');" href="org/flixel/data/FlxPanel.html">FlxPanel</a> &mdash; Class in package <a onclick="javascript:loadClassListFrame('org/flixel/data/class-list.html');" href="org/flixel/data/package-detail.html">org.flixel.data</a></td>
@@ -516,6 +555,34 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("FÂ
    Constructor.</td>
 </tr>
 <tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxPoint.html">FlxPoint</a> &mdash; Class in package <a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/package-detail.html">org.flixel</a></td>
+</tr>
+<tr>
+<td width="20"></td><td>
+  Stores a 2D floating point coordinate.</td>
+</tr>
+<tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxPoint.html#FlxPoint()">FlxPoint</a>(X, Y) &mdash; Constructor in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxPoint.html">FlxPoint</a></td>
+</tr>
+<tr>
+<td width="20"></td><td>
+   Instantiate a new point object.</td>
+</tr>
+<tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxQuadTree.html">FlxQuadTree</a> &mdash; Class in package <a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/package-detail.html">org.flixel</a></td>
+</tr>
+<tr>
+<td width="20"></td><td>
+  A fairly generic quad tree structure for rapid overlap checks.</td>
+</tr>
+<tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxQuadTree.html#FlxQuadTree()">FlxQuadTree</a>(X, Y, Width, Height, Parent:<a href="org/flixel/FlxQuadTree.html" onclick="javascript:loadClassListFrame('org/flixel./class-list.html');">org.flixel:FlxQuadTree</a>) &mdash; Constructor in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxQuadTree.html">FlxQuadTree</a></td>
+</tr>
+<tr>
+<td width="20"></td><td>
+   Instantiate a new Quad Tree node.</td>
+</tr>
+<tr>
 <td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/data/class-list.html');" href="org/flixel/data/FlxQuake.html">FlxQuake</a> &mdash; Class in package <a onclick="javascript:loadClassListFrame('org/flixel/data/class-list.html');" href="org/flixel/data/package-detail.html">org.flixel.data</a></td>
 </tr>
 <tr>
@@ -528,6 +595,20 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("FÂ
 <tr>
 <td width="20"></td><td>
    Constructor.</td>
+</tr>
+<tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxRect.html">FlxRect</a> &mdash; Class in package <a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/package-detail.html">org.flixel</a></td>
+</tr>
+<tr>
+<td width="20"></td><td>
+  Stores a rectangle.</td>
+</tr>
+<tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxRect.html#FlxRect()">FlxRect</a>(X, Y, Width, Height) &mdash; Constructor in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxRect.html">FlxRect</a></td>
+</tr>
+<tr>
+<td width="20"></td><td>
+   Instantiate a new rectangle.</td>
 </tr>
 <tr>
 <td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxSave.html">FlxSave</a> &mdash; Class in package <a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/package-detail.html">org.flixel</a></td>
@@ -601,6 +682,20 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("FÂ
    Creates a new <code>FlxText</code> object at the specified position.</td>
 </tr>
 <tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxTileblock.html">FlxTileblock</a> &mdash; Class in package <a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/package-detail.html">org.flixel</a></td>
+</tr>
+<tr>
+<td width="20"></td><td>
+  This is the basic "environment object" class, used to create simple walls and floors.</td>
+</tr>
+<tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxTileblock.html#FlxTileblock()">FlxTileblock</a>(X, Y, Width, Height) &mdash; Constructor in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxTileblock.html">FlxTileblock</a></td>
+</tr>
+<tr>
+<td width="20"></td><td>
+   Creates a new <code>FlxBlock</code> object with the specified position and size.</td>
+</tr>
+<tr>
 <td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxTilemap.html">FlxTilemap</a> &mdash; Class in package <a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/package-detail.html">org.flixel</a></td>
 </tr>
 <tr>
@@ -615,7 +710,13 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("FÂ
    The tilemap constructor just initializes some basic variables.</td>
 </tr>
 <tr>
-<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxG.html#follow()">follow</a>(Target:<a href="org/flixel/FlxCore.html" onclick="javascript:loadClassListFrame('org/flixel./class-list.html');">org.flixel:FlxCore</a>, Lerp) &mdash; Static method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxG.html">FlxG</a></td>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxU.html">FlxU</a> &mdash; Class in package <a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/package-detail.html">org.flixel</a></td>
+</tr>
+<tr>
+<td width="20"></td><td></td>
+</tr>
+<tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxG.html#follow()">follow</a>(Target:<a href="org/flixel/FlxObject.html" onclick="javascript:loadClassListFrame('org/flixel./class-list.html');">org.flixel:FlxObject</a>, Lerp) &mdash; Static method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxG.html">FlxG</a></td>
 </tr>
 <tr>
 <td width="20"></td><td>
@@ -637,7 +738,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("FÂ
    or amount the camera should track in front of a sprite.</td>
 </tr>
 <tr>
-<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxG.html#followBounds()">followBounds</a>(MinX, MinY, MaxX, MaxY) &mdash; Static method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxG.html">FlxG</a></td>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxG.html#followBounds()">followBounds</a>(MinX, MinY, MaxX, MaxY, UpdateWorldBounds) &mdash; Static method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxG.html">FlxG</a></td>
 </tr>
 <tr>
 <td width="20"></td><td>
@@ -705,6 +806,20 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("FÂ
 <td width="20"></td><td></td>
 </tr>
 <tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxSprite.html#frame">frame</a> &mdash; Property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr>
+<td width="20"></td><td>
+   Tell the sprite to change to a specific frame of animation.</td>
+</tr>
+<tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxSprite.html#frameHeight">frameHeight</a> &mdash; Property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr>
+<td width="20"></td><td>
+   The height of the actual graphic or image being displayed (not necessarily the game object/bounding box).</td>
+</tr>
+<tr>
 <td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxSprite.html#_framePixels">_framePixels</a> &mdash; Property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxSprite.html">FlxSprite</a></td>
 </tr>
 <tr>
@@ -723,6 +838,13 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("FÂ
 </tr>
 <tr>
 <td width="20"></td><td></td>
+</tr>
+<tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxSprite.html#frameWidth">frameWidth</a> &mdash; Property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr>
+<td width="20"></td><td>
+   The width of the actual graphic or image being displayed (not necessarily the game object/bounding box).</td>
 </tr>
 <tr>
 <td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxGame.html#_fSound">_fSound</a> &mdash; Property in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxGame.html">FlxGame</a></td>

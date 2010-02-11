@@ -11,7 +11,7 @@ package org.flixel.data
 	 * This panel is automatically created by <code>FlxGame</code> and you
 	 * can toggle the visibility via <code>FlxG</code>.
 	 */
-	public class FlxPanel extends FlxCore
+	public class FlxPanel extends FlxObject
 	{
 		[Embed(source="donate.png")] private var ImgDonate:Class;
 		[Embed(source="stumble.png")] private var ImgStumble:Class;
@@ -166,7 +166,7 @@ package org.flixel.data
 		 * @param	GameTitle		The text that you would like to appear in the aggregation services (usually just the name of your game).
 		 * @param	GameURL			The URL you would like people to use when trying to find your game.
 		 */
-		public function init(PayPalID:String,PayPalAmount:Number,GameTitle:String,GameURL:String,Caption:String):void
+		public function setup(PayPalID:String,PayPalAmount:Number,GameTitle:String,GameURL:String,Caption:String):void
 		{
 			_payPalID = PayPalID;
 			if(_payPalID.length <= 0) _donate.visible = false;
@@ -280,7 +280,7 @@ package org.flixel.data
 		 */
 		public function onDonate():void
 		{
-			FlxG.openURL("https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business="+encodeURIComponent(_payPalID)+"&item_name="+encodeURIComponent(_gameTitle+" Contribution ("+_gameURL)+")&currency_code=USD&amount="+_payPalAmount);
+			FlxU.openURL("https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business="+encodeURIComponent(_payPalID)+"&item_name="+encodeURIComponent(_gameTitle+" Contribution ("+_gameURL)+")&currency_code=USD&amount="+_payPalAmount);
 		}
 		
 		/**
@@ -288,7 +288,7 @@ package org.flixel.data
 		 */
 		public function onStumble():void
 		{
-			FlxG.openURL("http://www.stumbleupon.com/submit?url="+encodeURIComponent(_gameURL));
+			FlxU.openURL("http://www.stumbleupon.com/submit?url="+encodeURIComponent(_gameURL));
 		}
 		
 		/**
@@ -296,7 +296,7 @@ package org.flixel.data
 		 */
 		public function onDigg():void
 		{
-			FlxG.openURL("http://digg.com/submit?url="+encodeURIComponent(_gameURL)+"&title="+encodeURIComponent(_gameTitle));
+			FlxU.openURL("http://digg.com/submit?url="+encodeURIComponent(_gameURL)+"&title="+encodeURIComponent(_gameTitle));
 		}
 		
 		/**
@@ -304,7 +304,7 @@ package org.flixel.data
 		 */
 		public function onReddit():void
 		{
-			FlxG.openURL("http://www.reddit.com/submit?url="+encodeURIComponent(_gameURL));
+			FlxU.openURL("http://www.reddit.com/submit?url="+encodeURIComponent(_gameURL));
 		}
 		
 		/**
@@ -312,7 +312,7 @@ package org.flixel.data
 		 */
 		public function onDelicious():void
 		{
-			FlxG.openURL("http://delicious.com/save?v=5&amp;noui&amp;jump=close&amp;url="+encodeURIComponent(_gameURL)+"&amp;title="+encodeURIComponent(_gameTitle));
+			FlxU.openURL("http://delicious.com/save?v=5&amp;noui&amp;jump=close&amp;url="+encodeURIComponent(_gameURL)+"&amp;title="+encodeURIComponent(_gameTitle));
 		}
 		
 		/**
@@ -320,7 +320,7 @@ package org.flixel.data
 		 */
 		public function onTwitter():void
 		{
-			FlxG.openURL("http://twitter.com/home?status=Playing"+encodeURIComponent(" "+_gameTitle+" - "+_gameURL));
+			FlxU.openURL("http://twitter.com/home?status=Playing"+encodeURIComponent(" "+_gameTitle+" - "+_gameURL));
 		}
 		
 		/**
