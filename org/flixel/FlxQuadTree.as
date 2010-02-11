@@ -263,7 +263,7 @@ package org.flixel
 		/**
 		 * Internal function for recursively adding objects to leaf lists.
 		 */
-		public function addToList():void
+		protected function addToList():void
 		{
 			var ot:FlxList;
 			if(_oa == A_LIST)
