@@ -261,14 +261,6 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#addToList()">addToList</a>():void</div>
-<div class="summaryTableDescription">
-   Internal function for recursively adding objects to leaf lists.</div>
-</td><td class="summaryTableOwnerCol">FlxQuadTree</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
 <a class="signatureLink" href="#overlap()">overlap</a>(BothLists:Boolean = true, Callback:Function = null):Boolean</div>
 <div class="summaryTableDescription">
    <code>FlxQuadTree</code>'s other main function.</div>
@@ -298,6 +290,14 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <div class="summaryTableDescription">
    Internal function for recursively navigating and creating the tree
    while adding objects to the appropriate nodes.</div>
+</td><td class="summaryTableOwnerCol">FlxQuadTree</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#addToList()">addToList</a>():void</div>
+<div class="summaryTableDescription">
+   Internal function for recursively adding objects to leaf lists.</div>
 </td><td class="summaryTableOwnerCol">FlxQuadTree</td>
 </tr>
 <tr class="">
@@ -657,7 +657,7 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public function addToList():void</code><p>
+<code>protected function addToList():void</code><p>
    Internal function for recursively adding objects to leaf lists.
    </p></div>
 <a name="overlap()"></a>
