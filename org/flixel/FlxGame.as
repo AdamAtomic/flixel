@@ -396,8 +396,13 @@ package org.flixel
 						FlxG.fade.render();
 					if(FlxG.panel.visible)
 						FlxG.panel.render();
-					if((FlxG.mouse.cursor != null) && (FlxG.mouse.cursor.visible))
-						FlxG.mouse.cursor.render();
+					if(FlxG.mouse.cursor != null)
+					{
+						if(FlxG.mouse.cursor.active)
+							FlxG.mouse.cursor.update();
+						if(FlxG.mouse.cursor.visible)
+							FlxG.mouse.cursor.render();
+					}
 					
 					//Post-processing hook
 					_state.postProcess();
