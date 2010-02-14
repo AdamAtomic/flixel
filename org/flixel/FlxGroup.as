@@ -24,6 +24,7 @@ package org.flixel
 		{
 			super();
 			_group = true;
+			solid = false;
 			members = new Array();
 			_last = new FlxPoint();
 			_first = true;
@@ -246,20 +247,37 @@ package org.flixel
 				mx = x - _last.x;
 				my = y - _last.y;
 			}
-			var c:FlxObject;
+			var o:FlxObject;
 			var l:uint = members.length;
 			for(var i:uint = 0; i < l; i++)
 			{
-				c = members[i] as FlxObject;
-				if((c != null) && c.exists)
+				o = members[i] as FlxObject;
+				if((o != null) && o.exists)
 				{
 					if(moved)
 					{
-						c.x += mx;
-						c.y += my;
+						if(o._group)
+							o.reset(o.x+mx,o.y+my);
+						else if(solid)
+						{
+							o.colHullX.width += ((mx>0)?mx:-mx);
+							if(mx < 0)
+								o.colHullX.x += mx;
+							o.colHullY.x = x;
+							o.colHullY.height += ((my>0)?my:-my);
+							if(my < 0)
+								o.colHullY.y += my;
+							o.colVector.x += mx;
+							o.colVector.y += my;
+						}
+						else
+						{
+							o.x += mx;
+							o.y += my;
+						}
 					}
-					if(c.active)
-						c.update();
+					if(o.active)
+						o.update();
 				}
 			}
 		}
@@ -281,12 +299,13 @@ package org.flixel
 		 */
 		protected function renderMembers():void
 		{
-			var c:FlxObject;
+			var o:FlxObject;
 			var l:uint = members.length;
 			for(var i:uint = 0; i < l; i++)
 			{
-				c = members[i] as FlxObject;
-				if((c != null) && c.exists && c.visible) c.render();
+				o = members[i] as FlxObject;
+				if((o != null) && o.exists && o.visible)
+					o.render();
 			}
 		}
 		
@@ -300,13 +319,42 @@ package org.flixel
 		}
 		
 		/**
+		 * Internal function that calls kill on all members.
+		 */
+		protected function killMembers():void
+		{
+			var o:FlxObject;
+			var l:uint = members.length;
+			for(var i:uint = 0; i < l; i++)
+			{
+				o = members[i] as FlxObject;
+				if(o != null)
+					o.kill();
+			}
+		}
+		
+		/**
+		 * Calls kill on the group and all its members.
+		 */
+		override public function kill():void
+		{
+			killMembers();
+			super.kill();
+		}
+		
+		/**
 		 * Internal function that actually loops through and destroys each member.
 		 */
 		protected function destroyMembers():void
 		{
+			var o:FlxObject;
 			var l:uint = members.length;
 			for(var i:uint = 0; i < l; i++)
-				(members[i] as FlxObject).destroy();
+			{
+				o = members[i] as FlxObject;
+				if(o != null)
+					o.destroy();
+			}
 			members.length = 0;
 		}
 		
@@ -339,17 +387,34 @@ package org.flixel
 				mx = x - _last.x;
 				my = y - _last.y;
 			}
-			var c:FlxObject;
+			var o:FlxObject;
 			var l:uint = members.length;
 			for(var i:uint = 0; i < l; i++)
 			{
-				c = members[i] as FlxObject;
-				if((c != null) && c.exists)
+				o = members[i] as FlxObject;
+				if((o != null) && o.exists)
 				{
 					if(moved)
 					{
-						c.x += mx;
-						c.y += my;
+						if(o._group)
+							o.reset(o.x+mx,o.y+my);
+						else if(solid)
+						{
+							o.colHullX.width += ((mx>0)?mx:-mx);
+							if(mx < 0)
+								o.colHullX.x += mx;
+							o.colHullY.x = x;
+							o.colHullY.height += ((my>0)?my:-my);
+							if(my < 0)
+								o.colHullY.y += my;
+							o.colVector.x += mx;
+							o.colVector.y += my;
+						}
+						else
+						{
+							o.x += mx;
+							o.y += my;
+						}
 					}
 				}
 			}

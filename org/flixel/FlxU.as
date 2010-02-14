@@ -268,8 +268,8 @@ package org.flixel
 		 */
 		static public function overlap(Object1:FlxObject,Object2:FlxObject,Callback:Function=null):Boolean
 		{
-			if( (Object1 == null) || !Object1.exists || !Object1.solid ||
-				(Object2 == null) || !Object2.exists || !Object2.solid )
+			if( (Object1 == null) || !Object1.exists ||
+				(Object2 == null) || !Object2.exists )
 				return false;
 			quadTree = new FlxQuadTree(quadTreeBounds.x,quadTreeBounds.y,quadTreeBounds.width,quadTreeBounds.height);
 			quadTree.add(Object1,FlxQuadTree.A_LIST);
@@ -292,8 +292,8 @@ package org.flixel
 		 */
 		static public function collide(Object1:FlxObject,Object2:FlxObject):Boolean
 		{
-			if( (Object1 == null) || !Object1.exists || !Object1.solid ||
-				(Object2 == null) || !Object2.exists || !Object2.solid )
+			if( (Object1 == null) || !Object1.exists ||
+				(Object2 == null) || !Object2.exists )
 				return false;
 			quadTree = new FlxQuadTree(quadTreeBounds.x,quadTreeBounds.y,quadTreeBounds.width,quadTreeBounds.height);
 			quadTree.add(Object1,FlxQuadTree.A_LIST);

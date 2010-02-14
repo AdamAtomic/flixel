@@ -42,6 +42,10 @@ package org.flixel
 		 */
 		public var gravity:Number;
 		/**
+		 * Determines whether the emitter is currently emitting particles.
+		 */
+		public var on:Boolean;
+		/**
 		 * This variable has different effects depending on what kind of emission it is.
 		 * During an explosion, delay controls the lifespan of the particles.
 		 * During normal emission, delay controls the time between particle launches.
@@ -53,10 +57,6 @@ package org.flixel
 		 * The number of particles to launch at a time.
 		 */
 		public var quantity:uint;
-		/**
-		 * Whether the emitter is currently "on", or emitting particles.
-		 */
-		public var on:Boolean;
 		/**
 		 * The style of particle emission (all at once, or one at a time).
 		 */
@@ -100,8 +100,8 @@ package org.flixel
 			quantity = 0;
 			_counter = 0;
 			_explode = true;
-
-			kill();
+			exists = false;
+			on = false;
 		}
 		
 		/**
@@ -165,7 +165,6 @@ package org.flixel
 				s.scrollFactor = scrollFactor;
 				add(s);
 			}
-			kill();
 			return this;
 		}
 		
@@ -229,14 +228,7 @@ package org.flixel
 				_timer += FlxG.elapsed;
 				if((delay > 0) && (_timer > delay))
 				{
-					var o:FlxObject;
-					l = members.length;
-					for(i = 0; i < l; i++)
-					{
-						o = members[i] as FlxObject;
-						if(o != null)
-							o.exists = false;
-					}
+					kill();
 					return;
 				}
 				if(on)
@@ -290,10 +282,10 @@ package org.flixel
 		 * Call this function to start emitting particles.
 		 * 
 		 * @param	Explode		Whether the particles should all burst out at once.
-		 * @param	Quantity	How many particles to launch.  Default value is 0, or "all the particles".
 		 * @param	Delay		You can set the delay (or lifespan) here if you want.
+		 * @param	Quantity	How many particles to launch.  Default value is 0, or "all the particles".
 		 */
-		public function start(Explode:Boolean=true,Quantity:uint=0,Delay:Number=0):void
+		public function start(Explode:Boolean=true,Delay:Number=0,Quantity:uint=0):void
 		{
 			if(members.length <= 0)
 			{
@@ -306,6 +298,9 @@ package org.flixel
 			if(!exists)
 				_particle = 0;
 			exists = true;
+			visible = true;
+			active = true;
+			dead = false;
 			on = true;
 			_timer = 0;
 			if(quantity == 0)
@@ -375,7 +370,8 @@ package org.flixel
 		 */
 		override public function kill():void
 		{
-			exists = false;
+			super.kill();
+			on = false;
 		}
 	}
 }

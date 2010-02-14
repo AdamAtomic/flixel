@@ -53,9 +53,9 @@ except IOError:
 lines = []
 lines.append('package\r\n')
 lines.append('{\r\n')
-lines.append('\timport org.flixel.data.FlxFactory;\r\n')
+lines.append('\timport org.flixel.*;\r\n')
 lines.append('\r\n')
-lines.append('\tpublic class '+preloader+' extends FlxFactory\r\n')
+lines.append('\tpublic class '+preloader+' extends FlxPreloader\r\n')
 lines.append('\t{\r\n')
 lines.append('\t\tpublic function '+preloader+'()\r\n')
 lines.append('\t\t{\r\n')

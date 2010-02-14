@@ -148,8 +148,31 @@ package org.flixel
 		public function add(Object:FlxObject, List:uint):void
 		{
 			_oa = List;
-			
-			if(!Object._group)
+			if(Object._group)
+			{
+				var m:FlxObject;
+				var members:Array = (Object as FlxGroup).members;
+				var l:uint = members.length;
+				for(var i:uint = 0; i < l; i++)
+				{
+					m = members[i] as FlxObject;
+					if((m != null) && m.exists)
+					{
+						if(m._group)
+							add(m,List);
+						else if(m.solid)
+						{
+							_o = m;
+							_ol = _o.x;
+							_ot = _o.y;
+							_or = _o.x + _o.width;
+							_ob = _o.y + _o.height;
+							addObject();
+						}
+					}
+				}
+			}
+			if(Object.solid)
 			{
 				_o = Object;
 				_ol = _o.x;
@@ -157,31 +180,7 @@ package org.flixel
 				_or = _o.x + _o.width;
 				_ob = _o.y + _o.height;
 				addObject();
-				return;
 			}
-			
-			var m:FlxObject;
-			var members:Array = (Object as FlxGroup).members;
-			var l:uint = members.length;
-			for(var i:uint = 0; i < l; i++)
-			{
-				m = members[i] as FlxObject;
-				if((m != null) && m.exists && m.solid)
-				{
-					if(m._group)
-						add(m,List);
-					else
-					{
-						_o = m;
-						_ol = _o.x;
-						_ot = _o.y;
-						_or = _o.x + _o.width;
-						_ob = _o.y + _o.height;
-						addObject();
-					}
-				}
-			}
-			return;
 		}
 		
 		/**

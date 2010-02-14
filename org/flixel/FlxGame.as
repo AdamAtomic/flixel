@@ -6,7 +6,6 @@ package org.flixel
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.events.*;
-	import flash.geom.ColorTransform;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.text.AntiAliasType;
@@ -17,7 +16,6 @@ package org.flixel
 	import flash.utils.getTimer;
 	
 	import org.flixel.data.FlxConsole;
-	import org.flixel.data.FlxLogoPixel;
 	import org.flixel.data.FlxPause;
 
 	/**
@@ -29,7 +27,6 @@ package org.flixel
 	public class FlxGame extends Sprite
 	{
 		[Embed(source="data/nokiafc22.ttf",fontFamily="system")] protected var junk:String;
-		[Embed(source="data/poweredby.png")] protected var ImgPoweredBy:Class;
 		[Embed(source="data/beep.mp3")] protected var SndBeep:Class;
 		[Embed(source="data/flixel.mp3")] protected var SndFlixel:Class;
 
@@ -37,12 +34,7 @@ package org.flixel
 		 * Essentially locks the framerate to 30 FPS minimum
 		 */
 		internal const MAX_ELAPSED:Number = 0.0333;
-		
-		/**
-		 * Whether or not to display the flixel logo on startup.
-		 * @default true
-		 */
-		public var showLogo:Boolean;
+
 		/**
 		 * Sets 0, -, and + to control the global volume and P to pause.
 		 * @default true
@@ -82,15 +74,6 @@ package org.flixel
 		internal var _soundTrayBars:Array;
 		internal var _console:FlxConsole;
 		
-		//logo stuff
-		internal var _f:Array;
-		internal var _fc:uint;
-		internal var _logoComplete:Boolean;
-		internal var _logoTimer:Number;
-		internal var _poweredBy:Bitmap;
-		internal var _logoFade:Bitmap;
-		internal var _fSound:Class;
-		
 		/**
 		 * Game object constructor - sets up the basic properties of your game.
 		 * 
@@ -111,13 +94,8 @@ package org.flixel
 			pause = new FlxPause();
 			_state = null;
 			_iState = InitialState;
-			
+
 			useDefaultHotKeys = true;
-			
-			showLogo = true;
-			_f = null;
-			_fc = 0xffffffff;
-			_fSound = SndFlixel;
 			
 			_frame = null;
 			_gameXOffset = 0;
@@ -125,24 +103,7 @@ package org.flixel
 			
 			_paused = false;
 			_created = false;
-			_logoComplete = false;
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
-		}
-		
-		/**
-		 * Allows you to customize the sound and appearance of the flixel 'f'.
-		 * 
-		 * @param	FlixelColor		The color of the great big 'f' in the flixel logo.
-		 * @param	FlixelSound		The sound that is played over the flixel 'f' logo.
-		 * 
-		 * @return	This <code>FlxGame</code> instance.
-		 */
-		protected function setLogoFX(FlixelColor:Number,FlixelSound:Class=null):FlxGame
-		{
-			_fc = FlixelColor;
-			if(FlixelSound != null)
-				_fSound = FlixelSound;
-			return this;
 		}
 		
 		/**
@@ -269,8 +230,7 @@ package org.flixel
 		 */
 		protected function onFocusLost(event:Event=null):void
 		{
-			if(_logoComplete)
-				FlxG.pause = true;
+			FlxG.pause = true;
 		}
 		
 		/**
@@ -314,7 +274,7 @@ package org.flixel
 			//Frame timing
 			var t:uint = getTimer();
 			_elapsed = (t-_total)/1000;
-			if(_logoComplete)
+			if(_created)
 				_console.lastElapsed = _elapsed;
 			_total = t;
 			FlxG.elapsed = _elapsed;
@@ -347,7 +307,7 @@ package org.flixel
 				}
 			}
 			
-			if(_logoComplete)
+			if(_created)
 			{
 				//Animate flixel HUD elements
 				FlxG.panel.update();
@@ -412,68 +372,6 @@ package org.flixel
 					_flipped = !_flipped;
 				}
 			}
-			else if(_created)
-			{
-				if(!showLogo)
-				{
-					_logoComplete = true;
-					switchState(new _iState());
-				}
-				else
-				{
-					if(_f == null)
-					{
-						var tmp:Bitmap;
-						_f = new Array();
-						var scale:uint = 1;
-						if(FlxG.height > 200)
-							scale = 2;
-						var pixelSize:uint = 32*scale;
-						var top:int = FlxG.height*_zoom/2-pixelSize*2;
-						var left:int = FlxG.width*_zoom/2-pixelSize;
-						
-						_f.push(addChild(new FlxLogoPixel(left+pixelSize,top,pixelSize,0,_fc)) as FlxLogoPixel);
-						_f.push(addChild(new FlxLogoPixel(left,top+pixelSize,pixelSize,1,_fc)) as FlxLogoPixel);
-						_f.push(addChild(new FlxLogoPixel(left,top+pixelSize*2,pixelSize,2,_fc)) as FlxLogoPixel);
-						_f.push(addChild(new FlxLogoPixel(left+pixelSize,top+pixelSize*2,pixelSize,3,_fc)) as FlxLogoPixel);
-						_f.push(addChild(new FlxLogoPixel(left,top+pixelSize*3,pixelSize,4,_fc)) as FlxLogoPixel);
-						
-						_poweredBy = new ImgPoweredBy;
-						_poweredBy.scaleX = scale;
-						_poweredBy.scaleY = scale;
-						_poweredBy.x = FlxG.width*_zoom/2-_poweredBy.width/2;
-						_poweredBy.y = top+pixelSize*4+16;
-						var ct:ColorTransform = new ColorTransform();
-						ct.color = _fc;
-						_poweredBy.bitmapData.colorTransform(new Rectangle(0,0,_poweredBy.width,_poweredBy.height),ct);
-						addChild(_poweredBy);
-						
-						_logoFade = addChild(new Bitmap(new BitmapData(FlxG.width*_zoom,FlxG.height*_zoom,true,0xFF000000))) as Bitmap;
-						_logoFade.x = _gameXOffset*_zoom;
-						_logoFade.y = _gameYOffset*_zoom;
-						
-						if(_fSound != null)
-							FlxG.play(_fSound,0.35);
-					}
-					
-					_logoTimer += _elapsed;
-					for(i = 0; i < _f.length; i++)
-						_f[i].update();
-					if(_logoFade.alpha > 0)
-						_logoFade.alpha -= _elapsed*0.5;
-						
-					if(_logoTimer > 2)
-					{
-						removeChild(_poweredBy);
-						for(i = 0; i < _f.length; i++)
-							removeChild(_f[i]);
-						_f.length = 0;
-						removeChild(_logoFade);
-						switchState(new _iState());
-						_logoComplete = true;
-					}
-				}
-			}
 			else if(root != null)
 			{
 				//Set up the view window and double buffering
@@ -526,7 +424,7 @@ package org.flixel
 				_soundTray.visible = false;
 				_soundTray.scaleX = 2;
 				_soundTray.scaleY = 2;
-				tmp = new Bitmap(new BitmapData(80,30,true,0x7F000000));
+				var tmp:Bitmap = new Bitmap(new BitmapData(80,30,true,0x7F000000));
 				_soundTray.x = (_gameXOffset+FlxG.width/2)*_zoom-(tmp.width/2)*_soundTray.scaleX;
 				_soundTray.addChild(tmp);
 				
@@ -580,7 +478,7 @@ package org.flixel
 				
 				//All set!
 				_created = true;
-				_logoTimer = 0;
+				switchState(new _iState());
 			}
 		}
 	}
