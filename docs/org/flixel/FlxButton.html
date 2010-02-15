@@ -571,10 +571,10 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="hideInheritedMethod">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="FlxObject.html#kill()">kill</a>():void</div>
+<a class="signatureLink" href="FlxGroup.html#kill()">kill</a>():void</div>
 <div class="summaryTableDescription">
-   Call this function to "kill" a sprite so that it no longer 'exists'.</div>
-</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+   Calls kill on the group and all its members.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxGroup.html">FlxGroup</a></td>
 </tr>
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
@@ -718,6 +718,14 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <a class="signatureLink" href="FlxGroup.html#destroyMembers()">destroyMembers</a>():void</div>
 <div class="summaryTableDescription">
    Internal function that actually loops through and destroys each member.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxGroup.html">FlxGroup</a></td>
+</tr>
+<tr class="hideInheritedProtectedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxGroup.html#killMembers()">killMembers</a>():void</div>
+<div class="summaryTableDescription">
+   Internal function that calls kill on all members.</div>
 </td><td class="summaryTableOwnerCol"><a href="FlxGroup.html">FlxGroup</a></td>
 </tr>
 <tr class="">
