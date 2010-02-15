@@ -292,6 +292,7 @@ package org.flixel
 			origin.x = frameWidth/2;
 			origin.y = frameHeight/2;
 			_framePixels.copyPixels(_pixels,_flashRect,_flashPointZero);
+			_caf = 0;
 			refreshHulls();
 		}
 		
