@@ -95,7 +95,7 @@ package org.flixel
 			for(var i:uint = 0; i < rl; i++)
 			{
 				_flashRect = _rects[i] as Rectangle;
-				if(_rect != null) FlxG.buffer.copyPixels(_pixels,_flashRect,_flashPoint,null,null,true);
+				if(_flashRect != null) FlxG.buffer.copyPixels(_pixels,_flashRect,_flashPoint,null,null,true);
 				_flashPoint.x += _tileSize;
 				if(_flashPoint.x >= opx + width)
 				{
