@@ -310,7 +310,7 @@ package org.flixel
 			else if(_fadeInTimer > 0)
 			{
 				_fadeInTimer -= FlxG.elapsed;
-				fade = _fadeInTimer/_fadeOutTotal;
+				fade = _fadeInTimer/_fadeInTotal;
 				if(fade < 0) fade = 0;
 				fade = 1 - fade;
 			}
