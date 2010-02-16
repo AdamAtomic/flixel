@@ -258,7 +258,7 @@ package org.flixel
 					{
 						if(o._group)
 							o.reset(o.x+mx,o.y+my);
-						else if(!o.solid)
+						else
 						{
 							o.x += mx;
 							o.y += my;
@@ -398,22 +398,22 @@ package org.flixel
 					{
 						if(o._group)
 							o.reset(o.x+mx,o.y+my);
-						else if(solid)
-						{
-							o.colHullX.width += ((mx>0)?mx:-mx);
-							if(mx < 0)
-								o.colHullX.x += mx;
-							o.colHullY.x = x;
-							o.colHullY.height += ((my>0)?my:-my);
-							if(my < 0)
-								o.colHullY.y += my;
-							o.colVector.x += mx;
-							o.colVector.y += my;
-						}
-						else if(!o._group)
+						else
 						{
 							o.x += mx;
 							o.y += my;
+							if(solid)
+							{
+								o.colHullX.width += ((mx>0)?mx:-mx);
+								if(mx < 0)
+									o.colHullX.x += mx;
+								o.colHullY.x = x;
+								o.colHullY.height += ((my>0)?my:-my);
+								if(my < 0)
+									o.colHullY.y += my;
+								o.colVector.x += mx;
+								o.colVector.y += my;
+							}
 						}
 					}
 				}

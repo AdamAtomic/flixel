@@ -61,8 +61,10 @@ package org.flixel
 			width = 100;
 			height = 20;
 			_off = new FlxSprite().createGraphic(width,height,0xff7f7f7f);
+			_off.solid = false;
 			add(_off,true);
 			_on  = new FlxSprite().createGraphic(width,height,0xffffffff);
+			_on.solid = false;
 			add(_on,true);
 			_offT = null;
 			_onT = null;
@@ -92,6 +94,7 @@ package org.flixel
 			}
 			else
 				_on = replace(_on,ImageHighlight) as FlxSprite;
+			_on.solid = _off.solid = false;
 			_off.scrollFactor = scrollFactor;
 			_on.scrollFactor = scrollFactor;
 			width = _off.width;
