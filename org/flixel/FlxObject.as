@@ -270,8 +270,6 @@ package org.flixel
 			onFloor = false;
 			
 			angle += (angularVelocity = FlxU.computeVelocity(angularVelocity,angularAcceleration,angularDrag,maxAngular))*FlxG.elapsed;
-			if(angle < 0)
-				angle = (angle%360) + 360;
 			var thrustComponents:FlxPoint;
 			if(thrust != 0)
 			{

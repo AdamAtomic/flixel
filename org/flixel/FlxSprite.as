@@ -418,7 +418,10 @@ package org.flixel
 			if(_bakedRotation)
 			{
 				var oc:uint = _caf;
-				_caf = (angle % 360)/_bakedRotation;
+				var ta:int = angle%360;
+				if(ta < 0)
+					ta += 360;
+				_caf = ta/_bakedRotation;
 				if(oc != _caf)
 					calcFrame();
 				return;
