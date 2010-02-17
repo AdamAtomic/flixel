@@ -200,6 +200,8 @@ package org.flixel
 			collideTop = true;
 			collideBottom = true;
 			
+			origin = new FlxPoint();
+
 			velocity = new FlxPoint();
 			acceleration = new FlxPoint();
 			drag = new FlxPoint();

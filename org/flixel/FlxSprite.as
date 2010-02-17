@@ -108,7 +108,6 @@ package org.flixel
 			_flashRect = new Rectangle();
 			_flashRect2 = new Rectangle();
 			_flashPointZero = new Point();
-			origin = new FlxPoint();
 			if(SimpleGraphic == null)
 				createGraphic(8,8);
 			else
