@@ -66,16 +66,20 @@ package org.flixel
 		/**
 		 * Removes an object from the group.
 		 * 
-		 * @param	The <code>FlxObject</code> you want to remove.
+		 * @param	Object	The <code>FlxObject</code> you want to remove.
+		 * @param	Splice	Whether the object should be cut from the array entirely or not.
 		 * 
 		 * @return	The removed object.
 		 */
-		public function remove(Object:FlxObject):FlxObject
+		public function remove(Object:FlxObject,Splice:Boolean=false):FlxObject
 		{
 			var index:int = members.indexOf(Object);
 			if((index < 0) || (index >= members.length))
 				return null;
-			members[index] = null;
+			if(Splice)
+				members.splice(index,1);
+			else
+				members[index] = null;
 			return Object;
 		}
 		
@@ -87,13 +91,32 @@ package org.flixel
 		 */
 		public function getFirstAvail():FlxObject
 		{
+			var o:FlxObject;
 			var ml:uint = members.length;
 			for(var i:uint = 0; i < ml; i++)
 			{
-				if(!(members[i] as FlxObject).exists)
-					return members[i] as FlxObject;
+				o = members[i] as FlxObject;
+				if((o != null) && !o.exists)
+					return o;
 			}
 			return null;
+		}
+		
+		/**
+		 * Call this function to retrieve the first index set to 'null'.
+		 * Returns -1 if no index stores a null object.
+		 * 
+		 * @return	An <code>int</code> indicating the first null slot in the group.
+		 */
+		public function getFirstNull():int
+		{
+			var ml:uint = members.length;
+			for(var i:uint = 0; i < ml; i++)
+			{
+				if(members[i] == null)
+					return i;
+			}
+			return -1;
 		}
 		
 		/**
@@ -121,11 +144,13 @@ package org.flixel
 		 */
 		public function getFirstExtant():FlxObject
 		{
+			var o:FlxObject;
 			var ml:uint = members.length;
 			for(var i:uint = 0; i < ml; i++)
 			{
-				if((members[i] as FlxObject).exists)
-					return members[i] as FlxObject;
+				o = members[i] as FlxObject;
+				if((o != null) && o.exists)
+					return o;
 			}
 			return null;
 		}
@@ -138,11 +163,13 @@ package org.flixel
 		 */
 		public function getFirstAlive():FlxObject
 		{
+			var o:FlxObject;
 			var ml:uint = members.length;
 			for(var i:uint = 0; i < ml; i++)
 			{
-				if(!(members[i] as FlxObject).dead)
-					return members[i] as FlxObject;
+				o = members[i] as FlxObject;
+				if((o != null) && o.exists && !o.dead)
+					return o;
 			}
 			return null;
 		}
@@ -155,11 +182,13 @@ package org.flixel
 		 */
 		public function getFirstDead():FlxObject
 		{
+			var o:FlxObject;
 			var ml:uint = members.length;
 			for(var i:uint = 0; i < ml; i++)
 			{
-				if((members[i] as FlxObject).dead)
-					return members[i] as FlxObject;
+				o = members[i] as FlxObject;
+				if((o != null) && o.dead)
+					return o;
 			}
 			return null;
 		}
@@ -171,15 +200,18 @@ package org.flixel
 		 */
 		public function countLiving():int
 		{
+			var o:FlxObject;
 			var count:int = -1;
 			var ml:uint = members.length;
 			for(var i:uint = 0; i < ml; i++)
 			{
-				if(!(members[i] as FlxObject).dead)
+				o = members[i] as FlxObject;
+				if(o != null)
 				{
 					if(count < 0)
 						count = 0;
-					count++;
+					if(o.exists && !o.dead)
+						count++;
 				}
 			}
 			return count;
@@ -192,19 +224,46 @@ package org.flixel
 		 */
 		public function countDead():int
 		{
+			var o:FlxObject;
 			var count:int = -1;
 			var ml:uint = members.length;
 			for(var i:uint = 0; i < ml; i++)
 			{
-				if((members[i] as FlxObject).dead)
+				o = members[i] as FlxObject;
+				if(o != null)
 				{
 					if(count < 0)
 						count = 0;
-					count++;
+					if(o.dead)
+						count++;
 				}
 			}
 			return count;
 		}
+		
+		/**
+		 * Returns a count of how many objects in this group are on-screen right now.
+		 * 
+		 * @return	The number of <code>FlxObject</code>s that are on screen.  Returns -1 if group is empty.
+		 */
+		public function countOnScreen():int
+		{
+			var o:FlxObject;
+			var count:int = -1;
+			var ml:uint = members.length;
+			for(var i:uint = 0; i < ml; i++)
+			{
+				o = members[i] as FlxObject;
+				if(o != null)
+				{
+					if(count < 0)
+						count = 0;
+					if(o.onScreen())
+						count++;
+				}
+			}
+			return count;
+		}		
 		
 		/**
 		 * Returns a member at random from the group.
@@ -213,7 +272,16 @@ package org.flixel
 		 */
 		public function getRandom():FlxObject
 		{
-			return members[FlxU.floor(FlxU.random()*members.length)] as FlxObject;
+			var c:uint = 0;
+			var o:FlxObject = null;
+			var l:uint = members.length;
+			var i:uint = uint(FlxU.random()*l);
+			while((o == null) && (c < members.length))
+			{
+				o = members[(++i)%l] as FlxObject;
+				c++;
+			}
+			return o;
 		}
 		
 		/**
