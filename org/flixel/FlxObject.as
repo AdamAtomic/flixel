@@ -393,6 +393,8 @@ package org.flixel
 		 */
 		public function overlapsPoint(X:Number,Y:Number,PerPixel:Boolean = false):Boolean
 		{
+			X += FlxU.floor(FlxG.scroll.x);
+			Y += FlxU.floor(FlxG.scroll.y);
 			getScreenXY(_point);
 			if((X <= _point.x) || (X >= _point.x+width) || (Y <= _point.y) || (Y >= _point.y+height))
 				return false;

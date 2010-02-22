@@ -157,7 +157,7 @@ package org.flixel
 			super.update();
 
 			visibility(false);
-			if(overlapsPoint(FlxG.mouse.screenX,FlxG.mouse.screenY))
+			if(overlapsPoint(FlxG.mouse.x,FlxG.mouse.y))
 			{
 				if(!FlxG.mouse.pressed())
 					_pressed = false;
@@ -223,7 +223,7 @@ package org.flixel
 		protected function onMouseUp(event:MouseEvent):void
 		{
 			if(!exists || !visible || !active || !FlxG.mouse.justReleased() || (_callback == null)) return;
-			if(overlapsPoint(FlxG.mouse.screenX,FlxG.mouse.screenY)) _callback();
+			if(overlapsPoint(FlxG.mouse.x,FlxG.mouse.y)) _callback();
 		}
 	}
 }
