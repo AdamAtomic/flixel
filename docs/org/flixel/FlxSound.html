@@ -4,7 +4,7 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="../../style.css" type="text/css" media="screen">
 <link rel="stylesheet" href="../../print.css" type="text/css" media="print">
-<meta content="FlxSound,org.flixel.FlxSound,_channel,_core,_fadeInTimer,_fadeInTotal,_fadeOutTimer,_fadeOutTotal,_init,_looped,_pan,_pauseOnFadeOut,_point2,_position,_radius,_sound,_transform,_volume,_volumeAdjust,survive,volume,destroy,fadeIn,fadeOut,init,loadEmbedded,loadStream,looped,pause,play,proximity,stop,stopped,update,updateSound,updateTransform" name="keywords">
+<meta content="FlxSound,org.flixel.FlxSound,_channel,_core,_fadeInTimer,_fadeInTotal,_fadeOutTimer,_fadeOutTotal,_init,_looped,_pan,_pauseOnFadeOut,_point2,_position,_radius,_sound,_transform,_volume,_volumeAdjust,artist,name,playing,survive,volume,destroy,fadeIn,fadeOut,gotID3,init,loadEmbedded,loadStream,looped,pause,play,proximity,stop,stopped,update,updateSound,updateTransform" name="keywords">
 <title>org.flixel.FlxSound</title>
 </head>
 <body>
@@ -92,6 +92,11 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#angularVelocity">angularVelocity</a> : Number<div class="summaryTableDescription">
    This is how fast you want this sprite to spin.</div>
 </td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#artist">artist</a> : String<div class="summaryTableDescription">
+   The ID3 artist name.</div>
+</td><td class="summaryTableOwnerCol">FlxSound</td>
 </tr>
 <tr class="hideInheritedProperty">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxRect.html#bottom">bottom</a> : Number<div class="summaryTableDescription">
@@ -206,6 +211,11 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
    Set this to false if you want to skip the automatic motion/movement stuff (see <code>updateMotion()</code>).</div>
 </td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
 </tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#name">name</a> : String<div class="summaryTableDescription">
+   The ID3 song name.</div>
+</td><td class="summaryTableOwnerCol">FlxSound</td>
+</tr>
 <tr class="hideInheritedProperty">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#onFloor">onFloor</a> : Boolean<div class="summaryTableDescription">
    Flag that indicates whether or not you just hit the floor.</div>
@@ -216,6 +226,11 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <div class="summaryTableDescription">
    WARNING: The origin of the sprite will default to its center.</div>
 </td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#playing">playing</a> : Boolean<div class="summaryTableDescription">
+   Whether the sound is currently playing or not.</div>
+</td><td class="summaryTableOwnerCol">FlxSound</td>
 </tr>
 <tr class="hideInheritedProperty">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxRect.html#right">right</a> : Number<div class="summaryTableDescription">
@@ -683,6 +698,14 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
+<a class="signatureLink" href="#gotID3()">gotID3</a>(event:Event = null):void</div>
+<div class="summaryTableDescription">
+   Internal event handler for ID3 info (i.e.</div>
+</td><td class="summaryTableOwnerCol">FlxSound</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
 <a class="signatureLink" href="#init()">init</a>():void</div>
 <div class="summaryTableDescription">
    An internal function for clearing all the variables used by sounds.</div>
@@ -761,10 +784,20 @@ showHideInherited();
 <div class="MainContent">
 <a name="propertyDetail"></a>
 <div class="detailSectionHeader">Property detail</div>
+<a name="artist"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">artist</td><td class="detailHeaderType">property</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var artist:String</code><p>
+   The ID3 artist name.  Defaults to null.  Currently only works for streamed sounds.
+   </p></div>
 <a name="_channel"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
-<td class="detailHeaderName">_channel</td><td class="detailHeaderType">property</td>
+<td class="detailHeaderName">_channel</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
 </tr>
 </table>
 <div class="detailBody">
@@ -833,6 +866,16 @@ showHideInherited();
 <div class="detailBody">
 <code>protected var _looped:Boolean</code>
 </div>
+<a name="name"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">name</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var name:String</code><p>
+   The ID3 song name.  Defaults to null.  Currently only works for streamed sounds.
+   </p></div>
 <a name="_pan"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -851,6 +894,16 @@ showHideInherited();
 <div class="detailBody">
 <code>protected var _pauseOnFadeOut:Boolean</code>
 </div>
+<a name="playing"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">playing</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var playing:Boolean</code><p>
+   Whether the sound is currently playing or not.
+   </p></div>
 <a name="_point2"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -1004,6 +1057,24 @@ showHideInherited();
 </tr>
 <tr>
 <td width="20px"></td><td><code><span class="label">PauseInstead</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash; Tells the sound to pause on fadeout, instead of stopping.
+   </td>
+</tr>
+</table>
+</div>
+<a name="gotID3()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">gotID3</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected function gotID3(event:Event = null):void</code><p>
+   Internal event handler for ID3 info (i.e. fetching the song name).
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">event</span>:Event</code> (default = <code>null</code>)<code></code> &mdash; An <code>Event</code> object.
    </td>
 </tr>
 </table>

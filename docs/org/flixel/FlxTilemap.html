@@ -478,7 +478,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#follow()">follow</a>():void</div>
+<a class="signatureLink" href="#follow()">follow</a>(Border:int = 0):void</div>
 <div class="summaryTableDescription">
    Call this function to lock the automatic camera to the map's edges.</div>
 </td><td class="summaryTableOwnerCol">FlxTilemap</td>
@@ -650,7 +650,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#setTile()">setTile</a>(X:uint, Y:uint, Tile:uint, UpdateGraphics:Boolean = true):void</div>
+<a class="signatureLink" href="#setTile()">setTile</a>(X:uint, Y:uint, Tile:uint, UpdateGraphics:Boolean = true):Boolean</div>
 <div class="summaryTableDescription">
    Change the data and graphic of a tile in the tilemap.</div>
 </td><td class="summaryTableOwnerCol">FlxTilemap</td>
@@ -658,7 +658,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#setTileByIndex()">setTileByIndex</a>(Index:uint, Tile:uint, UpdateGraphics:Boolean = true):void</div>
+<a class="signatureLink" href="#setTileByIndex()">setTileByIndex</a>(Index:uint, Tile:uint, UpdateGraphics:Boolean = true):Boolean</div>
 <div class="summaryTableDescription">
    Change the data and graphic of a tile in the tilemap.</div>
 </td><td class="summaryTableOwnerCol">FlxTilemap</td>
@@ -1047,9 +1047,17 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public function follow():void</code><p>
+<code>public function follow(Border:int = 0):void</code><p>
    Call this function to lock the automatic camera to the map's edges.
-   </p></div>
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">Border</span>:int</code> (default = <code>0</code>)<code></code> &mdash;  Adjusts the camera follow boundary by whatever number of tiles you specify here.  Handy for blocking off deadends that are offscreen, etc.  Use a negative number to add padding instead of hiding the edges.
+   </td>
+</tr>
+</table>
+</div>
 <a name="getTile()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -1382,7 +1390,7 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public function setTile(X:uint, Y:uint, Tile:uint, UpdateGraphics:Boolean = true):void</code><p>
+<code>public function setTile(X:uint, Y:uint, Tile:uint, UpdateGraphics:Boolean = true):Boolean</code><p>
    Change the data and graphic of a tile in the tilemap.
    
    </p><span class="label">Parameters</span>
@@ -1410,6 +1418,15 @@ showHideInherited();
 </tr>
 <tr>
 <td width="20px"></td><td><code><span class="label">UpdateGraphics</span>:Boolean</code> (default = <code>true</code>)<code></code> &mdash; Whether the graphical representation of this tile should change.
+   
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code> &mdash; Whether or not the tile was actually changed.
    </td>
 </tr>
 </table>
@@ -1421,7 +1438,7 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public function setTileByIndex(Index:uint, Tile:uint, UpdateGraphics:Boolean = true):void</code><p>
+<code>public function setTileByIndex(Index:uint, Tile:uint, UpdateGraphics:Boolean = true):Boolean</code><p>
    Change the data and graphic of a tile in the tilemap.
    
    </p><span class="label">Parameters</span>
@@ -1442,6 +1459,15 @@ showHideInherited();
 </tr>
 <tr>
 <td width="20px"></td><td><code><span class="label">UpdateGraphics</span>:Boolean</code> (default = <code>true</code>)<code></code> &mdash; Whether the graphical representation of this tile should change.
+   
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code> &mdash; Whether or not the tile was actually changed.
    </td>
 </tr>
 </table>

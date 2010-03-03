@@ -27,20 +27,27 @@ package org.flixel
 		 */
 		public function FlxText(X:Number, Y:Number, Width:uint, Text:String=null)
 		{
+			super(X,Y);
+			createGraphic(Width,1);
+			
 			if(Text == null)
 				Text = "";
 			_tf = new TextField();
 			_tf.width = Width;
-			_tf.height = 1;
 			_tf.embedFonts = true;
 			_tf.selectable = false;
 			_tf.sharpness = 100;
 			_tf.multiline = true;
 			_tf.wordWrap = true;
-			_tf.defaultTextFormat = new TextFormat("system",8,0xffffff);
 			_tf.text = Text;
-			super(X,Y);
-			createGraphic(Width,1);
+			var tf:TextFormat = new TextFormat("system",8,0xffffff);
+			_tf.defaultTextFormat = tf;
+			_tf.setTextFormat(tf);
+			if(Text.length <= 0)
+				_tf.height = 1;
+			else
+				_tf.height = 10;
+			
 			_regen = true;
 			_shadow = 0;
 			solid = false;
@@ -202,7 +209,7 @@ package org.flixel
 			//Just leave if there's no text to render
 			if((_tf == null) || (_tf.text == null) || (_tf.text.length <= 0))
 			{
-				_framePixels.fillRect(_flashRect,0);
+				_pixels.fillRect(_flashRect,0);
 				return;
 			}
 			if(_regen)
@@ -213,9 +220,9 @@ package org.flixel
 				for(var i:uint = 0; i < nl; i++)
 					height += _tf.getLineMetrics(i).height;
 				height += 4; //account for 2px gutter on top and bottom
-				_framePixels = new BitmapData(width,height,true,0);
+				_pixels = new BitmapData(width,height,true,0);
 				frameHeight = height;
-				_tf.height = height*1.2;
+				_tf.height = height*1.2;				
 				_flashRect.x = 0;
 				_flashRect.y = 0;
 				_flashRect.width = width;
@@ -223,7 +230,7 @@ package org.flixel
 				_regen = false;
 			}
 			else	//Else just clear the old buffer before redrawing the text
-				_framePixels.fillRect(_flashRect,0);
+				_pixels.fillRect(_flashRect,0);
 			
 			//Now that we've cleared a buffer, we need to actually render the text to it
 			var tf:TextFormat = _tf.defaultTextFormat;
@@ -241,13 +248,15 @@ package org.flixel
 			{
 				_tf.setTextFormat(new TextFormat(tfa.font,tfa.size,_shadow,null,null,null,null,null,tfa.align));				
 				_mtx.translate(1,1);
-				_framePixels.draw(_tf,_mtx,_ct);
+				_pixels.draw(_tf,_mtx,_ct);
 				_mtx.translate(-1,-1);
 				_tf.setTextFormat(new TextFormat(tfa.font,tfa.size,tfa.color,null,null,null,null,null,tfa.align));
 			}
 			//Actually draw the text onto the buffer
-			_framePixels.draw(_tf,_mtx,_ct);
+			_pixels.draw(_tf,_mtx,_ct);
 			_tf.setTextFormat(new TextFormat(tf.font,tf.size,tf.color,null,null,null,null,null,tf.align));
+			_framePixels = new BitmapData(_pixels.width,_pixels.height,true,0);
+			_framePixels.copyPixels(_pixels,_flashRect,_flashPointZero);
 			if(solid)
 				refreshHulls();
 		}

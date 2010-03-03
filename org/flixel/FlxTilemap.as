@@ -236,11 +236,11 @@ package org.flixel
 			var ih:uint = Math.ceil(Core.height/_tileHeight)+1;
 			for(var r:uint = 0; r < ih; r++)
 			{
-				if((r < 0) || (r >= heightInTiles)) break;
+				if(r >= heightInTiles) break;
 				d = (iy+r)*widthInTiles+ix;
 				for(c = 0; c < iw; c++)
 				{
-					if((c < 0) || (c >= widthInTiles)) break;
+					if(c >= widthInTiles) break;
 					dd = _data[d+c] as uint;
 					if(dd >= collideIndex)
 						blocks.push({x:x+(ix+c)*_tileWidth,y:y+(iy+r)*_tileHeight,data:dd});
@@ -288,17 +288,17 @@ package org.flixel
 			var c:uint;
 			var d:uint;
 			colOffsets.length = 0;
-			var ix:uint = FlxU.floor((Object.x - x)/_tileWidth);
-			var iy:uint = FlxU.floor((Object.y - y)/_tileHeight);
+			var ix:int = FlxU.floor((Object.x - x)/_tileWidth);
+			var iy:int = FlxU.floor((Object.y - y)/_tileHeight);
 			var iw:uint = FlxU.ceil(Object.width/_tileWidth)+1;
 			var ih:uint = FlxU.ceil(Object.height/_tileHeight)+1;
 			for(var r:uint = 0; r < ih; r++)
 			{
-				if((r < 0) || (r >= heightInTiles)) break;
+				if(r >= heightInTiles) break;
 				d = (iy+r)*widthInTiles+ix;
 				for(c = 0; c < iw; c++)
 				{
-					if((c < 0) || (c >= widthInTiles)) break;
+					if(c >= widthInTiles) break;
 					if((_data[d+c] as uint) >= collideIndex)
 						colOffsets.push(new FlxPoint(x+(ix+c)*_tileWidth, y+(iy+r)*_tileHeight));
 				}
@@ -337,10 +337,14 @@ package org.flixel
 		 * @param	Y				The Y coordinate of the tile (in tiles, not pixels).
 		 * @param	Tile			The new integer data you wish to inject.
 		 * @param	UpdateGraphics	Whether the graphical representation of this tile should change.
+		 * 
+		 * @return	Whether or not the tile was actually changed.
 		 */ 
-		public function setTile(X:uint,Y:uint,Tile:uint,UpdateGraphics:Boolean=true):void
+		public function setTile(X:uint,Y:uint,Tile:uint,UpdateGraphics:Boolean=true):Boolean
 		{
-			setTileByIndex(Y * widthInTiles + X,Tile,UpdateGraphics);
+			if((X >= widthInTiles) || (Y >= heightInTiles))
+				return false;
+			return setTileByIndex(Y * widthInTiles + X,Tile,UpdateGraphics);
 		}
 		
 		/**
@@ -349,18 +353,24 @@ package org.flixel
 		 * @param	Index			The slot in the data array (Y * widthInTiles + X) where this tile is stored.
 		 * @param	Tile			The new integer data you wish to inject.
 		 * @param	UpdateGraphics	Whether the graphical representation of this tile should change.
+		 * 
+		 * @return	Whether or not the tile was actually changed.
 		 */
-		public function setTileByIndex(Index:uint,Tile:uint,UpdateGraphics:Boolean=true):void
+		public function setTileByIndex(Index:uint,Tile:uint,UpdateGraphics:Boolean=true):Boolean
 		{
+			if(Index >= _data.length)
+				return false;
+			
+			var ok:Boolean = true;
 			_data[Index] = Tile;
 			
 			if(!UpdateGraphics)
-				return;
+				return ok;
 			
 			if(auto == OFF)
 			{
 				updateTile(Index);
-				return;
+				return ok;
 			}
 
 			//If this map is autotiled and it changes, locally update the arrangement
@@ -381,6 +391,8 @@ package org.flixel
 					}
 				}
 			}
+			
+			return ok;
 		}
 		
 		/**
@@ -399,10 +411,12 @@ package org.flixel
 		
 		/**
 		 * Call this function to lock the automatic camera to the map's edges.
+		 * 
+		 * @param	Border		Adjusts the camera follow boundary by whatever number of tiles you specify here.  Handy for blocking off deadends that are offscreen, etc.  Use a negative number to add padding instead of hiding the edges.
 		 */
-		public function follow():void
+		public function follow(Border:int=0):void
 		{
-			FlxG.followBounds(x,y,width,height);
+			FlxG.followBounds(x+Border*_tileWidth,y+Border*_tileHeight,width-Border*_tileWidth,height-Border*_tileHeight);
 		}
 		
 		/**

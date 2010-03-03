@@ -15,6 +15,18 @@ package org.flixel
 		 * Whether or not this sound should be automatically destroyed when you switch states.
 		 */
 		public var survive:Boolean;
+		/**
+		 * Whether the sound is currently playing or not.
+		 */
+		public var playing:Boolean;
+		/**
+		 * The ID3 song name.  Defaults to null.  Currently only works for streamed sounds.
+		 */
+		public var name:String;
+		/**
+		 * The ID3 artist name.  Defaults to null.  Currently only works for streamed sounds.
+		 */
+		public var artist:String;
 		
 		protected var _init:Boolean;
 		protected var _sound:Sound;
@@ -68,6 +80,9 @@ package org.flixel
 			active = false;
 			visible = false;
 			solid = false;
+			playing = false;
+			name = null;
+			artist = null;
 		}
 		
 		/**
@@ -83,6 +98,7 @@ package org.flixel
 			stop();
 			init();
 			_sound = new EmbeddedSound;
+			//NOTE: can't pull ID3 info from embedded sound currently
 			_looped = Looped;
 			updateTransform();
 			active = true;
@@ -101,7 +117,9 @@ package org.flixel
 		{
 			stop();
 			init();
-			_sound = new Sound(new URLRequest(SoundURL));
+			_sound = new Sound();
+			_sound.addEventListener(Event.ID3, gotID3);
+			_sound.load(new URLRequest(SoundURL));
 			_looped = Looped;
 			updateTransform();
 			active = true;
@@ -174,6 +192,7 @@ package org.flixel
 						active = false;
 				}
 			}
+			playing = (_channel != null);
 			_position = 0;
 		}
 		
@@ -195,6 +214,7 @@ package org.flixel
 					_position -= _sound.length;
 			}
 			_channel = null;
+			playing = false;
 		}
 		
 		/**
@@ -374,6 +394,22 @@ package org.flixel
 	        	_channel.removeEventListener(Event.SOUND_COMPLETE,looped);
 	        _channel = null;
 	        active = false;
+			playing = false;
+		}
+		
+		/**
+		 * Internal event handler for ID3 info (i.e. fetching the song name).
+		 * 
+		 * @param	event	An <code>Event</code> object.
+		 */
+		protected function gotID3(event:Event=null):void
+		{
+			FlxG.log("got ID3 info!");
+			if(_sound.id3.songName.length > 0)
+				name = _sound.id3.songName;
+			if(_sound.id3.artist.length > 0)
+				artist = _sound.id3.artist;
+			_sound.removeEventListener(Event.ID3, gotID3);
 		}
 	}
 }

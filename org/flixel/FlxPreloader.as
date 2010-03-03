@@ -88,7 +88,7 @@ package org.flixel
             }
 			
 			var tmp:Bitmap;
-			if(!FlxG.debug && (myURL != null) && (myURL.length > 0))
+			if(!FlxG.debug && (myURL != null) && (root.loaderInfo.url.indexOf(myURL) < 0))
 			{
 				tmp = new Bitmap(new BitmapData(stage.stageWidth,stage.stageHeight,true,0xFFFFFFFF));
 				addChild(tmp);
@@ -98,6 +98,7 @@ package org.flixel
 				fmt.size = 16;
 				fmt.align = "center";
 				fmt.bold = true;
+				fmt.font = "system";
 				
 				var txt:TextField = new TextField();
 				txt.width = tmp.width-16;
@@ -105,8 +106,9 @@ package org.flixel
 				txt.y = 8;
 				txt.multiline = true;
 				txt.wordWrap = true;
+				txt.embedFonts = true;
 				txt.defaultTextFormat = fmt;
-				txt.text = "Hi there!  It looks like somebody copied this game without my permission.  If you would like to play it at my site with NO annoying ads, just click anywhere, or copy-paste this URL into your browser.\n\n"+myURL+"\n\nThanks, and have fun!";
+				txt.text = "Hi there!  It looks like somebody copied this game without my permission.  Just click anywhere, or copy-paste this URL into your browser.\n\n"+myURL+"\n\nto play the game at my site.  Thanks, and have fun!";
 				addChild(txt);
 				
 				txt.addEventListener(MouseEvent.CLICK,goToMyURL);
