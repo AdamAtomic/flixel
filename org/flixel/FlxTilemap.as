@@ -88,7 +88,7 @@ package org.flixel
 			widthInTiles = 0;
 			heightInTiles = 0;
 			totalTiles = 0;
-			_data = new Array();
+			_data = null;
 			_tileWidth = 0;
 			_tileHeight = 0;
 			_rects = null;
@@ -117,6 +117,7 @@ package org.flixel
 			var cols:Array;
 			var rows:Array = MapData.split("\n");
 			heightInTiles = rows.length;
+			_data = new Array();
 			for(var r:uint = 0; r < heightInTiles; r++)
 			{
 				cols = rows[r].split(",");
