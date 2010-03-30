@@ -286,24 +286,34 @@ package org.flixel
 		 */
 		override public function preCollide(Object:FlxObject):void
 		{
+			var r:uint;
 			var c:uint;
-			var d:uint;
-			colOffsets.length = 0;
+			var rs:uint;
+			var col:uint = 0;
 			var ix:int = FlxU.floor((Object.x - x)/_tileWidth);
 			var iy:int = FlxU.floor((Object.y - y)/_tileHeight);
-			var iw:uint = FlxU.ceil(Object.width/_tileWidth)+1;
-			var ih:uint = FlxU.ceil(Object.height/_tileHeight)+1;
-			for(var r:uint = 0; r < ih; r++)
+			var iw:uint = ix + FlxU.ceil(Object.width/_tileWidth)+1;
+			var ih:uint = iy + FlxU.ceil(Object.height/_tileHeight)+1;
+			if(ix < 0)
+				ix = 0;
+			if(iy < 0)
+				iy = 0;
+			if(iw > widthInTiles)
+				iw = widthInTiles;
+			if(ih > heightInTiles)
+				ih = heightInTiles;
+			rs = iy*widthInTiles;
+			for(r = iy; r < ih; r++)
 			{
-				if(r >= heightInTiles) break;
-				d = (iy+r)*widthInTiles+ix;
-				for(c = 0; c < iw; c++)
+				for(c = ix; c < iw; c++)
 				{
-					if(c >= widthInTiles) break;
-					if((_data[d+c] as uint) >= collideIndex)
-						colOffsets.push(new FlxPoint(x+(ix+c)*_tileWidth, y+(iy+r)*_tileHeight));
+					if((_data[rs+c] as uint) >= collideIndex)
+						colOffsets[col++] = new FlxPoint(x+c*_tileWidth, y+r*_tileHeight);
 				}
+				rs += widthInTiles;
 			}
+			if(colOffsets.length != col)
+				colOffsets.length = col;
 		}
 		
 		/**
@@ -405,6 +415,7 @@ package org.flixel
 		 */
 		public function setCallback(Tile:uint,Callback:Function,Range:uint=1):void
 		{
+			FlxG.log("FlxTilemap.setCallback() has been temporarily deprecated, sorry!");
 			if(Range <= 0) return;
 			for(var i:uint = Tile; i < Tile+Range; i++)
 				_callbacks[i] = Callback;

@@ -4,6 +4,7 @@ package org.flixel
 	import flash.net.navigateToURL;
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
+	import flash.utils.getTimer;
 	
 	public class FlxU
 	{
@@ -29,6 +30,10 @@ package org.flixel
 		 * This is the eligible game collision space.
 		 */
 		static public var quadTreeBounds:FlxRect;
+		/**
+		 * Controls the granularity of the quad tree.  Default is 3 (decent performance on large and small worlds).
+		 */
+		static public var quadTreeDivisions:uint = 3;
 		
 		/**
 		 * Opens a web page in a new tab or window.
@@ -121,6 +126,38 @@ package org.flixel
 		{
 			_seed = Seed;
 			_originalSeed = _seed;
+		}
+		
+		/**
+		 * Useful for finding out how long it takes to execute specific blocks of code.
+		 * 
+		 * @return	A <code>uint</code> to be passed to <code>FlxU.endProfile()</code>.
+		 */
+		static public function startProfile():uint
+		{
+			return getTimer();
+			retur
+			_elapsed = (t-_total)/1000;
+			if(_created)
+				_console.lastElapsed = _elapsed;
+			_total = t;
+		}
+		
+		/**
+		 * Useful for finding out how long it takes to execute specific blocks of code.
+		 * 
+		 * @param	Start	A <code>uint</code> created by <code>FlxU.startProfile()</code>.
+		 * @param	Name	Optional tag (for debug console display).  Default value is "Profiler".
+		 * @param	Log		Whether or not to log this elapsed time in the debug console.
+		 * 
+		 * @return	A <code>uint</code> to be passed to <code>FlxU.endProfile()</code>.
+		 */
+		static public function endProfile(Start:uint,Name:String="Profiler",Log:Boolean=true):uint
+		{
+			var t:uint = getTimer();
+			if(Log)
+				FlxG.log(Name+": "+((t-Start)/1000)+"s");
+			return t;
 		}
 		
 		/**
@@ -230,12 +267,13 @@ package org.flixel
 		 * it's pretty huge - 256x the size of the screen, whatever that may be.
 		 * Leave width and height empty if you want to just update the game world's position.
 		 * 
-		 * @param	X		The X-coordinate of the left side of the game world.
-		 * @param	Y		The Y-coordinate of the top of the game world.
-		 * @param	Width	Desired width of the game world.
-		 * @param	Height	Desired height of the game world.
+		 * @param	X			The X-coordinate of the left side of the game world.
+		 * @param	Y			The Y-coordinate of the top of the game world.
+		 * @param	Width		Desired width of the game world.
+		 * @param	Height		Desired height of the game world.
+		 * @param	Divisions	Pass a non-zero value to set <code>quadTreeDivisions</code>.  Default value is 3.
 		 */
-		static public function setWorldBounds(X:Number=0, Y:Number=0, Width:Number=0, Height:Number=0):void
+		static public function setWorldBounds(X:Number=0, Y:Number=0, Width:Number=0, Height:Number=0, Divisions:uint=3):void
 		{
 			if((X == 0) && (Y == 0) && (Width == 0) && (Height == 0))
 			{
@@ -252,6 +290,8 @@ package org.flixel
 				quadTreeBounds.width = Width;
 			if(Height != 0)
 				quadTreeBounds.height = Height;
+			if(Divisions > 0)
+				quadTreeDivisions = Divisions;
 		}
 		
 		/**

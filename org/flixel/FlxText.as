@@ -28,7 +28,7 @@ package org.flixel
 		public function FlxText(X:Number, Y:Number, Width:uint, Text:String=null)
 		{
 			super(X,Y);
-			createGraphic(Width,1);
+			createGraphic(Width,1,0);
 			
 			if(Text == null)
 				Text = "";
@@ -62,7 +62,7 @@ package org.flixel
 		 * @param	Size		The size of the font (in pixels essentially).
 		 * @param	Color		The color of the text in traditional flash 0xRRGGBB format.
 		 * @param	Alignment	A string representing the desired alignment ("left,"right" or "center").
-		 * @param	ShadowColow	A uint representing the desired text shadow color in flash 0xRRGGBB format.
+		 * @param	ShadowColor	A uint representing the desired text shadow color in flash 0xRRGGBB format.
 		 * 
 		 * @return	This FlxText instance (nice for chaining stuff together, if you're into that).
 		 */
@@ -206,12 +206,6 @@ package org.flixel
 		 */
 		override protected function calcFrame():void
 		{
-			//Just leave if there's no text to render
-			if((_tf == null) || (_tf.text == null) || (_tf.text.length <= 0))
-			{
-				_pixels.fillRect(_flashRect,0);
-				return;
-			}
 			if(_regen)
 			{
 				//Need to generate a new buffer to store the text graphic
@@ -232,29 +226,34 @@ package org.flixel
 			else	//Else just clear the old buffer before redrawing the text
 				_pixels.fillRect(_flashRect,0);
 			
-			//Now that we've cleared a buffer, we need to actually render the text to it
-			var tf:TextFormat = _tf.defaultTextFormat;
-			var tfa:TextFormat = tf;
-			_mtx.identity();
-			//If it's a single, centered line of text, we center it ourselves so it doesn't blur to hell
-			if((tf.align == "center") && (_tf.numLines == 1))
+			if((_tf != null) && (_tf.text != null) && (_tf.text.length > 0))
 			{
-				tfa = new TextFormat(tf.font,tf.size,tf.color,null,null,null,null,null,"left");
-				_tf.setTextFormat(tfa);				
-				_mtx.translate(Math.floor((width - _tf.getLineMetrics(0).width)/2),0);
-			}
-			//Render a single pixel shadow beneath the text
-			if(_shadow > 0)
-			{
-				_tf.setTextFormat(new TextFormat(tfa.font,tfa.size,_shadow,null,null,null,null,null,tfa.align));				
-				_mtx.translate(1,1);
+				//Now that we've cleared a buffer, we need to actually render the text to it
+				var tf:TextFormat = _tf.defaultTextFormat;
+				var tfa:TextFormat = tf;
+				_mtx.identity();
+				//If it's a single, centered line of text, we center it ourselves so it doesn't blur to hell
+				if((tf.align == "center") && (_tf.numLines == 1))
+				{
+					tfa = new TextFormat(tf.font,tf.size,tf.color,null,null,null,null,null,"left");
+					_tf.setTextFormat(tfa);				
+					_mtx.translate(Math.floor((width - _tf.getLineMetrics(0).width)/2),0);
+				}
+				//Render a single pixel shadow beneath the text
+				if(_shadow > 0)
+				{
+					_tf.setTextFormat(new TextFormat(tfa.font,tfa.size,_shadow,null,null,null,null,null,tfa.align));				
+					_mtx.translate(1,1);
+					_pixels.draw(_tf,_mtx,_ct);
+					_mtx.translate(-1,-1);
+					_tf.setTextFormat(new TextFormat(tfa.font,tfa.size,tfa.color,null,null,null,null,null,tfa.align));
+				}
+				//Actually draw the text onto the buffer
 				_pixels.draw(_tf,_mtx,_ct);
-				_mtx.translate(-1,-1);
-				_tf.setTextFormat(new TextFormat(tfa.font,tfa.size,tfa.color,null,null,null,null,null,tfa.align));
+				_tf.setTextFormat(new TextFormat(tf.font,tf.size,tf.color,null,null,null,null,null,tf.align));
 			}
-			//Actually draw the text onto the buffer
-			_pixels.draw(_tf,_mtx,_ct);
-			_tf.setTextFormat(new TextFormat(tf.font,tf.size,tf.color,null,null,null,null,null,tf.align));
+			
+			//Finally, update the visible pixels
 			_framePixels = new BitmapData(_pixels.width,_pixels.height,true,0);
 			_framePixels.copyPixels(_pixels,_flashRect,_flashPointZero);
 			if(solid)

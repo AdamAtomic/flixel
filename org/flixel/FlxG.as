@@ -1,6 +1,5 @@
 package org.flixel
 {
-	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.Stage;
 	import flash.geom.Matrix;
@@ -28,7 +27,7 @@ package org.flixel
 		 * Assign a minor version to your library.
 		 * Appears after the decimal in the console.
 		 */
-		static public var LIBRARY_MINOR_VERSION:uint = 24;
+		static public var LIBRARY_MINOR_VERSION:uint = 3;
 
 		/**
 		 * Internal tracker for game object (so we can pause & unpause)
@@ -48,6 +47,14 @@ package org.flixel
 		 * Represents the amount of time in seconds that passed since last frame.
 		 */
 		static public var elapsed:Number;
+		/**
+		 * The desired framerate for the game; default is 60.
+		 */
+		static public var framerate:uint;
+		/**
+		 * The desired framerate while paused; default is 5.
+		 */
+		static public var frameratePaused:uint;
 		/**
 		 * How fast or slow time should pass in the game; default is 1.0.
 		 */
@@ -518,8 +525,8 @@ package org.flixel
 		{
 			followTarget = Target;
 			followLerp = Lerp;
-			_scrollTarget.x = (width>>1)-followTarget.x-(followTarget.width>>1)+(followTarget as FlxSprite).offset.x;
-			_scrollTarget.y = (height>>1)-followTarget.y-(followTarget.height>>1)+(followTarget as FlxSprite).offset.y;
+			_scrollTarget.x = (width>>1)-followTarget.x-(followTarget.width>>1);
+			_scrollTarget.y = (height>>1)-followTarget.y-(followTarget.height>>1);
 			scroll.x = _scrollTarget.x;
 			scroll.y = _scrollTarget.y;
 			doFollow();
@@ -555,7 +562,7 @@ package org.flixel
 			if(followMax.y > followMin.y)
 				followMax.y = followMin.y;
 			if(UpdateWorldBounds)
-				FlxU.setWorldBounds(-MinX,-MinY,-MinX+MaxX,-MinY+MaxY);
+				FlxU.setWorldBounds(MinX,MinY,MaxX-MinX,MaxY-MinY);
 			doFollow();
 		}
 		
@@ -612,6 +619,8 @@ package org.flixel
 			kong = null;
 			pause = false;
 			timeScale = 1.0;
+			framerate = 55;
+			frameratePaused = 5;
 			
 			panel = new FlxPanel();
 			quake = new FlxQuake(Zoom);
@@ -628,8 +637,8 @@ package org.flixel
 		{
 			if(followTarget != null)
 			{
-				_scrollTarget.x = (width>>1)-followTarget.x-(followTarget.width>>1)+(followTarget as FlxSprite).offset.x;
-				_scrollTarget.y = (height>>1)-followTarget.y-(followTarget.height>>1)+(followTarget as FlxSprite).offset.y;
+				_scrollTarget.x = (width>>1)-followTarget.x-(followTarget.width>>1);
+				_scrollTarget.y = (height>>1)-followTarget.y-(followTarget.height>>1);
 				if((followLead != null) && (followTarget is FlxSprite))
 				{
 					_scrollTarget.x -= (followTarget as FlxSprite).velocity.x*followLead.x;

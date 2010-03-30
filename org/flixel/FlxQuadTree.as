@@ -12,10 +12,6 @@ package org.flixel
 	public class FlxQuadTree extends FlxRect
 	{
 		/**
-		 * The minimum quadrant or leaf size.  This size seems to yield the best performance.
-		 */
-		static public const MIN:Number = 48;
-		/**
 		 * Flag for specifying that you want to add an object to the A list.
 		 */
 		static public const A_LIST:uint = 0;
@@ -41,6 +37,7 @@ package org.flixel
 		/**
 		 * These variables refer to the potential child quadrants for this node.
 		 */
+		static protected var _min:uint;
 		protected var _nw:FlxQuadTree;
 		protected var _ne:FlxQuadTree;
 		protected var _se:FlxQuadTree;
@@ -68,16 +65,15 @@ package org.flixel
 		/**
 		 * Instantiate a new Quad Tree node.
 		 * 
-		 * @param	X		The X-coordinate of the point in space.
-		 * @param	Y		The Y-coordinate of the point in space.
-		 * @param	Width	Desired width of this node.
-		 * @param	Height	Desired height of this node.
-		 * @param	Parent	The parent branch or node.  Pass null to create a root.
+		 * @param	X			The X-coordinate of the point in space.
+		 * @param	Y			The Y-coordinate of the point in space.
+		 * @param	Width		Desired width of this node.
+		 * @param	Height		Desired height of this node.
+		 * @param	Parent		The parent branch or node.  Pass null to create a root.
 		 */
 		public function FlxQuadTree(X:Number, Y:Number, Width:Number, Height:Number, Parent:FlxQuadTree=null)
 		{
 			super(X,Y,Width,Height);
-			_canSubdivide = (Width > MIN) || (Height > MIN);
 			_headA = _tailA = new FlxList();
 			_headB = _tailB = new FlxList();
 			
@@ -86,7 +82,7 @@ package org.flixel
 			FlxState.screen.draw(brush,X+FlxG.scroll.x,Y+FlxG.scroll.y);//*/
 			
 			//Copy the parent's children (if there are any)
-			if(Parent)
+			if(Parent != null)
 			{
 				var itr:FlxList;
 				var ot:FlxList;
@@ -121,6 +117,9 @@ package org.flixel
 					}
 				}
 			}
+			else
+				_min = (width + height)/(2*FlxU.quadTreeDivisions);
+			_canSubdivide = (width > _min) || (height > _min);
 			
 			//Set up comparison/sort helpers
 			_nw = null;

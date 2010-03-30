@@ -13,6 +13,7 @@ package org.flixel
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	import flash.ui.Mouse;
+	import flash.utils.Timer;
 	import flash.utils.getTimer;
 	
 	import org.flixel.data.FlxConsole;
@@ -26,12 +27,21 @@ package org.flixel
 	 */
 	public class FlxGame extends Sprite
 	{
-		[Embed(source="data/nokiafc22.ttf",fontFamily="system")] protected var junk:String;
+		// NOTE: Flex 4 introduces DefineFont4, which is used by default and does not work in native text fields.
+		// Use the embedAsCFF="false" param to switch back to DefineFont4. In earlier Flex 4 SDKs this was cff="false".
+		// So if you are using the Flex 3.x SDK compiler, switch the embed statment below to expose the correct version.
+		
+		//Flex v4.x SDK only (see note above):
+		[Embed(source="data/nokiafc22.ttf",fontFamily="system",embedAsCFF="false")] protected var junk:String;
+		
+		//Flex v3.x SDK only (see note above):
+		//[Embed(source="data/nokiafc22.ttf",fontFamily="system")] protected var junk:String;
+		
 		[Embed(source="data/beep.mp3")] protected var SndBeep:Class;
 		[Embed(source="data/flixel.mp3")] protected var SndFlixel:Class;
 
 		/**
-		 * Essentially locks the framerate to 30 FPS minimum
+		 * Essentially locks the framerate to 30 FPS minimum - any slower and you'll get slowdown instead of frameskip.
 		 */
 		internal const MAX_ELAPSED:Number = 0.0333;
 
@@ -53,11 +63,8 @@ package org.flixel
 		
 		//basic display stuff
 		internal var _state:FlxState;
-		internal var _buffer:Sprite;
-		internal var _bmpBack:Bitmap;
-		internal var _bmpFront:Bitmap;
-		internal var _r:Rectangle;
-		internal var _flipped:Boolean;
+		internal var _screen:Sprite;
+		internal var _buffer:Bitmap;
 		internal var _zoom:uint;
 		internal var _gameXOffset:int;
 		internal var _gameYOffset:int;
@@ -65,9 +72,11 @@ package org.flixel
 		internal var _zeroPoint:Point;
 		
 		//basic update stuff
+		internal var _timer:Timer;
 		internal var _elapsed:Number;
 		internal var _total:uint;
 		internal var _paused:Boolean;
+		internal var _framerate:uint;
 		
 		//Pause screen, sound tray, support panel, dev console, and special effects objects
 		internal var _soundTray:Sprite;
@@ -96,6 +105,7 @@ package org.flixel
 			_state = null;
 			_iState = InitialState;
 			_zeroPoint = new Point();
+			_framerate = FlxG.framerate;
 
 			useDefaultHotKeys = true;
 			
@@ -105,6 +115,7 @@ package org.flixel
 			
 			_paused = false;
 			_created = false;
+			
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
 		
@@ -163,18 +174,19 @@ package org.flixel
 			FlxG.flash.stop();
 			FlxG.fade.stop();
 			FlxG.quake.stop();
-			_buffer.x = 0;
-			_buffer.y = 0;
+			_screen.x = 0;
+			_screen.y = 0;
 			
 			//Swap the new state for the old one and dispose of it
-			_buffer.addChild(State);
+			_screen.addChild(State);
 			if(_state != null)
 			{
 				_state.destroy(); //important that it is destroyed while still in the display list
-				_buffer.swapChildren(State,_state);
-				_buffer.removeChild(_state);
+				_screen.swapChildren(State,_state);
+				_screen.removeChild(_state);
 			}
 			_state = State;
+			_state.scaleX = _state.scaleY = _zoom;
 			
 			//Finally, create the new state
 			_state.create();
@@ -246,7 +258,7 @@ package org.flixel
 			if(!FlxG.panel.visible) flash.ui.Mouse.hide();
 			FlxG.resetInput();
 			_paused = false;
-			stage.frameRate = 60;
+			_framerate = FlxG.framerate;
 		}
 		
 		/**
@@ -259,34 +271,31 @@ package org.flixel
 				x = 0;
 				y = 0;
 			}
-			if(!_flipped)
-				_bmpBack.bitmapData.copyPixels(_bmpFront.bitmapData,_r,_zeroPoint);
-			else
-				_bmpFront.bitmapData.copyPixels(_bmpBack.bitmapData,_r,_zeroPoint);
 			flash.ui.Mouse.show();
 			_paused = true;
-			stage.frameRate = 10;
+			_framerate = FlxG.frameratePaused;
 		}
 		
 		/**
-		 * This is the main game loop, but only once creation and logo playback is finished.
+		 * This is the main game loop.  It controls all the updating and rendering.
 		 */
-		protected function onEnterFrame(event:Event):void
+		protected function update(event:TimerEvent):void
 		{
+			var mark:uint = getTimer();
+			
 			var i:uint;
 			var soundPrefs:FlxSave;
-			
+
 			//Frame timing
-			var t:uint = getTimer();
-			_elapsed = (t-_total)/1000;
-			if(_created)
-				_console.lastElapsed = _elapsed;
-			_total = t;
+			_elapsed = (mark-_total)/1000;
+			_console.lastElapsed = _elapsed;
+			_total = mark;
 			FlxG.elapsed = _elapsed;
 			if(FlxG.elapsed > MAX_ELAPSED)
 				FlxG.elapsed = MAX_ELAPSED;
 			FlxG.elapsed *= FlxG.timeScale;
 			
+			//Sound tray crap
 			if(_soundTray != null)
 			{
 				if(_soundTrayTimer > 0)
@@ -311,92 +320,87 @@ package org.flixel
 					}
 				}
 			}
-			
-			if(_created)
-			{
-				//Animate flixel HUD elements
-				FlxG.panel.update();
+
+			//Animate flixel HUD elements
+			FlxG.panel.update();
+			if(_console.visible)
 				_console.update();
-				
-				//State updating
-				FlxG.updateInput();
-				FlxG.updateSounds();
-				if(_paused)
-				{
-					pause.update();
-					if(_flipped)
-						FlxG.buffer.copyPixels(_bmpFront.bitmapData,_r,_zeroPoint);
-					else
-						FlxG.buffer.copyPixels(_bmpBack.bitmapData,_r,_zeroPoint);
-					pause.render();
-				}
-				else
-				{
-					//Clear video buffer
-					if(_flipped)
-						FlxG.buffer = _bmpFront.bitmapData;
-					else
-						FlxG.buffer = _bmpBack.bitmapData;
-					FlxState.screen.unsafeBind(FlxG.buffer);
-					_state.preProcess();
-					
-					//Update the camera and game state
-					FlxG.doFollow();
-					_state.update();
-					
-					//Update the various special effects
-					if(FlxG.flash.exists)
-						FlxG.flash.update();
-					if(FlxG.fade.exists)
-						FlxG.fade.update();
-					FlxG.quake.update();
-					_buffer.x = FlxG.quake.x;
-					_buffer.y = FlxG.quake.y;
-					
-					//Render game content, special fx, and overlays
-					_state.render();
-					if(FlxG.flash.exists)
-						FlxG.flash.render();
-					if(FlxG.fade.exists)
-						FlxG.fade.render();
-					if(FlxG.panel.visible)
-						FlxG.panel.render();
-					if(FlxG.mouse.cursor != null)
-					{
-						if(FlxG.mouse.cursor.active)
-							FlxG.mouse.cursor.update();
-						if(FlxG.mouse.cursor.visible)
-							FlxG.mouse.cursor.render();
-					}
-					
-					//Post-processing hook
-					_state.postProcess();
-					
-					//Swap video buffers
-					_bmpBack.visible = !(_bmpFront.visible = _flipped);
-					_flipped = !_flipped;
-				}
-			}
-			else if(root != null)
+			
+			//State updating
+			FlxG.updateInput();
+			FlxG.updateSounds();
+			if(_paused)
+				pause.update();
+			else
 			{
+				//Update the camera and game state
+				FlxG.doFollow();
+				_state.update();
+				
+				//Update the various special effects
+				if(FlxG.flash.exists)
+					FlxG.flash.update();
+				if(FlxG.fade.exists)
+					FlxG.fade.update();
+				FlxG.quake.update();
+				_screen.x = FlxG.quake.x;
+				_screen.y = FlxG.quake.y;
+			}
+			
+			//Render game content, special fx, and overlays
+			FlxG.buffer.lock();
+			_state.preProcess();
+			_state.render();
+			if(FlxG.flash.exists)
+				FlxG.flash.render();
+			if(FlxG.fade.exists)
+				FlxG.fade.render();
+			if(FlxG.panel.visible)
+				FlxG.panel.render();
+			if(FlxG.mouse.cursor != null)
+			{
+				if(FlxG.mouse.cursor.active)
+					FlxG.mouse.cursor.update();
+				if(FlxG.mouse.cursor.visible)
+					FlxG.mouse.cursor.render();
+			}
+			_state.postProcess();
+			if(_paused)
+				pause.render();
+			FlxG.buffer.unlock();
+			
+			//Tell Flash you want to update the visual state
+			event.updateAfterEvent();
+
+			//Reset the timer for the next frame
+			_timer.reset();
+			var delay:int = (1/_framerate)*1000 - (getTimer()-mark);
+			_timer.delay = (delay<2)?2:delay;
+			_timer.start();
+		}
+		
+		/**
+		 * Used to instantiate the guts of flixel once we have a valid pointer to the root.
+		 */
+		internal function onEnterFrame(event:Event):void
+		{
+			if(root != null)
+			{
+				var i:uint;
+				var soundPrefs:FlxSave;
+				
 				//Set up the view window and double buffering
 				stage.scaleMode = StageScaleMode.NO_SCALE;
 	            stage.align = StageAlign.TOP_LEFT;
-	            stage.frameRate = 60;
-	            _buffer = new Sprite();
-	            _buffer.scaleX = _zoom;
-	            _buffer.scaleY = _zoom;
-	            addChild(_buffer);
-				_bmpBack = new Bitmap(new BitmapData(FlxG.width,FlxG.height,true,FlxState.bgColor));
-				_bmpBack.x = _gameXOffset;
-				_bmpBack.y = _gameYOffset;
-				_buffer.addChild(_bmpBack);
-				_bmpFront = new Bitmap(new BitmapData(_bmpBack.width,_bmpBack.height,true,FlxState.bgColor));
-				_bmpFront.x = _bmpBack.x;
-				_bmpFront.y = _bmpBack.y;
-				_buffer.addChild(_bmpFront);
-				_flipped = false;
-				_r = new Rectangle(0,0,_bmpFront.width,_bmpFront.height);
+	            stage.frameRate = 30;
+	            _screen = new Sprite();
+	            addChild(_screen);
+				var tmp:Bitmap = new Bitmap(new BitmapData(FlxG.width,FlxG.height,true,FlxState.bgColor));
+				tmp.x = _gameXOffset;
+				tmp.y = _gameYOffset;
+				tmp.scaleX = tmp.scaleY = _zoom;
+				_screen.addChild(tmp);
+				FlxG.buffer = tmp.bitmapData;
 				
 				//Initialize game console
 				_console = new FlxConsole(_gameXOffset,_gameYOffset,_zoom);
@@ -429,7 +433,7 @@ package org.flixel
 				_soundTray.visible = false;
 				_soundTray.scaleX = 2;
 				_soundTray.scaleY = 2;
-				var tmp:Bitmap = new Bitmap(new BitmapData(80,30,true,0x7F000000));
+				tmp = new Bitmap(new BitmapData(80,30,true,0x7F000000));
 				_soundTray.x = (_gameXOffset+FlxG.width/2)*_zoom-(tmp.width/2)*_soundTray.scaleX;
 				_soundTray.addChild(tmp);
 				
@@ -481,9 +485,15 @@ package org.flixel
 					showSoundTray(true);
 				}
 				
+				//Start the game loop
+				_timer = new Timer(2,1);
+				_timer.addEventListener(TimerEvent.TIMER,update);
+				_timer.start();
+				
 				//All set!
-				_created = true;
 				switchState(new _iState());
+				FlxState.screen.unsafeBind(FlxG.buffer);
+				removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 			}
 		}
 	}

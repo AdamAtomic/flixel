@@ -161,18 +161,15 @@ package org.flixel.data
 		 */
 		public function update():void
 		{
-			if(visible)
+			_fps[_curFPS] = 1/lastElapsed;
+			if(++_curFPS >= _fps.length) _curFPS = 0;
+			_fpsUpdate = !_fpsUpdate;
+			if(_fpsUpdate)
 			{
-				_fps[_curFPS] = 1/lastElapsed;
-				if(++_curFPS >= _fps.length) _curFPS = 0;
-				_fpsUpdate = !_fpsUpdate;
-				if(_fpsUpdate)
-				{
-					var fps:uint = 0;
-					for(var i:uint = 0; i < _fps.length; i++)
-						fps += _fps[i];
-					_fpsDisplay.text = Math.floor(fps/_fps.length)+" fps";
-				}
+				var fps:uint = 0;
+				for(var i:uint = 0; i < _fps.length; i++)
+					fps += _fps[i];
+				_fpsDisplay.text = Math.floor(fps/_fps.length)+" fps";
 			}
 			if(_Y < _YT)
 				_Y += FlxG.height*10*FlxG.elapsed;

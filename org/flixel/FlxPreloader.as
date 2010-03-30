@@ -14,6 +14,7 @@ package org.flixel
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	import flash.utils.getDefinitionByName;
+	import flash.utils.getTimer;
 	
 
 	/**
@@ -57,7 +58,11 @@ package org.flixel
 		 * @private
 		 */
 		protected var _logoGlow:Bitmap;
-		
+		/**
+		 * @private
+		 */
+		protected var _min:uint;
+
 		/**
 		 * This should always be the name of your main project/document class (e.g. GravityHook).
 		 */
@@ -66,12 +71,18 @@ package org.flixel
 		 * Set this to your game's URL to use built-in site-locking.
 		 */
 		public var myURL:String;
+		/**
+		 * Change this if you want the flixel logo to show for more or less time.  Default value is 0 seconds.
+		 */
+		public var minDisplayTime:Number;
 		
 		/**
 		 * Constructor
 		 */
 		public function FlxPreloader()
 		{
+			minDisplayTime = 0;
+			
 			stop();
             stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
@@ -135,7 +146,8 @@ package org.flixel
 			}
         	var i:int;
             graphics.clear();
-            if(framesLoaded >= totalFrames)
+			var time:uint = getTimer();
+            if((framesLoaded >= totalFrames) && (time > _min))
             {
                 removeEventListener(Event.ENTER_FRAME, onEnterFrame);
                 nextFrame();
@@ -148,7 +160,12 @@ package org.flixel
                 removeChild(_buffer);
             }
             else
-            	update(root.loaderInfo.bytesLoaded/root.loaderInfo.bytesTotal);
+			{
+				var percent:Number = root.loaderInfo.bytesLoaded/root.loaderInfo.bytesTotal;
+				if((_min > 0) && (percent > time/_min))
+					percent = time/_min;
+            	update(percent);
+			}
         }
 		
 		/**
@@ -157,6 +174,9 @@ package org.flixel
 		 */
 		protected function create():void
 		{
+			_min = 0;
+			if(!FlxG.debug)
+				_min = minDisplayTime*1000;
 			_buffer = new Sprite();
 			_buffer.scaleX = 2;
 			_buffer.scaleY = 2;

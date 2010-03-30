@@ -95,7 +95,7 @@ package org.flixel
 		 */
 		public function collide():void
 		{
-			defaultGroup.collide();
+			FlxU.collide(defaultGroup,defaultGroup);
 		}
 		
 		/**
