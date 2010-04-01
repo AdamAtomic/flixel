@@ -27,7 +27,7 @@ package org.flixel
 		 * Assign a minor version to your library.
 		 * Appears after the decimal in the console.
 		 */
-		static public var LIBRARY_MINOR_VERSION:uint = 3;
+		static public var LIBRARY_MINOR_VERSION:uint = 31;
 
 		/**
 		 * Internal tracker for game object (so we can pause & unpause)
@@ -52,7 +52,7 @@ package org.flixel
 		 */
 		static public var framerate:uint;
 		/**
-		 * The desired framerate while paused; default is 5.
+		 * The desired framerate while paused; default is 10.
 		 */
 		static public var frameratePaused:uint;
 		/**
@@ -619,8 +619,8 @@ package org.flixel
 			kong = null;
 			pause = false;
 			timeScale = 1.0;
-			framerate = 55;
-			frameratePaused = 5;
+			framerate = 60;
+			frameratePaused = 10;
 			
 			panel = new FlxPanel();
 			quake = new FlxQuake(Zoom);

@@ -7,7 +7,6 @@ package org.flixel
 	import flash.display.StageScaleMode;
 	import flash.events.*;
 	import flash.geom.Point;
-	import flash.geom.Rectangle;
 	import flash.text.AntiAliasType;
 	import flash.text.GridFitType;
 	import flash.text.TextField;
@@ -56,6 +55,12 @@ package org.flixel
 		 * Defaults to <code>data.FlxPause</code>.
 		 */
 		public var pause:FlxGroup;
+		/**
+		 * Minimum number of milliseconds to delay the game loop; default is 12.
+		 * If the loop delay is too low, important system events like input
+		 * may start to lag if the framerate is too high.  12 seems to work!
+		 */
+		protected var _minLoopDelay:uint;
 		
 		//startup
 		internal var _iState:Class;
@@ -106,6 +111,7 @@ package org.flixel
 			_iState = InitialState;
 			_zeroPoint = new Point();
 			_framerate = FlxG.framerate;
+			_minLoopDelay = 12;
 
 			useDefaultHotKeys = true;
 			
@@ -375,7 +381,7 @@ package org.flixel
 			//Reset the timer for the next frame
 			_timer.reset();
 			var delay:int = (1/_framerate)*1000 - (getTimer()-mark);
-			_timer.delay = (delay<2)?2:delay;
+			_timer.delay = (delay<_minLoopDelay)?_minLoopDelay:delay;
 			_timer.start();
 		}
 		
@@ -392,7 +398,7 @@ package org.flixel
 				//Set up the view window and double buffering
 				stage.scaleMode = StageScaleMode.NO_SCALE;
 	            stage.align = StageAlign.TOP_LEFT;
-	            stage.frameRate = 30;
+	            stage.frameRate = 31;
 	            _screen = new Sprite();
 	            addChild(_screen);
 				var tmp:Bitmap = new Bitmap(new BitmapData(FlxG.width,FlxG.height,true,FlxState.bgColor));

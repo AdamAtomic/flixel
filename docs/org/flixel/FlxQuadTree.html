@@ -4,7 +4,7 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="../../style.css" type="text/css" media="screen">
 <link rel="stylesheet" href="../../print.css" type="text/css" media="print">
-<meta content="FlxQuadTree,org.flixel.FlxQuadTree,A_LIST,B_LIST,MIN,_b,_canSubdivide,_headA,_headB,_hh,_hw,_l,_mx,_my,_ne,_nw,_o,_oa,_ob,_oc,_ol,_or,_ot,_r,_se,_sw,_t,_tailA,_tailB,add,addObject,addToList,overlap,overlapNode" name="keywords">
+<meta content="FlxQuadTree,org.flixel.FlxQuadTree,A_LIST,B_LIST,_b,_canSubdivide,_headA,_headB,_hh,_hw,_l,_min,_mx,_my,_ne,_nw,_o,_oa,_ob,_oc,_ol,_or,_ot,_r,_se,_sw,_t,_tailA,_tailB,add,addObject,addToList,overlap,overlapNode" name="keywords">
 <title>org.flixel.FlxQuadTree</title>
 </head>
 <body>
@@ -149,6 +149,11 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol">FlxQuadTree</td>
 </tr>
 <tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_min">_min</a> : uint<div class="summaryTableDescription">[static]
+   These variables refer to the potential child quadrants for this node.</div>
+</td><td class="summaryTableOwnerCol">FlxQuadTree</td>
+</tr>
+<tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_mx">_mx</a> : Number<div class="summaryTableDescription"></div>
 </td><td class="summaryTableOwnerCol">FlxQuadTree</td>
 </tr>
@@ -163,8 +168,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </tr>
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_nw">_nw</a> : <a href="../flixel/FlxQuadTree.html">FlxQuadTree</a>
-<div class="summaryTableDescription">
-   These variables refer to the potential child quadrants for this node.</div>
+<div class="summaryTableDescription"></div>
 </td><td class="summaryTableOwnerCol">FlxQuadTree</td>
 </tr>
 <tr class="">
@@ -327,11 +331,6 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
    Flag for specifying that you want to add an object to the B list.</div>
 </td><td class="summaryTableOwnerCol">FlxQuadTree</td>
 </tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#MIN">MIN</a> : Number = 48<div class="summaryTableDescription">[static]
-   The minimum quadrant or leaf size.</div>
-</td><td class="summaryTableOwnerCol">FlxQuadTree</td>
-</tr>
 </table>
 </div>
 <script type="text/javascript" language="javascript">
@@ -407,6 +406,16 @@ showHideInherited();
 <div class="detailBody">
 <code>protected var _l:Number</code>
 </div>
+<a name="_min"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_min</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected static var _min:uint</code><p>
+   These variables refer to the potential child quadrants for this node.
+   </p></div>
 <a name="_mx"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -441,9 +450,8 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>protected var _nw:<a href="../flixel/FlxQuadTree.html">FlxQuadTree</a></code><p>
-   These variables refer to the potential child quadrants for this node.
-   </p></div>
+<code>protected var _nw:<a href="../flixel/FlxQuadTree.html">FlxQuadTree</a></code>
+</div>
 <a name="_o"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -577,35 +585,35 @@ showHideInherited();
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td width="20px"></td><td><code><span class="label">X</span>:Number</code> &mdash;  The X-coordinate of the point in space.
+<td width="20px"></td><td><code><span class="label">X</span>:Number</code> &mdash;   The X-coordinate of the point in space.
    </td>
 </tr>
 <tr>
 <td class="paramSpacer">&nbsp;</td>
 </tr>
 <tr>
-<td width="20px"></td><td><code><span class="label">Y</span>:Number</code> &mdash;  The Y-coordinate of the point in space.
+<td width="20px"></td><td><code><span class="label">Y</span>:Number</code> &mdash;   The Y-coordinate of the point in space.
    </td>
 </tr>
 <tr>
 <td class="paramSpacer">&nbsp;</td>
 </tr>
 <tr>
-<td width="20px"></td><td><code><span class="label">Width</span>:Number</code> &mdash; Desired width of this node.
+<td width="20px"></td><td><code><span class="label">Width</span>:Number</code> &mdash;  Desired width of this node.
    </td>
 </tr>
 <tr>
 <td class="paramSpacer">&nbsp;</td>
 </tr>
 <tr>
-<td width="20px"></td><td><code><span class="label">Height</span>:Number</code> &mdash; Desired height of this node.
+<td width="20px"></td><td><code><span class="label">Height</span>:Number</code> &mdash;  Desired height of this node.
    </td>
 </tr>
 <tr>
 <td class="paramSpacer">&nbsp;</td>
 </tr>
 <tr>
-<td width="20px"></td><td><code><span class="label">Parent</span>:<a href="FlxQuadTree.html">FlxQuadTree</a></code> (default = <code>null</code>)<code></code> &mdash; The parent branch or node.  Pass null to create a root.
+<td width="20px"></td><td><code><span class="label">Parent</span>:<a href="FlxQuadTree.html">FlxQuadTree</a></code> (default = <code>null</code>)<code></code> &mdash;  The parent branch or node.  Pass null to create a root.
    </td>
 </tr>
 </table>
@@ -742,16 +750,6 @@ showHideInherited();
 <div class="detailBody">
 <code>public static const B_LIST:uint = 1</code><p>
    Flag for specifying that you want to add an object to the B list.
-   </p></div>
-<a name="MIN"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">MIN</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static const MIN:Number = 48</code><p>
-   The minimum quadrant or leaf size.  This size seems to yield the best performance.
    </p></div>
 <br>
 <br>

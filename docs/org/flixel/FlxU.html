@@ -4,7 +4,7 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="../../style.css" type="text/css" media="screen">
 <link rel="stylesheet" href="../../print.css" type="text/css" media="print">
-<meta content="FlxU,org.flixel.FlxU,_originalSeed,_seed,quadTree,quadTreeBounds,roundingError,seed,abs,ceil,collide,computeVelocity,floor,getAngle,getClass,getClassName,mutate,openURL,overlap,random,randomize,rotatePoint,setWorldBounds,solveXCollision,solveYCollision" name="keywords">
+<meta content="FlxU,org.flixel.FlxU,_originalSeed,_seed,quadTree,quadTreeBounds,quadTreeDivisions,roundingError,seed,abs,ceil,collide,computeVelocity,endProfile,floor,getAngle,getClass,getClassName,mutate,openURL,overlap,random,randomize,rotatePoint,setWorldBounds,solveXCollision,solveYCollision,startProfile" name="keywords">
 <title>org.flixel.FlxU</title>
 </head>
 <body>
@@ -60,6 +60,11 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#quadTreeBounds">quadTreeBounds</a> : <a href="../flixel/FlxRect.html">FlxRect</a>
 <div class="summaryTableDescription">[static]
    This variable stores the dimensions of the root of the quad tree.</div>
+</td><td class="summaryTableOwnerCol">FlxU</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#quadTreeDivisions">quadTreeDivisions</a> : uint = 3<div class="summaryTableDescription">[static]
+   Controls the granularity of the quad tree.</div>
 </td><td class="summaryTableOwnerCol">FlxU</td>
 </tr>
 <tr class="">
@@ -131,6 +136,14 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <div class="summaryTableDescription">[static]
    A tween-like function that takes a starting velocity
    and some other factors and returns an altered velocity.</div>
+</td><td class="summaryTableOwnerCol">FlxU</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#endProfile()">endProfile</a>(Start:uint, Name:String = "Profiler", Log:Boolean = true):uint</div>
+<div class="summaryTableDescription">[static]
+   Useful for finding out how long it takes to execute specific blocks of code.</div>
 </td><td class="summaryTableOwnerCol">FlxU</td>
 </tr>
 <tr class="">
@@ -216,7 +229,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#setWorldBounds()">setWorldBounds</a>(X:Number = 0, Y:Number = 0, Width:Number = 0, Height:Number = 0):void</div>
+<a class="signatureLink" href="#setWorldBounds()">setWorldBounds</a>(X:Number = 0, Y:Number = 0, Width:Number = 0, Height:Number = 0, Divisions:uint = 3):void</div>
 <div class="summaryTableDescription">[static]
    Call this function to specify a more efficient boundary for your game world.</div>
 </td><td class="summaryTableOwnerCol">FlxU</td>
@@ -235,6 +248,14 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <a class="signatureLink" href="#solveYCollision()">solveYCollision</a>(Object1:<a href="FlxObject.html">FlxObject</a>, Object2:<a href="FlxObject.html">FlxObject</a>):Boolean</div>
 <div class="summaryTableDescription">[static]
    This quad tree callback function can be used externally as well.</div>
+</td><td class="summaryTableOwnerCol">FlxU</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#startProfile()">startProfile</a>():uint</div>
+<div class="summaryTableDescription">[static]
+   Useful for finding out how long it takes to execute specific blocks of code.</div>
 </td><td class="summaryTableOwnerCol">FlxU</td>
 </tr>
 </table>
@@ -277,6 +298,16 @@ showHideInherited();
 <code>public static var quadTreeBounds:<a href="../flixel/FlxRect.html">FlxRect</a></code><p>
    This variable stores the dimensions of the root of the quad tree.
    This is the eligible game collision space.
+   </p></div>
+<a name="quadTreeDivisions"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">quadTreeDivisions</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static var quadTreeDivisions:uint = 3</code><p>
+   Controls the granularity of the quad tree.  Default is 3 (decent performance on large and small worlds).
    </p></div>
 <a name="roundingError"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
@@ -443,6 +474,47 @@ showHideInherited();
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
 <td width="20"></td><td><code>Number</code> &mdash; The altered Velocity value.
+   </td>
+</tr>
+</table>
+</div>
+<a name="endProfile()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">endProfile</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function endProfile(Start:uint, Name:String = "Profiler", Log:Boolean = true):uint</code><p>
+   Useful for finding out how long it takes to execute specific blocks of code.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">Start</span>:uint</code> &mdash; A <code>uint</code> created by <code>FlxU.startProfile()</code>.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Name</span>:String</code> (default = "<code>Profiler</code>")<code></code> &mdash; Optional tag (for debug console display).  Default value is "Profiler".
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Log</span>:Boolean</code> (default = <code>true</code>)<code></code> &mdash;  Whether or not to log this elapsed time in the debug console.
+   
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>uint</code> &mdash; A <code>uint</code> to be passed to <code>FlxU.endProfile()</code>.
    </td>
 </tr>
 </table>
@@ -785,7 +857,7 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public static function setWorldBounds(X:Number = 0, Y:Number = 0, Width:Number = 0, Height:Number = 0):void</code><p>
+<code>public static function setWorldBounds(X:Number = 0, Y:Number = 0, Width:Number = 0, Height:Number = 0, Divisions:uint = 3):void</code><p>
    Call this function to specify a more efficient boundary for your game world.
    This boundary is used by <code>overlap()</code> and <code>collide()</code>, so it
    can't hurt to have it be the right size!  Flixel will invent a size for you, but
@@ -795,28 +867,35 @@ showHideInherited();
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td width="20px"></td><td><code><span class="label">X</span>:Number</code> (default = <code>0</code>)<code></code> &mdash;  The X-coordinate of the left side of the game world.
+<td width="20px"></td><td><code><span class="label">X</span>:Number</code> (default = <code>0</code>)<code></code> &mdash;   The X-coordinate of the left side of the game world.
    </td>
 </tr>
 <tr>
 <td class="paramSpacer">&nbsp;</td>
 </tr>
 <tr>
-<td width="20px"></td><td><code><span class="label">Y</span>:Number</code> (default = <code>0</code>)<code></code> &mdash;  The Y-coordinate of the top of the game world.
+<td width="20px"></td><td><code><span class="label">Y</span>:Number</code> (default = <code>0</code>)<code></code> &mdash;   The Y-coordinate of the top of the game world.
    </td>
 </tr>
 <tr>
 <td class="paramSpacer">&nbsp;</td>
 </tr>
 <tr>
-<td width="20px"></td><td><code><span class="label">Width</span>:Number</code> (default = <code>0</code>)<code></code> &mdash; Desired width of the game world.
+<td width="20px"></td><td><code><span class="label">Width</span>:Number</code> (default = <code>0</code>)<code></code> &mdash;  Desired width of the game world.
    </td>
 </tr>
 <tr>
 <td class="paramSpacer">&nbsp;</td>
 </tr>
 <tr>
-<td width="20px"></td><td><code><span class="label">Height</span>:Number</code> (default = <code>0</code>)<code></code> &mdash; Desired height of the game world.
+<td width="20px"></td><td><code><span class="label">Height</span>:Number</code> (default = <code>0</code>)<code></code> &mdash;  Desired height of the game world.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Divisions</span>:uint</code> (default = <code>3</code>)<code></code> &mdash; Pass a non-zero value to set <code>quadTreeDivisions</code>.  Default value is 3.
    </td>
 </tr>
 </table>
@@ -884,6 +963,25 @@ showHideInherited();
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
 <td width="20"></td><td><code>Boolean</code></td>
+</tr>
+</table>
+</div>
+<a name="startProfile()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">startProfile</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function startProfile():uint</code><p>
+   Useful for finding out how long it takes to execute specific blocks of code.
+   
+   </p><p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>uint</code> &mdash; A <code>uint</code> to be passed to <code>FlxU.endProfile()</code>.
+   </td>
 </tr>
 </table>
 </div>
