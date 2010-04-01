@@ -4,7 +4,7 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="../../style.css" type="text/css" media="screen">
 <link rel="stylesheet" href="../../print.css" type="text/css" media="print">
-<meta content="FlxGame,org.flixel.FlxGame,MAX_ELAPSED,SndBeep,SndFlixel,_buffer,_console,_created,_elapsed,_frame,_framerate,_gameXOffset,_gameYOffset,_iState,_minLoopDelay,_paused,_screen,_soundTray,_soundTrayBars,_soundTrayTimer,_state,_timer,_total,_zeroPoint,_zoom,junk,pause,useDefaultHotKeys,addFrame,onEnterFrame,onFocus,onFocusLost,onKeyUp,pauseGame,showSoundTray,switchState,unpauseGame,update" name="keywords">
+<meta content="FlxGame,org.flixel.FlxGame,MAX_ELAPSED,SndBeep,SndFlixel,_buffer,_console,_created,_elapsed,_frame,_gameXOffset,_gameYOffset,_iState,_paused,_screen,_soundTray,_soundTrayBars,_soundTrayTimer,_state,_total,_zeroPoint,_zoom,junk,pause,useDefaultHotKeys,addFrame,create,onFocus,onFocusLost,onKeyUp,pauseGame,showSoundTray,switchState,unpauseGame,update" name="keywords">
 <title>org.flixel.FlxGame</title>
 </head>
 <body>
@@ -79,10 +79,6 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol">FlxGame</td>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_framerate">_framerate</a> : uint<div class="summaryTableDescription"></div>
-</td><td class="summaryTableOwnerCol">FlxGame</td>
-</tr>
-<tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_gameXOffset">_gameXOffset</a> : int<div class="summaryTableDescription"></div>
 </td><td class="summaryTableOwnerCol">FlxGame</td>
 </tr>
@@ -126,10 +122,6 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol">FlxGame</td>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_timer">_timer</a> : Timer<div class="summaryTableDescription"></div>
-</td><td class="summaryTableOwnerCol">FlxGame</td>
-</tr>
-<tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_total">_total</a> : uint<div class="summaryTableDescription"></div>
 </td><td class="summaryTableOwnerCol">FlxGame</td>
 </tr>
@@ -160,11 +152,6 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol">FlxGame</td>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_minLoopDelay">_minLoopDelay</a> : uint<div class="summaryTableDescription">
-   Minimum number of milliseconds to delay the game loop; default is 12.</div>
-</td><td class="summaryTableOwnerCol">FlxGame</td>
-</tr>
-<tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#SndBeep">SndBeep</a> : Class<div class="summaryTableDescription"></div>
 </td><td class="summaryTableOwnerCol">FlxGame</td>
 </tr>
@@ -192,7 +179,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#onEnterFrame()">onEnterFrame</a>(event:Event):void</div>
+<a class="signatureLink" href="#create()">create</a>(event:Event):void</div>
 <div class="summaryTableDescription">
    Used to instantiate the guts of flixel once we have a valid pointer to the root.</div>
 </td><td class="summaryTableOwnerCol">FlxGame</td>
@@ -274,7 +261,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#update()">update</a>(event:TimerEvent):void</div>
+<a class="signatureLink" href="#update()">update</a>(event:Event):void</div>
 <div class="summaryTableDescription">
    This is the main game loop.</div>
 </td><td class="summaryTableOwnerCol">FlxGame</td>
@@ -347,15 +334,6 @@ showHideInherited();
 <div class="detailBody">
 <code>public var _frame:Class</code>
 </div>
-<a name="_framerate"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">_framerate</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public var _framerate:uint</code>
-</div>
 <a name="_gameXOffset"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -392,18 +370,6 @@ showHideInherited();
 <div class="detailBody">
 <code>protected var junk:String</code>
 </div>
-<a name="_minLoopDelay"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">_minLoopDelay</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>protected var _minLoopDelay:uint</code><p>
-   Minimum number of milliseconds to delay the game loop; default is 12.
-   If the loop delay is too low, important system events like input
-   may start to lag if the framerate is too high.  12 seems to work!
-   </p></div>
 <a name="pause"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -487,15 +453,6 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public var _state:<a href="../flixel/FlxState.html">FlxState</a></code>
-</div>
-<a name="_timer"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">_timer</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public var _timer:Timer</code>
 </div>
 <a name="_total"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
@@ -622,14 +579,14 @@ showHideInherited();
 </tr>
 </table>
 </div>
-<a name="onEnterFrame()"></a>
+<a name="create()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
-<td class="detailHeaderName">onEnterFrame</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+<td class="detailHeaderName">create</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
 </tr>
 </table>
 <div class="detailBody">
-<code>public function onEnterFrame(event:Event):void</code><p>
+<code>public function create(event:Event):void</code><p>
    Used to instantiate the guts of flixel once we have a valid pointer to the root.
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
@@ -750,12 +707,12 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>protected function update(event:TimerEvent):void</code><p>
+<code>protected function update(event:Event):void</code><p>
    This is the main game loop.  It controls all the updating and rendering.
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td width="20px"></td><td><code><span class="label">event</span>:TimerEvent</code></td>
+<td width="20px"></td><td><code><span class="label">event</span>:Event</code></td>
 </tr>
 </table>
 </div>
