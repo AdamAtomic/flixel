@@ -4,7 +4,7 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="../../style.css" type="text/css" media="screen">
 <link rel="stylesheet" href="../../print.css" type="text/css" media="print">
-<meta content="FlxG,org.flixel.FlxG,LIBRARY_MAJOR_VERSION,LIBRARY_MINOR_VERSION,LIBRARY_NAME,_cache,_game,_mute,_pause,_scrollTarget,_volume,buffer,debug,elapsed,fade,flash,followLead,followLerp,followMax,followMin,followTarget,framerate,frameratePaused,height,keys,kong,level,levels,mouse,music,panel,quake,save,saves,score,scores,scroll,sounds,timeScale,width,mute,pause,stage,state,volume,addBitmap,changeSounds,checkBitmapCache,createBitmap,destroySounds,doFollow,follow,followAdjust,followBounds,getMuteValue,log,pauseSounds,play,playMusic,playSounds,resetInput,setGameData,stream,unfollow,updateInput,updateSounds" name="keywords">
+<meta content="FlxG,org.flixel.FlxG,LIBRARY_MAJOR_VERSION,LIBRARY_MINOR_VERSION,LIBRARY_NAME,_cache,_game,_mute,_pause,_scrollTarget,_volume,buffer,debug,elapsed,fade,flash,followLead,followLerp,followMax,followMin,followTarget,height,keys,kong,level,levels,mouse,music,panel,quake,save,saves,score,scores,scroll,sounds,timeScale,width,framerate,frameratePaused,mute,pause,stage,state,volume,addBitmap,changeSounds,checkBitmapCache,createBitmap,destroySounds,doFollow,follow,followAdjust,followBounds,getMuteValue,log,pauseSounds,play,playMusic,playSounds,resetInput,setGameData,stream,unfollow,updateInput,updateSounds" name="keywords">
 <title>org.flixel.FlxG</title>
 </head>
 <body>
@@ -107,12 +107,12 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </tr>
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#framerate">framerate</a> : uint<div class="summaryTableDescription">[static]
-   The desired framerate for the game; default is 60.</div>
+   The game and SWF framerate; default is 60.</div>
 </td><td class="summaryTableOwnerCol">FlxG</td>
 </tr>
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#frameratePaused">frameratePaused</a> : uint<div class="summaryTableDescription">[static]
-   The desired framerate while paused; default is 10.</div>
+   The game and SWF framerate while paused; default is 10.</div>
 </td><td class="summaryTableOwnerCol">FlxG</td>
 </tr>
 <tr class="">
@@ -148,7 +148,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol">FlxG</td>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#LIBRARY_MINOR_VERSION">LIBRARY_MINOR_VERSION</a> : uint = 31<div class="summaryTableDescription">[static]
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#LIBRARY_MINOR_VERSION">LIBRARY_MINOR_VERSION</a> : uint = 33<div class="summaryTableDescription">[static]
    Assign a minor version to your library.</div>
 </td><td class="summaryTableOwnerCol">FlxG</td>
 </tr>
@@ -608,9 +608,15 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public static var framerate:uint</code><p>
-   The desired framerate for the game; default is 60.
-   </p></div>
+<code>framerate:uint</code>&nbsp;&nbsp;[read-write]<p>
+   The game and SWF framerate; default is 60.
+   </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public static function get framerate():uint</code>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set framerate(value:uint):void</code>
+<br>
+</div>
 <a name="frameratePaused"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -618,9 +624,15 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public static var frameratePaused:uint</code><p>
-   The desired framerate while paused; default is 10.
-   </p></div>
+<code>frameratePaused:uint</code>&nbsp;&nbsp;[read-write]<p>
+   The game and SWF framerate while paused; default is 10.
+   </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public static function get frameratePaused():uint</code>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set frameratePaused(value:uint):void</code>
+<br>
+</div>
 <a name="_game"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -699,7 +711,7 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public static var LIBRARY_MINOR_VERSION:uint = 31</code><p>
+<code>public static var LIBRARY_MINOR_VERSION:uint = 33</code><p>
    Assign a minor version to your library.
    Appears after the decimal in the console.
    </p></div>

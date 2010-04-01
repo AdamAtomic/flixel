@@ -74,6 +74,8 @@ package org.flixel
 		internal var _elapsed:Number;
 		internal var _total:uint;
 		internal var _paused:Boolean;
+		internal var _framerate:uint;
+		internal var _frameratePaused:uint;
 		
 		//Pause screen, sound tray, support panel, dev console, and special effects objects
 		internal var _soundTray:Sprite;
@@ -254,7 +256,7 @@ package org.flixel
 			if(!FlxG.panel.visible) flash.ui.Mouse.hide();
 			FlxG.resetInput();
 			_paused = false;
-			stage.frameRate = FlxG.framerate;
+			stage.frameRate = _framerate;
 		}
 		
 		/**
@@ -269,7 +271,7 @@ package org.flixel
 			}
 			flash.ui.Mouse.show();
 			_paused = true;
-			stage.frameRate = FlxG.frameratePaused;
+			stage.frameRate = _frameratePaused;
 		}
 		
 		/**
@@ -283,8 +285,9 @@ package org.flixel
 			var soundPrefs:FlxSave;
 
 			//Frame timing
-			_elapsed = (mark-_total)/1000;
-			_console.lastElapsed = _elapsed;
+			var ems:uint = mark-_total;
+			_elapsed = ems/1000;
+			_console.mtrTotal.add(ems);
 			_total = mark;
 			FlxG.elapsed = _elapsed;
 			if(FlxG.elapsed > MAX_ELAPSED)
@@ -342,6 +345,9 @@ package org.flixel
 				_screen.x = FlxG.quake.x;
 				_screen.y = FlxG.quake.y;
 			}
+			//Keep track of how long it took to update everything
+			var updateMark:uint = getTimer();
+			_console.mtrUpdate.add(updateMark-mark);
 			
 			//Render game content, special fx, and overlays
 			FlxG.buffer.lock();
@@ -364,6 +370,8 @@ package org.flixel
 			if(_paused)
 				pause.render();
 			FlxG.buffer.unlock();
+			//Keep track of how long it took to draw everything
+			_console.mtrRender.add(getTimer()-updateMark);
 		}
 		
 		/**
@@ -380,7 +388,7 @@ package org.flixel
 			//Set up the view window and double buffering
 			stage.scaleMode = StageScaleMode.NO_SCALE;
             stage.align = StageAlign.TOP_LEFT;
-            stage.frameRate = FlxG.framerate;
+            stage.frameRate = _framerate;
             _screen = new Sprite();
             addChild(_screen);
 			var tmp:Bitmap = new Bitmap(new BitmapData(FlxG.width,FlxG.height,true,FlxState.bgColor));

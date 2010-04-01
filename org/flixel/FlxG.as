@@ -27,7 +27,7 @@ package org.flixel
 		 * Assign a minor version to your library.
 		 * Appears after the decimal in the console.
 		 */
-		static public var LIBRARY_MINOR_VERSION:uint = 32;
+		static public var LIBRARY_MINOR_VERSION:uint = 33;
 
 		/**
 		 * Internal tracker for game object (so we can pause & unpause)
@@ -47,14 +47,6 @@ package org.flixel
 		 * Represents the amount of time in seconds that passed since last frame.
 		 */
 		static public var elapsed:Number;
-		/**
-		 * The desired framerate for the game; default is 60.
-		 */
-		static public var framerate:uint;
-		/**
-		 * The desired framerate while paused; default is 10.
-		 */
-		static public var frameratePaused:uint;
 		/**
 		 * How fast or slow time should pass in the game; default is 1.0.
 		 */
@@ -208,6 +200,42 @@ package org.flixel
 					playSounds();
 				}
 			}
+		}
+		
+		/**
+		 * The game and SWF framerate; default is 60.
+		 */
+		static public function get framerate():uint
+		{
+			return _game._framerate;
+		}
+		
+		/**
+		 * @private
+		 */
+		static public function set framerate(Framerate:uint):void
+		{
+			_game._framerate = Framerate;
+			if(!_game._paused && (_game.stage != null))
+				_game.stage.frameRate = Framerate;
+		}
+		
+		/**
+		 * The game and SWF framerate while paused; default is 10.
+		 */
+		static public function get frameratePaused():uint
+		{
+			return _game._frameratePaused;
+		}
+		
+		/**
+		 * @private
+		 */
+		static public function set frameratePaused(Framerate:uint):void
+		{
+			_game._frameratePaused = Framerate;
+			if(_game._paused && (_game.stage != null))
+				_game.stage.frameRate = Framerate;
 		}
 		
 		/**
