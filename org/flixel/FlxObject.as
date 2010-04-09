@@ -266,10 +266,14 @@ package org.flixel
 			
 			if(solid)
 				refreshHulls();
-			
 			onFloor = false;
+			var vc:Number;
+
+			vc = (FlxU.computeVelocity(angularVelocity,angularAcceleration,angularDrag,maxAngular) - angularVelocity)/2;
+			angularVelocity += vc; 
+			angle += angularVelocity*FlxG.elapsed;
+			angularVelocity += vc;
 			
-			angle += (angularVelocity = FlxU.computeVelocity(angularVelocity,angularAcceleration,angularDrag,maxAngular))*FlxG.elapsed;
 			var thrustComponents:FlxPoint;
 			if(thrust != 0)
 			{
@@ -284,10 +288,17 @@ package org.flixel
 			}
 			else
 				thrustComponents = _pZero;
-			velocity.x = FlxU.computeVelocity(velocity.x,acceleration.x+thrustComponents.x,drag.x,maxVelocity.x);
-			velocity.y = FlxU.computeVelocity(velocity.y,acceleration.y+thrustComponents.y,drag.y,maxVelocity.y);
+			
+			vc = (FlxU.computeVelocity(velocity.x,acceleration.x+thrustComponents.x,drag.x,maxVelocity.x) - velocity.x)/2;
+			velocity.x += vc;
 			var xd:Number = velocity.x*FlxG.elapsed;
+			velocity.x += vc;
+			
+			vc = (FlxU.computeVelocity(velocity.y,acceleration.y+thrustComponents.y,drag.y,maxVelocity.y) - velocity.y)/2;
+			velocity.y += vc;
 			var yd:Number = velocity.y*FlxG.elapsed;
+			velocity.y += vc;
+			
 			x += xd;
 			y += yd;
 			

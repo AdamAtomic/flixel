@@ -1,7 +1,6 @@
 package org.flixel.data
 {
 	import org.flixel.*;
-	
 	import flash.ui.Mouse;
 
 	/**
@@ -155,6 +154,7 @@ package org.flixel.data
 			_close.scrollFactor.x = 0;
 			_close.scrollFactor.y = 0;
 			hide();
+			visible = false;
 			_s = 50;
 		}
 		
@@ -197,28 +197,35 @@ package org.flixel.data
 					y -= FlxG.elapsed*_s;
 					if(y < _ty) y = _ty;
 				}
+				
+				_topBar.y = y;
+				_mainBar.y = y+1;
+				_bottomBar.y = y+20;
+				_donate.reset(_donate.x,y+4);
+				_stumble.reset(_stumble.x,y+4);
+				_digg.reset(_digg.x,y+4);
+				_reddit.reset(_reddit.x,y+4);
+				_delicious.reset(_delicious.x,y+5);
+				_twitter.reset(_twitter.x,y+4);
+				_caption.reset(_caption.x,y+4);
+				_close.reset(_close.x,y+4);
 			}
-			if((y <= -21) || (y > FlxG.height))
+			if((y <= -21) || (y >= FlxG.height))
 				visible = false;
-			_topBar.y = y;
-			_mainBar.y = y+1;
-			_bottomBar.y = y+20;
-			_donate.reset(_donate.x,y+4);
-			_stumble.reset(_stumble.x,y+4);
-			_digg.reset(_digg.x,y+4);
-			_reddit.reset(_reddit.x,y+4);
-			_delicious.reset(_delicious.x,y+5);
-			_twitter.reset(_twitter.x,y+4);
-			_caption.reset(_caption.x,y+4);
-			_close.reset(_close.x,y+4);
-			if(_donate.active) _donate.update();
-			if(_stumble.active) _stumble.update();
-			if(_digg.active) _digg.update();
-			if(_reddit.active) _reddit.update();
-			if(_delicious.active) _delicious.update();
-			if(_twitter.active) _twitter.update();
-			if(_caption.active) _caption.update();
-			if(_close.active) _close.update();
+			else
+				visible = true;
+			
+			if(visible)
+			{
+				if(_donate.active) _donate.update();
+				if(_stumble.active) _stumble.update();
+				if(_digg.active) _digg.update();
+				if(_reddit.active) _reddit.update();
+				if(_delicious.active) _delicious.update();
+				if(_twitter.active) _twitter.update();
+				if(_caption.active) _caption.update();
+				if(_close.active) _close.update();
+			}
 		}
 		
 		/**
@@ -247,12 +254,13 @@ package org.flixel.data
 		 */
 		public function show(Top:Boolean=true):void
 		{
+			if(_closed) return;
 			if(!_initialized)
 			{
 				FlxG.log("SUPPORT PANEL ERROR: Uninitialized.\nYou forgot to call FlxGame.setupSupportPanel()\nfrom your game constructor.");
 				return;
 			}
-			if(_closed) return;
+			
 			if(Top)
 			{
 				y = -21;
@@ -271,7 +279,8 @@ package org.flixel.data
 			_twitter.reset(_twitter.x,y+4);
 			_caption.reset(_caption.x,y+4);
 			_close.reset(_close.x,y+4);
-			Mouse.show();
+			if(!FlxG.mouse.cursor.visible)
+				Mouse.show();
 			visible = true;
 		}
 		

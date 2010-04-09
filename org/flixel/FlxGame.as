@@ -40,11 +40,6 @@ package org.flixel
 		[Embed(source="data/flixel.mp3")] protected var SndFlixel:Class;
 
 		/**
-		 * Essentially locks the framerate to 30 FPS minimum - any slower and you'll get slowdown instead of frameskip.
-		 */
-		internal const MAX_ELAPSED:Number = 0.0333;
-
-		/**
 		 * Sets 0, -, and + to control the global volume and P to pause.
 		 * @default true
 		 */
@@ -290,8 +285,8 @@ package org.flixel
 			_console.mtrTotal.add(ems);
 			_total = mark;
 			FlxG.elapsed = _elapsed;
-			if(FlxG.elapsed > MAX_ELAPSED)
-				FlxG.elapsed = MAX_ELAPSED;
+			if(FlxG.elapsed > FlxG.maxElapsed)
+				FlxG.elapsed = FlxG.maxElapsed;
 			FlxG.elapsed *= FlxG.timeScale;
 			
 			//Sound tray crap

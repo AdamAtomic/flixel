@@ -27,7 +27,7 @@ package org.flixel
 		 * Assign a minor version to your library.
 		 * Appears after the decimal in the console.
 		 */
-		static public var LIBRARY_MINOR_VERSION:uint = 33;
+		static public var LIBRARY_MINOR_VERSION:uint = 34;
 
 		/**
 		 * Internal tracker for game object (so we can pause & unpause)
@@ -47,6 +47,10 @@ package org.flixel
 		 * Represents the amount of time in seconds that passed since last frame.
 		 */
 		static public var elapsed:Number;
+		/**
+		 * Essentially locks the framerate to a minimum value - any slower and you'll get slowdown instead of frameskip; default is 1/30th of a second.
+		 */
+		static public var maxElapsed:Number;
 		/**
 		 * How fast or slow time should pass in the game; default is 1.0.
 		 */
@@ -649,6 +653,7 @@ package org.flixel
 			timeScale = 1.0;
 			framerate = 60;
 			frameratePaused = 10;
+			maxElapsed = 0.0333333;
 			
 			panel = new FlxPanel();
 			quake = new FlxQuake(Zoom);

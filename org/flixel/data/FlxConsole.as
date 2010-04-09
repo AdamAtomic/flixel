@@ -99,6 +99,7 @@ package org.flixel.data
 			_text.multiline = true;
 			_text.wordWrap = true;
 			_text.embedFonts = true;
+			_text.selectable = false;
 			_text.antiAliasType = AntiAliasType.NORMAL;
 			_text.gridFitType = GridFitType.PIXEL;
 			_text.defaultTextFormat = new TextFormat("system",8,0xffffff);
@@ -111,6 +112,7 @@ package org.flixel.data
 			_fpsDisplay.multiline = true;
 			_fpsDisplay.wordWrap = true;
 			_fpsDisplay.embedFonts = true;
+			_fpsDisplay.selectable = false;
 			_fpsDisplay.antiAliasType = AntiAliasType.NORMAL;
 			_fpsDisplay.gridFitType = GridFitType.PIXEL;
 			_fpsDisplay.defaultTextFormat = new TextFormat("system",16,0xffffff,true,null,null,null,null,"right");
@@ -125,6 +127,7 @@ package org.flixel.data
 			_extraDisplay.multiline = true;
 			_extraDisplay.wordWrap = true;
 			_extraDisplay.embedFonts = true;
+			_extraDisplay.selectable = false;
 			_extraDisplay.antiAliasType = AntiAliasType.NORMAL;
 			_extraDisplay.gridFitType = GridFitType.PIXEL;
 			_extraDisplay.defaultTextFormat = new TextFormat("system",8,0xffffff,true,null,null,null,null,"right");
