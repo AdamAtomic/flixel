@@ -90,6 +90,7 @@ package org.flixel
 		protected var _color:uint;
 		protected var _ct:ColorTransform;
 		protected var _mtx:Matrix;
+		protected var _bbb:BitmapData;
 		
 		/**
 		 * Creates a white 8x8 square <code>FlxSprite</code> at the specified position.
@@ -108,10 +109,6 @@ package org.flixel
 			_flashRect = new Rectangle();
 			_flashRect2 = new Rectangle();
 			_flashPointZero = new Point();
-			if(SimpleGraphic == null)
-				createGraphic(8,8);
-			else
-				loadGraphic(SimpleGraphic);
 			offset = new FlxPoint();
 			
 			scale = new FlxPoint(1,1);
@@ -131,6 +128,11 @@ package org.flixel
 
 			_mtx = new Matrix();
 			_callback = null;
+			
+			if(SimpleGraphic == null)
+				createGraphic(8,8);
+			else
+				loadGraphic(SimpleGraphic);
 		}
 		
 		/**
@@ -190,22 +192,41 @@ package org.flixel
 		public function loadRotatedGraphic(Graphic:Class, Rotations:uint=16, Frame:int=-1, AntiAliasing:Boolean=false, AutoBuffer:Boolean=false):FlxSprite
 		{
 			//Create the brush and canvas
-			var rows:uint = 4;
-			var brush:FlxSprite = new FlxSprite().loadGraphic(Graphic,(Frame >= 0));
+			var rows:uint = Math.sqrt(Rotations);
+			var brush:BitmapData = FlxG.addBitmap(Graphic);
 			if(Frame >= 0)
-				brush.frame = Frame;
-			brush.antialiasing = AntiAliasing;
+			{
+				//Using just a segment of the graphic - find the right bit here
+				var full:BitmapData = brush;
+				brush = new BitmapData(full.height,full.height);
+				var rx:uint = Frame*brush.width;
+				var ry:uint = 0;
+				var fw:uint = full.width;
+				if(rx >= fw)
+				{
+					ry = uint(rx/fw)*brush.height;
+					rx %= fw;
+				}
+				_flashRect.x = rx;
+				_flashRect.y = ry;
+				_flashRect.width = brush.width;
+				_flashRect.height = brush.height;
+				brush.copyPixels(full,_flashRect,_flashPointZero);
+			}
+			
 			var max:uint = brush.width;
 			if(brush.height > max)
 				max = brush.height;
 			if(AutoBuffer)
 				max *= 1.5;
-			var cols:uint = Math.ceil(Rotations/rows);
+			var cols:uint = FlxU.ceil(Rotations/rows);
 			width = max*cols;
 			height = max*rows;
 			var key:String = String(Graphic) + ":" + Frame + ":" + width + "x" + height;
 			var skipGen:Boolean = FlxG.checkBitmapCache(key);
-			createGraphic(width, height, 0, true, key);
+			_pixels = FlxG.createBitmap(width, height, 0, true, key);
+			width = frameWidth = _pixels.width;
+			height = frameHeight = _pixels.height;
 			_bakedRotation = 360/Rotations;
 			
 			//Generate a new sheet if necessary, then fix up the width & height
@@ -213,6 +234,7 @@ package org.flixel
 			{
 				var r:uint;
 				var c:uint;
+				var ba:Number = 0;
 				var bw2:uint = brush.width/2;
 				var bh2:uint = brush.height/2;
 				var gxc:uint = max/2;
@@ -221,8 +243,12 @@ package org.flixel
 				{
 					for(c = 0; c < cols; c++)
 					{
-						draw(brush, gxc + max*c - bw2, gyc - bh2);
-						brush.angle += _bakedRotation;
+						_mtx.identity();
+						_mtx.translate(-bw2,-bh2);
+						_mtx.rotate(Math.PI * 2 * (ba / 360));
+						_mtx.translate(max*c+gxc, gyc);
+						ba += _bakedRotation;
+						_pixels.draw(brush,_mtx,null,null,null,AntiAliasing);
 					}
 					gyc += max;
 				}
@@ -288,11 +314,37 @@ package org.flixel
 			_flashRect2.height = _pixels.height;
 			if((_framePixels == null) || (_framePixels.width != width) || (_framePixels.height != height))
 				_framePixels = new BitmapData(width,height);
+			if((_bbb == null) || (_bbb.width != width) || (_bbb.height != height))
+				_bbb = new BitmapData(width,height);
 			origin.x = frameWidth/2;
 			origin.y = frameHeight/2;
 			_framePixels.copyPixels(_pixels,_flashRect,_flashPointZero);
+			if(FlxG.showBounds)
+				drawBounds();
 			_caf = 0;
 			refreshHulls();
+		}
+		
+		/**
+		 * @private
+		 */
+		override public function set solid(Solid:Boolean):void
+		{
+			var os:Boolean = _solid;
+			_solid = Solid;
+			if((os != _solid) && FlxG.showBounds)
+				calcFrame();
+		}
+		
+		/**
+		 * @private
+		 */
+		override public function set fixed(Fixed:Boolean):void
+		{
+			var of:Boolean = _fixed;
+			_fixed = Fixed;
+			if((of != _fixed) && FlxG.showBounds)
+				calcFrame();
 		}
 		
 		/**
@@ -405,7 +457,8 @@ package org.flixel
 		public function fill(Color:uint):void
 		{
 			_pixels.fillRect(_flashRect2,Color);
-			calcFrame();
+			if(_pixels != _framePixels)
+				calcFrame();
 		}
 		
 		/**
@@ -461,6 +514,9 @@ package org.flixel
 		 */
 		protected function renderSprite():void
 		{
+			if(_refreshBounds)
+				calcFrame();
+			
 			getScreenXY(_point);
 			_flashPoint.x = _point.x;
 			_flashPoint.y = _point.y;
@@ -640,7 +696,31 @@ package org.flixel
 			_framePixels.copyPixels(_pixels,_flashRect,_flashPointZero);
 			_flashRect.x = _flashRect.y = 0;
 			if(_ct != null) _framePixels.colorTransform(_flashRect,_ct);
+			if(FlxG.showBounds)
+				drawBounds();
 			if(_callback != null) _callback(_curAnim.name,_curFrame,_caf);
+		}
+		
+		protected function drawBounds():void
+		{
+			var bbbc:uint = getBoundingColor();
+			_bbb.fillRect(_flashRect,0);
+			var ofrw:uint = _flashRect.width;
+			var ofrh:uint = _flashRect.height;
+			_flashRect.width = width;
+			_flashRect.height = height;
+			_flashRect.x = int(offset.x);
+			_flashRect.y = int(offset.y);
+			_bbb.fillRect(_flashRect,bbbc);
+			_flashRect.width -= 2;
+			_flashRect.height -= 2;
+			_flashRect.x++;
+			_flashRect.y++;
+			_bbb.fillRect(_flashRect,0);
+			_flashRect.width = ofrw;
+			_flashRect.height = ofrh;
+			_flashRect.x = _flashRect.y = 0;
+			_framePixels.copyPixels(_bbb,_flashRect,_flashPointZero,null,null,true);
 		}
 		
 		/**

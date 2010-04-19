@@ -26,6 +26,8 @@ package org.flixel.data
 			scrollFactor.x = 0;
 			scrollFactor.y = 0;
 			exists = false;
+			solid = false;
+			fixed = true;
 		}
 		
 		/**

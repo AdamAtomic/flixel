@@ -275,20 +275,13 @@ package org.flixel
 		 */
 		static public function setWorldBounds(X:Number=0, Y:Number=0, Width:Number=0, Height:Number=0, Divisions:uint=3):void
 		{
-			if((X == 0) && (Y == 0) && (Width == 0) && (Height == 0))
-			{
-				X = -128*FlxG.width;
-				Y = -128*FlxG.height;
-				Width = 256*FlxG.width;
-				Height = 256*FlxG.height;
-			}
 			if(quadTreeBounds == null)
 				quadTreeBounds = new FlxRect();
 			quadTreeBounds.x = X;
 			quadTreeBounds.y = Y;
-			if(Width != 0)
+			if(Width > 0)
 				quadTreeBounds.width = Width;
-			if(Height != 0)
+			if(Height > 0)
 				quadTreeBounds.height = Height;
 			if(Divisions > 0)
 				quadTreeDivisions = Divisions;

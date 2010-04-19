@@ -20,12 +20,13 @@ package org.flixel
 		/**
 		 * Creates a new <code>FlxText</code> object at the specified position.
 		 * 
-		 * @param	X		The X position of the text.
-		 * @param	Y		The Y position of the text.
-		 * @param	Width	The width of the text object (height is determined automatically).
-		 * @param	Text	The actual text you would like to display initially.
+		 * @param	X				The X position of the text.
+		 * @param	Y				The Y position of the text.
+		 * @param	Width			The width of the text object (height is determined automatically).
+		 * @param	Text			The actual text you would like to display initially.
+		 * @param	EmbeddedFont	Whether this text field uses embedded fonts or nto
 		 */
-		public function FlxText(X:Number, Y:Number, Width:uint, Text:String=null)
+		public function FlxText(X:Number, Y:Number, Width:uint, Text:String=null, EmbeddedFont:Boolean=true)
 		{
 			super(X,Y);
 			createGraphic(Width,1,0);
@@ -34,7 +35,7 @@ package org.flixel
 				Text = "";
 			_tf = new TextField();
 			_tf.width = Width;
-			_tf.embedFonts = true;
+			_tf.embedFonts = EmbeddedFont;
 			_tf.selectable = false;
 			_tf.sharpness = 100;
 			_tf.multiline = true;
@@ -96,9 +97,13 @@ package org.flixel
 		 */
 		public function set text(Text:String):void
 		{
+			var ot:String = _tf.text;
 			_tf.text = Text;
-			_regen = true;
-			calcFrame();
+			if(_tf.text != ot)
+			{
+				_regen = true;
+				calcFrame();
+			}
 		}
 		
 		/**
@@ -215,6 +220,7 @@ package org.flixel
 					height += _tf.getLineMetrics(i).height;
 				height += 4; //account for 2px gutter on top and bottom
 				_pixels = new BitmapData(width,height,true,0);
+				_bbb = new BitmapData(width,height,true,0);
 				frameHeight = height;
 				_tf.height = height*1.2;				
 				_flashRect.x = 0;
@@ -254,8 +260,11 @@ package org.flixel
 			}
 			
 			//Finally, update the visible pixels
-			_framePixels = new BitmapData(_pixels.width,_pixels.height,true,0);
+			if((_framePixels == null) || (_framePixels.width != _pixels.width) || (_framePixels.height != _pixels.height))
+				_framePixels = new BitmapData(_pixels.width,_pixels.height,true,0);
 			_framePixels.copyPixels(_pixels,_flashRect,_flashPointZero);
+			if(FlxG.showBounds)
+				drawBounds();
 			if(solid)
 				refreshHulls();
 		}

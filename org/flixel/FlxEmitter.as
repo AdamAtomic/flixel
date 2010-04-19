@@ -96,7 +96,7 @@ package org.flixel
 			maxRotation = 360;
 			gravity = 400;
 			particleDrag = new FlxPoint();
-			delay = 0.1;
+			delay = 0;
 			quantity = 0;
 			_counter = 0;
 			_explode = true;
@@ -309,6 +309,13 @@ package org.flixel
 				delay = Delay;
 			if(delay < 0)
 				delay = -delay;
+			if(delay == 0)
+			{
+				if(Explode)
+					delay = 3;	//default value for particle explosions
+				else
+					delay = 0.1;//default value for particle streams
+			}
 		}
 		
 		/**

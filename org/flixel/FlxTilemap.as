@@ -66,6 +66,8 @@ package org.flixel
 		protected var _flashRect:Rectangle;
 		
 		protected var _pixels:BitmapData;
+		protected var _bbPixels:BitmapData;
+		protected var _bbKey:String;
 		protected var _data:Array;
 		protected var _rects:Array;
 		protected var _tileWidth:uint;
@@ -168,9 +170,95 @@ package org.flixel
 			if(_screenCols > widthInTiles)
 				_screenCols = widthInTiles;
 			
+			_bbKey = String(TileGraphic);
+			generateBoundingTiles();
 			refreshHulls();
 			
 			return this;
+		}
+		
+		/**
+		 * Generates a bounding box version of the tiles, flixel should call this automatically when necessary.
+		 */
+		protected function generateBoundingTiles():void
+		{
+			if((_bbKey == null) || (_bbKey.length <= 0))
+				return;
+			
+			//Check for an existing version of this bounding boxes tilemap
+			var bbc:uint = getBoundingColor();
+			var key:String = _bbKey + ":BBTILES" + bbc;
+			var skipGen:Boolean = FlxG.checkBitmapCache(key);
+			_bbPixels = FlxG.createBitmap(_pixels.width, _pixels.height, 0, true, key);
+			if(!skipGen)
+			{
+				//Generate a bounding boxes tilemap for this color
+				_flashRect = new Rectangle();
+				_flashRect.width = _pixels.width;
+				_flashRect.height = _pixels.height;
+				_flashPoint.x = 0;
+				_flashPoint.y = 0;
+				
+				_bbPixels.copyPixels(_pixels,_flashRect,_flashPoint);
+				_flashRect.width = _tileWidth;
+				_flashRect.height = _tileHeight;
+				
+				//Check for an existing non-collide bounding box stamp
+				var ov:Boolean = _solid;
+				_solid = false;
+				bbc = getBoundingColor();
+				key = "BBTILESTAMP"+_tileWidth+"X"+_tileHeight+bbc;
+				skipGen = FlxG.checkBitmapCache(key);
+				var stamp1:BitmapData = FlxG.createBitmap(_tileWidth, _tileHeight, 0, true, key);
+				if(!skipGen)
+				{
+					//Generate a bounding boxes stamp for this color
+					stamp1.fillRect(_flashRect,bbc);
+					_flashRect.x = _flashRect.y = 1;
+					_flashRect.width -= 2;
+					_flashRect.height -= 2;
+					stamp1.fillRect(_flashRect,0);
+					_flashRect.x = _flashRect.y = 0;
+					_flashRect.width = _tileWidth;
+					_flashRect.height = _tileHeight;
+				}
+				_solid = ov;
+				
+				//Check for an existing collide bounding box
+				bbc = getBoundingColor();
+				key = "BBTILESTAMP"+_tileWidth+"X"+_tileHeight+bbc;
+				skipGen = FlxG.checkBitmapCache(key);
+				var stamp2:BitmapData = FlxG.createBitmap(_tileWidth, _tileHeight, 0, true, key);
+				if(!skipGen)
+				{
+					//Generate a bounding boxes stamp for this color
+					stamp2.fillRect(_flashRect,bbc);
+					_flashRect.x = _flashRect.y = 1;
+					_flashRect.width -= 2;
+					_flashRect.height -= 2;
+					stamp2.fillRect(_flashRect,0);
+					_flashRect.x = _flashRect.y = 0;
+					_flashRect.width = _tileWidth;
+					_flashRect.height = _tileHeight;
+				}
+				
+				//Stamp the new tile bitmap with the bounding box border
+				var r:uint;
+				var c:uint;
+				var i:uint = 0;
+				for(r = 0; r < _bbPixels.height; r += _tileHeight)
+				{
+					for(c = 0; c < _bbPixels.width; c += _tileWidth)
+					{
+						_flashPoint.x = c;
+						_flashPoint.y = r;
+						if(i++ < collideIndex)
+							_bbPixels.copyPixels(stamp1,_flashRect,_flashPoint,null,null,true);
+						else
+							_bbPixels.copyPixels(stamp2,_flashRect,_flashPoint,null,null,true);
+					}
+				}
+			}
 		}
 		
 		/**
@@ -178,6 +266,13 @@ package org.flixel
 		 */
 		protected function renderTilemap():void
 		{
+			//Bounding box display options
+			var tileBitmap:BitmapData;
+			if(FlxG.showBounds)
+				tileBitmap = _bbPixels;
+			else
+				tileBitmap = _pixels;
+
 			getScreenXY(_point);
 			_flashPoint.x = _point.x;
 			_flashPoint.y = _point.y;
@@ -200,7 +295,7 @@ package org.flixel
 				{
 					_flashRect = _rects[cri++] as Rectangle;
 					if(_flashRect != null)
-						FlxG.buffer.copyPixels(_pixels,_flashRect,_flashPoint,null,null,true);
+						FlxG.buffer.copyPixels(tileBitmap,_flashRect,_flashPoint,null,null,true);
 					_flashPoint.x += _tileWidth;
 				}
 				ri += widthInTiles;
@@ -215,6 +310,28 @@ package org.flixel
 		override public function render():void
 		{
 			renderTilemap();
+		}
+		
+		/**
+		 * @private
+		 */
+		override public function set solid(Solid:Boolean):void
+		{
+			var os:Boolean = _solid;
+			_solid = Solid;
+			if(os != _solid)
+				generateBoundingTiles();
+		}
+		
+		/**
+		 * @private
+		 */
+		override public function set fixed(Fixed:Boolean):void
+		{
+			var of:Boolean = _fixed;
+			_fixed = Fixed;
+			if(of != _fixed)
+				generateBoundingTiles();
 		}
 		
 		/**

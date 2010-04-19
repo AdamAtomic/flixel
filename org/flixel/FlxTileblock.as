@@ -25,6 +25,10 @@ package org.flixel
 		 * Rendering helper.
 		 */
 		protected var _flashRect:Rectangle;
+		/**
+		 * Bounding box rendering helper.
+		 */
+		protected var _bbRect:Rectangle;
 		
 		/**
 		 * Creates a new <code>FlxBlock</code> object with the specified position and size.
@@ -42,6 +46,7 @@ package org.flixel
 			width = Width;
 			height = Height;
 			fixed = true;
+			_bbRect = new Rectangle(width,height);
 			refreshHulls();
 		}
 		
@@ -102,6 +107,33 @@ package org.flixel
 					_flashPoint.x = opx;
 					_flashPoint.y += _tileSize;
 				}
+			}
+			
+			//Draw bounding box if necessary
+			if(FlxG.showBounds)
+			{
+				var bbc:uint = getBoundingColor();
+				
+				//Draw top of box
+				_bbRect.x = _point.x;
+				_bbRect.y = _point.y;
+				_bbRect.width = width;
+				_bbRect.height = 1;
+				FlxG.buffer.fillRect(_bbRect,bbc);
+				
+				//Draw bottom of box
+				_bbRect.y += height-1;
+				FlxG.buffer.fillRect(_bbRect,bbc);
+				
+				//Draw left side of box
+				_bbRect.y = _point.y + 1;
+				_bbRect.width = 1;
+				_bbRect.height = height-2;
+				FlxG.buffer.fillRect(_bbRect,bbc);
+				
+				//Draw right side of box
+				_bbRect.x += width-1;
+				FlxG.buffer.fillRect(_bbRect,bbc);
 			}
 		}
 	}

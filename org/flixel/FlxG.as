@@ -27,7 +27,7 @@ package org.flixel
 		 * Assign a minor version to your library.
 		 * Appears after the decimal in the console.
 		 */
-		static public var LIBRARY_MINOR_VERSION:uint = 34;
+		static public var LIBRARY_MINOR_VERSION:uint = 35;
 
 		/**
 		 * Internal tracker for game object (so we can pause & unpause)
@@ -42,6 +42,10 @@ package org.flixel
 		 * Set automatically by <code>FlxFactory</code> during startup.
 		 */
 		static public var debug:Boolean;
+		/**
+		 * Internal tracker for bounding box visibility.
+		 */
+		static protected var _showBounds:Boolean;
 		
 		/**
 		 * Represents the amount of time in seconds that passed since last frame.
@@ -204,6 +208,25 @@ package org.flixel
 					playSounds();
 				}
 			}
+		}
+		
+		/**
+		 * Set <code>showBounds</code> to true to display the bounding boxes of the in-game objects.
+		 */
+		static public function get showBounds():Boolean
+		{
+			return _showBounds;
+		}
+		
+		/**
+		 * @private
+		 */
+		static public function set showBounds(ShowBounds:Boolean):void
+		{
+			var osb:Boolean = _showBounds;
+			_showBounds = ShowBounds;
+			if(_showBounds != osb)
+				FlxObject._refreshBounds = true;
 		}
 		
 		/**
@@ -654,13 +677,16 @@ package org.flixel
 			framerate = 60;
 			frameratePaused = 10;
 			maxElapsed = 0.0333333;
+			FlxG.elapsed = 0;
+			_showBounds = false;
+			FlxObject._refreshBounds = false;
 			
 			panel = new FlxPanel();
 			quake = new FlxQuake(Zoom);
 			flash = new FlxFlash();
 			fade = new FlxFade();
 
-			FlxU.setWorldBounds();
+			FlxU.setWorldBounds(0,0,FlxG.width,FlxG.height);
 		}
 
 		/**
