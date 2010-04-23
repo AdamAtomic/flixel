@@ -7,6 +7,9 @@ package org.flixel
 	 */
 	public class FlxGroup extends FlxObject
 	{
+		static public const ASCENDING:int = -1;
+		static public const DESCENDING:int = 1;
+		
 		/**
 		 * Array of all the <code>FlxObject</code>s that exist in this layer.
 		 */
@@ -16,6 +19,11 @@ package org.flixel
 		 */
 		protected var _last:FlxPoint;
 		protected var _first:Boolean;
+		/**
+		 * Helpers for sorting members.
+		 */
+		protected var _sortIndex:String;
+		protected var _sortOrder:int;
 
 		/**
 		 * Constructor
@@ -81,6 +89,23 @@ package org.flixel
 			else
 				members[index] = null;
 			return Object;
+		}
+		
+		/**
+		 * Call this function to sort the group according to a particular value and order.
+		 * For example, to sort game objects for Zelda-style overlaps you might call
+		 * <code>myGroup.sort("y",ASCENDING)</code> at the bottom of your
+		 * <code>FlxState.update()</code> override.  To sort all existing objects after
+		 * a big explosion or bomb attack, you might call <code>myGroup.sort("exists",DESCENDING)</code>.
+		 * 
+		 * @param	Index	The <code>String</code> name of the member variable you want to sort on.  Default value is "y".
+		 * @param	Order	A <code>FlxGroup</code> constant that defines the sort order.  Possible values are <code>ASCENDING</code> and <code>DESCENDING</code>.  Default value is <code>ASCENDING</code>.  
+		 */
+		public function sort(Index:String="y",Order:int=ASCENDING):void
+		{
+			_sortIndex = Index;
+			_sortOrder = Order;
+			members.sort(sortHandler);
 		}
 		
 		/**
@@ -486,6 +511,23 @@ package org.flixel
 					}
 				}
 			}
+		}
+		
+		/**
+		 * Helper function for the sort process.
+		 * 
+		 * @param 	Obj1	The first object being sorted.
+		 * @param	Obj2	The second object being sorted.
+		 * 
+		 * @return	An integer value: -1 (Obj1 before Obj2), 0 (same), or 1 (Obj1 after Obj2).
+		 */
+		protected function sortHandler(Obj1:FlxObject,Obj2:FlxObject):int
+		{
+			if(Obj1[_sortIndex] < Obj2[_sortIndex])
+				return _sortOrder;
+			else if(Obj1[_sortIndex] > Obj2[_sortIndex])
+				return -_sortOrder;
+			return 0;
 		}
 	}
 }
