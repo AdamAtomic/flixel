@@ -91,6 +91,7 @@ package org.flixel
 		protected var _ct:ColorTransform;
 		protected var _mtx:Matrix;
 		protected var _bbb:BitmapData;
+		protected var _boundsVisible:Boolean;
 		
 		/**
 		 * Creates a white 8x8 square <code>FlxSprite</code> at the specified position.
@@ -304,6 +305,7 @@ package org.flixel
 		 */
 		protected function resetHelpers():void
 		{
+			_boundsVisible = false;
 			_flashRect.x = 0;
 			_flashRect.y = 0;
 			_flashRect.width = frameWidth;
@@ -319,6 +321,7 @@ package org.flixel
 			origin.x = frameWidth/2;
 			origin.y = frameHeight/2;
 			_framePixels.copyPixels(_pixels,_flashRect,_flashPointZero);
+			if(_ct != null) _framePixels.colorTransform(_flashRect,_ct);
 			if(FlxG.showBounds)
 				drawBounds();
 			_caf = 0;
@@ -514,7 +517,7 @@ package org.flixel
 		 */
 		protected function renderSprite():void
 		{
-			if(_refreshBounds)
+			if(FlxG.showBounds != _boundsVisible)
 				calcFrame();
 			
 			getScreenXY(_point);
@@ -675,6 +678,7 @@ package org.flixel
 		 */
 		protected function calcFrame():void
 		{
+			_boundsVisible = false;
 			var rx:uint = _caf*frameWidth;
 			var ry:uint = 0;
 
@@ -703,6 +707,9 @@ package org.flixel
 		
 		protected function drawBounds():void
 		{
+			_boundsVisible = true;
+			if((_bbb == null) || (_bbb.width != width) || (_bbb.height != height))
+				_bbb = new BitmapData(width,height);
 			var bbbc:uint = getBoundingColor();
 			_bbb.fillRect(_flashRect,0);
 			var ofrw:uint = _flashRect.width;

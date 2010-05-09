@@ -665,7 +665,7 @@ package org.flixel
 		}
 		
 		/**
-		 * Converts a PNG file to a comma-separated string.
+		 * Converts a <code>BitmapData</code> object to a comma-separated string.
 		 * Black pixels are flagged as 'solid' by default,
 		 * non-black pixels are set as non-colliding.
 		 * Black pixels must be PURE BLACK.
@@ -675,35 +675,31 @@ package org.flixel
 		 * 
 		 * @return	A comma-separated string containing the level data in a <code>FlxTilemap</code>-friendly format.
 		 */
-		static public function pngToCSV(PNGFile:Class,Invert:Boolean=false,Scale:uint=1):String
+		static public function bitmapToCSV(bitmapData:BitmapData,Invert:Boolean=false,Scale:uint=1):String
 		{
 			//Import and scale image if necessary
-			var layout:Bitmap;
-			if(Scale <= 1)
-				layout = new PNGFile;
-			else
+			if(Scale > 1)
 			{
-				var tmp:Bitmap = new PNGFile;
-				layout = new Bitmap(new BitmapData(tmp.width*Scale,tmp.height*Scale));
+				var bd:BitmapData = bitmapData;
+				bitmapData = new BitmapData(bitmapData.width*Scale,bitmapData.height*Scale);
 				var mtx:Matrix = new Matrix();
 				mtx.scale(Scale,Scale);
-				layout.bitmapData.draw(tmp,mtx);
+				bitmapData.draw(bd,mtx);
 			}
-			var bd:BitmapData = layout.bitmapData;
 			
 			//Walk image and export pixel values
 			var r:uint;
 			var c:uint;
 			var p:uint;
 			var csv:String;
-			var w:uint = layout.width;
-			var h:uint = layout.height;
+			var w:uint = bitmapData.width;
+			var h:uint = bitmapData.height;
 			for(r = 0; r < h; r++)
 			{
 				for(c = 0; c < w; c++)
 				{
 					//Decide if this pixel/tile is solid (1) or not (0)
-					p = bd.getPixel(c,r);
+					p = bitmapData.getPixel(c,r);
 					if((Invert && (p > 0)) || (!Invert && (p == 0)))
 						p = 1;
 					else
@@ -722,6 +718,22 @@ package org.flixel
 				}
 			}
 			return csv;
+		}
+		
+		/**
+		 * Converts a resource image file to a comma-separated string.
+		 * Black pixels are flagged as 'solid' by default,
+		 * non-black pixels are set as non-colliding.
+		 * Black pixels must be PURE BLACK.
+		 * 
+		 * @param	PNGFile		An embedded graphic, preferably black and white.
+		 * @param	Invert		Load white pixels as solid instead.
+		 * 
+		 * @return	A comma-separated string containing the level data in a <code>FlxTilemap</code>-friendly format.
+		 */
+		static public function imageToCSV(ImageFile:Class,Invert:Boolean=false,Scale:uint=1):String
+		{
+			return bitmapToCSV((new ImageFile).bitmapData,Invert,Scale);
 		}
 		
 		/**

@@ -193,7 +193,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </tr>
 <tr class="hideInheritedProperty">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../FlxObject.html#fixed">fixed</a> : Boolean<div class="summaryTableDescription">
-   If an object is 'fixed' in space, it will not budge when it collides with a not-fixed object.</div>
+   Set <code>fixed</code> to true if you want the object to stay in place during collisions.</div>
 </td><td class="summaryTableOwnerCol"><a href="../FlxObject.html">FlxObject</a></td>
 </tr>
 <tr class="hideInheritedProperty">
@@ -297,7 +297,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </tr>
 <tr class="hideInheritedProperty">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../FlxObject.html#solid">solid</a> : Boolean<div class="summaryTableDescription">
-   If an object is dead, the functions that automate collisions will skip it (see <code>FlxG.overlapArrays()</code> and <code>FlxG.collideArrays()</code>).</div>
+   Set <code>solid</code> to true if you want to collide this object.</div>
 </td><td class="summaryTableOwnerCol"><a href="../FlxObject.html">FlxObject</a></td>
 </tr>
 <tr class="hideInheritedProperty">
@@ -367,6 +367,14 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol"><a href="../FlxSprite.html">FlxSprite</a></td>
 </tr>
 <tr class="hideInheritedProtectedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../FlxSprite.html#_bbb">_bbb</a> : BitmapData<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol"><a href="../FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedProtectedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../FlxSprite.html#_boundsVisible">_boundsVisible</a> : Boolean<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol"><a href="../FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedProtectedProperty">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../FlxSprite.html#_caf">_caf</a> : uint<div class="summaryTableDescription"></div>
 </td><td class="summaryTableOwnerCol"><a href="../FlxSprite.html">FlxSprite</a></td>
 </tr>
@@ -404,6 +412,11 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="hideInheritedProtectedProperty">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../FlxSprite.html#_facing">_facing</a> : uint<div class="summaryTableDescription"></div>
 </td><td class="summaryTableOwnerCol"><a href="../FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedProtectedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../FlxObject.html#_fixed">_fixed</a> : Boolean<div class="summaryTableDescription">
+   Internal tracker for whether an object will move/alter position after a collision (see <code>fixed</code>).</div>
+</td><td class="summaryTableOwnerCol"><a href="../FlxObject.html">FlxObject</a></td>
 </tr>
 <tr class="hideInheritedProtectedProperty">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../FlxObject.html#_flashPoint">_flashPoint</a> : Point<div class="summaryTableDescription">
@@ -465,6 +478,11 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <div class="summaryTableDescription">
    This is just a pre-allocated rectangle container to be used however you like
    </div>
+</td><td class="summaryTableOwnerCol"><a href="../FlxObject.html">FlxObject</a></td>
+</tr>
+<tr class="hideInheritedProtectedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../FlxObject.html#_solid">_solid</a> : Boolean<div class="summaryTableDescription">
+   Internal tracker for whether or not the object collides (see <code>solid</code>).</div>
 </td><td class="summaryTableOwnerCol"><a href="../FlxObject.html">FlxObject</a></td>
 </tr>
 </table>
@@ -564,6 +582,14 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <a class="signatureLink" href="../FlxObject.html#flickering()">flickering</a>():Boolean</div>
 <div class="summaryTableDescription">
    Check to see if the object is still flickering.</div>
+</td><td class="summaryTableOwnerCol"><a href="../FlxObject.html">FlxObject</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../FlxObject.html#getBoundingColor()">getBoundingColor</a>():uint</div>
+<div class="summaryTableDescription">
+   Returns the appropriate color for the bounding box depending on object state.</div>
 </td><td class="summaryTableOwnerCol"><a href="../FlxObject.html">FlxObject</a></td>
 </tr>
 <tr class="hideInheritedMethod">
@@ -791,6 +817,13 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <a class="signatureLink" href="../FlxSprite.html#calcFrame()">calcFrame</a>():void</div>
 <div class="summaryTableDescription">
    Internal function to update the current animation frame.</div>
+</td><td class="summaryTableOwnerCol"><a href="../FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedProtectedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../FlxSprite.html#drawBounds()">drawBounds</a>():void</div>
+<div class="summaryTableDescription"></div>
 </td><td class="summaryTableOwnerCol"><a href="../FlxSprite.html">FlxSprite</a></td>
 </tr>
 <tr class="hideInheritedProtectedMethod">

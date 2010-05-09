@@ -27,7 +27,7 @@ package org.flixel
 		 * Assign a minor version to your library.
 		 * Appears after the decimal in the console.
 		 */
-		static public var LIBRARY_MINOR_VERSION:uint = 35;
+		static public var LIBRARY_MINOR_VERSION:uint = 36;
 
 		/**
 		 * Internal tracker for game object (so we can pause & unpause)
@@ -43,9 +43,9 @@ package org.flixel
 		 */
 		static public var debug:Boolean;
 		/**
-		 * Internal tracker for bounding box visibility.
+		 * Set <code>showBounds</code> to true to display the bounding boxes of the in-game objects.
 		 */
-		static protected var _showBounds:Boolean;
+		static public var showBounds:Boolean;
 		
 		/**
 		 * Represents the amount of time in seconds that passed since last frame.
@@ -208,25 +208,6 @@ package org.flixel
 					playSounds();
 				}
 			}
-		}
-		
-		/**
-		 * Set <code>showBounds</code> to true to display the bounding boxes of the in-game objects.
-		 */
-		static public function get showBounds():Boolean
-		{
-			return _showBounds;
-		}
-		
-		/**
-		 * @private
-		 */
-		static public function set showBounds(ShowBounds:Boolean):void
-		{
-			var osb:Boolean = _showBounds;
-			_showBounds = ShowBounds;
-			if(_showBounds != osb)
-				FlxObject._refreshBounds = true;
 		}
 		
 		/**
@@ -648,6 +629,26 @@ package org.flixel
 		{
 			_game.switchState(State);
 		}
+		
+		/**
+		 * Stops and resets the camera.
+		 */
+		static public function unfollow():void
+		{
+			followTarget = null;
+			followLead = null;
+			followLerp = 1;
+			followMin = null;
+			followMax = null;
+			if(scroll == null)
+				scroll = new Point();
+			else
+				scroll.x = scroll.y = 0;
+			if(_scrollTarget == null)
+				_scrollTarget = new Point();
+			else
+				_scrollTarget.x = _scrollTarget.y = 0;
+		}
 
 		/**
 		 * Called by <code>FlxGame</code> to set up <code>FlxG</code> during <code>FlxGame</code>'s constructor.
@@ -678,8 +679,7 @@ package org.flixel
 			frameratePaused = 10;
 			maxElapsed = 0.0333333;
 			FlxG.elapsed = 0;
-			_showBounds = false;
-			FlxObject._refreshBounds = false;
+			showBounds = false;
 			
 			panel = new FlxPanel();
 			quake = new FlxQuake(Zoom);
@@ -722,26 +722,6 @@ package org.flixel
 						scroll.y = followMax.y;
 				}
 			}
-		}
-		
-		/**
-		 * Stops and resets the camera.
-		 */
-		static internal function unfollow():void
-		{
-			followTarget = null;
-			followLead = null;
-			followLerp = 1;
-			followMin = null;
-			followMax = null;
-			if(scroll == null)
-				scroll = new Point();
-			else
-				scroll.x = scroll.y = 0;
-			if(_scrollTarget == null)
-				_scrollTarget = new Point();
-			else
-				_scrollTarget.x = _scrollTarget.y = 0;
 		}
 		
 		/**

@@ -321,7 +321,6 @@ package org.flixel
 				_console.update();
 			
 			//State updating
-			FlxObject._refreshBounds = false;
 			FlxG.updateInput();
 			FlxG.updateSounds();
 			if(_paused)

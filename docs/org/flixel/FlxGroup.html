@@ -4,7 +4,7 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="../../style.css" type="text/css" media="screen">
 <link rel="stylesheet" href="../../print.css" type="text/css" media="print">
-<meta content="FlxGroup,org.flixel.FlxGroup,_first,_last,members,add,countDead,countLiving,countOnScreen,destroy,destroyMembers,getFirstAlive,getFirstAvail,getFirstDead,getFirstExtant,getFirstNull,getRandom,kill,killMembers,remove,render,renderMembers,replace,reset,resetFirstAvail,saveOldPosition,update,updateMembers" name="keywords">
+<meta content="FlxGroup,org.flixel.FlxGroup,ASCENDING,DESCENDING,_first,_last,_sortIndex,_sortOrder,members,add,countDead,countLiving,countOnScreen,destroy,destroyMembers,getFirstAlive,getFirstAvail,getFirstDead,getFirstExtant,getFirstNull,getRandom,kill,killMembers,remove,render,renderMembers,replace,reset,resetFirstAvail,saveOldPosition,sort,sortHandler,update,updateMembers" name="keywords">
 <title>org.flixel.FlxGroup</title>
 </head>
 <body>
@@ -165,7 +165,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </tr>
 <tr class="hideInheritedProperty">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#fixed">fixed</a> : Boolean<div class="summaryTableDescription">
-   If an object is 'fixed' in space, it will not budge when it collides with a not-fixed object.</div>
+   Set <code>fixed</code> to true if you want the object to stay in place during collisions.</div>
 </td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
 </tr>
 <tr class="hideInheritedProperty">
@@ -241,7 +241,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </tr>
 <tr class="hideInheritedProperty">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#solid">solid</a> : Boolean<div class="summaryTableDescription">
-   If an object is dead, the functions that automate collisions will skip it (see <code>FlxG.overlapArrays()</code> and <code>FlxG.collideArrays()</code>).</div>
+   Set <code>solid</code> to true if you want to collide this object.</div>
 </td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
 </tr>
 <tr class="hideInheritedProperty">
@@ -303,6 +303,11 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol">FlxGroup</td>
 </tr>
 <tr class="hideInheritedProtectedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#_fixed">_fixed</a> : Boolean<div class="summaryTableDescription">
+   Internal tracker for whether an object will move/alter position after a collision (see <code>fixed</code>).</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</tr>
+<tr class="hideInheritedProtectedProperty">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#_flashPoint">_flashPoint</a> : Point<div class="summaryTableDescription">
    This is a pre-allocated Flash Point object, which is useful for certain Flash graphics API calls
    </div>
@@ -337,6 +342,20 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
    This is just a pre-allocated rectangle container to be used however you like
    </div>
 </td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</tr>
+<tr class="hideInheritedProtectedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#_solid">_solid</a> : Boolean<div class="summaryTableDescription">
+   Internal tracker for whether or not the object collides (see <code>solid</code>).</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_sortIndex">_sortIndex</a> : String<div class="summaryTableDescription">
+   Helpers for sorting members.</div>
+</td><td class="summaryTableOwnerCol">FlxGroup</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_sortOrder">_sortOrder</a> : int<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">FlxGroup</td>
 </tr>
 </table>
 </div>
@@ -429,6 +448,14 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <a class="signatureLink" href="FlxObject.html#flickering()">flickering</a>():Boolean</div>
 <div class="summaryTableDescription">
    Check to see if the object is still flickering.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxObject.html#getBoundingColor()">getBoundingColor</a>():uint</div>
+<div class="summaryTableDescription">
+   Returns the appropriate color for the bounding box depending on object state.</div>
 </td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
 </tr>
 <tr class="">
@@ -626,6 +653,14 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
    Finds the first object with exists == false and calls reset on it.</div>
 </td><td class="summaryTableOwnerCol">FlxGroup</td>
 </tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#sort()">sort</a>(Index:String = "y", Order:int):void</div>
+<div class="summaryTableDescription">
+   Call this function to sort the group according to a particular value and order.</div>
+</td><td class="summaryTableOwnerCol">FlxGroup</td>
+</tr>
 <tr class="hideInheritedMethod">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
@@ -692,6 +727,14 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
    Internal function, helps with the moving/updating of group members.</div>
 </td><td class="summaryTableOwnerCol">FlxGroup</td>
 </tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#sortHandler()">sortHandler</a>(Obj1:<a href="FlxObject.html">FlxObject</a>, Obj2:<a href="FlxObject.html">FlxObject</a>):int</div>
+<div class="summaryTableDescription">
+   Helper function for the sort process.</div>
+</td><td class="summaryTableOwnerCol">FlxGroup</td>
+</tr>
 <tr class="hideInheritedProtectedMethod">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
@@ -718,7 +761,24 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </tr>
 </table>
 </div>
-<a name="constantSummary"></a><a name="protectedConstantSummary"></a>
+<a name="constantSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Constants</div>
+<table id="summaryTableConstant" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Constant</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#ASCENDING">ASCENDING</a> : int = -1<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">FlxGroup</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#DESCENDING">DESCENDING</a> : int = 1<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">FlxGroup</td>
+</tr>
+</table>
+</div>
+<a name="protectedConstantSummary"></a>
 <div class="summarySection">
 <div class="summaryTableTitle">Protected Constants</div>
 <div class="showHideLinks">
@@ -778,6 +838,25 @@ showHideInherited();
 <code>public var members:Array</code><p>
    Array of all the <code>FlxObject</code>s that exist in this layer.
    </p></div>
+<a name="_sortIndex"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_sortIndex</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _sortIndex:String</code><p>
+   Helpers for sorting members.
+   </p></div>
+<a name="_sortOrder"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_sortOrder</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _sortOrder:int</code>
+</div>
 <a name="constructorDetail"></a>
 <div class="detailSectionHeader">Constructor detail</div>
 <a name="FlxGroup()"></a>
@@ -1223,6 +1302,69 @@ showHideInherited();
 <code>protected function saveOldPosition():void</code><p>
    Internal function, helps with the moving/updating of group members.
    </p></div>
+<a name="sort()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">sort</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function sort(Index:String = "y", Order:int):void</code><p>
+   Call this function to sort the group according to a particular value and order.
+   For example, to sort game objects for Zelda-style overlaps you might call
+   <code>myGroup.sort("y",ASCENDING)</code> at the bottom of your
+   <code>FlxState.update()</code> override.  To sort all existing objects after
+   a big explosion or bomb attack, you might call <code>myGroup.sort("exists",DESCENDING)</code>.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">Index</span>:String</code> (default = "<code>y</code>")<code></code> &mdash; The <code>String</code> name of the member variable you want to sort on.  Default value is "y".
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Order</span>:int</code> &mdash; A <code>FlxGroup</code> constant that defines the sort order.  Possible values are <code>ASCENDING</code> and <code>DESCENDING</code>.  Default value is <code>ASCENDING</code>.  
+   </td>
+</tr>
+</table>
+</div>
+<a name="sortHandler()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">sortHandler</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected function sortHandler(Obj1:<a href="FlxObject.html">FlxObject</a>, Obj2:<a href="FlxObject.html">FlxObject</a>):int</code><p>
+   Helper function for the sort process.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">Obj1</span>:<a href="FlxObject.html">FlxObject</a></code> &mdash; Obj1 The first object being sorted.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Obj2</span>:<a href="FlxObject.html">FlxObject</a></code> &mdash; The second object being sorted.
+   
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>int</code> &mdash; An integer value: -1 (Obj1 before Obj2), 0 (same), or 1 (Obj1 after Obj2).
+   </td>
+</tr>
+</table>
+</div>
 <a name="update()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -1245,6 +1387,26 @@ showHideInherited();
    Internal function that actually goes through and updates all the group members.
    Depends on <code>saveOldPosition()</code> to set up the correct values in <code>_last</code> in order to work properly.
    </p></div>
+<a name="constantDetail"></a>
+<div class="detailSectionHeader">Constant detail</div>
+<a name="ASCENDING"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">ASCENDING</td><td class="detailHeaderType">constant</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const ASCENDING:int = -1</code>
+</div>
+<a name="DESCENDING"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">DESCENDING</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const DESCENDING:int = 1</code>
+</div>
 <br>
 <br>
 <hr>

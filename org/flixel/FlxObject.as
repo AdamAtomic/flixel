@@ -174,10 +174,6 @@ package org.flixel
 		 * Flag for direction collision resolution.
 		 */
 		public var collideBottom:Boolean;
-		/**
-		 * Flag for whether the bounding box visuals need to be refreshed.
-		 */
-		static internal var _refreshBounds:Boolean;
 		
 		/**
 		 * Creates a new <code>FlxObject</code>.
@@ -480,7 +476,7 @@ package org.flixel
 		 */
 		public function hitLeft(Contact:FlxObject,Velocity:Number):void
 		{
-			if(!fixed)
+			if(!fixed || (Contact.fixed && ((velocity.y != 0) || (velocity.x != 0))))
 				velocity.x = Velocity;
 		}
 		
@@ -503,7 +499,7 @@ package org.flixel
 		 */
 		public function hitTop(Contact:FlxObject,Velocity:Number):void
 		{
-			if(!fixed)
+			if(!fixed || (Contact.fixed && ((velocity.y != 0) || (velocity.x != 0))))
 				velocity.y = Velocity;
 		}
 		
@@ -516,7 +512,7 @@ package org.flixel
 		public function hitBottom(Contact:FlxObject,Velocity:Number):void
 		{
 			onFloor = true;
-			if(!fixed)
+			if(!fixed || (Contact.fixed && ((velocity.y != 0) || (velocity.x != 0))))
 				velocity.y = Velocity;
 		}
 		

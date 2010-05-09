@@ -4,7 +4,7 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="../../style.css" type="text/css" media="screen">
 <link rel="stylesheet" href="../../print.css" type="text/css" media="print">
-<meta content="FlxTilemap,org.flixel.FlxTilemap,ALT,AUTO,ImgAuto,ImgAutoAlt,OFF,_block,_callbacks,_data,_flashRect,_pixels,_rects,_screenCols,_screenRows,_tileHeight,_tileWidth,auto,collideIndex,drawIndex,heightInTiles,startingIndex,totalTiles,widthInTiles,arrayToCSV,autoTile,follow,getTile,getTileByIndex,loadMap,overlaps,pngToCSV,preCollide,ray,refreshHulls,render,renderTilemap,setCallback,setTile,setTileByIndex,updateTile" name="keywords">
+<meta content="FlxTilemap,org.flixel.FlxTilemap,ALT,AUTO,ImgAuto,ImgAutoAlt,OFF,_bbKey,_bbPixels,_block,_callbacks,_data,_flashRect,_pixels,_rects,_screenCols,_screenRows,_tileHeight,_tileWidth,auto,collideIndex,drawIndex,heightInTiles,startingIndex,totalTiles,widthInTiles,arrayToCSV,autoTile,bitmapToCSV,follow,generateBoundingTiles,getTile,getTileByIndex,imageToCSV,loadMap,overlaps,preCollide,ray,refreshHulls,render,renderTilemap,setCallback,setTile,setTileByIndex,updateTile" name="keywords">
 <title>org.flixel.FlxTilemap</title>
 </head>
 <body>
@@ -179,7 +179,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </tr>
 <tr class="hideInheritedProperty">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#fixed">fixed</a> : Boolean<div class="summaryTableDescription">
-   If an object is 'fixed' in space, it will not budge when it collides with a not-fixed object.</div>
+   Set <code>fixed</code> to true if you want the object to stay in place during collisions.</div>
 </td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
 </tr>
 <tr class="hideInheritedProperty">
@@ -264,7 +264,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </tr>
 <tr class="hideInheritedProperty">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#solid">solid</a> : Boolean<div class="summaryTableDescription">
-   If an object is dead, the functions that automate collisions will skip it (see <code>FlxG.overlapArrays()</code> and <code>FlxG.collideArrays()</code>).</div>
+   Set <code>solid</code> to true if you want to collide this object.</div>
 </td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
 </tr>
 <tr class="">
@@ -339,6 +339,14 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
 </tr>
 <tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_bbKey">_bbKey</a> : String<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">FlxTilemap</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_bbPixels">_bbPixels</a> : BitmapData<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">FlxTilemap</td>
+</tr>
+<tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_block">_block</a> : <a href="../flixel/FlxObject.html">FlxObject</a>
 <div class="summaryTableDescription"></div>
 </td><td class="summaryTableOwnerCol">FlxTilemap</td>
@@ -350,6 +358,11 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_data">_data</a> : Array<div class="summaryTableDescription"></div>
 </td><td class="summaryTableOwnerCol">FlxTilemap</td>
+</tr>
+<tr class="hideInheritedProtectedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#_fixed">_fixed</a> : Boolean<div class="summaryTableDescription">
+   Internal tracker for whether an object will move/alter position after a collision (see <code>fixed</code>).</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
 </tr>
 <tr class="hideInheritedProtectedProperty">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#_flashPoint">_flashPoint</a> : Point<div class="summaryTableDescription">
@@ -402,6 +415,11 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_screenRows">_screenRows</a> : uint<div class="summaryTableDescription"></div>
 </td><td class="summaryTableOwnerCol">FlxTilemap</td>
 </tr>
+<tr class="hideInheritedProtectedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#_solid">_solid</a> : Boolean<div class="summaryTableDescription">
+   Internal tracker for whether or not the object collides (see <code>solid</code>).</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</tr>
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_tileHeight">_tileHeight</a> : uint<div class="summaryTableDescription"></div>
 </td><td class="summaryTableOwnerCol">FlxTilemap</td>
@@ -443,6 +461,14 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
    Converts a one-dimensional array of tile data to a comma-separated string.</div>
 </td><td class="summaryTableOwnerCol">FlxTilemap</td>
 </tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#bitmapToCSV()">bitmapToCSV</a>(bitmapData:BitmapData, Invert:Boolean = false, Scale:uint = 1):String</div>
+<div class="summaryTableDescription">[static]
+   Converts a <code>BitmapData</code> object to a comma-separated string.</div>
+</td><td class="summaryTableOwnerCol">FlxTilemap</td>
+</tr>
 <tr class="hideInheritedMethod">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
@@ -482,6 +508,14 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <div class="summaryTableDescription">
    Call this function to lock the automatic camera to the map's edges.</div>
 </td><td class="summaryTableOwnerCol">FlxTilemap</td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxObject.html#getBoundingColor()">getBoundingColor</a>():uint</div>
+<div class="summaryTableDescription">
+   Returns the appropriate color for the bounding box depending on object state.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
 </tr>
 <tr class="hideInheritedMethod">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
@@ -548,6 +582,14 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
    Call this function to "damage" (or give health bonus) to this sprite.</div>
 </td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
 </tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#imageToCSV()">imageToCSV</a>(ImageFile:Class, Invert:Boolean = false, Scale:uint = 1):String</div>
+<div class="summaryTableDescription">[static]
+   Converts a resource image file to a comma-separated string.</div>
+</td><td class="summaryTableOwnerCol">FlxTilemap</td>
+</tr>
 <tr class="hideInheritedMethod">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
@@ -588,14 +630,6 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <div class="summaryTableDescription">
    Checks to see if a point in 2D space overlaps this <code>FlxObject</code> object.</div>
 </td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#pngToCSV()">pngToCSV</a>(PNGFile:Class, Invert:Boolean = false, Scale:uint = 1):String</div>
-<div class="summaryTableDescription">[static]
-   Converts a PNG file to a comma-separated string.</div>
-</td><td class="summaryTableOwnerCol">FlxTilemap</td>
 </tr>
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
@@ -708,6 +742,14 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
+<a class="signatureLink" href="#generateBoundingTiles()">generateBoundingTiles</a>():void</div>
+<div class="summaryTableDescription">
+   Generates a bounding box version of the tiles, flixel should call this automatically when necessary.</div>
+</td><td class="summaryTableOwnerCol">FlxTilemap</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
 <a class="signatureLink" href="#renderTilemap()">renderTilemap</a>():void</div>
 <div class="summaryTableDescription">
    Internal function that actually renders the tilemap.</div>
@@ -804,6 +846,24 @@ showHideInherited();
 <code>public var auto:uint</code><p>
    Set this flag to use one of the 16-tile binary auto-tile algorithms (OFF, AUTO, or ALT).
    </p></div>
+<a name="_bbKey"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_bbKey</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _bbKey:String</code>
+</div>
+<a name="_bbPixels"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_bbPixels</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _bbPixels:BitmapData</code>
+</div>
 <a name="_block"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -1040,6 +1100,49 @@ showHideInherited();
 </tr>
 </table>
 </div>
+<a name="bitmapToCSV()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">bitmapToCSV</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function bitmapToCSV(bitmapData:BitmapData, Invert:Boolean = false, Scale:uint = 1):String</code><p>
+   Converts a <code>BitmapData</code> object to a comma-separated string.
+   Black pixels are flagged as 'solid' by default,
+   non-black pixels are set as non-colliding.
+   Black pixels must be PURE BLACK.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">bitmapData</span>:BitmapData</code> &mdash;  An embedded graphic, preferably black and white.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Invert</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash;  Load white pixels as solid instead.
+   
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Scale</span>:uint</code> (default = <code>1</code>)<code></code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>String</code> &mdash; A comma-separated string containing the level data in a <code>FlxTilemap</code>-friendly format.
+   </td>
+</tr>
+</table>
+</div>
 <a name="follow()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -1058,6 +1161,16 @@ showHideInherited();
 </tr>
 </table>
 </div>
+<a name="generateBoundingTiles()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">generateBoundingTiles</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected function generateBoundingTiles():void</code><p>
+   Generates a bounding box version of the tiles, flixel should call this automatically when necessary.
+   </p></div>
 <a name="getTile()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -1115,6 +1228,49 @@ showHideInherited();
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
 <td width="20"></td><td><code>uint</code> &mdash; A uint containing the value of the tile at this spot in the array.
+   </td>
+</tr>
+</table>
+</div>
+<a name="imageToCSV()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">imageToCSV</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function imageToCSV(ImageFile:Class, Invert:Boolean = false, Scale:uint = 1):String</code><p>
+   Converts a resource image file to a comma-separated string.
+   Black pixels are flagged as 'solid' by default,
+   non-black pixels are set as non-colliding.
+   Black pixels must be PURE BLACK.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">ImageFile</span>:Class</code> &mdash;  An embedded graphic, preferably black and white.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Invert</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash;  Load white pixels as solid instead.
+   
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Scale</span>:uint</code> (default = <code>1</code>)<code></code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>String</code> &mdash; A comma-separated string containing the level data in a <code>FlxTilemap</code>-friendly format.
    </td>
 </tr>
 </table>
@@ -1192,49 +1348,6 @@ showHideInherited();
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
 <td width="20"></td><td><code>Boolean</code></td>
-</tr>
-</table>
-</div>
-<a name="pngToCSV()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">pngToCSV</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function pngToCSV(PNGFile:Class, Invert:Boolean = false, Scale:uint = 1):String</code><p>
-   Converts a PNG file to a comma-separated string.
-   Black pixels are flagged as 'solid' by default,
-   non-black pixels are set as non-colliding.
-   Black pixels must be PURE BLACK.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">PNGFile</span>:Class</code> &mdash;  An embedded graphic, preferably black and white.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Invert</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash;  Load white pixels as solid instead.
-   
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Scale</span>:uint</code> (default = <code>1</code>)<code></code></td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>String</code> &mdash; A comma-separated string containing the level data in a <code>FlxTilemap</code>-friendly format.
-   </td>
 </tr>
 </table>
 </div>
