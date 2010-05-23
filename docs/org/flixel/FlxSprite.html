@@ -4,7 +4,7 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="../../style.css" type="text/css" media="screen">
 <link rel="stylesheet" href="../../print.css" type="text/css" media="print">
-<meta content="FlxSprite,org.flixel.FlxSprite,DOWN,LEFT,RIGHT,UP,_alpha,_animations,_bakedRotation,_bbb,_boundsVisible,_caf,_callback,_color,_ct,_curAnim,_curFrame,_facing,_flashPointZero,_flashRect,_flashRect2,_flipped,_framePixels,_frameTimer,_mtx,_pixels,antialiasing,blend,finished,frameHeight,frameWidth,offset,scale,alpha,color,facing,frame,pixels,addAnimation,addAnimationCallback,calcFrame,createGraphic,draw,drawBounds,fill,getScreenXY,loadGraphic,loadRotatedGraphic,onEmit,overlapsPoint,play,randomFrame,render,renderSprite,resetHelpers,unsafeBind,update,updateAnimation" name="keywords">
+<meta content="FlxSprite,org.flixel.FlxSprite,DOWN,LEFT,RIGHT,UP,_alpha,_animations,_bakedRotation,_bbb,_boundsVisible,_caf,_callback,_color,_ct,_curAnim,_curFrame,_facing,_flashPointZero,_flashRect,_flashRect2,_flipped,_framePixels,_frameTimer,_gfx,_gfxSprite,_mtx,_pixels,antialiasing,blend,finished,frameHeight,frameWidth,offset,scale,alpha,color,facing,frame,pixels,addAnimation,addAnimationCallback,calcFrame,createGraphic,draw,drawBounds,drawLine,fill,getScreenXY,loadGraphic,loadRotatedGraphic,onEmit,overlapsPoint,play,randomFrame,render,renderSprite,resetHelpers,unsafeBind,update,updateAnimation" name="keywords">
 <title>org.flixel.FlxSprite</title>
 </head>
 <body>
@@ -452,6 +452,14 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol">FlxSprite</td>
 </tr>
 <tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_gfx">_gfx</a> : Graphics<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">FlxSprite</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_gfxSprite">_gfxSprite</a> : Sprite<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">FlxSprite</td>
+</tr>
+<tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_mtx">_mtx</a> : Matrix<div class="summaryTableDescription"></div>
 </td><td class="summaryTableOwnerCol">FlxSprite</td>
 </tr>
@@ -550,6 +558,15 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <a class="signatureLink" href="#draw()">draw</a>(Brush:<a href="FlxSprite.html">FlxSprite</a>, X:int = 0, Y:int = 0):void</div>
 <div class="summaryTableDescription">
    This function draws or stamps one <code>FlxSprite</code> onto another.</div>
+</td><td class="summaryTableOwnerCol">FlxSprite</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#drawLine()">drawLine</a>(StartX:Number, StartY:Number, EndX:Number, EndY:Number, Color:uint, Thickness:uint = 1):void</div>
+<div class="summaryTableDescription">
+   This function draws a line on this sprite from position X1,Y1
+   to position X2,Y2 with the specified color.</div>
 </td><td class="summaryTableOwnerCol">FlxSprite</td>
 </tr>
 <tr class="">
@@ -1187,6 +1204,24 @@ showHideInherited();
    The width of the actual graphic or image being displayed (not necessarily the game object/bounding box).
    NOTE: Edit at your own risk!!  This is intended to be read-only.
    </p></div>
+<a name="_gfx"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_gfx</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected static var _gfx:Graphics</code>
+</div>
+<a name="_gfxSprite"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_gfxSprite</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected static var _gfxSprite:Sprite</code>
+</div>
 <a name="_mtx"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -1449,6 +1484,60 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>protected function drawBounds():void</code>
+</div>
+<a name="drawLine()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">drawLine</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function drawLine(StartX:Number, StartY:Number, EndX:Number, EndY:Number, Color:uint, Thickness:uint = 1):void</code><p>
+   This function draws a line on this sprite from position X1,Y1
+   to position X2,Y2 with the specified color.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">StartX</span>:Number</code> &mdash;  X coordinate of the line's start point.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">StartY</span>:Number</code> &mdash;  Y coordinate of the line's start point.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">EndX</span>:Number</code> &mdash;  X coordinate of the line's end point.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">EndY</span>:Number</code> &mdash;  Y coordinate of the line's end point.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Color</span>:uint</code> &mdash;  The line's color.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Thickness</span>:uint</code> (default = <code>1</code>)<code></code> &mdash; How thick the line is in pixels (default value is 1).
+   </td>
+</tr>
+</table>
 </div>
 <a name="fill()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">

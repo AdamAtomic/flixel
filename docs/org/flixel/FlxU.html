@@ -4,7 +4,7 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="../../style.css" type="text/css" media="screen">
 <link rel="stylesheet" href="../../print.css" type="text/css" media="print">
-<meta content="FlxU,org.flixel.FlxU,_originalSeed,_seed,quadTree,quadTreeBounds,quadTreeDivisions,roundingError,seed,abs,ceil,collide,computeVelocity,endProfile,floor,getAngle,getClass,getClassName,mutate,openURL,overlap,random,randomize,rotatePoint,setWorldBounds,solveXCollision,solveYCollision,startProfile" name="keywords">
+<meta content="FlxU,org.flixel.FlxU,_originalSeed,_seed,quadTree,quadTreeBounds,quadTreeDivisions,roundingError,seed,abs,ceil,collide,computeVelocity,endProfile,floor,getAngle,getClass,getClassName,max,min,mutate,openURL,overlap,random,randomize,rotatePoint,setWorldBounds,solveXCollision,solveYCollision,startProfile" name="keywords">
 <title>org.flixel.FlxU</title>
 </head>
 <body>
@@ -175,6 +175,20 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <a class="signatureLink" href="#getClassName()">getClassName</a>(Obj:Object, Simple:Boolean = false):String</div>
 <div class="summaryTableDescription">[static]
    Get the <code>String</code> name of any <code>Object</code>.</div>
+</td><td class="summaryTableOwnerCol">FlxU</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#max()">max</a>(N1:Number, N2:Number):Number</div>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">FlxU</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#min()">min</a>(N1:Number, N2:Number):Number</div>
+<div class="summaryTableDescription">[static]</div>
 </td><td class="summaryTableOwnerCol">FlxU</td>
 </tr>
 <tr class="">
@@ -632,6 +646,60 @@ showHideInherited();
 <tr>
 <td width="20"></td><td><code>String</code> &mdash; The name of the <code>Class</code> as a <code>String</code> object.
    </td>
+</tr>
+</table>
+</div>
+<a name="max()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">max</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function max(N1:Number, N2:Number):Number</code><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">N1</span>:Number</code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">N2</span>:Number</code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Number</code></td>
+</tr>
+</table>
+</div>
+<a name="min()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">min</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function min(N1:Number, N2:Number):Number</code><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">N1</span>:Number</code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">N2</span>:Number</code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Number</code></td>
 </tr>
 </table>
 </div>

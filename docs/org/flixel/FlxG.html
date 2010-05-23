@@ -4,7 +4,7 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="../../style.css" type="text/css" media="screen">
 <link rel="stylesheet" href="../../print.css" type="text/css" media="print">
-<meta content="FlxG,org.flixel.FlxG,LIBRARY_MAJOR_VERSION,LIBRARY_MINOR_VERSION,LIBRARY_NAME,_cache,_game,_mute,_pause,_scrollTarget,_volume,buffer,debug,elapsed,fade,flash,followLead,followLerp,followMax,followMin,followTarget,height,keys,kong,level,levels,maxElapsed,mouse,music,panel,quake,save,saves,score,scores,scroll,showBounds,sounds,timeScale,width,framerate,frameratePaused,mute,pause,stage,state,volume,addBitmap,changeSounds,checkBitmapCache,createBitmap,destroySounds,doFollow,follow,followAdjust,followBounds,getMuteValue,log,pauseSounds,play,playMusic,playSounds,resetInput,setGameData,stream,unfollow,updateInput,updateSounds" name="keywords">
+<meta content="FlxG,org.flixel.FlxG,LIBRARY_MAJOR_VERSION,LIBRARY_MINOR_VERSION,LIBRARY_NAME,_cache,_game,_mute,_pause,_scrollTarget,_volume,buffer,debug,elapsed,fade,flash,followLead,followLerp,followMax,followMin,followTarget,gamepads,height,keys,kong,level,levels,maxElapsed,mouse,music,panel,quake,save,saves,score,scores,scroll,showBounds,sounds,timeScale,width,framerate,frameratePaused,mute,pause,stage,state,volume,addBitmap,changeSounds,checkBitmapCache,createBitmap,destroySounds,doFollow,follow,followAdjust,followBounds,getMuteValue,log,pauseSounds,play,playMusic,playSounds,resetInput,setGameData,stream,unfollow,updateInput,updateSounds" name="keywords">
 <title>org.flixel.FlxG</title>
 </head>
 <body>
@@ -116,6 +116,11 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol">FlxG</td>
 </tr>
 <tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#gamepads">gamepads</a> : Array<div class="summaryTableDescription">[static]
+   An array of <code>FlxGamepad</code> objects.</div>
+</td><td class="summaryTableOwnerCol">FlxG</td>
+</tr>
+<tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#height">height</a> : uint<div class="summaryTableDescription">[static]
    The height of the screen in game pixels.</div>
 </td><td class="summaryTableOwnerCol">FlxG</td>
@@ -148,7 +153,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol">FlxG</td>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#LIBRARY_MINOR_VERSION">LIBRARY_MINOR_VERSION</a> : uint = 36<div class="summaryTableDescription">[static]
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#LIBRARY_MINOR_VERSION">LIBRARY_MINOR_VERSION</a> : uint = 37<div class="summaryTableDescription">[static]
    Assign a minor version to your library.</div>
 </td><td class="summaryTableOwnerCol">FlxG</td>
 </tr>
@@ -653,6 +658,16 @@ showHideInherited();
 <code>protected static var _game:<a href="../flixel/FlxGame.html">FlxGame</a></code><p>
    Internal tracker for game object (so we can pause & unpause)
    </p></div>
+<a name="gamepads"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">gamepads</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static var gamepads:Array</code><p>
+   An array of <code>FlxGamepad</code> objects.  Important for input!
+   </p></div>
 <a name="height"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -721,7 +736,7 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public static var LIBRARY_MINOR_VERSION:uint = 36</code><p>
+<code>public static var LIBRARY_MINOR_VERSION:uint = 37</code><p>
    Assign a minor version to your library.
    Appears after the decimal in the console.
    </p></div>

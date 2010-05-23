@@ -4,7 +4,7 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="../../../style.css" type="text/css" media="screen">
 <link rel="stylesheet" href="../../../print.css" type="text/css" media="print">
-<meta content="FlxKeyboard,org.flixel.data.FlxKeyboard,A,ALT,B,BACKSLASH,BACKSPACE,C,CAPSLOCK,COMMA,CONTROL,D,DELETE,DOWN,E,EIGHT,ENTER,ESCAPE,F,F1,F10,F11,F12,F2,F3,F4,F5,F6,F7,F8,F9,FIVE,FOUR,G,H,I,J,K,L,LBRACKET,LEFT,M,MINUS,N,NINE,O,ONE,P,PERIOD,PLUS,Q,QUOTE,R,RBRACKET,RIGHT,S,SEMICOLON,SEVEN,SHIFT,SIX,SLASH,SPACE,T,THREE,TWO,U,UP,V,W,X,Y,Z,ZERO,addKey,handleKeyDown,handleKeyUp,justPressed,justReleased,pressed,reset,update" name="keywords">
+<meta content="FlxKeyboard,org.flixel.data.FlxKeyboard,A,ALT,B,BACKSLASH,BACKSPACE,C,CAPSLOCK,COMMA,CONTROL,D,DELETE,DOWN,E,EIGHT,ENTER,ESCAPE,F,F1,F10,F11,F12,F2,F3,F4,F5,F6,F7,F8,F9,FIVE,FOUR,G,H,I,J,K,L,LBRACKET,LEFT,M,MINUS,N,NINE,O,ONE,P,PERIOD,PLUS,Q,QUOTE,R,RBRACKET,RIGHT,S,SEMICOLON,SEVEN,SHIFT,SIX,SLASH,SPACE,T,THREE,TWO,U,UP,V,W,X,Y,Z,ZERO" name="keywords">
 <title>org.flixel.data.FlxKeyboard</title>
 </head>
 <body>
@@ -36,6 +36,9 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </tr>
 <tr>
 <td class="classHeaderTableLabel">Class</td><td class="classSignature">public class FlxKeyboard</td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Inheritance</td><td class="inheritanceList">FlxKeyboard <img class="inheritArrow" alt="Inheritance" title="Inheritance" src="../../../images/inherit-arrow.gif"> <a href="FlxInput.html">FlxInput</a></td>
 </tr>
 </table>
 <p></p>
@@ -339,6 +342,14 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <a name="methodSummary"></a>
 <div class="summarySection">
 <div class="summaryTableTitle">Public Methods</div>
+<div class="showHideLinks">
+<div class="hideInheritedMethod" id="hideInheritedMethod">
+<a onclick="javascript:setInheritedVisible(false,'Method');" href="#methodSummary" class="showHideLink"><img src="../../../images/expanded.gif" class="showHideLinkImage"> Hide Inherited Public Methods</a>
+</div>
+<div class="showInheritedMethod" id="showInheritedMethod">
+<a onclick="javascript:setInheritedVisible(true,'Method');" href="#methodSummary" class="showHideLink"><img src="../../../images/collapsed.gif" class="showHideLinkImage"> Show Inherited Public Methods</a>
+</div>
+</div>
 <table id="summaryTableMethod" class="summaryTable " cellpadding="3" cellspacing="0">
 <tr>
 <th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
@@ -347,83 +358,72 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="#FlxKeyboard()">FlxKeyboard</a>()</div>
-<div class="summaryTableDescription">
-   Constructor
-   </div>
+<div class="summaryTableDescription"></div>
 </td><td class="summaryTableOwnerCol">FlxKeyboard</td>
 </tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#handleKeyDown()">handleKeyDown</a>(event:KeyboardEvent):void</div>
-<div class="summaryTableDescription">
-   Event handler so FlxGame can toggle keys.</div>
-</td><td class="summaryTableOwnerCol">FlxKeyboard</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#handleKeyUp()">handleKeyUp</a>(event:KeyboardEvent):void</div>
-<div class="summaryTableDescription">
-   Event handler so FlxGame can toggle keys.</div>
-</td><td class="summaryTableOwnerCol">FlxKeyboard</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#justPressed()">justPressed</a>(Key:String):Boolean</div>
-<div class="summaryTableDescription">
-   Check to see if this key was just pressed.</div>
-</td><td class="summaryTableOwnerCol">FlxKeyboard</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#justReleased()">justReleased</a>(Key:String):Boolean</div>
-<div class="summaryTableDescription">
-   Check to see if this key is just released.</div>
-</td><td class="summaryTableOwnerCol">FlxKeyboard</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#pressed()">pressed</a>(Key:String):Boolean</div>
-<div class="summaryTableDescription">
-   Check to see if this key is pressed.</div>
-</td><td class="summaryTableOwnerCol">FlxKeyboard</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#reset()">reset</a>():void</div>
-<div class="summaryTableDescription">
-   Resets all the keys.</div>
-</td><td class="summaryTableOwnerCol">FlxKeyboard</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#update()">update</a>():void</div>
-<div class="summaryTableDescription">
-   Updates the key states (for tracking just pressed, just released, etc).</div>
-</td><td class="summaryTableOwnerCol">FlxKeyboard</td>
-</tr>
-</table>
-</div>
-<a name="protectedMethodSummary"></a>
-<div class="summarySection">
-<div class="summaryTableTitle">Protected Methods</div>
-<table id="summaryTableProtectedMethod" class="summaryTable " cellpadding="3" cellspacing="0">
-<tr>
-<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#addKey()">addKey</a>(KeyName:String, KeyCode:uint):void</div>
+<a class="signatureLink" href="FlxInput.html#addKey()">addKey</a>(KeyName:String, KeyCode:uint):void</div>
 <div class="summaryTableDescription">
    An internal helper function used to build the key array.</div>
-</td><td class="summaryTableOwnerCol">FlxKeyboard</td>
+</td><td class="summaryTableOwnerCol"><a href="FlxInput.html">FlxInput</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxInput.html#handleKeyDown()">handleKeyDown</a>(event:KeyboardEvent):void</div>
+<div class="summaryTableDescription">
+   Event handler so FlxGame can toggle keys.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxInput.html">FlxInput</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxInput.html#handleKeyUp()">handleKeyUp</a>(event:KeyboardEvent):void</div>
+<div class="summaryTableDescription">
+   Event handler so FlxGame can toggle keys.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxInput.html">FlxInput</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxInput.html#justPressed()">justPressed</a>(Key:String):Boolean</div>
+<div class="summaryTableDescription">
+   Check to see if this key was just pressed.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxInput.html">FlxInput</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxInput.html#justReleased()">justReleased</a>(Key:String):Boolean</div>
+<div class="summaryTableDescription">
+   Check to see if this key is just released.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxInput.html">FlxInput</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxInput.html#pressed()">pressed</a>(Key:String):Boolean</div>
+<div class="summaryTableDescription">
+   Check to see if this key is pressed.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxInput.html">FlxInput</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxInput.html#reset()">reset</a>():void</div>
+<div class="summaryTableDescription">
+   Resets all the keys.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxInput.html">FlxInput</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxInput.html#update()">update</a>():void</div>
+<div class="summaryTableDescription">
+   Updates the key states (for tracking just pressed, just released, etc).</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxInput.html">FlxInput</a></td>
 </tr>
 </table>
 </div>
@@ -1082,173 +1082,8 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public function FlxKeyboard()</code><p>
-   Constructor
-   </p></div>
-<a name="methodDetail"></a>
-<div class="detailSectionHeader">Method detail</div>
-<a name="addKey()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">addKey</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>protected function addKey(KeyName:String, KeyCode:uint):void</code><p>
-   An internal helper function used to build the key array.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">KeyName</span>:String</code> &mdash;  String name of the key (e.g. "LEFT" or "A")
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">KeyCode</span>:uint</code> &mdash;  The numeric Flash code for this key.
-   </td>
-</tr>
-</table>
+<code>public function FlxKeyboard()</code>
 </div>
-<a name="handleKeyDown()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">handleKeyDown</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public function handleKeyDown(event:KeyboardEvent):void</code><p>
-   Event handler so FlxGame can toggle keys.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">event</span>:KeyboardEvent</code> &mdash; A <code>KeyboardEvent</code> object.
-   </td>
-</tr>
-</table>
-</div>
-<a name="handleKeyUp()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">handleKeyUp</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public function handleKeyUp(event:KeyboardEvent):void</code><p>
-   Event handler so FlxGame can toggle keys.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">event</span>:KeyboardEvent</code> &mdash; A <code>KeyboardEvent</code> object.
-   </td>
-</tr>
-</table>
-</div>
-<a name="justPressed()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">justPressed</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public function justPressed(Key:String):Boolean</code><p>
-   Check to see if this key was just pressed.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">Key</span>:String</code> &mdash;  One of the key constants listed above (e.g. "LEFT" or "A").
-   
-   </td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>Boolean</code> &mdash; Whether the key was just pressed
-   </td>
-</tr>
-</table>
-</div>
-<a name="justReleased()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">justReleased</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public function justReleased(Key:String):Boolean</code><p>
-   Check to see if this key is just released.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">Key</span>:String</code> &mdash;  One of the key constants listed above (e.g. "LEFT" or "A").
-   
-   </td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>Boolean</code> &mdash; Whether the key is just released.
-   </td>
-</tr>
-</table>
-</div>
-<a name="pressed()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">pressed</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public function pressed(Key:String):Boolean</code><p>
-   Check to see if this key is pressed.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">Key</span>:String</code> &mdash;  One of the key constants listed above (e.g. "LEFT" or "A").
-   
-   </td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>Boolean</code> &mdash; Whether the key is pressed
-   </td>
-</tr>
-</table>
-</div>
-<a name="reset()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">reset</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public function reset():void</code><p>
-   Resets all the keys.
-   </p></div>
-<a name="update()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">update</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public function update():void</code><p>
-   Updates the key states (for tracking just pressed, just released, etc).
-   </p></div>
 <br>
 <br>
 <hr>
