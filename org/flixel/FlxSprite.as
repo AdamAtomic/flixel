@@ -1,6 +1,9 @@
 package org.flixel
 {
+	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.display.Graphics;
+	import flash.display.Sprite;
 	import flash.geom.ColorTransform;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
@@ -92,6 +95,8 @@ package org.flixel
 		protected var _mtx:Matrix;
 		protected var _bbb:BitmapData;
 		protected var _boundsVisible:Boolean;
+		static protected var _gfxSprite:Sprite;
+		static protected var _gfx:Graphics;
 		
 		/**
 		 * Creates a white 8x8 square <code>FlxSprite</code> at the specified position.
@@ -129,6 +134,11 @@ package org.flixel
 
 			_mtx = new Matrix();
 			_callback = null;
+			if(_gfxSprite == null)
+			{
+				_gfxSprite = new Sprite();
+				_gfx = _gfxSprite.graphics;
+			}
 			
 			if(SimpleGraphic == null)
 				createGraphic(8,8);
@@ -453,6 +463,30 @@ package org.flixel
 		}
 		
 		/**
+		 * This function draws a line on this sprite from position X1,Y1
+		 * to position X2,Y2 with the specified color.
+		 * 
+		 * @param	StartX		X coordinate of the line's start point.
+		 * @param	StartY		Y coordinate of the line's start point.
+		 * @param	EndX		X coordinate of the line's end point.
+		 * @param	EndY		Y coordinate of the line's end point.
+		 * @param	Color		The line's color.
+		 * @param	Thickness	How thick the line is in pixels (default value is 1).
+		 */
+		public function drawLine(StartX:Number,StartY:Number,EndX:Number,EndY:Number,Color:uint,Thickness:uint=1):void
+		{
+			//Draw line
+			_gfx.clear();
+			_gfx.moveTo(StartX,StartY);
+			_gfx.lineStyle(Thickness,Color);
+			_gfx.lineTo(EndX,EndY);
+			
+			//Cache line to bitmap
+			_pixels.draw(_gfxSprite);
+			calcFrame();
+		}
+		
+		/**
 		 * Fills this sprite's graphic with a specific color.
 		 * 
 		 * @param	Color		The color with which to fill the graphic, format 0xAARRGGBB.
@@ -485,7 +519,7 @@ package org.flixel
 			if((_curAnim != null) && (_curAnim.delay > 0) && (_curAnim.looped || !finished))
 			{
 				_frameTimer += FlxG.elapsed;
-				if(_frameTimer > _curAnim.delay)
+				while(_frameTimer > _curAnim.delay)
 				{
 					_frameTimer -= _curAnim.delay;
 					if(_curFrame == _curAnim.frames.length-1)

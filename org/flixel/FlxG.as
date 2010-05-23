@@ -27,7 +27,7 @@ package org.flixel
 		 * Assign a minor version to your library.
 		 * Appears after the decimal in the console.
 		 */
-		static public var LIBRARY_MINOR_VERSION:uint = 36;
+		static public var LIBRARY_MINOR_VERSION:uint = 37;
 
 		/**
 		 * Internal tracker for game object (so we can pause & unpause)
@@ -90,6 +90,10 @@ package org.flixel
 		 * A reference to a <code>FlxKeyboard</code> object.  Important for input!
 		 */
 		static public var keys:FlxKeyboard;
+		/**
+		 * An array of <code>FlxGamepad</code> objects.  Important for input!
+		 */
+		static public var gamepads:Array;
 		
 		/**
 		 * A handy container for a background music object.
@@ -253,6 +257,8 @@ package org.flixel
 		{
 			keys.reset();
 			mouse.reset();
+			for(var i:uint = 0; i < gamepads.length; i++)
+				gamepads[i].reset();
 		}
 		
 		/**
@@ -664,6 +670,11 @@ package org.flixel
 			sounds = new Array();
 			mouse = new FlxMouse();
 			keys = new FlxKeyboard();
+			gamepads = new Array(4);
+			gamepads[0] = new FlxGamepad();
+			gamepads[1] = new FlxGamepad();
+			gamepads[2] = new FlxGamepad();
+			gamepads[3] = new FlxGamepad();
 			scroll = null;
 			_scrollTarget = null;
 			unfollow();
@@ -731,6 +742,8 @@ package org.flixel
 		{
 			keys.update();
 			mouse.update(state.mouseX,state.mouseY,scroll.x,scroll.y);
+			for(var i:uint = 0; i < gamepads.length; i++)
+				gamepads[i].update();
 		}
 	}
 }

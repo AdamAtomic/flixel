@@ -401,26 +401,8 @@ package org.flixel
 			getScreenXY(_point);
 			var tx:Number = _point.x;
 			var ty:Number = _point.y;
-			var tw:Number = width;
-			var th:Number = height;
-			if(this is FlxSprite)
-			{
-				var ts:FlxSprite = this as FlxSprite;
-				tw = ts.frameWidth;
-				th = ts.frameHeight;
-			}
 			Object.getScreenXY(_point);
-			var ox:Number = _point.x;
-			var oy:Number = _point.y;
-			var ow:Number = Object.width;
-			var oh:Number = Object.height;
-			if(Object is FlxSprite)
-			{
-				var os:FlxSprite = Object as FlxSprite;
-				ow = os.frameWidth;
-				oh = os.frameHeight;
-			}
-			if((ox <= tx-ow) || (ox >= tx+tw) || (oy <= ty-oh) || (oy >= ty+th))
+			if((_point.x <= tx-Object.width) || (_point.x >= tx+width) || (_point.y <= ty-Object.height) || (_point.y >= ty+height))
 				return false;
 			return true;
 		}

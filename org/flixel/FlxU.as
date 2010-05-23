@@ -62,6 +62,16 @@ package org.flixel
 			return (N>0)?((n!=N)?(n+1):(n)):(n);
 		}
 		
+		static public function min(N1:Number,N2:Number):Number
+		{
+			return (N1 <= N2)?N1:N2;
+		}
+		
+		static public function max(N1:Number,N2:Number):Number
+		{
+			return (N1 >= N2)?N1:N2;
+		}
+		
 		/**
 		 * Generate a pseudo-random number.
 		 * 

@@ -1,8 +1,6 @@
 package org.flixel.data
 {
-	import flash.events.KeyboardEvent;
-	
-	public class FlxKeyboard
+	public class FlxKeyboard extends FlxInput
 	{
 		public var ESCAPE:Boolean;
 		public var F1:Boolean;
@@ -75,29 +73,10 @@ package org.flixel.data
 		public var DOWN:Boolean;
 		public var LEFT:Boolean;
 		public var RIGHT:Boolean;
-		
-		/**
-		 * @private
-		 */
-		protected var _lookup:Object;
-		/**
-		 * @private
-		 */
-		protected var _map:Array;
-		/**
-		 * @private
-		 */
-		protected const _t:uint = 256;
-		
-		/**
-		 * Constructor
-		 */
+
 		public function FlxKeyboard()
 		{
-			//BASIC STORAGE & TRACKING			
 			var i:uint = 0;
-			_lookup = new Object();
-			_map = new Array(_t);
 			
 			//LETTERS
 			for(i = 65; i <= 90; i++)
@@ -144,103 +123,6 @@ package org.flixel.data
 			addKey("DOWN",40);
 			addKey("LEFT",37);
 			addKey("RIGHT",39);
-		}
-		
-		/**
-		 * Updates the key states (for tracking just pressed, just released, etc).
-		 */
-		public function update():void
-		{
-			for(var i:uint = 0; i < _t; i++)
-			{
-				if(_map[i] == null) continue;
-				var o:Object = _map[i];
-				if((o.last == -1) && (o.current == -1)) o.current = 0;
-				else if((o.last == 2) && (o.current == 2)) o.current = 1;
-				o.last = o.current;
-			}
-		}
-		
-		/**
-		 * Resets all the keys.
-		 */
-		public function reset():void
-		{
-			for(var i:uint = 0; i < _t; i++)
-			{
-				if(_map[i] == null) continue;
-				var o:Object = _map[i];
-				this[o.name] = false;
-				o.current = 0;
-				o.last = 0;
-			}
-		}
-		
-		/**
-		 * Check to see if this key is pressed.
-		 * 
-		 * @param	Key		One of the key constants listed above (e.g. "LEFT" or "A").
-		 * 
-		 * @return	Whether the key is pressed
-		 */
-		public function pressed(Key:String):Boolean { return this[Key]; }
-		
-		/**
-		 * Check to see if this key was just pressed.
-		 * 
-		 * @param	Key		One of the key constants listed above (e.g. "LEFT" or "A").
-		 * 
-		 * @return	Whether the key was just pressed
-		 */
-		public function justPressed(Key:String):Boolean { return _map[_lookup[Key]].current == 2; }
-		
-		/**
-		 * Check to see if this key is just released.
-		 * 
-		 * @param	Key		One of the key constants listed above (e.g. "LEFT" or "A").
-		 * 
-		 * @return	Whether the key is just released.
-		 */
-		public function justReleased(Key:String):Boolean { return _map[_lookup[Key]].current == -1; }
-		
-		/**
-		 * Event handler so FlxGame can toggle keys.
-		 * 
-		 * @param	event	A <code>KeyboardEvent</code> object.
-		 */
-		public function handleKeyDown(event:KeyboardEvent):void
-		{
-			var o:Object = _map[event.keyCode];
-			if(o == null) return;
-			if(o.current > 0) o.current = 1;
-			else o.current = 2;
-			this[o.name] = true;
-		}
-		
-		/**
-		 * Event handler so FlxGame can toggle keys.
-		 * 
-		 * @param	event	A <code>KeyboardEvent</code> object.
-		 */
-		public function handleKeyUp(event:KeyboardEvent):void
-		{
-			var o:Object = _map[event.keyCode];
-			if(o == null) return;
-			if(o.current > 0) o.current = -1;
-			else o.current = 0;
-			this[o.name] = false;
-		}
-		
-		/**
-		 * An internal helper function used to build the key array.
-		 * 
-		 * @param	KeyName		String name of the key (e.g. "LEFT" or "A")
-		 * @param	KeyCode		The numeric Flash code for this key.
-		 */
-		protected function addKey(KeyName:String,KeyCode:uint):void
-		{
-			_lookup[KeyName] = KeyCode;
-			_map[KeyCode] = { name: KeyName, current: 0, last: 0 };
 		}
 	}
 }

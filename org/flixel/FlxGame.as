@@ -224,6 +224,18 @@ package org.flixel
 				}
 			}
 			FlxG.keys.handleKeyUp(event);
+			for(var i:uint = 0; i < FlxG.gamepads.length; i++)
+				FlxG.gamepads[i].handleKeyUp(event);
+		}
+		
+		/**
+		 * Internal event handler for input and focus.
+		 */
+		protected function onKeyDown(event:KeyboardEvent):void
+		{
+			FlxG.keys.handleKeyDown(event);
+			for(var i:uint = 0; i < FlxG.gamepads.length; i++)
+				FlxG.gamepads[i].handleKeyDown(event);
 		}
 		
 		/**
@@ -408,7 +420,7 @@ package org.flixel
 			FlxG.log(underline);
 			
 			//Add basic input even listeners
-			stage.addEventListener(KeyboardEvent.KEY_DOWN, FlxG.keys.handleKeyDown);
+			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 			stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 			stage.addEventListener(MouseEvent.MOUSE_DOWN, FlxG.mouse.handleMouseDown);
 			stage.addEventListener(MouseEvent.MOUSE_UP, FlxG.mouse.handleMouseUp);
