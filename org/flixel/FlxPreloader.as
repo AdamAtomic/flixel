@@ -226,10 +226,8 @@ package org.flixel
 			{
 				j = 0;
 				while(j < _width)
-				{
 					b.bitmapData.setPixel(j++,i,0);
-					i+=2;
-				}
+				i+=2;
 			}
 			b.blendMode = "overlay";
 			b.alpha = 0.25;
