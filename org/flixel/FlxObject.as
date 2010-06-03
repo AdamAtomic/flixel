@@ -358,7 +358,7 @@ package org.flixel
 			{
 				if(_flickerTimer > 0)
 				{
-					_flickerTimer -= FlxG.elapsed;
+					_flickerTimer = _flickerTimer - FlxG.elapsed;
 					if(_flickerTimer == 0)
 						_flickerTimer = -1;
 				}
@@ -418,8 +418,8 @@ package org.flixel
 		 */
 		public function overlapsPoint(X:Number,Y:Number,PerPixel:Boolean = false):Boolean
 		{
-			X -= FlxU.floor(FlxG.scroll.x);
-			Y -= FlxU.floor(FlxG.scroll.y);
+			X = X - FlxU.floor(FlxG.scroll.x);
+			Y = Y - FlxU.floor(FlxG.scroll.y);
 			getScreenXY(_point);
 			if((X <= _point.x) || (X >= _point.x+width) || (Y <= _point.y) || (Y >= _point.y+height))
 				return false;
@@ -452,25 +452,39 @@ package org.flixel
 		
 		/**
 		 * Called when this object's left side collides with another <code>FlxObject</code>'s right.
+		 * NOTE: by default this function just calls <code>hitSide()</code>.
 		 * 
 		 * @param	Contact		The <code>FlxObject</code> you just ran into.
 		 * @param	Velocity	The suggested new velocity for this object.
 		 */
 		public function hitLeft(Contact:FlxObject,Velocity:Number):void
 		{
-			if(!fixed || (Contact.fixed && ((velocity.y != 0) || (velocity.x != 0))))
-				velocity.x = Velocity;
+			hitSide(Contact,Velocity);
 		}
 		
 		/**
 		 * Called when this object's right side collides with another <code>FlxObject</code>'s left.
+		 * NOTE: by default this function just calls <code>hitSide()</code>.
 		 * 
 		 * @param	Contact		The <code>FlxObject</code> you just ran into.
 		 * @param	Velocity	The suggested new velocity for this object.
 		 */
 		public function hitRight(Contact:FlxObject,Velocity:Number):void
 		{
-			hitLeft(Contact,Velocity);
+			hitSide(Contact,Velocity);
+		}
+		
+		/**
+		 * Since most games have identical behavior for running into walls,
+		 * you can just override this function instead of overriding both hitLeft and hitRight. 
+		 * 
+		 * @param	Contact		The <code>FlxObject</code> you just ran into.
+		 * @param	Velocity	The suggested new velocity for this object.
+		 */
+		public function hitSide(Contact:FlxObject,Velocity:Number):void
+		{
+			if(!fixed || (Contact.fixed && ((velocity.y != 0) || (velocity.x != 0))))
+				velocity.x = Velocity;
 		}
 		
 		/**
@@ -505,7 +519,8 @@ package org.flixel
 		 */
 		virtual public function hurt(Damage:Number):void
 		{
-			if((health -= Damage) <= 0)
+			health = health - Damage;
+			if(health <= 0)
 				kill();
 		}
 		

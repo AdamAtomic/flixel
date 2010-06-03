@@ -214,10 +214,11 @@ package org.flixel
 			if(_regen)
 			{
 				//Need to generate a new buffer to store the text graphic
+				var i:uint = 0;
 				var nl:uint = _tf.numLines;
 				height = 0;
-				for(var i:uint = 0; i < nl; i++)
-					height += _tf.getLineMetrics(i).height;
+				while(i < nl)
+					height += _tf.getLineMetrics(i++).height;
 				height += 4; //account for 2px gutter on top and bottom
 				_pixels = new BitmapData(width,height,true,0);
 				_bbb = new BitmapData(width,height,true,0);

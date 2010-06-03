@@ -25,8 +25,20 @@ package org.flixel.data
 		public var EIGHT:Boolean;
 		public var NINE:Boolean;
 		public var ZERO:Boolean;
+		public var NUMPADONE:Boolean;
+		public var NUMPADTWO:Boolean;
+		public var NUMPADTHREE:Boolean;
+		public var NUMPADFOUR:Boolean;
+		public var NUMPADFIVE:Boolean;
+		public var NUMPADSIX:Boolean;
+		public var NUMPADSEVEN:Boolean;
+		public var NUMPADEIGHT:Boolean;
+		public var NUMPADNINE:Boolean;
+		public var NUMPADZERO:Boolean;
 		public var MINUS:Boolean;
+		public var NUMPADMINUS:Boolean;
 		public var PLUS:Boolean;
+		public var NUMPADPLUS:Boolean;
 		public var DELETE:Boolean;
 		public var BACKSPACE:Boolean;
 		public var Q:Boolean;
@@ -65,7 +77,9 @@ package org.flixel.data
 		public var M:Boolean;
 		public var COMMA:Boolean;
 		public var PERIOD:Boolean;
+		public var NUMPADPERIOD:Boolean;
 		public var SLASH:Boolean;
+		public var NUMPADSLASH:Boolean;
 		public var CONTROL:Boolean;
 		public var ALT:Boolean;
 		public var SPACE:Boolean;
@@ -74,13 +88,15 @@ package org.flixel.data
 		public var LEFT:Boolean;
 		public var RIGHT:Boolean;
 
+
 		public function FlxKeyboard()
 		{
-			var i:uint = 0;
+			var i:uint;
 			
 			//LETTERS
-			for(i = 65; i <= 90; i++)
-				addKey(String.fromCharCode(i),i);
+			i = 65;
+			while(i <= 90)
+				addKey(String.fromCharCode(i),i++);
 			
 			//NUMBERS
 			i = 48;
@@ -94,15 +110,29 @@ package org.flixel.data
 			addKey("SEVEN",i++);
 			addKey("EIGHT",i++);
 			addKey("NINE",i++);
+			i = 96;
+			addKey("NUMPADZERO",i++);
+			addKey("NUMPADONE",i++);
+			addKey("NUMPADTWO",i++);
+			addKey("NUMPADTHREE",i++);
+			addKey("NUMPADFOUR",i++);
+			addKey("NUMPADFIVE",i++);
+			addKey("NUMPADSIX",i++);
+			addKey("NUMPADSEVEN",i++);
+			addKey("NUMPADEIGHT",i++);
+			addKey("NUMPADNINE",i++);
 			
 			//FUNCTION KEYS
-			for(i = 1; i <= 12; i++)
-				addKey("F"+i,111+i);
+			i = 1;
+			while(i <= 12)
+				addKey("F"+i,111+(i++));
 			
 			//SPECIAL KEYS + PUNCTUATION
 			addKey("ESCAPE",27);
 			addKey("MINUS",189);
+			addKey("NUMPADMINUS",109);
 			addKey("PLUS",187);
+			addKey("NUMPADPLUS",107);
 			addKey("DELETE",46);
 			addKey("BACKSPACE",8);
 			addKey("LBRACKET",219);
@@ -115,7 +145,9 @@ package org.flixel.data
 			addKey("SHIFT",16);
 			addKey("COMMA",188);
 			addKey("PERIOD",190);
+			addKey("NUMPADPERIOD",110);
 			addKey("SLASH",191);
+			addKey("NUMPADSLASH",191);
 			addKey("CONTROL",17);
 			addKey("ALT",18);
 			addKey("SPACE",32);

@@ -171,11 +171,12 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("LÂ
    Load an image from an embedded graphic file.</td>
 </tr>
 <tr>
-<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxTileblock.html#loadGraphic()">loadGraphic</a>(TileGraphic, Empties) &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxTileblock.html">FlxTileblock</a></td>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxTileblock.html#loadGraphic()">loadGraphic</a>(Graphic, Animated, Reverse, Width, Height, Unique) &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxTileblock.html">FlxTileblock</a></td>
 </tr>
 <tr>
 <td width="20"></td><td>
-   Fills the block with a randomly arranged selection of graphics from the image provided.</td>
+   NOTE: MOST OF THE TIME YOU SHOULD BE USING LOADTILES(), NOT LOADGRAPHIC()!
+   <code>LoadTiles()</code> has a lot more functionality, can load non-square tiles, etc.</td>
 </tr>
 <tr>
 <td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxTilemap.html#loadMap()">loadMap</a>(MapData, TileGraphic, TileWidth, TileHeight) &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxTilemap.html">FlxTilemap</a></td>
@@ -204,6 +205,13 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("LÂ
 <tr>
 <td width="20"></td><td>
    Add a text label to the button.</td>
+</tr>
+<tr>
+<td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxTileblock.html#loadTiles()">loadTiles</a>(TileGraphic, TileWidth, TileHeight, Empties) &mdash; Method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxTileblock.html">FlxTileblock</a></td>
+</tr>
+<tr>
+<td width="20"></td><td>
+   Fills the block with a randomly arranged selection of graphics from the image provided.</td>
 </tr>
 <tr>
 <td colspan="2" class="idxrow"><a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxG.html#log()">log</a>(Data) &mdash; Static method in class org.flixel.<a onclick="javascript:loadClassListFrame('org/flixel/class-list.html');" href="org/flixel/FlxG.html">FlxG</a></td>

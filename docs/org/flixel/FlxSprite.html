@@ -4,7 +4,7 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="../../style.css" type="text/css" media="screen">
 <link rel="stylesheet" href="../../print.css" type="text/css" media="print">
-<meta content="FlxSprite,org.flixel.FlxSprite,DOWN,LEFT,RIGHT,UP,_alpha,_animations,_bakedRotation,_bbb,_boundsVisible,_caf,_callback,_color,_ct,_curAnim,_curFrame,_facing,_flashPointZero,_flashRect,_flashRect2,_flipped,_framePixels,_frameTimer,_gfx,_gfxSprite,_mtx,_pixels,antialiasing,blend,finished,frameHeight,frameWidth,offset,scale,alpha,color,facing,frame,pixels,addAnimation,addAnimationCallback,calcFrame,createGraphic,draw,drawBounds,drawLine,fill,getScreenXY,loadGraphic,loadRotatedGraphic,onEmit,overlapsPoint,play,randomFrame,render,renderSprite,resetHelpers,unsafeBind,update,updateAnimation" name="keywords">
+<meta content="FlxSprite,org.flixel.FlxSprite,DOWN,LEFT,RIGHT,UP,_alpha,_animations,_bakedRotation,_bbb,_boundsVisible,_caf,_callback,_color,_ct,_curAnim,_curFrame,_facing,_flashPointZero,_flashRect,_flashRect2,_flipped,_framePixels,_frameTimer,_gfx,_gfxSprite,_mtx,_pixels,antialiasing,blend,finished,frameHeight,frameWidth,frames,offset,scale,alpha,color,facing,frame,pixels,addAnimation,addAnimationCallback,calcFrame,createGraphic,draw,drawBounds,drawLine,fill,getScreenXY,loadGraphic,loadRotatedGraphic,onEmit,overlapsPoint,play,randomFrame,render,renderSprite,resetHelpers,unsafeBind,update,updateAnimation" name="keywords">
 <title>org.flixel.FlxSprite</title>
 </head>
 <body>
@@ -41,7 +41,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <td class="classHeaderTableLabel">Inheritance</td><td class="inheritanceList">FlxSprite <img class="inheritArrow" alt="Inheritance" title="Inheritance" src="../../images/inherit-arrow.gif"> <a href="FlxObject.html">FlxObject</a> <img class="inheritArrow" alt="Inheritance" title="Inheritance" src="../../images/inherit-arrow.gif"> <a href="FlxRect.html">FlxRect</a> <img class="inheritArrow" alt="Inheritance" title="Inheritance" src="../../images/inherit-arrow.gif"> <a href="FlxPoint.html">FlxPoint</a></td>
 </tr>
 <tr>
-<td class="classHeaderTableLabel">Subclasses</td><td><a href="data/FlxFade.html">FlxFade</a>, <a href="data/FlxFlash.html">FlxFlash</a>, <a href="../flixel/FlxText.html">FlxText</a></td>
+<td class="classHeaderTableLabel">Subclasses</td><td><a href="data/FlxFade.html">FlxFade</a>, <a href="data/FlxFlash.html">FlxFlash</a>, <a href="data/FlxParticle.html">FlxParticle</a>, <a href="../flixel/FlxText.html">FlxText</a>, <a href="../flixel/FlxTileblock.html">FlxTileblock</a></td>
 </tr>
 </table>
 <p></p>
@@ -207,6 +207,11 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#frameHeight">frameHeight</a> : uint<div class="summaryTableDescription">
    The height of the actual graphic or image being displayed (not necessarily the game object/bounding box).</div>
+</td><td class="summaryTableOwnerCol">FlxSprite</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#frames">frames</a> : uint<div class="summaryTableDescription">
+   The total number of frames in this image (assumes each row is full).</div>
 </td><td class="summaryTableOwnerCol">FlxSprite</td>
 </tr>
 <tr class="">
@@ -632,6 +637,15 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <a class="signatureLink" href="FlxObject.html#hitRight()">hitRight</a>(Contact:<a href="../flixel/FlxObject.html">FlxObject</a>, Velocity:Number):void</div>
 <div class="summaryTableDescription">
    Called when this object's right side collides with another <code>FlxObject</code>'s left.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxObject.html#hitSide()">hitSide</a>(Contact:<a href="../flixel/FlxObject.html">FlxObject</a>, Velocity:Number):void</div>
+<div class="summaryTableDescription">
+   Since most games have identical behavior for running into walls,
+   you can just override this function instead of overriding both hitLeft and hitRight.</div>
 </td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
 </tr>
 <tr class="hideInheritedMethod">
@@ -1184,6 +1198,16 @@ showHideInherited();
 <div class="detailBody">
 <code>protected var _framePixels:BitmapData</code>
 </div>
+<a name="frames"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">frames</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var frames:uint</code><p>
+   The total number of frames in this image (assumes each row is full).
+   </p></div>
 <a name="_frameTimer"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>

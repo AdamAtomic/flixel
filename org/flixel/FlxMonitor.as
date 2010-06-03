@@ -34,8 +34,9 @@ package org.flixel
 				_size = 1;
 			_itr = 0;
 			_data = new Array(_size);
-			for(var i:uint = 0; i < _size; i++)
-				_data[i] = Default;
+			var i:uint = 0;
+			while(i < _size)
+				_data[i++] = Default;
 		}
 		
 		/**
@@ -58,8 +59,9 @@ package org.flixel
 		public function average():Number
 		{
 			var sum:Number = 0;
-			for(var i:uint = 0; i < _size; i++)
-				sum += _data[i];
+			var i:uint = 0;
+			while(i < _size)
+				sum += _data[i++];
 			return sum/_size;
 		}
 	}

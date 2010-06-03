@@ -84,7 +84,7 @@ package org.flixel
 			if(UseGlobalSeed && !isNaN(_seed))
 			{
 				var random:Number = randomize(_seed);
-				_seed = mutate(_seed,random);
+				_seed = fixSeed(_seed + random);
 				return random;
 			}
 			else
@@ -104,23 +104,35 @@ package org.flixel
 		}
 		
 		/**
-		 * Mutates a seed or other number, useful when combined with <code>randomize()</code>.
+		 * Takes any seed value and converts it to a number between 0 and 1.
+		 * Can also be used to mutate seeds by passing in the seed plus the mutator like this:
+		 * <code>var random:Number = randomize(seed); seed = fixSeed(seed + random);</code>
 		 * 
 		 * @param	Seed		The number to mutate.
 		 * @param	Mutator		The value to use in the mutation.
 		 * 
 		 * @return	A predictably-altered version of the Seed.
 		 */
-		static public function mutate(Seed:Number,Mutator:Number):Number
+		static public function fixSeed(Seed:Number):Number
 		{
-			Seed += Mutator;
-			if(Seed > 1) Seed -= int(Seed);
+			if(Seed == 0)
+				Seed = Number.MIN_VALUE;
+			if(Seed >= 1)
+			{
+				if((Seed%1) == 0)
+					Seed /= Math.PI;
+				Seed %= 1;
+			}
+			else if(Seed < 0)
+				Seed = (Seed % 1) + 1;
 			return Seed;
 		}
 		
 		/**
-		 * Set <code>seed</code> to a number between 0 and 1 if you want
+		 * Set <code>seed</code> to any number if you want
 		 * <code>FlxG.random()</code> to generate a predictable series of numbers.
+		 * If you use a number outside the 0 to 1 range,
+		 * Flixel will convert it to a valid 0 to 1 seed.
 		 * NOTE: reading the seed will return the original value passed in,
 		 * not the current mutation.
 		 */
@@ -134,7 +146,7 @@ package org.flixel
 		 */
 		static public function set seed(Seed:Number):void
 		{
-			_seed = Seed;
+			_seed = fixSeed(Seed);
 			_originalSeed = _seed;
 		}
 		
@@ -179,12 +191,56 @@ package org.flixel
 		 */
 		static public function rotatePoint(X:Number, Y:Number, PivotX:Number, PivotY:Number, Angle:Number,P:FlxPoint=null):FlxPoint
 		{
-			if(P == null) P = new FlxPoint();
-			var radians:Number = -Angle / 180 * Math.PI;
+			var sin:Number = 0;
+			var cos:Number = 0;
+			var radians:Number = Angle * -0.017453293;
+			while (radians < -3.14159265)
+				radians += 6.28318531;
+			while (radians >  3.14159265)
+				radians = radians - 6.28318531;
+
+			if (radians < 0)
+			{
+				sin = 1.27323954 * radians + .405284735 * radians * radians;
+				if (sin < 0)
+					sin = .225 * (sin *-sin - sin) + sin;
+				else
+					sin = .225 * (sin * sin - sin) + sin;
+			}
+			else
+			{
+				sin = 1.27323954 * radians - 0.405284735 * radians * radians;
+				if (sin < 0)
+					sin = .225 * (sin *-sin - sin) + sin;
+				else
+					sin = .225 * (sin * sin - sin) + sin;
+			}
+			
+			radians += 1.57079632;
+			if (radians >  3.14159265)
+				radians = radians - 6.28318531;
+			if (radians < 0)
+			{
+				cos = 1.27323954 * radians + 0.405284735 * radians * radians;
+				if (cos < 0)
+					cos = .225 * (cos *-cos - cos) + cos;
+				else
+					cos = .225 * (cos * cos - cos) + cos;
+			}
+			else
+			{
+				cos = 1.27323954 * radians - 0.405284735 * radians * radians;
+				if (cos < 0)
+					cos = .225 * (cos *-cos - cos) + cos;
+				else
+					cos = .225 * (cos * cos - cos) + cos;
+			}
+
 			var dx:Number = X-PivotX;
 			var dy:Number = PivotY-Y;
-			P.x = PivotX + Math.cos(radians)*dx - Math.sin(radians)*dy;
-			P.y = PivotY - (Math.sin(radians)*dx + Math.cos(radians)*dy);
+			if(P == null) P = new FlxPoint();
+			P.x = PivotX + cos*dx - sin*dy;
+			P.y = PivotY - sin*dx - cos*dy;
 			return P;
 		};
 		
@@ -198,8 +254,145 @@ package org.flixel
 		 */
 		static public function getAngle(X:Number, Y:Number):Number
 		{
-			return Math.atan2(Y,X) * 180 / Math.PI;
+			
+			var c1:Number = 3.14159265 / 4;
+			var c2:Number = 3 * c1;
+			var ay:Number = (Y < 0)?-Y:Y;
+			var angle:Number = 0;
+			if (X >= 0)
+				angle = c1 - c1 * ((X - ay) / (X + ay));
+			else
+				angle = c2 - c1 * ((X + ay) / (ay - X));
+			return ((Y < 0)?-angle:angle)*57.2957796;
 		};
+		
+		/**
+		 * Generate a Flash <code>uint</code> color from RGBA components.
+		 * 
+		 * @param   Red     The red component, between 0 and 255.
+		 * @param   Green   The green component, between 0 and 255.
+		 * @param   Blue    The blue component, between 0 and 255.
+		 * @param   Alpha   How opaque the color should be, either between 0 and 1 or 0 and 255.
+		 * 
+		 * @return  The color as a <code>uint</code>.
+		 */
+		static public function getColor(Red:uint, Green:uint, Blue:uint, Alpha:Number=1.0):uint
+		{
+			return (((Alpha>1)?Alpha:(Alpha * 255)) & 0xFF) << 24 | (Red & 0xFF) << 16 | (Green & 0xFF) << 8 | (Blue & 0xFF);
+		}
+
+		/**
+		 * Generate a Flash <code>uint</code> color from HSB components.
+		 * 
+		 * @param	Hue			A number between 0 and 360, indicating position on a color strip or wheel.
+		 * @param	Saturation	A number between 0 and 1, indicating how colorful or gray the color should be.  0 is gray, 1 is vibrant.
+		 * @param	Brightness	A number between 0 and 1, indicating how bright the color should be.  0 is black, 1 is full bright.
+		 * @param   Alpha   	How opaque the color should be, either between 0 and 1 or 0 and 255.
+		 * 
+		 * @return	The color as a <code>uint</code>.
+		 */
+		static public function getColorHSB(Hue:Number,Saturation:Number,Brightness:Number,Alpha:Number=1.0):uint
+		{
+			var red:Number;
+			var green:Number;
+			var blue:Number;
+			if(Saturation == 0.0)
+			{
+				red   = Brightness;
+				green = Brightness;        
+				blue  = Brightness;
+			}       
+			else
+			{
+				if(Hue == 360)
+					Hue = 0;
+				var slice:int = Hue/60;
+				var hf:Number = Hue/60 - slice;
+				var aa:Number = Brightness*(1 - Saturation);
+				var bb:Number = Brightness*(1 - Saturation*hf);
+				var cc:Number = Brightness*(1 - Saturation*(1.0 - hf));
+				switch (slice)
+				{
+					case 0: red = Brightness; green = cc;   blue = aa;  break;
+					case 1: red = bb;  green = Brightness;  blue = aa;  break;
+					case 2: red = aa;  green = Brightness;  blue = cc;  break;
+					case 3: red = aa;  green = bb;   blue = Brightness; break;
+					case 4: red = cc;  green = aa;   blue = Brightness; break;
+					case 5: red = Brightness; green = aa;   blue = bb;  break;
+					default: red = 0;  green = 0;    blue = 0;   break;
+				}
+			}
+			
+			return (((Alpha>1)?Alpha:(Alpha * 255)) & 0xFF) << 24 | uint(red*255) << 16 | uint(green*255) << 8 | uint(blue*255);
+		}
+		
+		/**
+		 * Loads an array with the RGBA values of a Flash <code>uint</code> color.
+		 * RGB values are stored 0-255.  Alpha is stored as a floating point number between 0 and 1.
+		 * 
+		 * @param	Color	The color you want to break into components.
+		 * @param	Results	An optional parameter, allows you to use an array that already exists in memory to store the result.
+		 * 
+		 * @return	An <code>Array</code> object containing the Red, Green, Blue and Alpha values of the given color.
+		 */
+		static public function getRGBA(Color:uint,Results:Array=null):Array
+		{
+			if(Results == null)
+				Results = new Array();
+			Results[0] = (Color >> 16) & 0xFF;
+			Results[1] = (Color >> 8) & 0xFF;
+			Results[2] = Color & 0xFF;
+			Results[3] = Number((Color >> 24) & 0xFF) / 255;
+			return Results;
+		}
+		
+		/**
+		 * Loads an array with the HSB values of a Flash <code>uint</code> color.
+		 * Hue is a value between 0 and 360.  Saturation, Brightness and Alpha
+		 * are as floating point numbers between 0 and 1.
+		 * 
+		 * @param	Color	The color you want to break into components.
+		 * @param	Results	An optional parameter, allows you to use an array that already exists in memory to store the result.
+		 * 
+		 * @return	An <code>Array</code> object containing the Red, Green, Blue and Alpha values of the given color.
+		 */
+		static public function getHSB(Color:uint,Results:Array=null):Array
+		{
+			if(Results == null)
+				Results = new Array();
+			
+			var red:Number = Number((Color >> 16) & 0xFF) / 255;
+			var green:Number = Number((Color >> 8) & 0xFF) / 255;
+			var blue:Number = Number((Color) & 0xFF) / 255;
+			
+			var m:Number = (red>green)?red:green;
+			var dmax:Number = (m>blue)?m:blue;
+			m = (red>green)?green:red;
+			var dmin:Number = (m>blue)?blue:m;
+			var range:Number = dmax - dmin;
+			
+			Results[2] = dmax;
+			Results[1] = 0;
+			Results[0] = 0;
+			
+			if(dmax != 0)
+				Results[1] = range / dmax;
+			if(Results[1] != 0) 
+			{
+				if (red == dmax)
+					Results[0] = (green - blue) / range;
+				else if (green == dmax)
+					Results[0] = 2 + (blue - red) / range;
+				else if (blue == dmax)
+					Results[0] = 4 + (red - green) / range;
+				Results[0] *= 60;
+				if(Results[0] < 0)
+					Results[0] += 360;
+			}
+			
+			Results[3] = Number((Color >> 24) & 0xFF) / 255;
+			return Results;
+		}
 		
 		/**
 		 * Get the <code>String</code> name of any <code>Object</code>.
@@ -249,7 +442,7 @@ package org.flixel
 			{
 				var d:Number = Drag*FlxG.elapsed;
 				if(Velocity - d > 0)
-					Velocity -= d;
+					Velocity = Velocity - d;
 				else if(Velocity + d < 0)
 					Velocity += d;
 				else
@@ -405,13 +598,15 @@ package org.flixel
 				return false;
 			
 			//this looks insane, but we're just looping through collision offsets on each object
-			for(i1 = 0; i1 < l1; i1++)
+			i1 = 0;
+			while(i1 < l1)
 			{
 				ox1 = co1[i1].x;
 				oy1 = co1[i1].y;
 				obj1Hull.x += ox1;
 				obj1Hull.y += oy1;
-				for(i2 = 0; i2 < l2; i2++)
+				i2 = 0;
+				while(i2 < l2)
 				{
 					ox2 = co2[i2].x;
 					oy2 = co2[i2].y;
@@ -424,8 +619,9 @@ package org.flixel
 						(obj1Hull.y + obj1Hull.height < obj2Hull.y + roundingError) ||
 						(obj1Hull.y + roundingError > obj2Hull.y + obj2Hull.height) )
 					{
-						obj2Hull.x -= ox2;
-						obj2Hull.y -= oy2;
+						obj2Hull.x = obj2Hull.x - ox2;
+						obj2Hull.y = obj2Hull.y - oy2;
+						i2++;
 						continue;
 					}
 
@@ -468,8 +664,9 @@ package org.flixel
 						((!f1 && ((overlap>0)?overlap:-overlap) > obj1Hull.width*0.8)) ||
 						((!f2 && ((overlap>0)?overlap:-overlap) > obj2Hull.width*0.8)) )
 					{
-						obj2Hull.x -= ox2;
-						obj2Hull.y -= oy2;
+						obj2Hull.x = obj2Hull.x - ox2;
+						obj2Hull.y = obj2Hull.y - oy2;
+						i2++;
 						continue;
 					}
 					hit = true;
@@ -482,7 +679,7 @@ package org.flixel
 						if(Object1._group)
 							Object1.reset(Object1.x - overlap,Object1.y);
 						else
-							Object1.x -= overlap;
+							Object1.x = Object1.x - overlap;
 					}
 					else if(f1 && !f2)
 					{
@@ -497,13 +694,13 @@ package org.flixel
 						if(Object1._group)
 							Object1.reset(Object1.x - overlap,Object1.y);
 						else
-							Object1.x -= overlap;
+							Object1.x = Object1.x - overlap;
 						if(Object2._group)
 							Object2.reset(Object2.x + overlap,Object2.y);
 						else
 							Object2.x += overlap;
-						sv1 /= 2;
-						sv2 /= 2;
+						sv1 *= 0.5;
+						sv2 *= 0.5;
 					}
 					if(p1hn2)
 					{
@@ -520,30 +717,32 @@ package org.flixel
 					if(!f1 && (overlap != 0))
 					{
 						if(p1hn2)
-							obj1Hull.width -= overlap;
+							obj1Hull.width = obj1Hull.width - overlap;
 						else
 						{
-							obj1Hull.x -= overlap;
+							obj1Hull.x = obj1Hull.x - overlap;
 							obj1Hull.width += overlap;
 						}
-						Object1.colHullY.x -= overlap;
+						Object1.colHullY.x = Object1.colHullY.x - overlap;
 					}
 					if(!f2 && (overlap != 0))
 					{
 						if(p1hn2)
 						{
 							obj2Hull.x += overlap;
-							obj2Hull.width -= overlap;
+							obj2Hull.width = obj2Hull.width - overlap;
 						}
 						else
 							obj2Hull.width += overlap;
 						Object2.colHullY.x += overlap;
 					}
-					obj2Hull.x -= ox2;
-					obj2Hull.y -= oy2;
+					obj2Hull.x = obj2Hull.x - ox2;
+					obj2Hull.y = obj2Hull.y - oy2;
+					i2++;
 				}
-				obj1Hull.x -= ox1;
-				obj1Hull.y -= oy1;
+				obj1Hull.x = obj1Hull.x - ox1;
+				obj1Hull.y = obj1Hull.y - oy1;
+				i1++;
 			}
 
 			return hit;
@@ -611,13 +810,15 @@ package org.flixel
 				return false;
 			
 			//this looks insane, but we're just looping through collision offsets on each object
-			for(i1 = 0; i1 < l1; i1++)
+			i1 = 0;
+			while(i1 < l1)
 			{
 				ox1 = co1[i1].x;
 				oy1 = co1[i1].y;
 				obj1Hull.x += ox1;
 				obj1Hull.y += oy1;
-				for(i2 = 0; i2 < l2; i2++)
+				i2 = 0;
+				while(i2 < l2)
 				{
 					ox2 = co2[i2].x;
 					oy2 = co2[i2].y;
@@ -630,8 +831,9 @@ package org.flixel
 						(obj1Hull.y + obj1Hull.height < obj2Hull.y + roundingError) ||
 						(obj1Hull.y + roundingError > obj2Hull.y + obj2Hull.height) )
 					{
-						obj2Hull.x -= ox2;
-						obj2Hull.y -= oy2;
+						obj2Hull.x = obj2Hull.x - ox2;
+						obj2Hull.y = obj2Hull.y - oy2;
+						i2++;
 						continue;
 					}
 					
@@ -674,8 +876,9 @@ package org.flixel
 						((!f1 && ((overlap>0)?overlap:-overlap) > obj1Hull.height*0.8)) ||
 						((!f2 && ((overlap>0)?overlap:-overlap) > obj2Hull.height*0.8)) )
 					{
-						obj2Hull.x -= ox2;
-						obj2Hull.y -= oy2;
+						obj2Hull.x = obj2Hull.x - ox2;
+						obj2Hull.y = obj2Hull.y - oy2;
+						i2++;
 						continue;
 					}
 					hit = true;
@@ -688,7 +891,7 @@ package org.flixel
 						if(Object1._group)
 							Object1.reset(Object1.x, Object1.y - overlap);
 						else
-							Object1.y -= overlap;
+							Object1.y = Object1.y - overlap;
 					}
 					else if(f1 && !f2)
 					{
@@ -703,13 +906,13 @@ package org.flixel
 						if(Object1._group)
 							Object1.reset(Object1.x, Object1.y - overlap);
 						else
-							Object1.y -= overlap;
+							Object1.y = Object1.y - overlap;
 						if(Object2._group)
 							Object2.reset(Object2.x, Object2.y + overlap);
 						else
 							Object2.y += overlap;
-						sv1 /= 2;
-						sv2 /= 2;
+						sv1 *= 0.5;
+						sv2 *= 0.5;
 					}
 					if(p1hn2)
 					{
@@ -727,7 +930,7 @@ package org.flixel
 					{
 						if(p1hn2)
 						{
-							obj1Hull.y -= overlap;
+							obj1Hull.y = obj1Hull.y - overlap;
 							
 							//This code helps stuff ride horizontally moving platforms.
 							if(f2 && Object2.moves)
@@ -740,7 +943,7 @@ package org.flixel
 						}
 						else
 						{
-							obj1Hull.y -= overlap;
+							obj1Hull.y = obj1Hull.y - overlap;
 							obj1Hull.height += overlap;
 						}
 					}
@@ -749,7 +952,7 @@ package org.flixel
 						if(p1hn2)
 						{
 							obj2Hull.y += overlap;
-							obj2Hull.height -= overlap;
+							obj2Hull.height = obj2Hull.height - overlap;
 						}
 						else
 						{
@@ -765,11 +968,13 @@ package org.flixel
 							}
 						}
 					}
-					obj2Hull.x -= ox2;
-					obj2Hull.y -= oy2;
+					obj2Hull.x = obj2Hull.x - ox2;
+					obj2Hull.y = obj2Hull.y - oy2;
+					i2++;
 				}
-				obj1Hull.x -= ox1;
-				obj1Hull.y -= oy1;
+				obj1Hull.x = obj1Hull.x - ox1;
+				obj1Hull.y = obj1Hull.y - oy1;
+				i1++;
 			}
 			
 			return hit;

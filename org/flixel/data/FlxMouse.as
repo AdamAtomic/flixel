@@ -104,6 +104,7 @@ package org.flixel.data
 			if(Graphic == null)
 				Graphic = ImgDefaultCursor;
 			cursor = new FlxSprite(screenX,screenY,Graphic);
+			cursor.solid = false;
 			cursor.offset.x = XOffset;
 			cursor.offset.y = YOffset;
 		}

@@ -9,6 +9,10 @@ package org.flixel
 	public class FlxButton extends FlxGroup
 	{
 		/**
+		 * Set this to true if you want this button to function even while the game is paused.
+		 */
+		public var pauseProof:Boolean;
+		/**
 		 * Used for checkbox-style behavior.
 		 */
 		protected var _onToggle:Boolean;
@@ -73,6 +77,7 @@ package org.flixel
 			_pressed = false;
 			_initialized = false;
 			_sf = null;
+			pauseProof = false;
 		}
 		
 		/**
@@ -222,7 +227,7 @@ package org.flixel
 		 */
 		protected function onMouseUp(event:MouseEvent):void
 		{
-			if(!exists || !visible || !active || !FlxG.mouse.justReleased() || (_callback == null)) return;
+			if(!exists || !visible || !active || !FlxG.mouse.justReleased() || (FlxG.pause && !pauseProof) || (_callback == null)) return;
 			if(overlapsPoint(FlxG.mouse.x,FlxG.mouse.y)) _callback();
 		}
 	}

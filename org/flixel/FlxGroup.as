@@ -48,7 +48,7 @@ package org.flixel
 		 */
 		public function add(Object:FlxObject,ShareScroll:Boolean=false):FlxObject
 		{
-			members.push(Object);
+			members[members.length] = Object;
 			if(ShareScroll)
 				Object.scrollFactor = scrollFactor;
 			return Object;
@@ -116,11 +116,12 @@ package org.flixel
 		 */
 		public function getFirstAvail():FlxObject
 		{
+			var i:uint = 0;
 			var o:FlxObject;
 			var ml:uint = members.length;
-			for(var i:uint = 0; i < ml; i++)
+			while(i < ml)
 			{
-				o = members[i] as FlxObject;
+				o = members[i++] as FlxObject;
 				if((o != null) && !o.exists)
 					return o;
 			}
@@ -135,11 +136,14 @@ package org.flixel
 		 */
 		public function getFirstNull():int
 		{
+			var i:uint = 0;
 			var ml:uint = members.length;
-			for(var i:uint = 0; i < ml; i++)
+			while(i < ml)
 			{
 				if(members[i] == null)
 					return i;
+				else
+					i++;
 			}
 			return -1;
 		}
@@ -169,11 +173,12 @@ package org.flixel
 		 */
 		public function getFirstExtant():FlxObject
 		{
+			var i:uint = 0;
 			var o:FlxObject;
 			var ml:uint = members.length;
-			for(var i:uint = 0; i < ml; i++)
+			while(i < ml)
 			{
-				o = members[i] as FlxObject;
+				o = members[i++] as FlxObject;
 				if((o != null) && o.exists)
 					return o;
 			}
@@ -188,11 +193,12 @@ package org.flixel
 		 */
 		public function getFirstAlive():FlxObject
 		{
+			var i:uint = 0;
 			var o:FlxObject;
 			var ml:uint = members.length;
-			for(var i:uint = 0; i < ml; i++)
+			while(i < ml)
 			{
-				o = members[i] as FlxObject;
+				o = members[i++] as FlxObject;
 				if((o != null) && o.exists && !o.dead)
 					return o;
 			}
@@ -207,11 +213,12 @@ package org.flixel
 		 */
 		public function getFirstDead():FlxObject
 		{
+			var i:uint = 0;
 			var o:FlxObject;
 			var ml:uint = members.length;
-			for(var i:uint = 0; i < ml; i++)
+			while(i < ml)
 			{
-				o = members[i] as FlxObject;
+				o = members[i++] as FlxObject;
 				if((o != null) && o.dead)
 					return o;
 			}
@@ -225,12 +232,13 @@ package org.flixel
 		 */
 		public function countLiving():int
 		{
-			var o:FlxObject;
 			var count:int = -1;
+			var i:uint = 0;
+			var o:FlxObject;
 			var ml:uint = members.length;
-			for(var i:uint = 0; i < ml; i++)
+			while(i < ml)
 			{
-				o = members[i] as FlxObject;
+				o = members[i++] as FlxObject;
 				if(o != null)
 				{
 					if(count < 0)
@@ -249,12 +257,13 @@ package org.flixel
 		 */
 		public function countDead():int
 		{
-			var o:FlxObject;
 			var count:int = -1;
+			var i:uint = 0;
+			var o:FlxObject;
 			var ml:uint = members.length;
-			for(var i:uint = 0; i < ml; i++)
+			while(i < ml)
 			{
-				o = members[i] as FlxObject;
+				o = members[i++] as FlxObject;
 				if(o != null)
 				{
 					if(count < 0)
@@ -273,12 +282,13 @@ package org.flixel
 		 */
 		public function countOnScreen():int
 		{
-			var o:FlxObject;
 			var count:int = -1;
+			var i:uint = 0;
+			var o:FlxObject;
 			var ml:uint = members.length;
-			for(var i:uint = 0; i < ml; i++)
+			while(i < ml)
 			{
-				o = members[i] as FlxObject;
+				o = members[i++] as FlxObject;
 				if(o != null)
 				{
 					if(count < 0)
@@ -340,11 +350,12 @@ package org.flixel
 				mx = x - _last.x;
 				my = y - _last.y;
 			}
+			var i:uint = 0;
 			var o:FlxObject;
-			var l:uint = members.length;
-			for(var i:uint = 0; i < l; i++)
+			var ml:uint = members.length;
+			while(i < ml)
 			{
-				o = members[i] as FlxObject;
+				o = members[i++] as FlxObject;
 				if((o != null) && o.exists)
 				{
 					if(moved)
@@ -392,11 +403,12 @@ package org.flixel
 		 */
 		protected function renderMembers():void
 		{
+			var i:uint = 0;
 			var o:FlxObject;
-			var l:uint = members.length;
-			for(var i:uint = 0; i < l; i++)
+			var ml:uint = members.length;
+			while(i < ml)
 			{
-				o = members[i] as FlxObject;
+				o = members[i++] as FlxObject;
 				if((o != null) && o.exists && o.visible)
 					o.render();
 			}
@@ -416,11 +428,12 @@ package org.flixel
 		 */
 		protected function killMembers():void
 		{
+			var i:uint = 0;
 			var o:FlxObject;
-			var l:uint = members.length;
-			for(var i:uint = 0; i < l; i++)
+			var ml:uint = members.length;
+			while(i < ml)
 			{
-				o = members[i] as FlxObject;
+				o = members[i++] as FlxObject;
 				if(o != null)
 					o.kill();
 			}
@@ -440,11 +453,12 @@ package org.flixel
 		 */
 		protected function destroyMembers():void
 		{
+			var i:uint = 0;
 			var o:FlxObject;
-			var l:uint = members.length;
-			for(var i:uint = 0; i < l; i++)
+			var ml:uint = members.length;
+			while(i < ml)
 			{
-				o = members[i] as FlxObject;
+				o = members[i++] as FlxObject;
 				if(o != null)
 					o.destroy();
 			}
@@ -480,11 +494,12 @@ package org.flixel
 				mx = x - _last.x;
 				my = y - _last.y;
 			}
+			var i:uint = 0;
 			var o:FlxObject;
-			var l:uint = members.length;
-			for(var i:uint = 0; i < l; i++)
+			var ml:uint = members.length;
+			while(i < ml)
 			{
-				o = members[i] as FlxObject;
+				o = members[i++] as FlxObject;
 				if((o != null) && o.exists)
 				{
 					if(moved)

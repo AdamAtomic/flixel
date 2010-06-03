@@ -31,10 +31,11 @@ package org.flixel.data
 		 */
 		public function update():void
 		{
-			for(var i:uint = 0; i < _t; i++)
+			var i:uint = 0;
+			while(i < _t)
 			{
-				if(_map[i] == null) continue;
-				var o:Object = _map[i];
+				var o:Object = _map[i++];
+				if(o == null) continue;
 				if((o.last == -1) && (o.current == -1)) o.current = 0;
 				else if((o.last == 2) && (o.current == 2)) o.current = 1;
 				o.last = o.current;
@@ -46,10 +47,11 @@ package org.flixel.data
 		 */
 		public function reset():void
 		{
-			for(var i:uint = 0; i < _t; i++)
+			var i:uint = 0;
+			while(i < _t)
 			{
-				if(_map[i] == null) continue;
-				var o:Object = _map[i];
+				var o:Object = _map[i++];
+				if(o == null) continue;
 				this[o.name] = false;
 				o.current = 0;
 				o.last = 0;
