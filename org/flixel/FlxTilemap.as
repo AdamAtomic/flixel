@@ -83,6 +83,7 @@ package org.flixel
 		protected var _callbacks:Array;
 		protected var _screenRows:uint;
 		protected var _screenCols:uint;
+		protected var _boundsVisible:Boolean;
 		
 		/**
 		 * The tilemap constructor just initializes some basic variables.
@@ -289,6 +290,11 @@ package org.flixel
 					}
 					r += _tileHeight;
 				}
+				
+				_flashRect.x = 0;
+				_flashRect.y = 0;
+				_flashRect.width = _buffer.width;
+				_flashRect.height = _buffer.height;
 			}
 		}
 		
@@ -302,9 +308,15 @@ package org.flixel
 			//Bounding box display options
 			var tileBitmap:BitmapData;
 			if(FlxG.showBounds)
+			{
 				tileBitmap = _bbPixels;
+				_boundsVisible = true;
+			}
 			else
+			{
 				tileBitmap = _pixels;
+				_boundsVisible = false;
+			}
 
 			//Copy tile images into the tile buffer
 			getScreenXY(_point);
@@ -361,6 +373,9 @@ package org.flixel
 		 */
 		override public function render():void
 		{
+			if(FlxG.showBounds != _boundsVisible)
+				refresh = true;
+			
 			//Redraw the tilemap buffer if necessary
 			if(refresh)
 			{
