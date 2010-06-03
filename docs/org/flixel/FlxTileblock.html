@@ -4,7 +4,7 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="../../style.css" type="text/css" media="screen">
 <link rel="stylesheet" href="../../print.css" type="text/css" media="print">
-<meta content="FlxTileblock,org.flixel.FlxTileblock,_bbRect,_flashRect,_pixels,_rects,_tileSize,loadGraphic,render,renderBlock" name="keywords">
+<meta content="FlxTileblock,org.flixel.FlxTileblock,loadGraphic,loadTiles" name="keywords">
 <title>org.flixel.FlxTileblock</title>
 </head>
 <body>
@@ -38,7 +38,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <td class="classHeaderTableLabel">Class</td><td class="classSignature">public class FlxTileblock</td>
 </tr>
 <tr>
-<td class="classHeaderTableLabel">Inheritance</td><td class="inheritanceList">FlxTileblock <img class="inheritArrow" alt="Inheritance" title="Inheritance" src="../../images/inherit-arrow.gif"> <a href="FlxObject.html">FlxObject</a> <img class="inheritArrow" alt="Inheritance" title="Inheritance" src="../../images/inherit-arrow.gif"> <a href="FlxRect.html">FlxRect</a> <img class="inheritArrow" alt="Inheritance" title="Inheritance" src="../../images/inherit-arrow.gif"> <a href="FlxPoint.html">FlxPoint</a></td>
+<td class="classHeaderTableLabel">Inheritance</td><td class="inheritanceList">FlxTileblock <img class="inheritArrow" alt="Inheritance" title="Inheritance" src="../../images/inherit-arrow.gif"> <a href="FlxSprite.html">FlxSprite</a> <img class="inheritArrow" alt="Inheritance" title="Inheritance" src="../../images/inherit-arrow.gif"> <a href="FlxObject.html">FlxObject</a> <img class="inheritArrow" alt="Inheritance" title="Inheritance" src="../../images/inherit-arrow.gif"> <a href="FlxRect.html">FlxRect</a> <img class="inheritArrow" alt="Inheritance" title="Inheritance" src="../../images/inherit-arrow.gif"> <a href="FlxPoint.html">FlxPoint</a></td>
 </tr>
 </table>
 <p></p>
@@ -75,6 +75,11 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
 </tr>
 <tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxSprite.html#alpha">alpha</a> : Number<div class="summaryTableDescription">
+   Set <code>alpha</code> to a number between 0 and 1 to change the opacity of the sprite.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedProperty">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#angle">angle</a> : Number<div class="summaryTableDescription">
    Set the angle of a sprite to rotate it.</div>
 </td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
@@ -93,6 +98,17 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#angularVelocity">angularVelocity</a> : Number<div class="summaryTableDescription">
    This is how fast you want this sprite to spin.</div>
 </td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxSprite.html#antialiasing">antialiasing</a> : Boolean<div class="summaryTableDescription">
+   Controls whether the object is smoothed when rotated, affects performance.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxSprite.html#blend">blend</a> : String<div class="summaryTableDescription">
+   Blending modes, just like Photoshop!
+   E.g.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
 </tr>
 <tr class="hideInheritedProperty">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxRect.html#bottom">bottom</a> : Number<div class="summaryTableDescription">
@@ -137,6 +153,11 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
 </tr>
 <tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxSprite.html#color">color</a> : uint<div class="summaryTableDescription">
+   Set <code>color</code> to a number in this format: 0xRRGGBB.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedProperty">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#colVector">colVector</a> : <a href="../flixel/FlxPoint.html">FlxPoint</a>
 <div class="summaryTableDescription">
    These store a couple of useful numbers for speeding up collision resolution.</div>
@@ -160,9 +181,41 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
 </tr>
 <tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxSprite.html#facing">facing</a> : uint<div class="summaryTableDescription">
+   Set <code>facing</code> using <code>FlxSprite.LEFT</code>,<code>RIGHT</code>,
+   <code>UP</code>, and <code>DOWN</code> to take advantage of
+   flipped sprites and/or just track player orientation more easily.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxSprite.html#finished">finished</a> : Boolean<div class="summaryTableDescription">
+   Whether the current animation has finished its first (or only) loop.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedProperty">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#fixed">fixed</a> : Boolean<div class="summaryTableDescription">
    Set <code>fixed</code> to true if you want the object to stay in place during collisions.</div>
 </td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxSprite.html#frame">frame</a> : uint<div class="summaryTableDescription">
+   Tell the sprite to change to a specific frame of animation.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxSprite.html#frameHeight">frameHeight</a> : uint<div class="summaryTableDescription">
+   The height of the actual graphic or image being displayed (not necessarily the game object/bounding box).</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxSprite.html#frames">frames</a> : uint<div class="summaryTableDescription">
+   The total number of frames in this image (assumes each row is full).</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxSprite.html#frameWidth">frameWidth</a> : uint<div class="summaryTableDescription">
+   The width of the actual graphic or image being displayed (not necessarily the game object/bounding box).</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
 </tr>
 <tr class="hideInheritedProperty">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#_group">_group</a> : Boolean<div class="summaryTableDescription">
@@ -208,6 +261,13 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
 </tr>
 <tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxSprite.html#offset">offset</a> : <a href="../flixel/FlxPoint.html">FlxPoint</a>
+<div class="summaryTableDescription">
+  If you changed the size of your sprite object to shrink the bounding box,
+  you might need to offset the new bounding box from the top-left corner of the sprite.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedProperty">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#onFloor">onFloor</a> : Boolean<div class="summaryTableDescription">
    Flag that indicates whether or not you just hit the floor.</div>
 </td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
@@ -219,9 +279,20 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
 </tr>
 <tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxSprite.html#pixels">pixels</a> : BitmapData<div class="summaryTableDescription">
+   Set <code>pixels</code> to any <code>BitmapData</code> object.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedProperty">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxRect.html#right">right</a> : Number<div class="summaryTableDescription">
    The X coordinate of the right side of the rectangle.</div>
 </td><td class="summaryTableOwnerCol"><a href="FlxRect.html">FlxRect</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxSprite.html#scale">scale</a> : <a href="../flixel/FlxPoint.html">FlxPoint</a>
+<div class="summaryTableDescription">
+   Change the size of your sprite's graphic.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
 </tr>
 <tr class="hideInheritedProperty">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#scrollFactor">scrollFactor</a> : <a href="../flixel/FlxPoint.html">FlxPoint</a>
@@ -285,14 +356,58 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <a onclick="javascript:setInheritedVisible(true,'ProtectedProperty');" href="#protectedPropertySummary" class="showHideLink"><img src="../../images/collapsed.gif" class="showHideLinkImage"> Show Inherited Protected Properties</a>
 </div>
 </div>
-<table id="summaryTableProtectedProperty" class="summaryTable " cellpadding="3" cellspacing="0">
+<table id="summaryTableProtectedProperty" class="summaryTable hideInheritedProtectedProperty" cellpadding="3" cellspacing="0">
 <tr>
 <th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
 </tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_bbRect">_bbRect</a> : Rectangle<div class="summaryTableDescription">
-   Bounding box rendering helper.</div>
-</td><td class="summaryTableOwnerCol">FlxTileblock</td>
+<tr class="hideInheritedProtectedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxSprite.html#_alpha">_alpha</a> : Number<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedProtectedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxSprite.html#_animations">_animations</a> : Array<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedProtectedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxSprite.html#_bakedRotation">_bakedRotation</a> : Number<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedProtectedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxSprite.html#_bbb">_bbb</a> : BitmapData<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedProtectedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxSprite.html#_boundsVisible">_boundsVisible</a> : Boolean<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedProtectedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxSprite.html#_caf">_caf</a> : uint<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedProtectedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxSprite.html#_callback">_callback</a> : Function<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedProtectedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxSprite.html#_color">_color</a> : uint<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedProtectedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxSprite.html#_ct">_ct</a> : ColorTransform<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedProtectedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxSprite.html#_curAnim">_curAnim</a> : <a href="data/FlxAnim.html">FlxAnim</a>
+<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedProtectedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxSprite.html#_curFrame">_curFrame</a> : uint<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedProtectedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxSprite.html#_facing">_facing</a> : uint<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
 </tr>
 <tr class="hideInheritedProtectedProperty">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#_fixed">_fixed</a> : Boolean<div class="summaryTableDescription">
@@ -305,10 +420,17 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
    </div>
 </td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
 </tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_flashRect">_flashRect</a> : Rectangle<div class="summaryTableDescription">
-   Rendering helper.</div>
-</td><td class="summaryTableOwnerCol">FlxTileblock</td>
+<tr class="hideInheritedProtectedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxSprite.html#_flashPointZero">_flashPointZero</a> : Point<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedProtectedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxSprite.html#_flashRect">_flashRect</a> : Rectangle<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedProtectedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxSprite.html#_flashRect2">_flashRect2</a> : Rectangle<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
 </tr>
 <tr class="hideInheritedProtectedProperty">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#_flicker">_flicker</a> : Boolean<div class="summaryTableDescription">
@@ -320,10 +442,33 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
    Internal helper used for retro-style flickering.</div>
 </td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
 </tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_pixels">_pixels</a> : BitmapData<div class="summaryTableDescription">
-   Stores the tile strip from which the tiles are loaded.</div>
-</td><td class="summaryTableOwnerCol">FlxTileblock</td>
+<tr class="hideInheritedProtectedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxSprite.html#_flipped">_flipped</a> : uint<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedProtectedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxSprite.html#_framePixels">_framePixels</a> : BitmapData<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedProtectedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxSprite.html#_frameTimer">_frameTimer</a> : Number<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedProtectedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxSprite.html#_gfx">_gfx</a> : Graphics<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedProtectedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxSprite.html#_gfxSprite">_gfxSprite</a> : Sprite<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedProtectedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxSprite.html#_mtx">_mtx</a> : Matrix<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedProtectedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxSprite.html#_pixels">_pixels</a> : BitmapData<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
 </tr>
 <tr class="hideInheritedProtectedProperty">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#_point">_point</a> : <a href="../flixel/FlxPoint.html">FlxPoint</a>
@@ -339,20 +484,10 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
    </div>
 </td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
 </tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_rects">_rects</a> : Array<div class="summaryTableDescription">
-   Array of rectangles used to quickly blit the tiles to the screen.</div>
-</td><td class="summaryTableOwnerCol">FlxTileblock</td>
-</tr>
 <tr class="hideInheritedProtectedProperty">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxObject.html#_solid">_solid</a> : Boolean<div class="summaryTableDescription">
    Internal tracker for whether or not the object collides (see <code>solid</code>).</div>
 </td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_tileSize">_tileSize</a> : uint<div class="summaryTableDescription">
-   The size of the tiles (e.g.</div>
-</td><td class="summaryTableOwnerCol">FlxTileblock</td>
 </tr>
 </table>
 </div>
@@ -382,6 +517,22 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="hideInheritedMethod">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
+<a class="signatureLink" href="FlxSprite.html#addAnimation()">addAnimation</a>(Name:String, Frames:Array, FrameRate:Number = 0, Looped:Boolean = true):void</div>
+<div class="summaryTableDescription">
+   Adds a new animation to the sprite.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxSprite.html#addAnimationCallback()">addAnimationCallback</a>(AnimationCallback:Function):void</div>
+<div class="summaryTableDescription">
+   Pass in a function to be called whenever this sprite's animation changes.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
 <a class="signatureLink" href="FlxObject.html#collide()">collide</a>(Object:<a href="../flixel/FlxObject.html">FlxObject</a> = null):Boolean</div>
 <div class="summaryTableDescription">
    If you don't want to call <code>FlxU.collide()</code> you can use this instead.</div>
@@ -390,10 +541,44 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="hideInheritedMethod">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
+<a class="signatureLink" href="FlxSprite.html#createGraphic()">createGraphic</a>(Width:uint, Height:uint, Color:uint = 0xffffffff, Unique:Boolean = false, Key:String = null):<a href="../flixel/FlxSprite.html">FlxSprite</a>
+</div>
+<div class="summaryTableDescription">
+   This function creates a flat colored square image dynamically.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
 <a class="signatureLink" href="FlxObject.html#destroy()">destroy</a>():void</div>
 <div class="summaryTableDescription">
    Called by <code>FlxGroup</code>, commonly when game states are changed.</div>
 </td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxSprite.html#draw()">draw</a>(Brush:<a href="../flixel/FlxSprite.html">FlxSprite</a>, X:int = 0, Y:int = 0):void</div>
+<div class="summaryTableDescription">
+   This function draws or stamps one <code>FlxSprite</code> onto another.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxSprite.html#drawLine()">drawLine</a>(StartX:Number, StartY:Number, EndX:Number, EndY:Number, Color:uint, Thickness:uint = 1):void</div>
+<div class="summaryTableDescription">
+   This function draws a line on this sprite from position X1,Y1
+   to position X2,Y2 with the specified color.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxSprite.html#fill()">fill</a>(Color:uint):void</div>
+<div class="summaryTableDescription">
+   Fills this sprite's graphic with a specific color.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
 </tr>
 <tr class="hideInheritedMethod">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
@@ -422,11 +607,11 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="hideInheritedMethod">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="FlxObject.html#getScreenXY()">getScreenXY</a>(Point:<a href="../flixel/FlxPoint.html">FlxPoint</a> = null):<a href="../flixel/FlxPoint.html">FlxPoint</a>
+<a class="signatureLink" href="FlxSprite.html#getScreenXY()">getScreenXY</a>(Point:<a href="../flixel/FlxPoint.html">FlxPoint</a> = null):<a href="../flixel/FlxPoint.html">FlxPoint</a>
 </div>
 <div class="summaryTableDescription">
    Call this function to figure out the on-screen position of the object.</div>
-</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
 </tr>
 <tr class="hideInheritedMethod">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
@@ -450,6 +635,15 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <a class="signatureLink" href="FlxObject.html#hitRight()">hitRight</a>(Contact:<a href="../flixel/FlxObject.html">FlxObject</a>, Velocity:Number):void</div>
 <div class="summaryTableDescription">
    Called when this object's right side collides with another <code>FlxObject</code>'s left.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxObject.html#hitSide()">hitSide</a>(Contact:<a href="../flixel/FlxObject.html">FlxObject</a>, Velocity:Number):void</div>
+<div class="summaryTableDescription">
+   Since most games have identical behavior for running into walls,
+   you can just override this function instead of overriding both hitLeft and hitRight.</div>
 </td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
 </tr>
 <tr class="hideInheritedMethod">
@@ -479,10 +673,38 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#loadGraphic()">loadGraphic</a>(TileGraphic:Class, Empties:uint = 0):void</div>
+<a class="signatureLink" href="#loadGraphic()">loadGraphic</a>(Graphic:Class, Animated:Boolean = false, Reverse:Boolean = false, Width:uint = 0, Height:uint = 0, Unique:Boolean = false):<a href="../flixel/FlxSprite.html">FlxSprite</a>
+</div>
+<div class="summaryTableDescription">
+   NOTE: MOST OF THE TIME YOU SHOULD BE USING LOADTILES(), NOT LOADGRAPHIC()!
+   <code>LoadTiles()</code> has a lot more functionality, can load non-square tiles, etc.</div>
+</td><td class="summaryTableOwnerCol">FlxTileblock</td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxSprite.html#loadRotatedGraphic()">loadRotatedGraphic</a>(Graphic:Class, Rotations:uint = 16, Frame:int = -1, AntiAliasing:Boolean = false, AutoBuffer:Boolean = false):<a href="../flixel/FlxSprite.html">FlxSprite</a>
+</div>
+<div class="summaryTableDescription">
+   Create a pre-rotated sprite sheet from a simple sprite.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#loadTiles()">loadTiles</a>(TileGraphic:Class, TileWidth:uint = 0, TileHeight:uint = 0, Empties:uint = 0):<a href="../flixel/FlxTileblock.html">FlxTileblock</a>
+</div>
 <div class="summaryTableDescription">
    Fills the block with a randomly arranged selection of graphics from the image provided.</div>
 </td><td class="summaryTableOwnerCol">FlxTileblock</td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxSprite.html#onEmit()">onEmit</a>():void</div>
+<div class="summaryTableDescription">
+   Triggered whenever this sprite is launched by a <code>FlxEmitter</code>.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
 </tr>
 <tr class="hideInheritedMethod">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
@@ -503,10 +725,18 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="hideInheritedMethod">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="FlxObject.html#overlapsPoint()">overlapsPoint</a>(X:Number, Y:Number, PerPixel:Boolean = false):Boolean</div>
+<a class="signatureLink" href="FlxSprite.html#overlapsPoint()">overlapsPoint</a>(X:Number, Y:Number, PerPixel:Boolean = false):Boolean</div>
 <div class="summaryTableDescription">
-   Checks to see if a point in 2D space overlaps this <code>FlxObject</code> object.</div>
-</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+   Checks to see if a point in 2D space overlaps this FlxCore object.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxSprite.html#play()">play</a>(AnimName:String, Force:Boolean = false):void</div>
+<div class="summaryTableDescription">
+   Plays an existing animation (e.g.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
 </tr>
 <tr class="hideInheritedMethod">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
@@ -520,19 +750,29 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="hideInheritedMethod">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
+<a class="signatureLink" href="FlxSprite.html#randomFrame()">randomFrame</a>():void</div>
+<div class="summaryTableDescription">
+   Tell the sprite to change to a random frame of animation
+   Useful for instantiating particles or other weird things.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
 <a class="signatureLink" href="FlxObject.html#refreshHulls()">refreshHulls</a>():void</div>
 <div class="summaryTableDescription">
    Called by <code>FlxObject.updateMotion()</code> and some constructors to
    rebuild the basic collision data for this object.</div>
 </td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
 </tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#render()">render</a>():void</div>
+<a class="signatureLink" href="FlxSprite.html#render()">render</a>():void</div>
 <div class="summaryTableDescription">
-   Draws this block.</div>
-</td><td class="summaryTableOwnerCol">FlxTileblock</td>
+   Called by game loop, updates then blits or renders current frame of animation to the screen
+   </div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
 </tr>
 <tr class="hideInheritedMethod">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
@@ -553,11 +793,18 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="hideInheritedMethod">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="FlxObject.html#update()">update</a>():void</div>
+<a class="signatureLink" href="FlxSprite.html#unsafeBind()">unsafeBind</a>(Pixels:BitmapData):void</div>
 <div class="summaryTableDescription">
-   Called by the main game loop, handles motion/physics and game logic
-   </div>
-</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+   Internal function, currently only used to quickly update FlxState.screen for post-processing.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxSprite.html#update()">update</a>():void</div>
+<div class="summaryTableDescription">
+   Main game loop update function.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
 </tr>
 </table>
 </div>
@@ -572,18 +819,48 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <a onclick="javascript:setInheritedVisible(true,'ProtectedMethod');" href="#protectedMethodSummary" class="showHideLink"><img src="../../images/collapsed.gif" class="showHideLinkImage"> Show Inherited Protected Methods</a>
 </div>
 </div>
-<table id="summaryTableProtectedMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<table id="summaryTableProtectedMethod" class="summaryTable hideInheritedProtectedMethod" cellpadding="3" cellspacing="0">
 <tr>
 <th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
 </tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<tr class="hideInheritedProtectedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#renderBlock()">renderBlock</a>():void</div>
+<a class="signatureLink" href="FlxSprite.html#calcFrame()">calcFrame</a>():void</div>
 <div class="summaryTableDescription">
-   Internal function to draw this block
-   </div>
-</td><td class="summaryTableOwnerCol">FlxTileblock</td>
+   Internal function to update the current animation frame.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedProtectedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxSprite.html#drawBounds()">drawBounds</a>():void</div>
+<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedProtectedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxSprite.html#renderSprite()">renderSprite</a>():void</div>
+<div class="summaryTableDescription">
+   Internal function that performs the actual sprite rendering, called by render().</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedProtectedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxSprite.html#resetHelpers()">resetHelpers</a>():void</div>
+<div class="summaryTableDescription">
+   Resets some important variables for sprite optimization and rendering.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedProtectedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="FlxSprite.html#updateAnimation()">updateAnimation</a>():void</div>
+<div class="summaryTableDescription">
+   Internal function for updating the sprite's animation.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
 </tr>
 <tr class="hideInheritedProtectedMethod">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
@@ -603,7 +880,44 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </tr>
 </table>
 </div>
-<a name="constantSummary"></a><a name="protectedConstantSummary"></a>
+<a name="constantSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Constants</div>
+<div class="showHideLinks">
+<div class="hideInheritedConstant" id="hideInheritedConstant">
+<a onclick="javascript:setInheritedVisible(false,'Constant');" href="#constantSummary" class="showHideLink"><img src="../../images/expanded.gif" class="showHideLinkImage"> Hide Inherited Public Constants</a>
+</div>
+<div class="showInheritedConstant" id="showInheritedConstant">
+<a onclick="javascript:setInheritedVisible(true,'Constant');" href="#constantSummary" class="showHideLink"><img src="../../images/collapsed.gif" class="showHideLinkImage"> Show Inherited Public Constants</a>
+</div>
+</div>
+<table id="summaryTableConstant" class="summaryTable hideInheritedConstant" cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Constant</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="hideInheritedConstant">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxSprite.html#DOWN">DOWN</a> : uint = 3<div class="summaryTableDescription">[static]
+   Useful for checking player orientation.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedConstant">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxSprite.html#LEFT">LEFT</a> : uint = 0<div class="summaryTableDescription">[static]
+   Useful for controlling flipped animations and checking player orientation.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedConstant">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxSprite.html#RIGHT">RIGHT</a> : uint = 1<div class="summaryTableDescription">[static]
+   Useful for controlling flipped animations and checking player orientation.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedConstant">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxSprite.html#UP">UP</a> : uint = 2<div class="summaryTableDescription">[static]
+   Useful for checking player orientation.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxSprite.html">FlxSprite</a></td>
+</tr>
+</table>
+</div>
+<a name="protectedConstantSummary"></a>
 <div class="summarySection">
 <div class="summaryTableTitle">Protected Constants</div>
 <div class="showHideLinks">
@@ -632,58 +946,6 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 showHideInherited();
 --></script>
 <div class="MainContent">
-<a name="propertyDetail"></a>
-<div class="detailSectionHeader">Property detail</div>
-<a name="_bbRect"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">_bbRect</td><td class="detailHeaderType">property</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>protected var _bbRect:Rectangle</code><p>
-   Bounding box rendering helper.
-   </p></div>
-<a name="_flashRect"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">_flashRect</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>protected var _flashRect:Rectangle</code><p>
-   Rendering helper.
-   </p></div>
-<a name="_pixels"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">_pixels</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>protected var _pixels:BitmapData</code><p>
-   Stores the tile strip from which the tiles are loaded.
-   </p></div>
-<a name="_rects"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">_rects</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>protected var _rects:Array</code><p>
-   Array of rectangles used to quickly blit the tiles to the screen.
-   </p></div>
-<a name="_tileSize"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">_tileSize</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>protected var _tileSize:uint</code><p>
-   The size of the tiles (e.g. 8 means 8x8).
-   </p></div>
 <a name="constructorDetail"></a>
 <div class="detailSectionHeader">Constructor detail</div>
 <a name="FlxTileblock()"></a>
@@ -734,7 +996,74 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public function loadGraphic(TileGraphic:Class, Empties:uint = 0):void</code><p>
+<code>public override function loadGraphic(Graphic:Class, Animated:Boolean = false, Reverse:Boolean = false, Width:uint = 0, Height:uint = 0, Unique:Boolean = false):<a href="../flixel/FlxSprite.html">FlxSprite</a></code><p>
+   NOTE: MOST OF THE TIME YOU SHOULD BE USING LOADTILES(), NOT LOADGRAPHIC()!
+   <code>LoadTiles()</code> has a lot more functionality, can load non-square tiles, etc.
+   Load an image from an embedded graphic file and use it to auto-fill this block with tiles.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">Graphic</span>:Class</code> &mdash;  The image you want to use.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Animated</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash; Ignored.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Reverse</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash;  Ignored.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Width</span>:uint</code> (default = <code>0</code>)<code></code> &mdash;  Ignored.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Height</span>:uint</code> (default = <code>0</code>)<code></code> &mdash;  Ignored.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Unique</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash;  Ignored.
+   
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="../flixel/FlxSprite.html">FlxSprite</a></code> &mdash; 
+                        This FlxSprite instance (nice for chaining stuff together, if you're into that).
+   
+                        
+                     </td>
+</tr>
+</table>
+</div>
+<a name="loadTiles()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">loadTiles</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function loadTiles(TileGraphic:Class, TileWidth:uint = 0, TileHeight:uint = 0, Empties:uint = 0):<a href="../flixel/FlxTileblock.html">FlxTileblock</a></code><p>
    Fills the block with a randomly arranged selection of graphics from the image provided.
    
    </p><span class="label">Parameters</span>
@@ -747,31 +1076,30 @@ showHideInherited();
 <td class="paramSpacer">&nbsp;</td>
 </tr>
 <tr>
-<td width="20px"></td><td><code><span class="label">Empties</span>:uint</code> (default = <code>0</code>)<code></code> &mdash;  The number of "empty" tiles to add to the auto-fill algorithm (e.g. 8 tiles + 4 empties = 1/3 of block will be open holes).
+<td width="20px"></td><td><code><span class="label">TileWidth</span>:uint</code> (default = <code>0</code>)<code></code> &mdash;  The number of "empty" tiles to add to the auto-fill algorithm (e.g. 8 tiles + 4 empties = 1/3 of block will be open holes).
    </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">TileHeight</span>:uint</code> (default = <code>0</code>)<code></code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Empties</span>:uint</code> (default = <code>0</code>)<code></code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="../flixel/FlxTileblock.html">FlxTileblock</a></code></td>
 </tr>
 </table>
 </div>
-<a name="render()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">render</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public override function render():void</code><p>
-   Draws this block.
-   </p></div>
-<a name="renderBlock()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">renderBlock</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>protected function renderBlock():void</code><p>
-   Internal function to draw this block
-   </p></div>
 <br>
 <br>
 <hr>

@@ -207,6 +207,11 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol"><a href="../FlxSprite.html">FlxSprite</a></td>
 </tr>
 <tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../FlxSprite.html#frames">frames</a> : uint<div class="summaryTableDescription">
+   The total number of frames in this image (assumes each row is full).</div>
+</td><td class="summaryTableOwnerCol"><a href="../FlxSprite.html">FlxSprite</a></td>
+</tr>
+<tr class="hideInheritedProperty">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../FlxSprite.html#frameWidth">frameWidth</a> : uint<div class="summaryTableDescription">
    The width of the actual graphic or image being displayed (not necessarily the game object/bounding box).</div>
 </td><td class="summaryTableOwnerCol"><a href="../FlxSprite.html">FlxSprite</a></td>
@@ -640,6 +645,15 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <a class="signatureLink" href="../FlxObject.html#hitRight()">hitRight</a>(Contact:<a href="../../flixel/FlxObject.html">FlxObject</a>, Velocity:Number):void</div>
 <div class="summaryTableDescription">
    Called when this object's right side collides with another <code>FlxObject</code>'s left.</div>
+</td><td class="summaryTableOwnerCol"><a href="../FlxObject.html">FlxObject</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../FlxObject.html#hitSide()">hitSide</a>(Contact:<a href="../../flixel/FlxObject.html">FlxObject</a>, Velocity:Number):void</div>
+<div class="summaryTableDescription">
+   Since most games have identical behavior for running into walls,
+   you can just override this function instead of overriding both hitLeft and hitRight.</div>
 </td><td class="summaryTableOwnerCol"><a href="../FlxObject.html">FlxObject</a></td>
 </tr>
 <tr class="hideInheritedMethod">

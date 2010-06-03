@@ -4,7 +4,7 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="../../style.css" type="text/css" media="screen">
 <link rel="stylesheet" href="../../print.css" type="text/css" media="print">
-<meta content="FlxTilemap,org.flixel.FlxTilemap,ALT,AUTO,ImgAuto,ImgAutoAlt,OFF,_bbKey,_bbPixels,_block,_callbacks,_data,_flashRect,_pixels,_rects,_screenCols,_screenRows,_tileHeight,_tileWidth,auto,collideIndex,drawIndex,heightInTiles,startingIndex,totalTiles,widthInTiles,arrayToCSV,autoTile,bitmapToCSV,follow,generateBoundingTiles,getTile,getTileByIndex,imageToCSV,loadMap,overlaps,preCollide,ray,refreshHulls,render,renderTilemap,setCallback,setTile,setTileByIndex,updateTile" name="keywords">
+<meta content="FlxTilemap,org.flixel.FlxTilemap,ALT,AUTO,ImgAuto,ImgAutoAlt,OFF,_bbKey,_bbPixels,_block,_buffer,_bufferLoc,_callbacks,_data,_flashRect,_flashRect2,_pixels,_rects,_screenCols,_screenRows,_tileHeight,_tileWidth,auto,collideIndex,drawIndex,heightInTiles,refresh,startingIndex,totalTiles,widthInTiles,arrayToCSV,autoTile,bitmapToCSV,follow,generateBoundingTiles,getTile,getTileByIndex,imageToCSV,loadMap,overlaps,preCollide,ray,refreshHulls,render,renderTilemap,setCallback,setTile,setTileByIndex,update,updateTile" name="keywords">
 <title>org.flixel.FlxTilemap</title>
 </head>
 <body>
@@ -250,6 +250,11 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
    WARNING: The origin of the sprite will default to its center.</div>
 </td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
 </tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#refresh">refresh</a> : Boolean<div class="summaryTableDescription">
+   Set this flag to true to force the tilemap buffer to refresh on the next render frame.</div>
+</td><td class="summaryTableOwnerCol">FlxTilemap</td>
+</tr>
 <tr class="hideInheritedProperty">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxRect.html#right">right</a> : Number<div class="summaryTableDescription">
    The X coordinate of the right side of the rectangle.</div>
@@ -352,6 +357,15 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol">FlxTilemap</td>
 </tr>
 <tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_buffer">_buffer</a> : BitmapData<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">FlxTilemap</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_bufferLoc">_bufferLoc</a> : <a href="../flixel/FlxPoint.html">FlxPoint</a>
+<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">FlxTilemap</td>
+</tr>
+<tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_callbacks">_callbacks</a> : Array<div class="summaryTableDescription"></div>
 </td><td class="summaryTableOwnerCol">FlxTilemap</td>
 </tr>
@@ -373,6 +387,10 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_flashRect">_flashRect</a> : Rectangle<div class="summaryTableDescription">
    Rendering helper.</div>
+</td><td class="summaryTableOwnerCol">FlxTilemap</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_flashRect2">_flashRect2</a> : Rectangle<div class="summaryTableDescription"></div>
 </td><td class="summaryTableOwnerCol">FlxTilemap</td>
 </tr>
 <tr class="hideInheritedProtectedProperty">
@@ -569,6 +587,15 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="hideInheritedMethod">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
+<a class="signatureLink" href="FlxObject.html#hitSide()">hitSide</a>(Contact:<a href="../flixel/FlxObject.html">FlxObject</a>, Velocity:Number):void</div>
+<div class="summaryTableDescription">
+   Since most games have identical behavior for running into walls,
+   you can just override this function instead of overriding both hitLeft and hitRight.</div>
+</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
 <a class="signatureLink" href="FlxObject.html#hitTop()">hitTop</a>(Contact:<a href="../flixel/FlxObject.html">FlxObject</a>, Velocity:Number):void</div>
 <div class="summaryTableDescription">
    Called when this object's top collides with the bottom of another <code>FlxObject</code>.</div>
@@ -705,14 +732,13 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
    Convert object to readable string name.</div>
 </td><td class="summaryTableOwnerCol"><a href="FlxPoint.html">FlxPoint</a></td>
 </tr>
-<tr class="hideInheritedMethod">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="FlxObject.html#update()">update</a>():void</div>
+<a class="signatureLink" href="#update()">update</a>():void</div>
 <div class="summaryTableDescription">
-   Called by the main game loop, handles motion/physics and game logic
-   </div>
-</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+   Checks to see if the tilemap needs to be refreshed or not.</div>
+</td><td class="summaryTableOwnerCol">FlxTilemap</td>
 </tr>
 </table>
 </div>
@@ -752,7 +778,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <div class="summarySignature">
 <a class="signatureLink" href="#renderTilemap()">renderTilemap</a>():void</div>
 <div class="summaryTableDescription">
-   Internal function that actually renders the tilemap.</div>
+   Internal function that actually renders the tilemap to the tilemap buffer.</div>
 </td><td class="summaryTableOwnerCol">FlxTilemap</td>
 </tr>
 <tr class="hideInheritedProtectedMethod">
@@ -873,6 +899,24 @@ showHideInherited();
 <div class="detailBody">
 <code>protected var _block:<a href="../flixel/FlxObject.html">FlxObject</a></code>
 </div>
+<a name="_buffer"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_buffer</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _buffer:BitmapData</code>
+</div>
+<a name="_bufferLoc"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_bufferLoc</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _bufferLoc:<a href="../flixel/FlxPoint.html">FlxPoint</a></code>
+</div>
 <a name="_callbacks"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -922,6 +966,15 @@ showHideInherited();
 <code>protected var _flashRect:Rectangle</code><p>
    Rendering helper.
    </p></div>
+<a name="_flashRect2"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_flashRect2</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _flashRect2:Rectangle</code>
+</div>
 <a name="heightInTiles"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -968,6 +1021,16 @@ showHideInherited();
 <div class="detailBody">
 <code>protected var _rects:Array</code>
 </div>
+<a name="refresh"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">refresh</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var refresh:Boolean</code><p>
+   Set this flag to true to force the tilemap buffer to refresh on the next render frame.
+   </p></div>
 <a name="_screenCols"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -1462,7 +1525,7 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>protected function renderTilemap():void</code><p>
-   Internal function that actually renders the tilemap.  Called by render().
+   Internal function that actually renders the tilemap to the tilemap buffer.  Called by render().
    </p></div>
 <a name="setCallback()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
@@ -1585,6 +1648,16 @@ showHideInherited();
 </tr>
 </table>
 </div>
+<a name="update()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">update</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public override function update():void</code><p>
+   Checks to see if the tilemap needs to be refreshed or not.
+   </p></div>
 <a name="updateTile()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>

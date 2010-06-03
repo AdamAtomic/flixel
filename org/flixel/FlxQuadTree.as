@@ -149,12 +149,13 @@ package org.flixel
 			_oa = List;
 			if(Object._group)
 			{
+				var i:uint = 0;
 				var m:FlxObject;
 				var members:Array = (Object as FlxGroup).members;
 				var l:uint = members.length;
-				for(var i:uint = 0; i < l; i++)
+				while(i < l)
 				{
-					m = members[i] as FlxObject;
+					m = members[i++] as FlxObject;
 					if((m != null) && m.exists)
 					{
 						if(m._group)

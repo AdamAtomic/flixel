@@ -71,6 +71,10 @@ package org.flixel
 		 * NOTE: Edit at your own risk!!  This is intended to be read-only.
 		 */
 		public var frameHeight:uint;
+		/**
+		 * The total number of frames in this image (assumes each row is full).
+		 */
+		public var frames:uint;
 		
 		//Animation helpers
 		protected var _animations:Array;
@@ -171,7 +175,7 @@ package org.flixel
 				if(Animated)
 					Width = _pixels.height;
 				else if(_flipped > 0)
-					Width = _pixels.width/2;
+					Width = _pixels.width*0.5;
 				else
 					Width = _pixels.width;
 			}
@@ -243,25 +247,28 @@ package org.flixel
 			//Generate a new sheet if necessary, then fix up the width & height
 			if(!skipGen)
 			{
-				var r:uint;
+				var r:uint = 0;
 				var c:uint;
 				var ba:Number = 0;
-				var bw2:uint = brush.width/2;
-				var bh2:uint = brush.height/2;
-				var gxc:uint = max/2;
-				var gyc:uint = max/2;
-				for(r = 0; r < rows; r++)
+				var bw2:uint = brush.width*0.5;
+				var bh2:uint = brush.height*0.5;
+				var gxc:uint = max*0.5;
+				var gyc:uint = max*0.5;
+				while(r < rows)
 				{
-					for(c = 0; c < cols; c++)
+					c = 0;
+					while(c < cols)
 					{
 						_mtx.identity();
 						_mtx.translate(-bw2,-bh2);
-						_mtx.rotate(Math.PI * 2 * (ba / 360));
+						_mtx.rotate(ba*0.017453293);
 						_mtx.translate(max*c+gxc, gyc);
 						ba += _bakedRotation;
 						_pixels.draw(brush,_mtx,null,null,null,AntiAliasing);
+						c++;
 					}
 					gyc += max;
+					r++;
 				}
 			}
 			frameWidth = frameHeight = width = height = max;
@@ -328,9 +335,10 @@ package org.flixel
 				_framePixels = new BitmapData(width,height);
 			if((_bbb == null) || (_bbb.width != width) || (_bbb.height != height))
 				_bbb = new BitmapData(width,height);
-			origin.x = frameWidth/2;
-			origin.y = frameHeight/2;
+			origin.x = frameWidth*0.5;
+			origin.y = frameHeight*0.5;
 			_framePixels.copyPixels(_pixels,_flashRect,_flashPointZero);
+			frames = (_flashRect2.width / _flashRect.width) * (_flashRect2.height / _flashRect.height);
 			if(_ct != null) _framePixels.colorTransform(_flashRect,_ct);
 			if(FlxG.showBounds)
 				drawBounds();
@@ -397,7 +405,7 @@ package org.flixel
 			if(Alpha < 0) Alpha = 0;
 			if(Alpha == _alpha) return;
 			_alpha = Alpha;
-			if((_alpha != 1) || (_color != 0x00ffffff)) _ct = new ColorTransform(Number(_color>>16)/255,Number(_color>>8&0xff)/255,Number(_color&0xff)/255,_alpha);
+			if((_alpha != 1) || (_color != 0x00ffffff)) _ct = new ColorTransform((_color>>16)*0.00392,(_color>>8&0xff)*0.00392,(_color&0xff)*0.00392,_alpha);
 			else _ct = null;
 			calcFrame();
 		}
@@ -420,7 +428,7 @@ package org.flixel
 			Color &= 0x00ffffff;
 			if(_color == Color) return;
 			_color = Color;
-			if((_alpha != 1) || (_color != 0x00ffffff)) _ct = new ColorTransform(Number(_color>>16)/255,Number(_color>>8&0xff)/255,Number(_color&0xff)/255,_alpha);
+			if((_alpha != 1) || (_color != 0x00ffffff)) _ct = new ColorTransform((_color>>16)*0.00392,(_color>>8&0xff)*0.00392,(_color&0xff)*0.00392,_alpha);
 			else _ct = null;
 			calcFrame();
 		}
@@ -456,7 +464,8 @@ package org.flixel
 			_mtx.identity();
 			_mtx.translate(-Brush.origin.x,-Brush.origin.y);
 			_mtx.scale(Brush.scale.x,Brush.scale.y);
-			if(Brush.angle != 0) _mtx.rotate(Math.PI * 2 * (Brush.angle / 360));
+			if(Brush.angle != 0)
+				_mtx.rotate(Brush.angle * 0.017453293);
 			_mtx.translate(X+Brush.origin.x,Y+Brush.origin.y);
 			_pixels.draw(b,_mtx,null,Brush.blend,null,Brush.antialiasing);
 			calcFrame();
@@ -521,7 +530,7 @@ package org.flixel
 				_frameTimer += FlxG.elapsed;
 				while(_frameTimer > _curAnim.delay)
 				{
-					_frameTimer -= _curAnim.delay;
+					_frameTimer = _frameTimer - _curAnim.delay;
 					if(_curFrame == _curAnim.frames.length-1)
 					{
 						if(_curAnim.looped) _curFrame = 0;
@@ -569,7 +578,8 @@ package org.flixel
 			_mtx.identity();
 			_mtx.translate(-origin.x,-origin.y);
 			_mtx.scale(scale.x,scale.y);
-			if(angle != 0) _mtx.rotate(Math.PI * 2 * (angle / 360));
+			if(angle != 0)
+				_mtx.rotate(angle * 0.017453293);
 			_mtx.translate(_point.x+origin.x,_point.y+origin.y);
 			FlxG.buffer.draw(_framePixels,_mtx,null,blend,null,antialiasing);
 		}
@@ -593,8 +603,8 @@ package org.flixel
 		 */
 		override public function overlapsPoint(X:Number,Y:Number,PerPixel:Boolean = false):Boolean
 		{
-			X -= FlxU.floor(FlxG.scroll.x);
-			Y -= FlxU.floor(FlxG.scroll.y);
+			X = X - FlxU.floor(FlxG.scroll.x);
+			Y = Y - FlxU.floor(FlxG.scroll.y);
 			getScreenXY(_point);
 			if(PerPixel)
 				return _framePixels.hitTest(new Point(0,0),0xFF,new Point(X-_point.x,Y-_point.y));
@@ -640,12 +650,13 @@ package org.flixel
 		 */
 		public function play(AnimName:String,Force:Boolean=false):void
 		{
-			if(!Force && (_curAnim != null) && (AnimName == _curAnim.name)) return;
+			if(!Force && (_curAnim != null) && (AnimName == _curAnim.name) && (_curAnim.looped || !finished)) return;
 			_curFrame = 0;
 			_caf = 0;
 			_frameTimer = 0;
+			var i:uint = 0;
 			var al:uint = _animations.length;
-			for(var i:uint = 0; i < al; i++)
+			while(i < al)
 			{
 				if(_animations[i].name == AnimName)
 				{
@@ -658,6 +669,7 @@ package org.flixel
 					calcFrame();
 					return;
 				}
+				i++;
 			}
 		}
 
@@ -748,20 +760,20 @@ package org.flixel
 			_bbb.fillRect(_flashRect,0);
 			var ofrw:uint = _flashRect.width;
 			var ofrh:uint = _flashRect.height;
-			_flashRect.width = width;
-			_flashRect.height = height;
-			_flashRect.x = int(offset.x);
-			_flashRect.y = int(offset.y);
+			_flashRect.width = int(width);
+			_flashRect.height = int(height);
 			_bbb.fillRect(_flashRect,bbbc);
-			_flashRect.width -= 2;
-			_flashRect.height -= 2;
-			_flashRect.x++;
-			_flashRect.y++;
+			_flashRect.width = _flashRect.width - 2;
+			_flashRect.height = _flashRect.height - 2;
+			_flashRect.x = 1;
+			_flashRect.y = 1;
 			_bbb.fillRect(_flashRect,0);
 			_flashRect.width = ofrw;
 			_flashRect.height = ofrh;
 			_flashRect.x = _flashRect.y = 0;
-			_framePixels.copyPixels(_bbb,_flashRect,_flashPointZero,null,null,true);
+			_flashPoint.x = int(offset.x);
+			_flashPoint.y = int(offset.y);
+			_framePixels.copyPixels(_bbb,_flashRect,_flashPoint,null,null,true);
 		}
 		
 		/**

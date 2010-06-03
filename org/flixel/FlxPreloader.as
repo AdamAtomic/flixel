@@ -220,9 +220,17 @@ package org.flixel
 			b.height = _height;
 			_buffer.addChild(b);
 			b = new Bitmap(new BitmapData(_width,_height,false,0xffffff));
-			for(var i:uint = 0; i < _height; i+=2)
-				for(var j:uint = 0; j < _width; j++)
-					b.bitmapData.setPixel(j,i,0);
+			var i:uint = 0;
+			var j:uint = 0;
+			while(i < _height)
+			{
+				j = 0;
+				while(j < _width)
+				{
+					b.bitmapData.setPixel(j++,i,0);
+					i+=2;
+				}
+			}
 			b.blendMode = "overlay";
 			b.alpha = 0.25;
 			_buffer.addChild(b);

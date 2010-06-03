@@ -4,7 +4,7 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="../../style.css" type="text/css" media="screen">
 <link rel="stylesheet" href="../../print.css" type="text/css" media="print">
-<meta content="FlxU,org.flixel.FlxU,_originalSeed,_seed,quadTree,quadTreeBounds,quadTreeDivisions,roundingError,seed,abs,ceil,collide,computeVelocity,endProfile,floor,getAngle,getClass,getClassName,max,min,mutate,openURL,overlap,random,randomize,rotatePoint,setWorldBounds,solveXCollision,solveYCollision,startProfile" name="keywords">
+<meta content="FlxU,org.flixel.FlxU,_originalSeed,_seed,quadTree,quadTreeBounds,quadTreeDivisions,roundingError,seed,abs,ceil,collide,computeVelocity,endProfile,fixSeed,floor,getAngle,getClass,getClassName,getColor,getColorHSB,getHSB,getRGBA,max,min,openURL,overlap,random,randomize,rotatePoint,setWorldBounds,solveXCollision,solveYCollision,startProfile" name="keywords">
 <title>org.flixel.FlxU</title>
 </head>
 <body>
@@ -75,7 +75,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </tr>
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#seed">seed</a> : Number<div class="summaryTableDescription">[static]
-   Set <code>seed</code> to a number between 0 and 1 if you want
+   Set <code>seed</code> to any number if you want
    <code>FlxG.random()</code> to generate a predictable series of numbers.</div>
 </td><td class="summaryTableOwnerCol">FlxU</td>
 </tr>
@@ -149,6 +149,14 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
+<a class="signatureLink" href="#fixSeed()">fixSeed</a>(Seed:Number):Number</div>
+<div class="summaryTableDescription">[static]
+   Takes any seed value and converts it to a number between 0 and 1.</div>
+</td><td class="summaryTableOwnerCol">FlxU</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
 <a class="signatureLink" href="#floor()">floor</a>(N:Number):Number</div>
 <div class="summaryTableDescription">[static]</div>
 </td><td class="summaryTableOwnerCol">FlxU</td>
@@ -180,6 +188,38 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
+<a class="signatureLink" href="#getColor()">getColor</a>(Red:uint, Green:uint, Blue:uint, Alpha:Number = 1.0):uint</div>
+<div class="summaryTableDescription">[static]
+   Generate a Flash <code>uint</code> color from RGBA components.</div>
+</td><td class="summaryTableOwnerCol">FlxU</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getColorHSB()">getColorHSB</a>(Hue:Number, Saturation:Number, Brightness:Number, Alpha:Number = 1.0):uint</div>
+<div class="summaryTableDescription">[static]
+   Generate a Flash <code>uint</code> color from HSB components.</div>
+</td><td class="summaryTableOwnerCol">FlxU</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getHSB()">getHSB</a>(Color:uint, Results:Array = null):Array</div>
+<div class="summaryTableDescription">[static]
+   Loads an array with the HSB values of a Flash <code>uint</code> color.</div>
+</td><td class="summaryTableOwnerCol">FlxU</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getRGBA()">getRGBA</a>(Color:uint, Results:Array = null):Array</div>
+<div class="summaryTableDescription">[static]
+   Loads an array with the RGBA values of a Flash <code>uint</code> color.</div>
+</td><td class="summaryTableOwnerCol">FlxU</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
 <a class="signatureLink" href="#max()">max</a>(N1:Number, N2:Number):Number</div>
 <div class="summaryTableDescription">[static]</div>
 </td><td class="summaryTableOwnerCol">FlxU</td>
@@ -189,14 +229,6 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <div class="summarySignature">
 <a class="signatureLink" href="#min()">min</a>(N1:Number, N2:Number):Number</div>
 <div class="summaryTableDescription">[static]</div>
-</td><td class="summaryTableOwnerCol">FlxU</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#mutate()">mutate</a>(Seed:Number, Mutator:Number):Number</div>
-<div class="summaryTableDescription">[static]
-   Mutates a seed or other number, useful when combined with <code>randomize()</code>.</div>
 </td><td class="summaryTableOwnerCol">FlxU</td>
 </tr>
 <tr class="">
@@ -351,8 +383,10 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>seed:Number</code>&nbsp;&nbsp;[read-write]<p>
-   Set <code>seed</code> to a number between 0 and 1 if you want
+   Set <code>seed</code> to any number if you want
    <code>FlxG.random()</code> to generate a predictable series of numbers.
+   If you use a number outside the 0 to 1 range,
+   Flixel will convert it to a valid 0 to 1 seed.
    NOTE: reading the seed will return the original value passed in,
    not the current mutation.
    </p><span class="label">Implementation</span>
@@ -533,6 +567,34 @@ showHideInherited();
 </tr>
 </table>
 </div>
+<a name="fixSeed()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">fixSeed</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function fixSeed(Seed:Number):Number</code><p>
+   Takes any seed value and converts it to a number between 0 and 1.
+   Can also be used to mutate seeds by passing in the seed plus the mutator like this:
+   <code>var random:Number = randomize(seed); seed = fixSeed(seed + random);</code>
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">Seed</span>:Number</code> &mdash;  The number to mutate.
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Number</code> &mdash; A predictably-altered version of the Seed.
+   </td>
+</tr>
+</table>
+</div>
 <a name="floor()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -649,6 +711,173 @@ showHideInherited();
 </tr>
 </table>
 </div>
+<a name="getColor()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getColor</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function getColor(Red:uint, Green:uint, Blue:uint, Alpha:Number = 1.0):uint</code><p>
+   Generate a Flash <code>uint</code> color from RGBA components.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">Red</span>:uint</code> &mdash;  Red     The red component, between 0 and 255.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Green</span>:uint</code> &mdash;  Green   The green component, between 0 and 255.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Blue</span>:uint</code> &mdash;  Blue    The blue component, between 0 and 255.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Alpha</span>:Number</code> (default = <code>1.0</code>)<code></code> &mdash;  Alpha   How opaque the color should be, either between 0 and 1 or 0 and 255.
+   
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>uint</code> &mdash;  The color as a <code>uint</code>.
+   </td>
+</tr>
+</table>
+</div>
+<a name="getColorHSB()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getColorHSB</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function getColorHSB(Hue:Number, Saturation:Number, Brightness:Number, Alpha:Number = 1.0):uint</code><p>
+   Generate a Flash <code>uint</code> color from HSB components.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">Hue</span>:Number</code> &mdash;   A number between 0 and 360, indicating position on a color strip or wheel.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Saturation</span>:Number</code> &mdash; A number between 0 and 1, indicating how colorful or gray the color should be.  0 is gray, 1 is vibrant.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Brightness</span>:Number</code> &mdash; A number between 0 and 1, indicating how bright the color should be.  0 is black, 1 is full bright.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Alpha</span>:Number</code> (default = <code>1.0</code>)<code></code> &mdash;  Alpha    How opaque the color should be, either between 0 and 1 or 0 and 255.
+   
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>uint</code> &mdash; The color as a <code>uint</code>.
+   </td>
+</tr>
+</table>
+</div>
+<a name="getHSB()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getHSB</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function getHSB(Color:uint, Results:Array = null):Array</code><p>
+   Loads an array with the HSB values of a Flash <code>uint</code> color.
+   Hue is a value between 0 and 360.  Saturation, Brightness and Alpha
+   are as floating point numbers between 0 and 1.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">Color</span>:uint</code> &mdash; The color you want to break into components.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Results</span>:Array</code> (default = <code>null</code>)<code></code> &mdash; An optional parameter, allows you to use an array that already exists in memory to store the result.
+   
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Array</code> &mdash; An <code>Array</code> object containing the Red, Green, Blue and Alpha values of the given color.
+   </td>
+</tr>
+</table>
+</div>
+<a name="getRGBA()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getRGBA</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function getRGBA(Color:uint, Results:Array = null):Array</code><p>
+   Loads an array with the RGBA values of a Flash <code>uint</code> color.
+   RGB values are stored 0-255.  Alpha is stored as a floating point number between 0 and 1.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">Color</span>:uint</code> &mdash; The color you want to break into components.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Results</span>:Array</code> (default = <code>null</code>)<code></code> &mdash; An optional parameter, allows you to use an array that already exists in memory to store the result.
+   
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Array</code> &mdash; An <code>Array</code> object containing the Red, Green, Blue and Alpha values of the given color.
+   </td>
+</tr>
+</table>
+</div>
 <a name="max()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -700,40 +929,6 @@ showHideInherited();
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
 <td width="20"></td><td><code>Number</code></td>
-</tr>
-</table>
-</div>
-<a name="mutate()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">mutate</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function mutate(Seed:Number, Mutator:Number):Number</code><p>
-   Mutates a seed or other number, useful when combined with <code>randomize()</code>.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">Seed</span>:Number</code> &mdash;  The number to mutate.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Mutator</span>:Number</code> &mdash;  The value to use in the mutation.
-   
-   </td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>Number</code> &mdash; A predictably-altered version of the Seed.
-   </td>
 </tr>
 </table>
 </div>

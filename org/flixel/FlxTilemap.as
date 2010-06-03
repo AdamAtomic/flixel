@@ -47,6 +47,10 @@ package org.flixel
 		 * Set this flag to use one of the 16-tile binary auto-tile algorithms (OFF, AUTO, or ALT).
 		 */
 		public var auto:uint;
+		/**
+		 * Set this flag to true to force the tilemap buffer to refresh on the next render frame.
+		 */
+		public var refresh:Boolean;
 		
 		/**
 		 * Read-only variable, do NOT recommend changing after the map is loaded!
@@ -64,9 +68,12 @@ package org.flixel
 		 * Rendering helper.
 		 */
 		protected var _flashRect:Rectangle;
+		protected var _flashRect2:Rectangle;
 		
 		protected var _pixels:BitmapData;
 		protected var _bbPixels:BitmapData;
+		protected var _buffer:BitmapData;
+		protected var _bufferLoc:FlxPoint;
 		protected var _bbKey:String;
 		protected var _data:Array;
 		protected var _rects:Array;
@@ -90,6 +97,10 @@ package org.flixel
 			widthInTiles = 0;
 			heightInTiles = 0;
 			totalTiles = 0;
+			_buffer = null;
+			_bufferLoc = new FlxPoint();
+			_flashRect2 = new Rectangle();
+			_flashRect = _flashRect2;
 			_data = null;
 			_tileWidth = 0;
 			_tileHeight = 0;
@@ -114,24 +125,28 @@ package org.flixel
 		 */
 		public function loadMap(MapData:String, TileGraphic:Class, TileWidth:uint=0, TileHeight:uint=0):FlxTilemap
 		{
+			refresh = true;
+			
 			//Figure out the map dimensions based on the data string
-			var c:uint;
 			var cols:Array;
 			var rows:Array = MapData.split("\n");
 			heightInTiles = rows.length;
 			_data = new Array();
-			for(var r:uint = 0; r < heightInTiles; r++)
+			var r:uint = 0;
+			var c:uint;
+			while(r < heightInTiles)
 			{
-				cols = rows[r].split(",");
+				cols = rows[r++].split(",");
 				if(cols.length <= 1)
 				{
-					heightInTiles--;
+					heightInTiles = heightInTiles - 1;
 					continue;
 				}
 				if(widthInTiles == 0)
 					widthInTiles = cols.length;
-				for(c = 0; c < widthInTiles; c++)
-					_data.push(uint(cols[c]));
+				c = 0;
+				while(c < widthInTiles)
+					_data.push(uint(cols[c++]));
 			}
 			
 			//Pre-process the map data if it's auto-tiled
@@ -140,8 +155,9 @@ package org.flixel
 			if(auto > OFF)
 			{
 				collideIndex = startingIndex = drawIndex = 1;
-				for(i = 0; i < totalTiles; i++)
-					autoTile(i);
+				i = 0;
+				while(i < totalTiles)
+					autoTile(i++);
 			}
 
 			//Figure out the size of the tiles
@@ -159,8 +175,14 @@ package org.flixel
 			width = widthInTiles*_tileWidth;
 			height = heightInTiles*_tileHeight;
 			_rects = new Array(totalTiles);
-			for(i = 0; i < totalTiles; i++)
-				updateTile(i);
+			i = 0;
+			while(i < totalTiles)
+				updateTile(i++);
+			
+			//Also need to allocate a buffer to hold the rendered tiles
+			var bw:uint = (FlxU.ceil(FlxG.width / _tileWidth) + 1)*_tileWidth;
+			var bh:uint = (FlxU.ceil(FlxG.height / _tileHeight) + 1)*_tileHeight;
+			_buffer = new BitmapData(bw,bh,true,0);
 
 			//Pre-set some helper variables for later
 			_screenRows = Math.ceil(FlxG.height/_tileHeight)+1;
@@ -174,6 +196,11 @@ package org.flixel
 			generateBoundingTiles();
 			refreshHulls();
 			
+			_flashRect.x = 0;
+			_flashRect.y = 0;
+			_flashRect.width = _buffer.width;
+			_flashRect.height = _buffer.height;
+			
 			return this;
 		}
 		
@@ -182,6 +209,8 @@ package org.flixel
 		 */
 		protected function generateBoundingTiles():void
 		{
+			refresh = true;
+			
 			if((_bbKey == null) || (_bbKey.length <= 0))
 				return;
 			
@@ -193,7 +222,6 @@ package org.flixel
 			if(!skipGen)
 			{
 				//Generate a bounding boxes tilemap for this color
-				_flashRect = new Rectangle();
 				_flashRect.width = _pixels.width;
 				_flashRect.height = _pixels.height;
 				_flashPoint.x = 0;
@@ -215,8 +243,8 @@ package org.flixel
 					//Generate a bounding boxes stamp for this color
 					stamp1.fillRect(_flashRect,bbc);
 					_flashRect.x = _flashRect.y = 1;
-					_flashRect.width -= 2;
-					_flashRect.height -= 2;
+					_flashRect.width = _flashRect.width - 2;
+					_flashRect.height = _flashRect.height - 2;
 					stamp1.fillRect(_flashRect,0);
 					_flashRect.x = _flashRect.y = 0;
 					_flashRect.width = _tileWidth;
@@ -234,8 +262,8 @@ package org.flixel
 					//Generate a bounding boxes stamp for this color
 					stamp2.fillRect(_flashRect,bbc);
 					_flashRect.x = _flashRect.y = 1;
-					_flashRect.width -= 2;
-					_flashRect.height -= 2;
+					_flashRect.width = _flashRect.width - 2;
+					_flashRect.height = _flashRect.height - 2;
 					stamp2.fillRect(_flashRect,0);
 					_flashRect.x = _flashRect.y = 0;
 					_flashRect.width = _tileWidth;
@@ -243,12 +271,13 @@ package org.flixel
 				}
 				
 				//Stamp the new tile bitmap with the bounding box border
-				var r:uint;
+				var r:uint = 0;
 				var c:uint;
 				var i:uint = 0;
-				for(r = 0; r < _bbPixels.height; r += _tileHeight)
+				while(r < _bbPixels.height)
 				{
-					for(c = 0; c < _bbPixels.width; c += _tileWidth)
+					c = 0;
+					while(c < _bbPixels.width)
 					{
 						_flashPoint.x = c;
 						_flashPoint.y = r;
@@ -256,16 +285,20 @@ package org.flixel
 							_bbPixels.copyPixels(stamp1,_flashRect,_flashPoint,null,null,true);
 						else
 							_bbPixels.copyPixels(stamp2,_flashRect,_flashPoint,null,null,true);
+						c += _tileWidth;
 					}
+					r += _tileHeight;
 				}
 			}
 		}
 		
 		/**
-		 * Internal function that actually renders the tilemap.  Called by render().
+		 * Internal function that actually renders the tilemap to the tilemap buffer.  Called by render().
 		 */
 		protected function renderTilemap():void
 		{
+			_buffer.fillRect(_flashRect,0);
+			
 			//Bounding box display options
 			var tileBitmap:BitmapData;
 			if(FlxG.showBounds)
@@ -273,6 +306,7 @@ package org.flixel
 			else
 				tileBitmap = _pixels;
 
+			//Copy tile images into the tile buffer
 			getScreenXY(_point);
 			_flashPoint.x = _point.x;
 			_flashPoint.y = _point.y;
@@ -283,25 +317,43 @@ package org.flixel
 			if(ty < 0) ty = 0;
 			if(ty > heightInTiles-_screenRows) ty = heightInTiles-_screenRows;
 			var ri:int = ty*widthInTiles+tx;
-			_flashPoint.x += tx*_tileWidth;
-			_flashPoint.y += ty*_tileHeight;
-			var opx:int = _flashPoint.x;
+			_flashPoint.y = 0;
+			var r:uint = 0;
 			var c:uint;
 			var cri:uint;
-			for(var r:uint = 0; r < _screenRows; r++)
+			while(r < _screenRows)
 			{
 				cri = ri;
-				for(c = 0; c < _screenCols; c++)
+				c = 0;
+				_flashPoint.x = 0;
+				while(c < _screenCols)
 				{
 					_flashRect = _rects[cri++] as Rectangle;
 					if(_flashRect != null)
-						FlxG.buffer.copyPixels(tileBitmap,_flashRect,_flashPoint,null,null,true);
+						_buffer.copyPixels(tileBitmap,_flashRect,_flashPoint,null,null,true);
 					_flashPoint.x += _tileWidth;
+					c++;
 				}
 				ri += widthInTiles;
-				_flashPoint.x = opx;
 				_flashPoint.y += _tileHeight;
+				r++;
 			}
+			_flashRect = _flashRect2;
+			_bufferLoc.x = tx*_tileWidth;
+			_bufferLoc.y = ty*_tileHeight;
+		}
+		
+		/**
+		 * Checks to see if the tilemap needs to be refreshed or not.
+		 */
+		override public function update():void
+		{
+			super.update();
+			getScreenXY(_point);
+			_point.x += _bufferLoc.x;
+			_point.y += _bufferLoc.y;
+			if((_point.x > 0) || (_point.y > 0) || (_point.x + _buffer.width < FlxG.width) || (_point.y + _buffer.height < FlxG.height))
+				refresh = true;
 		}
 		
 		/**
@@ -309,7 +361,18 @@ package org.flixel
 		 */
 		override public function render():void
 		{
-			renderTilemap();
+			//Redraw the tilemap buffer if necessary
+			if(refresh)
+			{
+				renderTilemap();
+				refresh = false;
+			}
+			
+			//Render the buffer no matter what
+			getScreenXY(_point);
+			_flashPoint.x = _point.x + _bufferLoc.x;
+			_flashPoint.y = _point.y + _bufferLoc.y;
+			FlxG.buffer.copyPixels(_buffer,_flashRect,_flashPoint,null,null,true);
 		}
 		
 		/**
@@ -341,9 +404,8 @@ package org.flixel
 		 */
 		override public function overlaps(Core:FlxObject):Boolean
 		{
-			var c:uint;
 			var d:uint;
-			var i:uint;
+			
 			var dd:uint;
 			var blocks:Array = new Array();
 			
@@ -352,26 +414,32 @@ package org.flixel
 			var iy:uint = Math.floor((Core.y - y)/_tileHeight);
 			var iw:uint = Math.ceil(Core.width/_tileWidth)+1;
 			var ih:uint = Math.ceil(Core.height/_tileHeight)+1;
-			for(var r:uint = 0; r < ih; r++)
+			var r:uint = 0;
+			var c:uint;
+			while(r < ih)
 			{
 				if(r >= heightInTiles) break;
 				d = (iy+r)*widthInTiles+ix;
-				for(c = 0; c < iw; c++)
+				c = 0;
+				while(c < iw)
 				{
 					if(c >= widthInTiles) break;
 					dd = _data[d+c] as uint;
 					if(dd >= collideIndex)
 						blocks.push({x:x+(ix+c)*_tileWidth,y:y+(iy+r)*_tileHeight,data:dd});
+					c++;
 				}
+				r++;
 			}
 			
 			//Then check for overlaps
 			var bl:uint = blocks.length;
 			var hx:Boolean = false;
-			for(i = 0; i < bl; i++)
+			var i:uint = 0;
+			while(i < bl)
 			{
 				_block.x = blocks[i].x;
-				_block.y = blocks[i].y;
+				_block.y = blocks[i++].y;
 				if(_block.overlaps(Core))
 					return true;
 			}
@@ -403,6 +471,12 @@ package org.flixel
 		 */
 		override public function preCollide(Object:FlxObject):void
 		{
+			//Collision fix, in case updateMotion() is called
+			colHullX.x = 0;
+			colHullX.y = 0;
+			colHullY.x = 0;
+			colHullY.y = 0;
+			
 			var r:uint;
 			var c:uint;
 			var rs:uint;
@@ -420,14 +494,18 @@ package org.flixel
 			if(ih > heightInTiles)
 				ih = heightInTiles;
 			rs = iy*widthInTiles;
-			for(r = iy; r < ih; r++)
+			r = iy;
+			while(r < ih)
 			{
-				for(c = ix; c < iw; c++)
+				c = ix;
+				while(c < iw)
 				{
 					if((_data[rs+c] as uint) >= collideIndex)
 						colOffsets[col++] = new FlxPoint(x+c*_tileWidth, y+r*_tileHeight);
+					c++;
 				}
 				rs += widthInTiles;
+				r++;
 			}
 			if(colOffsets.length != col)
 				colOffsets.length = col;
@@ -495,6 +573,8 @@ package org.flixel
 			if(!UpdateGraphics)
 				return ok;
 			
+			refresh = true;
+			
 			if(auto == OFF)
 			{
 				updateTile(Index);
@@ -504,12 +584,13 @@ package org.flixel
 			//If this map is autotiled and it changes, locally update the arrangement
 			var i:uint;
 			var r:int = int(Index/widthInTiles) - 1;
-			var rl:int = r+3;
+			var rl:int = r + 3;
 			var c:int = Index%widthInTiles - 1;
-			var cl:int = c+3;
-			for(r = r; r < rl; r++)
+			var cl:int = c + 3;
+			while(r < rl)
 			{
-				for(c = cl - 3; c < cl; c++)
+				c = cl - 3;
+				while(c < cl)
 				{
 					if((r >= 0) && (r < heightInTiles) && (c >= 0) && (c < widthInTiles))
 					{
@@ -517,7 +598,9 @@ package org.flixel
 						autoTile(i);
 						updateTile(i);
 					}
+					c++;
 				}
+				r++;
 			}
 			
 			return ok;
@@ -532,10 +615,10 @@ package org.flixel
 		 */
 		public function setCallback(Tile:uint,Callback:Function,Range:uint=1):void
 		{
-			FlxG.log("FlxTilemap.setCallback() has been temporarily deprecated, sorry!");
-			if(Range <= 0) return;
-			for(var i:uint = Tile; i < Tile+Range; i++)
-				_callbacks[i] = Callback;
+			FlxG.log("WARNING: FlxTilemap.setCallback()\nhas been temporarily deprecated.");
+			//if(Range <= 0) return;
+			//for(var i:uint = Tile; i < Tile+Range; i++)
+			//	_callbacks[i] = Callback;
 		}
 		
 		/**
@@ -576,13 +659,17 @@ package org.flixel
 			var curY:Number = StartY - stepY;
 			var tx:uint;
 			var ty:uint;
-			for(var i:uint = 0; i < steps; i++)
+			var i:uint = 0;
+			while(i < steps)
 			{
 				curX += stepX;
 				curY += stepY;
 				
 				if((curX < 0) || (curX > width) || (curY < 0) || (curY > height))
+				{
+					i++;
 					continue;
+				}
 				
 				tx = curX/_tileWidth;
 				ty = curY/_tileHeight;
@@ -628,6 +715,7 @@ package org.flixel
 					}
 					return false;
 				}
+				i++;
 			}
 			return false;
 		}
@@ -642,13 +730,14 @@ package org.flixel
 		 */
 		static public function arrayToCSV(Data:Array,Width:int):String
 		{
-			var r:uint;
+			var r:uint = 0;
 			var c:uint;
 			var csv:String;
 			var Height:int = Data.length / Width;
-			for(r = 0; r < Height; r++)
+			while(r < Height)
 			{
-				for(c = 0; c < Width; c++)
+				c = 0;
+				while(c < Width)
 				{
 					if(c == 0)
 					{
@@ -659,7 +748,9 @@ package org.flixel
 					}
 					else
 						csv += ", "+Data[r*Width+c];
+					c++;
 				}
+				r++;
 			}
 			return csv;
 		}
@@ -692,15 +783,22 @@ package org.flixel
 			var bd:BitmapData = layout.bitmapData;
 			
 			//Walk image and export pixel values
-			var r:uint;
+			var r:uint = 0;
 			var c:uint;
 			var p:uint;
 			var csv:String;
+<<<<<<< HEAD:org/flixel/FlxTilemap.as
 			var w:uint = layout.width;
 			var h:uint = layout.height;
 			for(r = 0; r < h; r++)
+=======
+			var w:uint = bitmapData.width;
+			var h:uint = bitmapData.height;
+			while(r < h)
+>>>>>>> dev:org/flixel/FlxTilemap.as
 			{
-				for(c = 0; c < w; c++)
+				c = 0;
+				while(c < w)
 				{
 					//Decide if this pixel/tile is solid (1) or not (0)
 					p = bd.getPixel(c,r);
@@ -719,7 +817,9 @@ package org.flixel
 					}
 					else
 						csv += ", "+p;
+					c++;
 				}
+				r++;
 			}
 			return csv;
 		}
@@ -747,9 +847,9 @@ package org.flixel
 					_data[Index] = 1;		//BOTTOM LEFT OPEN
 				if((Index%widthInTiles > 0) && (Index-widthInTiles >= 0) && (_data[Index-widthInTiles-1] <= 0))
 					_data[Index] = 2;		//TOP LEFT OPEN
-				if((Index%widthInTiles < widthInTiles) && (Index-widthInTiles >= 0) && (_data[Index-widthInTiles+1] <= 0))
+				if((Index%widthInTiles < widthInTiles-1) && (Index-widthInTiles >= 0) && (_data[Index-widthInTiles+1] <= 0))
 					_data[Index] = 4;		//TOP RIGHT OPEN
-				if((Index%widthInTiles < widthInTiles) &&(Index+widthInTiles < totalTiles) && (_data[Index+widthInTiles+1] <= 0))
+				if((Index%widthInTiles < widthInTiles-1) && (Index+widthInTiles < totalTiles) && (_data[Index+widthInTiles+1] <= 0))
 					_data[Index] = 8; 		//BOTTOM RIGHT OPEN
 			}
 			_data[Index] += 1;

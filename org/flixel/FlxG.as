@@ -27,7 +27,7 @@ package org.flixel
 		 * Assign a minor version to your library.
 		 * Appears after the decimal in the console.
 		 */
-		static public var LIBRARY_MINOR_VERSION:uint = 37;
+		static public var LIBRARY_MINOR_VERSION:uint = 38;
 
 		/**
 		 * Internal tracker for game object (so we can pause & unpause)
@@ -67,6 +67,10 @@ package org.flixel
 		 * The height of the screen in game pixels.
 		 */
 		static public var height:uint;
+		/**
+		 * Setting this to true will disable/skip stuff that isn't necessary for mobile platforms like Android. [BETA]
+		 */
+		static public var mobile:Boolean; 
 		/**
 		 * <code>FlxG.levels</code> and <code>FlxG.scores</code> are generic
 		 * global variables that can be used for various cross-state stuff.
@@ -257,8 +261,10 @@ package org.flixel
 		{
 			keys.reset();
 			mouse.reset();
-			for(var i:uint = 0; i < gamepads.length; i++)
-				gamepads[i].reset();
+			var i:uint = 0;
+			var l:uint = gamepads.length;
+			while(i < l)
+				gamepads[i++].reset();
 		}
 		
 		/**
@@ -290,10 +296,14 @@ package org.flixel
 		 */
 		static public function play(EmbeddedSound:Class,Volume:Number=1.0,Looped:Boolean=false):FlxSound
 		{
+			var i:uint = 0;
 			var sl:uint = sounds.length;
-			for(var i:uint = 0; i < sl; i++)
+			while(i < sl)
+			{
 				if(!(sounds[i] as FlxSound).active)
 					break;
+				i++;
+			}
 			if(sounds[i] == null)
 				sounds[i] = new FlxSound();
 			var s:FlxSound = sounds[i];
@@ -314,10 +324,14 @@ package org.flixel
 		 */
 		static public function stream(URL:String,Volume:Number=1.0,Looped:Boolean=false):FlxSound
 		{
+			var i:uint = 0;
 			var sl:uint = sounds.length;
-			for(var i:uint = 0; i < sl; i++)
+			while(i < sl)
+			{
 				if(!(sounds[i] as FlxSound).active)
 					break;
+				i++;
+			}
 			if(sounds[i] == null)
 				sounds[i] = new FlxSound();
 			var s:FlxSound = sounds[i];
@@ -390,11 +404,12 @@ package org.flixel
 				return;
 			if((music != null) && (ForceDestroy || !music.survive))
 				music.destroy();
+			var i:uint = 0;
 			var s:FlxSound;
 			var sl:uint = sounds.length;
-			for(var i:uint = 0; i < sl; i++)
+			while(i < sl)
 			{
-				s = sounds[i] as FlxSound;
+				s = sounds[i++] as FlxSound;
 				if((s != null) && (ForceDestroy || !s.survive))
 					s.destroy();
 			}
@@ -407,11 +422,12 @@ package org.flixel
 		{
 			if((music != null) && music.active)
 				music.updateTransform();
+			var i:uint = 0;
 			var s:FlxSound;
 			var sl:uint = sounds.length;
-			for(var i:uint = 0; i < sl; i++)
+			while(i < sl)
 			{
-				s = sounds[i] as FlxSound;
+				s = sounds[i++] as FlxSound;
 				if((s != null) && s.active)
 					s.updateTransform();
 			}
@@ -424,11 +440,12 @@ package org.flixel
 		{
 			if((music != null) && music.active)
 				music.update();
+			var i:uint = 0;
 			var s:FlxSound;
 			var sl:uint = sounds.length;
-			for(var i:uint = 0; i < sl; i++)
+			while(i < sl)
 			{
-				s = sounds[i] as FlxSound;
+				s = sounds[i++] as FlxSound;
 				if((s != null) && s.active)
 					s.update();
 			}
@@ -441,11 +458,12 @@ package org.flixel
 		{
 			if((music != null) && music.active)
 				music.pause();
+			var i:uint = 0;
 			var s:FlxSound;
 			var sl:uint = sounds.length;
-			for(var i:uint = 0; i < sl; i++)
+			while(i < sl)
 			{
-				s = sounds[i] as FlxSound;
+				s = sounds[i++] as FlxSound;
 				if((s != null) && s.active)
 					s.pause();
 			}
@@ -458,11 +476,12 @@ package org.flixel
 		{
 			if((music != null) && music.active)
 				music.play();
+			var i:uint = 0;
 			var s:FlxSound;
 			var sl:uint = sounds.length;
-			for(var i:uint = 0; i < sl; i++)
+			while(i < sl)
 			{
-				s = sounds[i] as FlxSound;
+				s = sounds[i++] as FlxSound;
 				if((s != null) && s.active)
 					s.play();
 			}
@@ -692,6 +711,8 @@ package org.flixel
 			FlxG.elapsed = 0;
 			showBounds = false;
 			
+			mobile = false;
+			
 			panel = new FlxPanel();
 			quake = new FlxQuake(Zoom);
 			flash = new FlxFlash();
@@ -742,8 +763,10 @@ package org.flixel
 		{
 			keys.update();
 			mouse.update(state.mouseX,state.mouseY,scroll.x,scroll.y);
-			for(var i:uint = 0; i < gamepads.length; i++)
-				gamepads[i].update();
+			var i:uint = 0;
+			var l:uint = gamepads.length;
+			while(i < l)
+				gamepads[i++].update();
 		}
 	}
 }

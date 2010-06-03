@@ -1,5 +1,7 @@
 package org.flixel
 {
+	import org.flixel.data.FlxParticle;
+
 	/**
 	 * <code>FlxEmitter</code> is a lightweight particle emitter.
 	 * It can be used for one-time explosions or for
@@ -58,6 +60,10 @@ package org.flixel
 		 */
 		public var quantity:uint;
 		/**
+		 * Checks whether you already fired a particle this frame.
+		 */
+		public var justEmitted:Boolean;
+		/**
 		 * The style of particle emission (all at once, or one at a time).
 		 */
 		protected var _explode:Boolean;
@@ -102,6 +108,7 @@ package org.flixel
 			_explode = true;
 			exists = false;
 			on = false;
+			justEmitted = false;
 		}
 		
 		/**
@@ -112,10 +119,11 @@ package org.flixel
 		 * @param	BakedRotations	How many frames of baked rotation to use (boosts performance).  Set to zero to not use baked rotations.
 		 * @param	Multiple		Whether the image in the Graphics param is a single particle or a bunch of particles (if it's a bunch, they need to be square!).
 		 * @param	Collide			Whether the particles should be flagged as not 'dead' (non-colliding particles are higher performance).  0 means no collisions, 0-1 controls scale of particle's bounding box.
+		 * @param	Bounce			Whether the particles should bounce after colliding with things.  0 means no bounce, 1 means full reflection.
 		 * 
 		 * @return	This FlxEmitter instance (nice for chaining stuff together, if you're into that).
 		 */
-		public function createSprites(Graphics:Class, Quantity:uint=50, BakedRotations:uint=16, Multiple:Boolean=true, Collide:Number=0):FlxEmitter
+		public function createSprites(Graphics:Class, Quantity:uint=50, BakedRotations:uint=16, Multiple:Boolean=true, Collide:Number=0, Bounce:Number=0):FlxEmitter
 		{
 			members = new Array();
 			var r:uint;
@@ -125,12 +133,17 @@ package org.flixel
 			var sh:Number;
 			if(Multiple)
 			{
-				s = new FlxSprite(0,0,Graphics);
-				tf = s.width/s.height;
-			}
-			for(var i:uint = 0; i < Quantity; i++)
-			{
 				s = new FlxSprite();
+				s.loadGraphic(Graphics,true);
+				tf = s.frames;
+			}
+			var i:uint = 0;
+			while(i < Quantity)
+			{
+				if((Collide > 0) && (Bounce > 0))
+					s = new FlxParticle(Bounce) as FlxSprite;
+				else
+					s = new FlxSprite();
 				if(Multiple)
 				{
 					r = FlxU.random()*tf;
@@ -164,6 +177,7 @@ package org.flixel
 				s.exists = false;
 				s.scrollFactor = scrollFactor;
 				add(s);
+				i++;
 			}
 			return this;
 		}
@@ -223,8 +237,6 @@ package org.flixel
 		{
 			if(_explode)
 			{
-				var i:uint;
-				var l:uint;
 				_timer += FlxG.elapsed;
 				if((delay > 0) && (_timer > delay))
 				{
@@ -234,12 +246,16 @@ package org.flixel
 				if(on)
 				{
 					on = false;
-					l = members.length;
+					var i:uint = _particle;
+					var l:uint = members.length;
 					if(quantity > 0)
 						l = quantity;
 					l += _particle;
-					for(i = _particle; i < l; i++)
+					while(i < l)
+					{
 						emitParticle();
+						i++;
+					}
 				}
 				return;
 			}
@@ -260,10 +276,11 @@ package org.flixel
 		override protected function updateMembers():void
 		{
 			var o:FlxObject;
+			var i:uint = 0;
 			var l:uint = members.length;
-			for(var i:uint = 0; i < l; i++)
+			while(i < l)
 			{
-				o = members[i] as FlxObject;
+				o = members[i++] as FlxObject;
 				if((o != null) && o.exists && o.active)
 					o.update();
 			}
@@ -274,6 +291,7 @@ package org.flixel
 		 */
 		override public function update():void
 		{
+			justEmitted = false;
 			super.update();
 			updateEmitter();
 		}
@@ -304,6 +322,8 @@ package org.flixel
 			on = true;
 			_timer = 0;
 			if(quantity == 0)
+				quantity = Quantity;
+			else if(Quantity != 0)
 				quantity = Quantity;
 			if(Delay != 0)
 				delay = Delay;
@@ -340,11 +360,11 @@ package org.flixel
 			if(s.angularVelocity != 0) s.angle = FlxU.random()*360-180;
 			s.drag.x = particleDrag.x;
 			s.drag.y = particleDrag.y;
-			s.visible = true;
 			_particle++;
 			if(_particle >= members.length)
 				_particle = 0;
 			s.onEmit();
+			justEmitted = true;
 		}
 		
 		/**
