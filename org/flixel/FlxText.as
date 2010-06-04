@@ -223,7 +223,7 @@ package org.flixel
 				_pixels = new BitmapData(width,height,true,0);
 				_bbb = new BitmapData(width,height,true,0);
 				frameHeight = height;
-				_tf.height = height*1.2;				
+				_tf.height = height*1.2;
 				_flashRect.x = 0;
 				_flashRect.y = 0;
 				_flashRect.width = width;

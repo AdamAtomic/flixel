@@ -412,7 +412,8 @@ package org.flixel
 			
 			//Initialize game console
 			_console = new FlxConsole(_gameXOffset,_gameYOffset,_zoom);
-			addChild(_console);
+			if(!FlxG.mobile)
+				addChild(_console);
 			var vstring:String = FlxG.LIBRARY_NAME+" v"+FlxG.LIBRARY_MAJOR_VERSION+"."+FlxG.LIBRARY_MINOR_VERSION;
 			if(FlxG.debug)
 				vstring += " [debug]";

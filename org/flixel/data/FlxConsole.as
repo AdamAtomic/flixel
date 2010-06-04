@@ -89,9 +89,9 @@ package org.flixel.data
 			var tmp:Bitmap = new Bitmap(new BitmapData(FlxG.width*Zoom,FlxG.height*Zoom,true,0x7F000000));
 			addChild(tmp);
 			
-			mtrUpdate = new FlxMonitor(8);
-			mtrRender = new FlxMonitor(8);
-			mtrTotal = new FlxMonitor(8);
+			mtrUpdate = new FlxMonitor(16);
+			mtrRender = new FlxMonitor(16);
+			mtrTotal = new FlxMonitor(16);
 
 			_text = new TextField();
 			_text.width = tmp.width;
@@ -146,6 +146,8 @@ package org.flixel.data
 			if(Text == null)
 				Text = "NULL";
 			trace(Text);
+			if(FlxG.mobile)
+				return;
 			_lines.push(Text);
 			if(_lines.length > MAX_CONSOLE_LINES)
 			{
@@ -165,6 +167,12 @@ package org.flixel.data
 		 */
 		public function toggle():void
 		{
+			if(FlxG.mobile)
+			{
+				log("FRAME TIMING DATA:\n=========================\n"+printTimingData()+"\n");
+				return;
+			}
+			
 			if(_YT == _by)
 				_YT = _byt;
 			else
@@ -181,11 +189,7 @@ package org.flixel.data
 		{
 			var total:Number = mtrTotal.average();
 			_fpsDisplay.text = uint(1000/total) + " fps";
-			var up:uint = mtrUpdate.average();
-			var rn:uint = mtrRender.average();
-			var fx:uint = up+rn;
-			var tt:uint = uint(total);
-			_extraDisplay.text = up + "ms update\n" + rn + "ms render\n" + fx + "ms flixel\n" + (tt-fx) + "ms flash\n" + tt + "ms total";
+			_extraDisplay.text = printTimingData();
 			
 			if(_Y < _YT)
 				_Y += FlxG.height*10*FlxG.elapsed;
@@ -199,6 +203,18 @@ package org.flixel.data
 				visible = false;
 			}
 			y = Math.floor(_Y);
+		}
+		
+		/**
+		 * Returns a string of frame timing data.
+		 */
+		protected function printTimingData():String
+		{
+			var up:uint = mtrUpdate.average();
+			var rn:uint = mtrRender.average();
+			var fx:uint = up+rn;
+			var tt:uint = mtrTotal.average();
+			return up + "ms update\n" + rn + "ms render\n" + fx + "ms flixel\n" + (tt-fx) + "ms flash\n" + tt + "ms total";
 		}
 	}
 }
