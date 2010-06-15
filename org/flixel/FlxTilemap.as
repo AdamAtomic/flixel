@@ -462,6 +462,20 @@ package org.flixel
 		}
 		
 		/**
+		 * Checks to see if a point in 2D space overlaps a solid tile.
+		 * 
+		 * @param	X			The X coordinate of the point.
+		 * @param	Y			The Y coordinate of the point.
+		 * @param	PerPixel	Not available in <code>FlxTilemap</code>, ignored.
+		 * 
+		 * @return	Whether or not the point overlaps this object.
+		 */
+		override public function overlapsPoint(X:Number,Y:Number,PerPixel:Boolean = false):Boolean
+		{
+			return getTile(uint((X-x)/_tileWidth),uint((Y-y)/_tileHeight)) >= this.collideIndex;
+		}
+		
+		/**
 		 * Called by <code>FlxObject.updateMotion()</code> and some constructors to
 		 * rebuild the basic collision data for this object.
 		 */

@@ -9,31 +9,13 @@ package org.flixel
 	public class FlxU
 	{
 		/**
-		 * Internal random number calculation helpers.
-		 */
-		static protected var _seed:Number;
-		/**
-		 * Internal random number calculation helpers.
-		 */
-		static protected var _originalSeed:Number;
-		/**
 		 * Helps to eliminate false collisions and/or rendering glitches caused by rounding errors
 		 */
 		static internal var roundingError:Number = 0.0000001;
 		/**
-		 * The global quad tree (stored here since it is used primarily by FlxU functions).
-		 * Set this to null to force it to refresh on the next collide.
+		 * The last quad tree you generated will be stored here for reference or whatever.
 		 */
 		static public var quadTree:FlxQuadTree;
-		/**
-		 * This variable stores the dimensions of the root of the quad tree.
-		 * This is the eligible game collision space.
-		 */
-		static public var quadTreeBounds:FlxRect;
-		/**
-		 * Controls the granularity of the quad tree.  Default is 3 (decent performance on large and small worlds).
-		 */
-		static public var quadTreeDivisions:uint = 3;
 		
 		/**
 		 * Opens a web page in a new tab or window.
@@ -73,81 +55,35 @@ package org.flixel
 		}
 		
 		/**
-		 * Generate a pseudo-random number.
+		 * Generates a random number.  NOTE: To create a series of predictable
+		 * random numbers, add the random number you generate each time
+		 * to the <code>Seed</code> value before calling <code>random()</code> again.
 		 * 
-		 * @param	UseGlobalSeed		Whether or not to use the stored FlxG.seed value to calculate it.
+		 * @param	Seed	A user-provided value used to calculate a predictable random number.
 		 * 
-		 * @return	A pseudo-random Number object.
+		 * @return	A <code>Number</code> between 0 and 1.
 		 */
-		static public function random(UseGlobalSeed:Boolean=true):Number
+		static public function random(Seed:Number=NaN):Number
 		{
-			if(UseGlobalSeed && !isNaN(_seed))
-			{
-				var random:Number = randomize(_seed);
-				_seed = fixSeed(_seed + random);
-				return random;
-			}
-			else
+			if(isNaN(Seed))
 				return Math.random();
-		}
-		
-		/**
-		 * Generate a pseudo-random number.
-		 * 
-		 * @param	Seed		The number to use to generate a new random value.
-		 * 
-		 * @return	A pseudo-random Number object.
-		 */
-		static public function randomize(Seed:Number):Number
-		{
-			return ((69621 * int(Seed * 0x7FFFFFFF)) % 0x7FFFFFFF) / 0x7FFFFFFF;
-		}
-		
-		/**
-		 * Takes any seed value and converts it to a number between 0 and 1.
-		 * Can also be used to mutate seeds by passing in the seed plus the mutator like this:
-		 * <code>var random:Number = randomize(seed); seed = fixSeed(seed + random);</code>
-		 * 
-		 * @param	Seed		The number to mutate.
-		 * @param	Mutator		The value to use in the mutation.
-		 * 
-		 * @return	A predictably-altered version of the Seed.
-		 */
-		static public function fixSeed(Seed:Number):Number
-		{
-			if(Seed == 0)
-				Seed = Number.MIN_VALUE;
-			if(Seed >= 1)
+			else
 			{
-				if((Seed%1) == 0)
-					Seed /= Math.PI;
-				Seed %= 1;
+				//Make sure the seed value is OK
+				if(Seed == 0)
+					Seed = Number.MIN_VALUE;
+				if(Seed >= 1)
+				{
+					if((Seed%1) == 0)
+						Seed /= Math.PI;
+					Seed %= 1;
+				}
+				else if(Seed < 0)
+					Seed = (Seed % 1) + 1;
+				
+				//Then do an LCG thing and return a predictable random number
+				return ((69621 * int(Seed * 0x7FFFFFFF)) % 0x7FFFFFFF) / 0x7FFFFFFF;
 			}
-			else if(Seed < 0)
-				Seed = (Seed % 1) + 1;
-			return Seed;
-		}
-		
-		/**
-		 * Set <code>seed</code> to any number if you want
-		 * <code>FlxG.random()</code> to generate a predictable series of numbers.
-		 * If you use a number outside the 0 to 1 range,
-		 * Flixel will convert it to a valid 0 to 1 seed.
-		 * NOTE: reading the seed will return the original value passed in,
-		 * not the current mutation.
-		 */
-		static public function get seed():Number
-		{
-			return _originalSeed;
-		}
-		
-		/**
-		 * @private
-		 */
-		static public function set seed(Seed:Number):void
-		{
-			_seed = fixSeed(Seed);
-			_originalSeed = _seed;
 		}
 		
 		/**
@@ -473,16 +409,16 @@ package org.flixel
 		 */
 		static public function setWorldBounds(X:Number=0, Y:Number=0, Width:Number=0, Height:Number=0, Divisions:uint=3):void
 		{
-			if(quadTreeBounds == null)
-				quadTreeBounds = new FlxRect();
-			quadTreeBounds.x = X;
-			quadTreeBounds.y = Y;
+			if(FlxQuadTree.bounds == null)
+				FlxQuadTree.bounds = new FlxRect();
+			FlxQuadTree.bounds.x = X;
+			FlxQuadTree.bounds.y = Y;
 			if(Width > 0)
-				quadTreeBounds.width = Width;
+				FlxQuadTree.bounds.width = Width;
 			if(Height > 0)
-				quadTreeBounds.height = Height;
+				FlxQuadTree.bounds.height = Height;
 			if(Divisions > 0)
-				quadTreeDivisions = Divisions;
+				FlxQuadTree.divisions = Divisions;
 		}
 		
 		/**
@@ -502,7 +438,7 @@ package org.flixel
 			if( (Object1 == null) || !Object1.exists ||
 				(Object2 == null) || !Object2.exists )
 				return false;
-			quadTree = new FlxQuadTree(quadTreeBounds.x,quadTreeBounds.y,quadTreeBounds.width,quadTreeBounds.height);
+			quadTree = new FlxQuadTree(FlxQuadTree.bounds.x,FlxQuadTree.bounds.y,FlxQuadTree.bounds.width,FlxQuadTree.bounds.height);
 			quadTree.add(Object1,FlxQuadTree.A_LIST);
 			if(Object1 === Object2)
 				return quadTree.overlap(false,Callback);
@@ -526,7 +462,7 @@ package org.flixel
 			if( (Object1 == null) || !Object1.exists ||
 				(Object2 == null) || !Object2.exists )
 				return false;
-			quadTree = new FlxQuadTree(quadTreeBounds.x,quadTreeBounds.y,quadTreeBounds.width,quadTreeBounds.height);
+			quadTree = new FlxQuadTree(FlxQuadTree.bounds.x,FlxQuadTree.bounds.y,FlxQuadTree.bounds.width,FlxQuadTree.bounds.height);
 			quadTree.add(Object1,FlxQuadTree.A_LIST);
 			var match:Boolean = Object1 === Object2;
 			if(!match)

@@ -12,6 +12,19 @@ package org.flixel
 	public class FlxQuadTree extends FlxRect
 	{
 		/**
+		 * Set this to null to force it to refresh on the next collide.
+		 */
+		static public var quadTree:FlxQuadTree;
+		/**
+		 * This variable stores the dimensions of the root of the quad tree.
+		 * This is the eligible game collision space.
+		 */
+		static public var bounds:FlxRect;
+		/**
+		 * Controls the granularity of the quad tree.  Default is 3 (decent performance on large and small worlds).
+		 */
+		static public var divisions:uint;
+		/**
 		 * Flag for specifying that you want to add an object to the A list.
 		 */
 		static public const A_LIST:uint = 0;
@@ -118,7 +131,7 @@ package org.flixel
 				}
 			}
 			else
-				_min = (width + height)/(2*FlxU.quadTreeDivisions);
+				_min = (width + height)/(2*divisions);
 			_canSubdivide = (width > _min) || (height > _min);
 			
 			//Set up comparison/sort helpers
