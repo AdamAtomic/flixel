@@ -97,7 +97,7 @@ package org.flixel
 		{
 			stop();
 			init();
-			_sound = new EmbeddedSound;
+			_sound = new EmbeddedSound();
 			//NOTE: can't pull ID3 info from embedded sound currently
 			_looped = Looped;
 			updateTransform();
