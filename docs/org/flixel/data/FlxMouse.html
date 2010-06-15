@@ -4,7 +4,7 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="../../../style.css" type="text/css" media="screen">
 <link rel="stylesheet" href="../../../print.css" type="text/css" media="print">
-<meta content="FlxMouse,org.flixel.data.FlxMouse,ImgDefaultCursor,_current,_last,_out,cursor,screenX,screenY,x,y,handleMouseDown,handleMouseOut,handleMouseOver,handleMouseUp,hide,justPressed,justReleased,load,pressed,reset,show,unload,update" name="keywords">
+<meta content="FlxMouse,org.flixel.data.FlxMouse,ImgDefaultCursor,_current,_last,_out,cursor,screenX,screenY,wheel,x,y,handleMouseDown,handleMouseOut,handleMouseOver,handleMouseUp,handleMouseWheel,hide,justPressed,justReleased,load,pressed,reset,show,unload,update" name="keywords">
 <title>org.flixel.data.FlxMouse</title>
 </head>
 <body>
@@ -69,6 +69,11 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol">FlxMouse</td>
 </tr>
 <tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#wheel">wheel</a> : int<div class="summaryTableDescription">
+   Current "delta" value of mouse wheel.</div>
+</td><td class="summaryTableOwnerCol">FlxMouse</td>
+</tr>
+<tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#x">x</a> : int<div class="summaryTableDescription">
    Current X position of the mouse pointer in the game world.</div>
 </td><td class="summaryTableOwnerCol">FlxMouse</td>
@@ -128,7 +133,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <div class="summarySignature">
 <a class="signatureLink" href="#handleMouseDown()">handleMouseDown</a>(event:MouseEvent):void</div>
 <div class="summaryTableDescription">
-   Event handler so FlxGame can toggle the mouse.</div>
+   Event handler so FlxGame can update the mouse.</div>
 </td><td class="summaryTableOwnerCol">FlxMouse</td>
 </tr>
 <tr class="">
@@ -136,7 +141,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <div class="summarySignature">
 <a class="signatureLink" href="#handleMouseOut()">handleMouseOut</a>(event:MouseEvent):void</div>
 <div class="summaryTableDescription">
-   Event handler so FlxGame can toggle the mouse.</div>
+   Event handler so FlxGame can update the mouse.</div>
 </td><td class="summaryTableOwnerCol">FlxMouse</td>
 </tr>
 <tr class="">
@@ -144,7 +149,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <div class="summarySignature">
 <a class="signatureLink" href="#handleMouseOver()">handleMouseOver</a>(event:MouseEvent):void</div>
 <div class="summaryTableDescription">
-   Event handler so FlxGame can toggle the mouse.</div>
+   Event handler so FlxGame can update the mouse.</div>
 </td><td class="summaryTableOwnerCol">FlxMouse</td>
 </tr>
 <tr class="">
@@ -152,7 +157,15 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <div class="summarySignature">
 <a class="signatureLink" href="#handleMouseUp()">handleMouseUp</a>(event:MouseEvent):void</div>
 <div class="summaryTableDescription">
-   Event handler so FlxGame can toggle the mouse.</div>
+   Event handler so FlxGame can update the mouse.</div>
+</td><td class="summaryTableOwnerCol">FlxMouse</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#handleMouseWheel()">handleMouseWheel</a>(event:MouseEvent):void</div>
+<div class="summaryTableDescription">
+   Event handler so FlxGame can update the mouse.</div>
 </td><td class="summaryTableOwnerCol">FlxMouse</td>
 </tr>
 <tr class="">
@@ -308,6 +321,16 @@ showHideInherited();
 <code>public var screenY:int</code><p>
    Current Y position of the mouse pointer on the screen.
    </p></div>
+<a name="wheel"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">wheel</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var wheel:int</code><p>
+   Current "delta" value of mouse wheel.  If the wheel was just scrolled up, it will have a positive value.  If it was just scrolled down, it will have a negative value.  If it wasn't just scroll this frame, it will be 0.
+   </p></div>
 <a name="x"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -350,7 +373,7 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public function handleMouseDown(event:MouseEvent):void</code><p>
-   Event handler so FlxGame can toggle the mouse.
+   Event handler so FlxGame can update the mouse.
    
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
@@ -368,7 +391,7 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public function handleMouseOut(event:MouseEvent):void</code><p>
-   Event handler so FlxGame can toggle the mouse.
+   Event handler so FlxGame can update the mouse.
    
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
@@ -386,7 +409,7 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public function handleMouseOver(event:MouseEvent):void</code><p>
-   Event handler so FlxGame can toggle the mouse.
+   Event handler so FlxGame can update the mouse.
    
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
@@ -404,7 +427,25 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public function handleMouseUp(event:MouseEvent):void</code><p>
-   Event handler so FlxGame can toggle the mouse.
+   Event handler so FlxGame can update the mouse.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">event</span>:MouseEvent</code> &mdash; A <code>MouseEvent</code> object.
+   </td>
+</tr>
+</table>
+</div>
+<a name="handleMouseWheel()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">handleMouseWheel</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function handleMouseWheel(event:MouseEvent):void</code><p>
+   Event handler so FlxGame can update the mouse.
    
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">

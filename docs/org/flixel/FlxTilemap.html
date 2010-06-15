@@ -4,7 +4,7 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="../../style.css" type="text/css" media="screen">
 <link rel="stylesheet" href="../../print.css" type="text/css" media="print">
-<meta content="FlxTilemap,org.flixel.FlxTilemap,ALT,AUTO,ImgAuto,ImgAutoAlt,OFF,_bbKey,_bbPixels,_block,_buffer,_bufferLoc,_callbacks,_data,_flashRect,_flashRect2,_pixels,_rects,_screenCols,_screenRows,_tileHeight,_tileWidth,auto,collideIndex,drawIndex,heightInTiles,refresh,startingIndex,totalTiles,widthInTiles,arrayToCSV,autoTile,bitmapToCSV,follow,generateBoundingTiles,getTile,getTileByIndex,imageToCSV,loadMap,overlaps,preCollide,ray,refreshHulls,render,renderTilemap,setCallback,setTile,setTileByIndex,update,updateTile" name="keywords">
+<meta content="FlxTilemap,org.flixel.FlxTilemap,ALT,AUTO,ImgAuto,ImgAutoAlt,OFF,_bbKey,_bbPixels,_block,_boundsVisible,_buffer,_bufferLoc,_callbacks,_data,_flashRect,_flashRect2,_pixels,_rects,_screenCols,_screenRows,_tileHeight,_tileWidth,auto,collideIndex,drawIndex,heightInTiles,refresh,startingIndex,totalTiles,widthInTiles,arrayToCSV,autoTile,bitmapToCSV,follow,generateBoundingTiles,getTile,getTileByIndex,imageToCSV,loadMap,overlaps,overlapsPoint,preCollide,ray,refreshHulls,render,renderTilemap,setCallback,setTile,setTileByIndex,update,updateTile" name="keywords">
 <title>org.flixel.FlxTilemap</title>
 </head>
 <body>
@@ -357,6 +357,10 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol">FlxTilemap</td>
 </tr>
 <tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_boundsVisible">_boundsVisible</a> : Boolean<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">FlxTilemap</td>
+</tr>
+<tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_buffer">_buffer</a> : BitmapData<div class="summaryTableDescription"></div>
 </td><td class="summaryTableOwnerCol">FlxTilemap</td>
 </tr>
@@ -650,13 +654,13 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
    Checks for overlaps between the provided object and any tiles above the collision index.</div>
 </td><td class="summaryTableOwnerCol">FlxTilemap</td>
 </tr>
-<tr class="hideInheritedMethod">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="FlxObject.html#overlapsPoint()">overlapsPoint</a>(X:Number, Y:Number, PerPixel:Boolean = false):Boolean</div>
+<a class="signatureLink" href="#overlapsPoint()">overlapsPoint</a>(X:Number, Y:Number, PerPixel:Boolean = false):Boolean</div>
 <div class="summaryTableDescription">
-   Checks to see if a point in 2D space overlaps this <code>FlxObject</code> object.</div>
-</td><td class="summaryTableOwnerCol"><a href="FlxObject.html">FlxObject</a></td>
+   Checks to see if a point in 2D space overlaps a solid tile.</div>
+</td><td class="summaryTableOwnerCol">FlxTilemap</td>
 </tr>
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
@@ -898,6 +902,15 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>protected var _block:<a href="../flixel/FlxObject.html">FlxObject</a></code>
+</div>
+<a name="_boundsVisible"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_boundsVisible</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _boundsVisible:Boolean</code>
 </div>
 <a name="_buffer"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
@@ -1411,6 +1424,47 @@ showHideInherited();
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
 <td width="20"></td><td><code>Boolean</code></td>
+</tr>
+</table>
+</div>
+<a name="overlapsPoint()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">overlapsPoint</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public override function overlapsPoint(X:Number, Y:Number, PerPixel:Boolean = false):Boolean</code><p>
+   Checks to see if a point in 2D space overlaps a solid tile.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">X</span>:Number</code> &mdash;   The X coordinate of the point.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">Y</span>:Number</code> &mdash;   The Y coordinate of the point.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">PerPixel</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash; Not available in <code>FlxTilemap</code>, ignored.
+   
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code> &mdash; Whether or not the point overlaps this object.
+   </td>
 </tr>
 </table>
 </div>

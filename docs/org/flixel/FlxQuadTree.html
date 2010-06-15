@@ -4,7 +4,7 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="../../style.css" type="text/css" media="screen">
 <link rel="stylesheet" href="../../print.css" type="text/css" media="print">
-<meta content="FlxQuadTree,org.flixel.FlxQuadTree,A_LIST,B_LIST,_b,_canSubdivide,_headA,_headB,_hh,_hw,_l,_min,_mx,_my,_ne,_nw,_o,_oa,_ob,_oc,_ol,_or,_ot,_r,_se,_sw,_t,_tailA,_tailB,add,addObject,addToList,overlap,overlapNode" name="keywords">
+<meta content="FlxQuadTree,org.flixel.FlxQuadTree,A_LIST,B_LIST,_b,_canSubdivide,_headA,_headB,_hh,_hw,_l,_min,_mx,_my,_ne,_nw,_o,_oa,_ob,_oc,_ol,_or,_ot,_r,_se,_sw,_t,_tailA,_tailB,bounds,divisions,quadTree,add,addObject,addToList,overlap,overlapNode" name="keywords">
 <title>org.flixel.FlxQuadTree</title>
 </head>
 <body>
@@ -62,7 +62,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <a onclick="javascript:setInheritedVisible(true,'Property');" href="#propertySummary" class="showHideLink"><img src="../../images/collapsed.gif" class="showHideLinkImage"> Show Inherited Public Properties</a>
 </div>
 </div>
-<table id="summaryTableProperty" class="summaryTable hideInheritedProperty" cellpadding="3" cellspacing="0">
+<table id="summaryTableProperty" class="summaryTable " cellpadding="3" cellspacing="0">
 <tr>
 <th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
 </tr>
@@ -70,6 +70,17 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxRect.html#bottom">bottom</a> : Number<div class="summaryTableDescription">
    The Y coordinate of the bottom of the rectangle.</div>
 </td><td class="summaryTableOwnerCol"><a href="FlxRect.html">FlxRect</a></td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#bounds">bounds</a> : <a href="../flixel/FlxRect.html">FlxRect</a>
+<div class="summaryTableDescription">[static]
+   This variable stores the dimensions of the root of the quad tree.</div>
+</td><td class="summaryTableOwnerCol">FlxQuadTree</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#divisions">divisions</a> : uint<div class="summaryTableDescription">[static]
+   Controls the granularity of the quad tree.</div>
+</td><td class="summaryTableOwnerCol">FlxQuadTree</td>
 </tr>
 <tr class="hideInheritedProperty">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxRect.html#height">height</a> : Number<div class="summaryTableDescription">
@@ -80,6 +91,12 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxRect.html#left">left</a> : Number<div class="summaryTableDescription">
    The X coordinate of the left side of the rectangle.</div>
 </td><td class="summaryTableOwnerCol"><a href="FlxRect.html">FlxRect</a></td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#quadTree">quadTree</a> : <a href="../flixel/FlxQuadTree.html">FlxQuadTree</a>
+<div class="summaryTableDescription">[static]
+   Set this to null to force it to refresh on the next collide.</div>
+</td><td class="summaryTableOwnerCol">FlxQuadTree</td>
 </tr>
 <tr class="hideInheritedProperty">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="FlxRect.html#right">right</a> : Number<div class="summaryTableDescription">
@@ -349,6 +366,17 @@ showHideInherited();
 <div class="detailBody">
 <code>protected var _b:Number</code>
 </div>
+<a name="bounds"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">bounds</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static var bounds:<a href="../flixel/FlxRect.html">FlxRect</a></code><p>
+   This variable stores the dimensions of the root of the quad tree.
+   This is the eligible game collision space.
+   </p></div>
 <a name="_canSubdivide"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -358,6 +386,16 @@ showHideInherited();
 <div class="detailBody">
 <code>protected var _canSubdivide:Boolean</code><p>
    Whether this branch of the tree can be subdivided or not.
+   </p></div>
+<a name="divisions"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">divisions</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static var divisions:uint</code><p>
+   Controls the granularity of the quad tree.  Default is 3 (decent performance on large and small worlds).
    </p></div>
 <a name="_headA"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
@@ -516,6 +554,16 @@ showHideInherited();
 <div class="detailBody">
 <code>protected static var _ot:Number</code>
 </div>
+<a name="quadTree"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">quadTree</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static var quadTree:<a href="../flixel/FlxQuadTree.html">FlxQuadTree</a></code><p>
+   Set this to null to force it to refresh on the next collide.
+   </p></div>
 <a name="_r"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
