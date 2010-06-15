@@ -811,20 +811,14 @@ package org.flixel
 			}
 			var bd:BitmapData = layout.bitmapData;
 			
-			//Walk image and export pixel values
+			 //Walk image and export pixel values
 			var r:uint = 0;
 			var c:uint;
 			var p:uint;
 			var csv:String;
-<<<<<<< HEAD:org/flixel/FlxTilemap.as
-			var w:uint = layout.width;
-			var h:uint = layout.height;
-			for(r = 0; r < h; r++)
-=======
 			var w:uint = bitmapData.width;
 			var h:uint = bitmapData.height;
 			while(r < h)
->>>>>>> dev:org/flixel/FlxTilemap.as
 			{
 				c = 0;
 				while(c < w)
