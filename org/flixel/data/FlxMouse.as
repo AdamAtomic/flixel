@@ -23,6 +23,10 @@ package org.flixel.data
 		 */
 		public var y:int;
 		/**
+		 * Current "delta" value of mouse wheel.  If the wheel was just scrolled up, it will have a positive value.  If it was just scrolled down, it will have a negative value.  If it wasn't just scroll this frame, it will be 0.
+		 */
+		public var wheel:int;
+		/**
 		 * Current X position of the mouse pointer on the screen.
 		 */
 		public var screenX:int;
@@ -182,7 +186,7 @@ package org.flixel.data
 		public function justReleased():Boolean { return _current == -1; }
 		
 		/**
-		 * Event handler so FlxGame can toggle the mouse.
+		 * Event handler so FlxGame can update the mouse.
 		 * 
 		 * @param	event	A <code>MouseEvent</code> object.
 		 */
@@ -193,7 +197,7 @@ package org.flixel.data
 		}
 		
 		/**
-		 * Event handler so FlxGame can toggle the mouse.
+		 * Event handler so FlxGame can update the mouse.
 		 * 
 		 * @param	event	A <code>MouseEvent</code> object.
 		 */
@@ -204,7 +208,7 @@ package org.flixel.data
 		}
 		
 		/**
-		 * Event handler so FlxGame can toggle the mouse.
+		 * Event handler so FlxGame can update the mouse.
 		 * 
 		 * @param	event	A <code>MouseEvent</code> object.
 		 */
@@ -218,7 +222,7 @@ package org.flixel.data
 		}
 		
 		/**
-		 * Event handler so FlxGame can toggle the mouse.
+		 * Event handler so FlxGame can update the mouse.
 		 * 
 		 * @param	event	A <code>MouseEvent</code> object.
 		 */
@@ -226,6 +230,16 @@ package org.flixel.data
 		{
 			if(cursor != null)
 				cursor.visible = _out;
+		}
+		
+		/**
+		 * Event handler so FlxGame can update the mouse.
+		 * 
+		 * @param	event	A <code>MouseEvent</code> object.
+		 */
+		public function handleMouseWheel(event:MouseEvent):void
+		{
+			wheel = event.delta;
 		}
 	}
 }

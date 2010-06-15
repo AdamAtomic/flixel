@@ -383,6 +383,8 @@ package org.flixel
 			FlxG.buffer.unlock();
 			//Keep track of how long it took to draw everything
 			_console.mtrRender.add(getTimer()-updateMark);
+			//clear mouse wheel delta
+			FlxG.mouse.wheel = 0;
 		}
 		
 		/**
@@ -439,6 +441,7 @@ package org.flixel
 			{
 				stage.addEventListener(MouseEvent.MOUSE_OUT, FlxG.mouse.handleMouseOut);
 				stage.addEventListener(MouseEvent.MOUSE_OVER, FlxG.mouse.handleMouseOver);
+				stage.addEventListener(MouseEvent.MOUSE_WHEEL, FlxG.mouse.handleMouseWheel);
 				stage.addEventListener(Event.DEACTIVATE, onFocusLost);
 				stage.addEventListener(Event.ACTIVATE, onFocus);
 				
