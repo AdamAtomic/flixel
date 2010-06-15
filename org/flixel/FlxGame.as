@@ -498,7 +498,7 @@ package org.flixel
 			//Initialize the decorative frame (optional)
 			if(_frame != null)
 			{
-				var bmp:Bitmap = new _frame;
+				var bmp:Bitmap = new _frame();
 				bmp.scaleX = _zoom;
 				bmp.scaleY = _zoom;
 				addChild(bmp);

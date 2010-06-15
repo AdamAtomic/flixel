@@ -179,7 +179,6 @@ package org.flixel
 		public function get on():Boolean
 		{
 			return _onToggle;
-			_onToggle = On;
 		}
 		
 		/**
