@@ -42,13 +42,14 @@ package org.flixel
 		 * Adds a new <code>FlxObject</code> subclass (FlxSprite, FlxBlock, etc) to the list of children
 		 *
 		 * @param	Object			The object you want to add
-		 * @param	ShareScroll		Whether or not this FlxCore should sync up with this layer's scrollFactor
+		 * @param	ShareScroll		Whether or not this FlxObject should sync up with this layer's scrollFactor
 		 *
-		 * @return	The same <code>FlxCore</code> object that was passed in.
+		 * @return	The same <code>FlxObject</code> object that was passed in.
 		 */
 		public function add(Object:FlxObject,ShareScroll:Boolean=false):FlxObject
 		{
-			members[members.length] = Object;
+			if (members.indexOf(Object) < 0)
+				members[members.length] = Object;
 			if(ShareScroll)
 				Object.scrollFactor = scrollFactor;
 			return Object;
