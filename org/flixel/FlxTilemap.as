@@ -4,7 +4,7 @@ package org.flixel
 	import flash.display.BitmapData;
 	import flash.geom.Matrix;
 	import flash.geom.Rectangle;
-
+	
 	/**
 	 * This is a traditional tilemap display and collision class.
 	 * It takes a string of comma-separated numbers and then associates
@@ -160,7 +160,7 @@ package org.flixel
 				while(i < totalTiles)
 					autoTile(i++);
 			}
-
+			
 			//Figure out the size of the tiles
 			_pixels = FlxG.addBitmap(TileGraphic);
 			_tileWidth = TileWidth;
@@ -184,7 +184,7 @@ package org.flixel
 			var bw:uint = (FlxU.ceil(FlxG.width / _tileWidth) + 1)*_tileWidth;
 			var bh:uint = (FlxU.ceil(FlxG.height / _tileHeight) + 1)*_tileHeight;
 			_buffer = new BitmapData(bw,bh,true,0);
-
+			
 			//Pre-set some helper variables for later
 			_screenRows = Math.ceil(FlxG.height/_tileHeight)+1;
 			if(_screenRows > heightInTiles)
@@ -317,7 +317,7 @@ package org.flixel
 				tileBitmap = _pixels;
 				_boundsVisible = false;
 			}
-
+			
 			//Copy tile images into the tile buffer
 			getScreenXY(_point);
 			_flashPoint.x = _point.x;
@@ -609,7 +609,7 @@ package org.flixel
 				updateTile(Index);
 				return ok;
 			}
-
+			
 			//If this map is autotiled and it changes, locally update the arrangement
 			var i:uint;
 			var r:int = int(Index/widthInTiles) - 1;
@@ -785,7 +785,7 @@ package org.flixel
 		}
 		
 		/**
-		 * Converts a PNG file to a comma-separated string.
+		 * Converts a <code>BitmapData</code> object to a comma-separated string.
 		 * Black pixels are flagged as 'solid' by default,
 		 * non-black pixels are set as non-colliding.
 		 * Black pixels must be PURE BLACK.
@@ -795,36 +795,32 @@ package org.flixel
 		 * 
 		 * @return	A comma-separated string containing the level data in a <code>FlxTilemap</code>-friendly format.
 		 */
-		static public function pngToCSV(PNGFile:Class,Invert:Boolean=false,Scale:uint=1):String
+		static public function bitmapToCSV(bitmapData:BitmapData,Invert:Boolean=false,Scale:uint=1):String
 		{
 			//Import and scale image if necessary
-			var layout:Bitmap;
-			if(Scale <= 1)
-				layout = new PNGFile;
-			else
+			if(Scale > 1)
 			{
-				var tmp:Bitmap = new PNGFile;
-				layout = new Bitmap(new BitmapData(tmp.width*Scale,tmp.height*Scale));
+				var bd:BitmapData = bitmapData;
+				bitmapData = new BitmapData(bitmapData.width*Scale,bitmapData.height*Scale);
 				var mtx:Matrix = new Matrix();
 				mtx.scale(Scale,Scale);
-				layout.bitmapData.draw(tmp,mtx);
+				bitmapData.draw(bd,mtx);
 			}
-			var bd:BitmapData = layout.bitmapData;
 			
-			 //Walk image and export pixel values
+			//Walk image and export pixel values
 			var r:uint = 0;
 			var c:uint;
 			var p:uint;
 			var csv:String;
-			var w:uint = bd.width;
-			var h:uint = bd.height;
+			var w:uint = bitmapData.width;
+			var h:uint = bitmapData.height;
 			while(r < h)
 			{
 				c = 0;
 				while(c < w)
 				{
 					//Decide if this pixel/tile is solid (1) or not (0)
-					p = bd.getPixel(c,r);
+					p = bitmapData.getPixel(c,r);
 					if((Invert && (p > 0)) || (!Invert && (p == 0)))
 						p = 1;
 					else
@@ -845,6 +841,22 @@ package org.flixel
 				r++;
 			}
 			return csv;
+		}
+		
+		/**
+		 * Converts a resource image file to a comma-separated string.
+		 * Black pixels are flagged as 'solid' by default,
+		 * non-black pixels are set as non-colliding.
+		 * Black pixels must be PURE BLACK.
+		 * 
+		 * @param	PNGFile		An embedded graphic, preferably black and white.
+		 * @param	Invert		Load white pixels as solid instead.
+		 * 
+		 * @return	A comma-separated string containing the level data in a <code>FlxTilemap</code>-friendly format.
+		 */
+		static public function imageToCSV(ImageFile:Class,Invert:Boolean=false,Scale:uint=1):String
+		{
+			return bitmapToCSV((new ImageFile).bitmapData,Invert,Scale);
 		}
 		
 		/**
