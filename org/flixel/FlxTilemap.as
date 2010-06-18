@@ -816,8 +816,8 @@ package org.flixel
 			var c:uint;
 			var p:uint;
 			var csv:String;
-			var w:uint = bitmapData.width;
-			var h:uint = bitmapData.height;
+			var w:uint = bd.width;
+			var h:uint = bd.height;
 			while(r < h)
 			{
 				c = 0;
