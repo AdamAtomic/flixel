@@ -6,7 +6,7 @@ package org.flixel
 	
 	/**
 	 * ...
-	 * @author robots
+	 * @author Colin Alteveer (with much help from Keith Peters)
 	 */
 	public class FlxV extends FlxPoint
 	{
@@ -60,7 +60,6 @@ package org.flixel
 		
 		/**
 		 * Normalizes this vector. Equivalent to setting the length to one, but more efficient.
-		 * @return FlxVector A reference to this vector. 
 		 */
 		public static function normalize(p:FlxPoint):FlxPoint
 		{
@@ -77,8 +76,6 @@ package org.flixel
 		
 		/**
 		 * Ensures the length of the vector is no longer than the given value.
-		 * @param max The maximum value this vector should be. If length is larger than max, it will be truncated to this value.
-		 * @return FlxVector A reference to this vector.
 		 */
 		public static function truncate(p:FlxPoint, max:Number):FlxPoint
 		{
@@ -88,7 +85,6 @@ package org.flixel
 		
 		/**
 		 * Reverses the direction of this vector.
-		 * @return FlxVector A reference to this vector.
 		 */
 		public static function reverse(p:FlxPoint):FlxPoint
 		{
@@ -99,8 +95,6 @@ package org.flixel
 		
 		/**
 		 * Calculates the dot product of this vector and another given vector.
-		 * @param v2 Another FlxVector instance.
-		 * @return Number The dot product of this vector and the one passed in as a parameter.
 		 */
 		public static function dotProd(v1:FlxPoint, v2:FlxPoint):Number
 		{
@@ -109,8 +103,6 @@ package org.flixel
 		
 		/**
 		 * Calculates the cross product of this vector and another given vector.
-		 * @param v2 Another FlxVector instance.
-		 * @return Number The cross product of this vector and the one passed in as a parameter.
 		 */
 		public static function crossProd(v1:FlxPoint, v2:FlxPoint):Number
 		{
@@ -119,9 +111,6 @@ package org.flixel
 		
 		/**
 		 * Calculates the angle between two vectors.
-		 * @param v1 The first FlxVector instance.
-		 * @param v2 The second FlxVector instance.
-		 * @return Number the angle between the two given vectors.
 		 */
 		public static function angleBetween(v1:FlxPoint, v2:FlxPoint):Number
 		{
@@ -132,7 +121,6 @@ package org.flixel
 		
 		/**
 		 * Determines if a given vector is to the right or left of this vector.
-		 * @return int If to the left, returns -1. If to the right, +1.
 		 */
 		public function sign(v1:FlxPoint, v2:FlxPoint):int
 		{
@@ -141,7 +129,6 @@ package org.flixel
 		
 		/**
 		 * Finds a vector that is perpendicular to this vector.
-		 * @return FlxVector A vector that is perpendicular to this vector.
 		 */
 		public static function perp(p:FlxPoint):FlxPoint
 		{
@@ -150,8 +137,6 @@ package org.flixel
 		
 		/**
 		 * Calculates the distance from this vector to another given vector.
-		 * @param v2 A FlxVector instance.
-		 * @return Number The distance from this vector to the vector passed as a parameter.
 		 */
 		public static function dist(v1:FlxPoint, v2:FlxPoint):Number
 		{
@@ -160,8 +145,6 @@ package org.flixel
 		
 		/**
 		 * Calculates the distance squared from this vector to another given vector.
-		 * @param v2 A FlxVector instance.
-		 * @return Number The distance squared from this vector to the vector passed as a parameter.
 		 */
 		public static function distSquared(v1:FlxPoint, v2:FlxPoint):Number
 		{
@@ -171,9 +154,7 @@ package org.flixel
 		}
 		
 		/**
-		 * Adds a vector to this vector, creating a new FlxVector instance to hold the result.
-		 * @param v2 A FlxVector instance.
-		 * @return FlxVector A new vector containing the results of the addition.
+		 * Adds a vector to this vector, creating a new FlxPoint instance to hold the result.
 		 */
 		public static function add(v1:FlxPoint, v2:FlxPoint):FlxPoint
 		{
@@ -181,9 +162,7 @@ package org.flixel
 		}
 		
 		/**
-		 * Subtacts a vector to this vector, creating a new FlxVector instance to hold the result.
-		 * @param v2 A FlxVector instance.
-		 * @return FlxVector A new vector containing the results of the subtraction.
+		 * Subtacts a vector to this vector, creating a new FlxPoint instance to hold the result.
 		 */
 		public static function subtract(v1:FlxPoint, v2:FlxPoint):FlxPoint
 		{
@@ -191,9 +170,7 @@ package org.flixel
 		}
 		
 		/**
-		 * Multiplies this vector by a value, creating a new FlxVector instance to hold the result.
-		 * @param v2 A FlxVector instance.
-		 * @return FlxVector A new vector containing the results of the multiplication.
+		 * Multiplies this vector by a value, creating a new FlxPoint instance to hold the result.
 		 */
 		public static function multiply(p:FlxPoint, value:Number):FlxPoint
 		{
@@ -201,9 +178,7 @@ package org.flixel
 		}
 		
 		/**
-		 * Divides this vector by a value, creating a new FlxVector instance to hold the result.
-		 * @param v2 A FlxVector instance.
-		 * @return FlxVector A new vector containing the results of the division.
+		 * Divides this vector by a value, creating a new FlxPoint instance to hold the result.
 		 */
 		public static function divide(p:FlxPoint, value:Number):FlxPoint
 		{
@@ -211,9 +186,7 @@ package org.flixel
 		}
 		
 		/**
-		 * Indicates whether this vector and another FlxVector instance are equal in value.
-		 * @param v2 A FlxVector instance.
-		 * @return Boolean True if the other vector is equal to this one, false if not.
+		 * Indicates whether this vector and another FlxPoint instance are equal in value.
 		 */
 		public static function equals(v1:FlxPoint, v2:FlxPoint):Boolean
 		{
