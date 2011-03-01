@@ -240,6 +240,7 @@ package org.flixel
 		 */
 		protected function onFocusLost(event:Event=null):void
 		{
+			stage.frameRate = _frameratePaused;
 			FlxG.pause = true;
 		}
 		
@@ -266,7 +267,6 @@ package org.flixel
 			}
 			flash.ui.Mouse.show();
 			_paused = true;
-			stage.frameRate = _frameratePaused;
 		}
 		
 		/**

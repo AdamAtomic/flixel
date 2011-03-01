@@ -211,6 +211,20 @@ package org.flixel
 		}
 		
 		/**
+		 * the pause overlay, normally FlxGame.pause
+		 */
+		static public function get pauseState() {
+			return _game.pause;
+		} 
+		/*
+		 * @private
+		 */
+		static public function set pauseState(State:FlxGroup) {
+			_game.pause = State;
+		}
+		
+		
+		/**
 		 * Set <code>showBounds</code> to true to display the bounding boxes of the in-game objects.
 		 */
 		static public function get showBounds():Boolean
