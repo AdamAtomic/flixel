@@ -118,8 +118,10 @@ package org.flixel.data
 			{
 				if(cursor.visible)
 					load(null);
-				else
+				else {
+					cursor.destroy();
 					cursor = null;
+				}
 			}
 		}
 

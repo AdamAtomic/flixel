@@ -279,5 +279,11 @@ package org.flixel
 			var dtf:TextFormat = _tf.defaultTextFormat;
 			return new TextFormat(dtf.font,dtf.size,dtf.color,dtf.bold,dtf.italic,dtf.underline,dtf.url,dtf.target,dtf.align);
 		}
+		
+		override public function destroy():void 
+		{
+			super.destroy();
+			_tf = null;
+		}
 	}
 }

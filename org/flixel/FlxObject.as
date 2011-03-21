@@ -235,11 +235,27 @@ package org.flixel
 		}
 		
 		/**
-		 * Called by <code>FlxGroup</code>, commonly when game states are changed.
+		 * Called by <code>FlxGroup</code>, also by the game state when state is changed (if this object belongs to the state).
 		 */
 		public function destroy():void
 		{
-			//Nothing to destroy yet
+			//Nothing to destroy yet -- LIES
+			velocity = null;
+			acceleration = null;
+			drag = null;
+			maxVelocity = null;
+			origin = null;
+			scrollFactor = null;
+			_point = null;
+			_rect = null;
+			_flashPoint = null;
+			colHullX = null;
+			colHullY = null;
+			colVector = null;
+			var l:int = colOffsets.length;
+			for (var i:int = 0; i < l; ++i) colOffsets[i] = null;
+			colOffsets.length = 0; // not really needed, but we're trying to be uber careful
+			colOffsets = null;
 		}
 		
 		/**

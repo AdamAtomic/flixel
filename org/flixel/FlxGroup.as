@@ -424,6 +424,7 @@ package org.flixel
 					o.destroy();
 			}
 			members.length = 0;
+			members = null;
 		}
 		
 		/**
@@ -433,6 +434,7 @@ package org.flixel
 		override public function destroy():void
 		{
 			destroyMembers();
+			_last = null;
 			super.destroy();
 		}
 		

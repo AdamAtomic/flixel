@@ -350,5 +350,20 @@ package org.flixel.data
 			_closed = true;
 			hide();
 		}
+		
+		override public function destroy():void {
+			super.destroy();
+			_topBar.destroy(); // seriously, come on
+			_mainBar.destroy();
+			_bottomBar.destroy();
+			_donate.destroy();
+			_stumble.destroy();
+			_digg.destroy();
+			_reddit.destroy();
+			_delicious.destroy();
+			_twitter.destroy();
+			_close.destroy();
+			_caption.destroy();
+		}
 	}
 }

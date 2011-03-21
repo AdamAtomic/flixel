@@ -380,5 +380,13 @@ package org.flixel
 			super.kill();
 			on = false;
 		}
+		
+		override public function destroy():void 
+		{
+			super.destroy();
+			minParticleSpeed = null;
+			maxParticleSpeed = null;
+			particleDrag = null;
+		}
 	}
 }

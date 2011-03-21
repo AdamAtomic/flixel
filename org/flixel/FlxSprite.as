@@ -733,5 +733,24 @@ package org.flixel
 		{
 			_pixels = _framePixels = Pixels;
 		}
+		
+		override public function destroy():void {
+			super.destroy();
+			offset = scale = null;
+			_curAnim = null;
+			_callback = null;
+			_flashRect = _flashRect2 = null;
+			_flashPointZero = null;
+			//_pixels.dispose(); // only do this if you don't use FlxG.addBitmap()
+			//_pixels = null;
+			_framePixels.dispose();
+			_bbb.dispose();
+			_framePixels = _bbb = null;
+			_ct = null;
+			_mtx = null;
+			for (var i:int = 0; i < _animations.length; ++i) _animations[i] = null;
+			_animations.length = 0;
+			_animations = null;
+		}
 	}
 }

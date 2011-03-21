@@ -136,5 +136,16 @@ package org.flixel
 				FlxG.buffer.fillRect(_bbRect,bbc);
 			}
 		}
+		
+		override public function destroy():void 
+		{
+			super.destroy();
+			_flashRect = null;
+			_bbRect = null;
+			for (var i:int = 0; i < _rects.length; ++i) _rects[i] = null;
+			_rects.length = 0;
+			_rects = null;
+			_pixels.dispose();
+		}
 	}
 }

@@ -353,8 +353,16 @@ package org.flixel
 		 */
 		override public function destroy():void
 		{
-			if(active)
-				stop();
+			if (active) stop();
+			if (_core) {
+				_core.destroy();
+				_core = null;
+			}
+			_point2 = null;
+			super.destroy();
+			_sound.close();
+			_sound = null;
+			_transform = null;
 		}
 		
 		/**

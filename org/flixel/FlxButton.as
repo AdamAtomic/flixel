@@ -190,8 +190,13 @@ package org.flixel
 		 */
 		override public function destroy():void
 		{
-			if(FlxG.stage != null)
-				FlxG.stage.removeEventListener(MouseEvent.MOUSE_UP, onMouseUp);
+			if (FlxG.stage != null) FlxG.stage.removeEventListener(MouseEvent.MOUSE_UP, onMouseUp);
+			super.destroy();
+			_off = null;
+			_on = null;
+			_offT = null;
+			_onT = null;
+			_sf = null;
 		}
 		
 		/**

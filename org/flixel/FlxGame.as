@@ -274,15 +274,14 @@ package org.flixel
 		 */
 		protected function update(event:Event):void
 		{
-			var mark:uint = getTimer();
+			var mark:int = getTimer();
 			
-			var i:uint;
+			var i:int;
 			var soundPrefs:FlxSave;
 
 			//Frame timing
-			var ems:uint = mark-_total;
+			var ems:int = mark-_total;
 			_elapsed = ems/1000;
-			_console.mtrTotal.add(ems);
 			_total = mark;
 			FlxG.elapsed = _elapsed;
 			if(FlxG.elapsed > FlxG.maxElapsed)
@@ -342,8 +341,8 @@ package org.flixel
 				_screen.y = FlxG.quake.y;
 			}
 			//Keep track of how long it took to update everything
-			var updateMark:uint = getTimer();
-			_console.mtrUpdate.add(updateMark-mark);
+			var updateMark:int = getTimer();
+			_console.updateMS = updateMark - mark;
 			
 			//Render game content, special fx, and overlays
 			FlxG.buffer.lock();
@@ -367,7 +366,7 @@ package org.flixel
 				pause.render();
 			FlxG.buffer.unlock();
 			//Keep track of how long it took to draw everything
-			_console.mtrRender.add(getTimer()-updateMark);
+			_console.renderMS = getTimer() - updateMark;
 		}
 		
 		/**
@@ -482,6 +481,25 @@ package org.flixel
 			FlxState.screen.unsafeBind(FlxG.buffer);
 			removeEventListener(Event.ENTER_FRAME, create);
 			addEventListener(Event.ENTER_FRAME, update);
+			addEventListener(Event.REMOVED_FROM_STAGE, destroy);
+		}
+		
+		/**
+		 * There's a create, but no destroy? Where's the yin to my yang?
+		 * MAYBE called when the game is closed from the browser, so this is "empty" until I get confirmation.
+		 */
+		public function destroy(evt:Event = null):void {
+			removeEventListener(Event.ENTER_FRAME, update);
+			removeEventListener(Event.REMOVED_FROM_STAGE, destroy);
+			
+			stage.removeEventListener(KeyboardEvent.KEY_DOWN, FlxG.keys.handleKeyDown);
+			stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+			stage.removeEventListener(MouseEvent.MOUSE_DOWN, FlxG.mouse.handleMouseDown);
+			stage.removeEventListener(MouseEvent.MOUSE_UP, FlxG.mouse.handleMouseUp);
+			stage.removeEventListener(MouseEvent.MOUSE_OUT, FlxG.mouse.handleMouseOut);
+			stage.removeEventListener(MouseEvent.MOUSE_OVER, FlxG.mouse.handleMouseOver);
+			stage.removeEventListener(Event.DEACTIVATE, onFocusLost);
+			stage.removeEventListener(Event.ACTIVATE, onFocus);
 		}
 	}
 }

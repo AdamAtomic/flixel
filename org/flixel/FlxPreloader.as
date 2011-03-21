@@ -76,6 +76,9 @@ package org.flixel
 		 */
 		public var minDisplayTime:Number;
 		
+		private var _urltmp:Bitmap;
+		private var _urltxt:TextField;
+		
 		/**
 		 * Constructor
 		 */
@@ -98,11 +101,10 @@ package org.flixel
                 FlxG.debug = re.test(e.getStackTrace());
             }
 			
-			var tmp:Bitmap;
 			if(!FlxG.debug && (myURL != null) && (root.loaderInfo.url.indexOf(myURL) < 0))
 			{
-				tmp = new Bitmap(new BitmapData(stage.stageWidth,stage.stageHeight,true,0xFFFFFFFF));
-				addChild(tmp);
+				_urltmp = new Bitmap(new BitmapData(stage.stageWidth,stage.stageHeight,true,0xFFFFFFFF));
+				addChild(_urltmp);
 				
 				var fmt:TextFormat = new TextFormat();
 				fmt.color = 0x000000;
@@ -111,23 +113,24 @@ package org.flixel
 				fmt.bold = true;
 				fmt.font = "system";
 				
-				var txt:TextField = new TextField();
-				txt.width = tmp.width-16;
-				txt.height = tmp.height-16;
-				txt.y = 8;
-				txt.multiline = true;
-				txt.wordWrap = true;
-				txt.embedFonts = true;
-				txt.defaultTextFormat = fmt;
-				txt.text = "Hi there!  It looks like somebody copied this game without my permission.  Just click anywhere, or copy-paste this URL into your browser.\n\n"+myURL+"\n\nto play the game at my site.  Thanks, and have fun!";
-				addChild(txt);
+				var _urltxt:TextField = new TextField();
+				_urltxt.width = _urltmp.width-16;
+				_urltxt.height = _urltmp.height-16;
+				_urltxt.y = 8;
+				_urltxt.multiline = true;
+				_urltxt.wordWrap = true;
+				_urltxt.embedFonts = true;
+				_urltxt.defaultTextFormat = fmt;
+				_urltxt.text = "Hi there!  It looks like somebody copied this game without my permission.  Just click anywhere, or copy-paste this URL into your browser.\n\n"+myURL+"\n\nto play the game at my site.  Thanks, and have fun!";
+				addChild(_urltxt);
 				
-				txt.addEventListener(MouseEvent.CLICK,goToMyURL);
-				tmp.addEventListener(MouseEvent.CLICK,goToMyURL);
+				_urltxt.addEventListener(MouseEvent.CLICK,goToMyURL);
+				_urltmp.addEventListener(MouseEvent.CLICK,goToMyURL);
 				return;
 			}
 			_init = false;
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
+			addEventListener(Event.REMOVED_FROM_STAGE, destroy); // INDEED
 		}
 		
 		private function goToMyURL(event:MouseEvent=null):void
@@ -147,13 +150,16 @@ package org.flixel
         	var i:int;
             graphics.clear();
 			var time:uint = getTimer();
-            if((framesLoaded >= totalFrames) && (time > _min))
-            {
-                removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+            if ((framesLoaded >= totalFrames) && (time > _min)) {
+                if (!FlxG.debug && (myURL != null) && (root.loaderInfo.url.indexOf(myURL) < 0)) {
+					// remove listeners! NEVER FORGET
+					_urltmp.removeEventListener(MouseEvent.CLICK, goToMyURL);
+					_urltxt.removeEventListener(MouseEvent.CLICK, goToMyURL);
+				}
+				removeEventListener(Event.ENTER_FRAME, onEnterFrame);
                 nextFrame();
                 var mainClass:Class = Class(getDefinitionByName(className));
-	            if(mainClass)
-	            {
+	            if(mainClass) {
 	                var app:Object = new mainClass();
 	                addChild(app as DisplayObject);
 	            }
@@ -272,6 +278,21 @@ package org.flixel
 			{
 				_buffer.alpha = 1-(Percent-0.9)/0.1;
 			}
+		}
+		
+		/**
+		 * Con someone confirm whether or not this is really called when the browser kills the Flash Player?
+		 * @param	evt
+		 */
+		private function destroy(evt:Event = null):void {
+			removeEventListener(Event.REMOVED_FROM_STAGE, destroy);
+			_bmpBar.bitmapData.dispose();
+			_logo.bitmapData.dispose();
+			_logoGlow.bitmapData.dispose();
+			_text = null;
+			while (_buffer.numChildren > 0) _buffer.removeChildAt(0);
+			_buffer = null;
+			while (numChildren > 0) removeChildAt(0);
 		}
 	}
 }

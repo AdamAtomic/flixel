@@ -776,5 +776,21 @@ package org.flixel
 			}
 			_rects[Index] = (new Rectangle(rx,ry,_tileWidth,_tileHeight));
 		}
+		
+		override public function destroy():void {
+			super.destroy();
+			_flashRect = null;
+			//_pixels.dispose();
+			_bbPixels.dispose();
+			_bbPixels = null;
+			_block.destroy();
+			_data.length = 0;
+			_data = null;
+			for (var i:int = 0; i < _rects.length; ++i) _rects[i] = null;
+			_rects.length = 0;
+			_rects = null;
+			_callbacks.length = 0;
+			_callbacks = null;
+		}
 	}
 }

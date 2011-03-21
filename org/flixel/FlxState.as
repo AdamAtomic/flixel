@@ -127,6 +127,7 @@ package org.flixel
 		public function destroy():void
 		{
 			defaultGroup.destroy();
+			//screen.destroy(); for some reason it won't recreate _framePixels in FlxSprite.resetHelpers() even though it's null. Any ideas?
 		}
 	}
 }
