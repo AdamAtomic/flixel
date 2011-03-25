@@ -10,6 +10,10 @@ package org.flixel
 		static public const ASCENDING:int = -1;
 		static public const DESCENDING:int = 1;
 		
+		static internal var _ACTIVECOUNT:uint;
+		static internal var _VISIBLECOUNT:uint;
+		static internal var _EXTANTCOUNT:uint;
+		
 		/**
 		 * Array of all the <code>FlxObject</code>s that exist in this layer.
 		 */
@@ -357,32 +361,38 @@ package org.flixel
 			while(i < ml)
 			{
 				o = members[i++] as FlxObject;
-				if((o != null) && o.exists)
+				if(o == null)
+					continue;
+				FlxGroup._EXTANTCOUNT++;
+				if(!o.exists)
+					continue;
+
+				if(moved)
 				{
-					if(moved)
+					if(o._group)
+						o.reset(o.x+mx,o.y+my);
+					else
 					{
-						if(o._group)
-							o.reset(o.x+mx,o.y+my);
-						else
-						{
-							o.x += mx;
-							o.y += my;
-						}
+						o.x += mx;
+						o.y += my;
 					}
-					if(o.active)
-						o.update();
-					if(moved && o.solid)
-					{
-						o.colHullX.width += ((mx>0)?mx:-mx);
-						if(mx < 0)
-							o.colHullX.x += mx;
-						o.colHullY.x = x;
-						o.colHullY.height += ((my>0)?my:-my);
-						if(my < 0)
-							o.colHullY.y += my;
-						o.colVector.x += mx;
-						o.colVector.y += my;
-					}
+				}
+				if(o.active)
+				{
+					o.update();
+					FlxGroup._ACTIVECOUNT++;
+				}
+				if(moved && o.solid)
+				{
+					o.colHullX.width += ((mx>0)?mx:-mx);
+					if(mx < 0)
+						o.colHullX.x += mx;
+					o.colHullY.x = x;
+					o.colHullY.height += ((my>0)?my:-my);
+					if(my < 0)
+						o.colHullY.y += my;
+					o.colVector.x += mx;
+					o.colVector.y += my;
 				}
 			}
 		}
@@ -411,7 +421,10 @@ package org.flixel
 			{
 				o = members[i++] as FlxObject;
 				if((o != null) && o.exists && o.visible)
+				{
 					o.draw();
+					FlxGroup._VISIBLECOUNT++;
+				}
 			}
 		}
 		

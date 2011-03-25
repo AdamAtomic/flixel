@@ -21,7 +21,7 @@ package org.flixel.aux
 		static public const LEFT:uint = 4;
 		static public const RIGHT:uint = 5;
 
-		public var perf:FlxWindow;
+		public var perf:Perf;
 		public var log:Log;
 		public var watch:Watch;
 		
@@ -64,7 +64,7 @@ package org.flixel.aux
 			watch = new Watch("watch",0,0,true,screenBounds);
 			addChild(watch);
 			
-			perf = new FlxWindow("performance",100,80,false,screenBounds);
+			perf = new Perf("stats",0,0,false,screenBounds);
 			addChild(perf);
 			
 			setLayout(STANDARD);

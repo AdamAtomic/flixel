@@ -32,7 +32,7 @@ package org.flixel
 		/**
 		 * Internal tracker for game object (so we can pause & unpause)
 		 */
-		static protected var _game:FlxGame;
+		static internal var _game:FlxGame;
 		/**
 		 * Internal tracker for game pause state.
 		 */
@@ -51,10 +51,6 @@ package org.flixel
 		 * Represents the amount of time in seconds that passed since last frame.
 		 */
 		static public var elapsed:Number;
-		/**
-		 * Essentially locks the framerate to a minimum value - any slower and you'll get slowdown instead of frameskip; default is 1/30th of a second.
-		 */
-		static public var maxElapsed:Number;
 		/**
 		 * How fast or slow time should pass in the game; default is 1.0.
 		 */
@@ -190,6 +186,46 @@ package org.flixel
 		{
 			if((_game != null) && (_game._debugger != null))
 				_game._debugger.watch.add(AnyObject,VariableName);
+		}
+		
+		/**
+		 * How many times you want your game to update each second.
+		 * More updates usually means better collisions and smoother motion.
+		 * NOTE: This is NOT the same thing as the Flash Player framerate!
+		 */
+		static public function get framerate():Number
+		{
+			return 1/_game._step;
+		}
+		
+		/**
+		 * @private
+		 */
+		static public function set framerate(Framerate:Number):void
+		{
+			_game._step = 1/Framerate;
+		}
+		
+		/**
+		 * How many times you want your game to update each second.
+		 * More updates usually means better collisions and smoother motion.
+		 * NOTE: This is NOT the same thing as the Flash Player framerate!
+		 */
+		static public function get flashFramerate():Number
+		{
+			if(_game.root != null)
+				return _game.stage.frameRate;
+			else
+				return 0;
+		}
+		
+		/**
+		 * @private
+		 */
+		static public function set flashFramerate(Framerate:Number):void
+		{
+			if(_game.root != null)
+				_game.stage.frameRate = Framerate;
 		}
 		
 		/**
@@ -685,7 +721,6 @@ package org.flixel
 			score = 0;
 			pause = false;
 			timeScale = 1.0;
-			maxElapsed = 0.0333333;
 			FlxG.elapsed = 0;
 			showBounds = false;
 			

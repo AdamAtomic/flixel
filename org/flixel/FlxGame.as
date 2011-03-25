@@ -63,7 +63,7 @@ package org.flixel
 		protected var _total:uint;
 		protected var _accumulator:Number;
 		protected var _lostFocus:Boolean;
-		protected var _step:Number;
+		internal var _step:Number;
 		
 		//"focus lost" screen, sound tray, and debugger overlays
 		protected var _focus:Sprite;
@@ -82,7 +82,7 @@ package org.flixel
 		 * @param	FrameRate		How frequently the game should update (default is 60 times per second).
 		 * @param	Zoom			The level of zoom (e.g. 2 means all pixels are now rendered twice as big).
 		 */
-		public function FlxGame(GameSizeX:uint,GameSizeY:uint,InitialState:Class,FrameRate:uint=60,Zoom:uint=2)
+		public function FlxGame(GameSizeX:uint,GameSizeY:uint,InitialState:Class,Zoom:uint=2)
 		{
 			//super high priority init stuff (focus, mouse, etc)
 			flash.ui.Mouse.hide();
@@ -95,7 +95,7 @@ package org.flixel
 			_zoom = Zoom;
 			FlxState.bgColor = 0xff000000;
 			FlxG.setGameData(this,GameSizeX,GameSizeY,Zoom);
-			_step = 1/FrameRate;
+			_step = 1/60;
 			_total = 0;
 			_accumulator = 0;
 			_state = null;
@@ -289,21 +289,34 @@ package org.flixel
 		protected function onEnterFrame(event:Event=null):void
 		{
 			var mark:uint = getTimer();
-			_accumulator += (mark-_total)/1000;
+			var ems:uint = mark-_total;				
+			_accumulator += ems/1000;
 			_total = mark;
-			var i:uint = 0;
-			while(_accumulator >= _step)
+			FlxG.elapsed = FlxG.timeScale*_step;
+			updateSoundTray(ems);
+			if(!_lostFocus)
 			{
-				FlxG.elapsed = FlxG.timeScale*_step;
-				updateSystem();
-				update();
-				if((_debugger != null) && (_debugger.visible))
-					_debugger.watch.update();
-				FlxG.mouse.wheel = 0;
-				_accumulator -= _step;
-				i++;
+				while(_accumulator >= _step)
+				{
+					FlxGroup._ACTIVECOUNT = FlxGroup._EXTANTCOUNT = 0;
+					FlxG.updateInput();
+					update();
+					FlxG.mouse.wheel = 0;
+					if((_debugger != null) && (_debugger.visible))
+						_debugger.perf.objects(FlxGroup._ACTIVECOUNT,FlxGroup._EXTANTCOUNT);
+					_accumulator -= _step;
+				}
 			}
+			FlxGroup._VISIBLECOUNT = 0;
 			draw();
+			
+			if((_debugger != null) && (_debugger.visible))
+			{
+				_debugger.perf.flash(ems);
+				_debugger.perf.visibleObjects(FlxGroup._VISIBLECOUNT);
+				_debugger.perf.update();
+				_debugger.watch.update();
+			}
 		}
 
 		/**
@@ -311,17 +324,17 @@ package org.flixel
 		 * This function does NOT update the actual game state or game effects!
 		 * May be called multiple times per "frame" or draw call.
 		 */
-		protected function updateSystem():void
+		protected function updateSoundTray(MS:Number):void
 		{
-			var mark:uint = getTimer();
+			//animate stupid sound tray thing
 			var soundPrefs:FlxSave;
 			if(_soundTray != null)
 			{
 				if(_soundTrayTimer > 0)
-					_soundTrayTimer -= _step;
+					_soundTrayTimer -= MS/1000;
 				else if(_soundTray.y > -_soundTray.height)
 				{
-					_soundTray.y -= _step*FlxG.height*2;
+					_soundTray.y -= (MS/1000)*FlxG.height*2;
 					if(_soundTray.y <= -_soundTray.height)
 					{
 						_soundTray.visible = false;
@@ -339,11 +352,6 @@ package org.flixel
 					}
 				}
 			}
-			//if(_console.visible)
-			//	_console.update();
-			
-			if(!_lostFocus)
-				FlxG.updateInput();
 		}
 		
 		/**
@@ -352,27 +360,25 @@ package org.flixel
 		 */
 		protected function update(event:Event=null):void
 		{			
-			//var mark:uint = getTimer();
-			if(!_lostFocus)
-			{
-				FlxG.updateSounds();
+			var mark:uint = getTimer();
+			
+			FlxG.updateSounds();
 
-				//Update the camera and game state
-				FlxG.doFollow();
-				_state.update();
-				
-				//Update the various special effects
-				if(FlxG.flash.exists)
-					FlxG.flash.update();
-				if(FlxG.fade.exists)
-					FlxG.fade.update();
-				FlxG.quake.update();
-				x = FlxG.quake.x;
-				y = FlxG.quake.y;
-			}
-			//Keep track of how long it took to update everything
-			var updateMark:uint = getTimer();
-			//_console.mtrUpdate.add(updateMark-mark);
+			//Update the camera and game state
+			FlxG.doFollow();
+			_state.update();
+			
+			//Update the various special effects
+			if(FlxG.flash.exists)
+				FlxG.flash.update();
+			if(FlxG.fade.exists)
+				FlxG.fade.update();
+			FlxG.quake.update();
+			x = FlxG.quake.x;
+			y = FlxG.quake.y;
+			
+			if((_debugger != null) && (_debugger.visible))
+				_debugger.perf.flixelUpdate(getTimer()-mark);
 		}
 		
 		/**
@@ -380,7 +386,7 @@ package org.flixel
 		 */
 		protected function draw(event:Event=null):void
 		{
-			//var mark:uint = getTimer();
+			var mark:uint = getTimer();
 			FlxG.buffer.lock();
 			_state.preProcess();
 			_state.render();
@@ -397,7 +403,8 @@ package org.flixel
 			}
 			_state.postProcess();
 			FlxG.buffer.unlock();
-			//_console.mtrRender.add(getTimer()-mark);
+			if((_debugger != null) && (_debugger.visible))
+				_debugger.perf.flixelDraw(getTimer()-mark);
 		}
 		
 		/**

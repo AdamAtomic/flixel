@@ -280,8 +280,16 @@ package org.flixel
 			while(i < l)
 			{
 				o = members[i++] as FlxObject;
-				if((o != null) && o.exists && o.active)
+				if(o == null)
+					continue;
+				FlxGroup._EXTANTCOUNT++;
+				if(!o.exists)
+					continue;
+				if(o.active)
+				{
 					o.update();
+					FlxGroup._ACTIVECOUNT++;
+				}
 			}
 		}
 		
