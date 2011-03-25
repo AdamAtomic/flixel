@@ -9,7 +9,7 @@ package org.flixel
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
-	import org.flixel.data.FlxAnim;
+	import org.flixel.aux.FlxAnim;
 	
 	/**
 	* The main "game object" class, handles basic physics and animation.
@@ -487,7 +487,10 @@ package org.flixel
 			//Draw line
 			_gfx.clear();
 			_gfx.moveTo(StartX,StartY);
-			_gfx.lineStyle(Thickness,Color);
+			var a:Number = Number((Color >> 24) & 0xFF) / 255;
+			if(a <= 0)
+				a = 1;
+			_gfx.lineStyle(Thickness,Color,a);
 			_gfx.lineTo(EndX,EndY);
 			
 			//Cache line to bitmap
@@ -704,6 +707,11 @@ package org.flixel
 			calcFrame();
 		}
 		
+		public function corner():void
+		{
+			origin.x = origin.y = 0;
+		}
+		
 		/**
 		 * Call this function to figure out the on-screen position of the object.
 		 * 
@@ -717,6 +725,19 @@ package org.flixel
 			Point.x = FlxU.floor(x + FlxU.roundingError)+FlxU.floor(FlxG.scroll.x*scrollFactor.x) - offset.x;
 			Point.y = FlxU.floor(y + FlxU.roundingError)+FlxU.floor(FlxG.scroll.y*scrollFactor.y) - offset.y;
 			return Point;
+		}
+		
+		/**
+		 * Check and see if this object is currently on screen.
+		 * 
+		 * @return	Whether the object is on screen or not.
+		 */
+		override public function onScreen():Boolean
+		{
+			getScreenXY(_point);
+			if((_point.x + frameWidth < 0) || (_point.x > FlxG.width) || (_point.y + frameHeight < 0) || (_point.y > FlxG.height))
+				return false;
+			return true;
 		}
 		
 		/**

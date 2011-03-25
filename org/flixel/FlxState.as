@@ -63,14 +63,14 @@ package org.flixel
 		}
 		
 		/**
-		 * Adds a new FlxCore subclass (FlxSprite, FlxBlock, etc) to the game loop.
+		 * Adds a new <code>FlxObject</code> subclass (FlxSprite, FlxBlock, etc) to the game loop.
 		 * FlxState is adding this object to its built-in FlxGroup to automate updating and rendering.
 		 * 
-		 * @param	Core	The object you want to add to the game loop.
+		 * @param	Object	The object you want to add to the game loop.
 		 */
-		public function add(Core:FlxObject):FlxObject
+		public function add(Object:FlxObject):FlxObject
 		{
-			return defaultGroup.add(Core);
+			return defaultGroup.add(Object);
 		}
 		
 		/**
@@ -127,6 +127,14 @@ package org.flixel
 		public function destroy():void
 		{
 			defaultGroup.destroy();
+		}
+		
+		/**
+		 * Reloads the current game state.
+		 */
+		public function reload():void
+		{
+			FlxG.state = new (FlxU.getClass(FlxU.getClassName(this,false)))();
 		}
 	}
 }

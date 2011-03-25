@@ -1,4 +1,4 @@
-package org.flixel
+package org.flixel.aux
 {
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -15,6 +15,8 @@ package org.flixel
 	import flash.text.TextFormat;
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getTimer;
+	import org.flixel.FlxG;
+	import org.flixel.FlxU;
 	
 
 	/**
@@ -22,9 +24,9 @@ package org.flixel
 	 */
 	public class FlxPreloader extends MovieClip
 	{
-		[Embed(source="data/logo.png")] protected var ImgLogo:Class;
-		[Embed(source="data/logo_corners.png")] protected var ImgLogoCorners:Class;
-		[Embed(source="data/logo_light.png")] protected var ImgLogoLight:Class;
+		[Embed(source="../data/logo.png")] protected var ImgLogo:Class;
+		[Embed(source="../data/logo_corners.png")] protected var ImgLogoCorners:Class;
+		[Embed(source="../data/logo_light.png")] protected var ImgLogoLight:Class;
 
 		/**
 		 * @private

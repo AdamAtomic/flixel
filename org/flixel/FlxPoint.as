@@ -33,5 +33,19 @@ package org.flixel
 		{
 			return FlxU.getClassName(this,true);
 		}
+		
+		/**
+		 * Calculate the distance between this point and another point.
+		 * 
+		 * @param Point		A <code>FlxPoint</code> object referring to the second location.
+		 * 
+		 * @return	The distance between the two points as a floating point <code>Number</code> object.
+		 */
+		public function getDistance(Point:FlxPoint):Number
+		{
+			var dx:Number = x - Point.x;
+			var dy:Number = y - Point.y;
+			return Math.sqrt(dx * dx + dy * dy);
+		}
 	}
 }

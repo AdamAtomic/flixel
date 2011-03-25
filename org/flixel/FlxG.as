@@ -5,7 +5,7 @@ package org.flixel
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	
-	import org.flixel.data.*;
+	import org.flixel.aux.*;
 	
 	/**
 	 * This is a global helper class full of useful functions for audio,
@@ -154,16 +154,7 @@ package org.flixel
 		 * Internal storage system to prevent graphics from being used repeatedly in memory.
 		 */
 		static protected var _cache:Object;
-		
-		/**
-		 * Access to the Kongregate high scores and achievements API.
-		 */
-		static public var kong:FlxKong;
-		
-		/**
-		 * The support panel (twitter, reddit, stumbleupon, paypal, etc) visor thing
-		 */
-		static public var panel:FlxPanel;
+
 		/**
 		 * A special effect that shakes the screen.  Usage: FlxG.quake.start();
 		 */
@@ -206,52 +197,10 @@ package org.flixel
 			if(_pause != op)
 			{
 				if(_pause)
-				{
-					_game.pauseGame();
 					pauseSounds();
-				}
 				else
-				{
-					_game.unpauseGame();
 					playSounds();
-				}
 			}
-		}
-		
-		/**
-		 * The game and SWF framerate; default is 60.
-		 */
-		static public function get framerate():uint
-		{
-			return _game._framerate;
-		}
-		
-		/**
-		 * @private
-		 */
-		static public function set framerate(Framerate:uint):void
-		{
-			_game._framerate = Framerate;
-			if(!_game._paused && (_game.stage != null))
-				_game.stage.frameRate = Framerate;
-		}
-		
-		/**
-		 * The game and SWF framerate while paused; default is 10.
-		 */
-		static public function get frameratePaused():uint
-		{
-			return _game._frameratePaused;
-		}
-		
-		/**
-		 * @private
-		 */
-		static public function set frameratePaused(Framerate:uint):void
-		{
-			_game._frameratePaused = Framerate;
-			if(_game._paused && (_game.stage != null))
-				_game.stage.frameRate = Framerate;
 		}
 		
 		/**
@@ -701,18 +650,14 @@ package org.flixel
 			FlxG.scores = new Array();
 			level = 0;
 			score = 0;
-			kong = null;
 			pause = false;
 			timeScale = 1.0;
-			framerate = 60;
-			frameratePaused = 10;
 			maxElapsed = 0.0333333;
 			FlxG.elapsed = 0;
 			showBounds = false;
 			
 			mobile = false;
-			
-			panel = new FlxPanel();
+
 			quake = new FlxQuake(Zoom);
 			flash = new FlxFlash();
 			fade = new FlxFade();

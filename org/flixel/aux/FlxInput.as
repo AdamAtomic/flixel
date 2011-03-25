@@ -1,4 +1,4 @@
-package org.flixel.data
+package org.flixel.aux
 {
 	import flash.events.KeyboardEvent;
 	

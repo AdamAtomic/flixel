@@ -1,6 +1,6 @@
 package org.flixel
 {
-	import org.flixel.data.FlxList;
+	import org.flixel.aux.FlxList;
 
 	/**
 	 * A fairly generic quad tree structure for rapid overlap checks.

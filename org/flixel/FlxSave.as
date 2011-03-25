@@ -1,5 +1,6 @@
 package org.flixel
 {
+	import flash.events.NetStatusEvent;
 	import flash.net.SharedObject;
 	import flash.net.SharedObjectFlushStatus;
 	
@@ -24,6 +25,8 @@ package org.flixel
 		 */
 		protected var _so:SharedObject;
 		
+		protected var _onPending:Function;
+		
 		/**
 		 * Blanks out the containers.
 		 */
@@ -32,6 +35,7 @@ package org.flixel
 			name = null;
 			_so = null;
 			data = null;
+			_onPending = null;
 		}
 		
 		/**
@@ -53,7 +57,7 @@ package org.flixel
 			}
 			catch(e:Error)
 			{
-				FlxG.log("WARNING: There was a problem binding to\nthe shared object data from FlxSave.");
+				FlxG.log("ERROR: There was a problem binding to\nthe shared object data from FlxSave.");
 				name = null;
 				_so = null;
 				data = null;
@@ -72,15 +76,15 @@ package org.flixel
 		 * 
 		 * @return	Whether or not the write and flush were successful.
 		 */
-		public function write(FieldName:String,FieldValue:Object,MinFileSize:uint=0):Boolean
+		public function write(FieldName:String,FieldValue:Object,MinFileSize:uint=0,OnPending:Function=null):Boolean
 		{
 			if(_so == null)
 			{
-				FlxG.log("WARNING: You must call FlxSave.bind()\nbefore calling FlxSave.write().");
+				FlxG.log("ERROR: You must call FlxSave.bind()\nbefore calling FlxSave.write().");
 				return false;
 			}
 			data[FieldName] = FieldValue;
-			return forceSave(MinFileSize);
+			return forceSave(MinFileSize,OnPending);
 		}
 		
 		/**
@@ -94,12 +98,12 @@ package org.flixel
 		{
 			if(_so == null)
 			{
-				FlxG.log("WARNING: You must call FlxSave.bind()\nbefore calling FlxSave.read().");
+				FlxG.log("ERROR: You must call FlxSave.bind()\nbefore calling FlxSave.read().");
 				return null;
 			}
 			return data[FieldName];
 		}
-		
+
 		/**
 		 * Writes the local shared object to disk immediately.
 		 *
@@ -107,13 +111,15 @@ package org.flixel
 		 *
 		 * @return	Whether or not the flush was successful.
 		 */
-		public function forceSave(MinFileSize:uint=0):Boolean
+		public function forceSave(MinFileSize:uint=0,OnPending:Function=null):Boolean
 		{
+			_onPending = OnPending;
 			if(_so == null)
 			{
-				FlxG.log("WARNING: You must call FlxSave.bind()\nbefore calling FlxSave.forceSave().");
+				FlxG.log("ERROR: You must call FlxSave.bind()\nbefore calling FlxSave.forceSave().");
 				return false;
 			}
+			
 			var status:Object = null;
 			try
 			{
@@ -121,8 +127,13 @@ package org.flixel
 			}
 			catch (e:Error)
 			{
-				FlxG.log("WARNING: There was a problem flushing\nthe shared object data from FlxSave.");
+				FlxG.log("ERROR: There was a problem flushing\nthe shared object data from FlxSave.");
 				return false;
+			}
+			if(status == SharedObjectFlushStatus.PENDING)
+			{
+				FlxG.log("WARNING: Requesting additional storage\nfor shared object data from FlxSave...");
+				_so.addEventListener(NetStatusEvent.NET_STATUS,onFlushStatus);
 			}
 			return status == SharedObjectFlushStatus.FLUSHED;
 		}
@@ -134,15 +145,35 @@ package org.flixel
 		 * 
 		 * @return	Whether or not the clear and flush was successful.
 		 */
-		public function erase(MinFileSize:uint=0):Boolean
+		public function erase(MinFileSize:uint=0,OnPending:Function=null):Boolean
 		{
 			if(_so == null)
 			{
-				FlxG.log("WARNING: You must call FlxSave.bind()\nbefore calling FlxSave.erase().");
+				FlxG.log("ERROR: You must call FlxSave.bind()\nbefore calling FlxSave.erase().");
 				return false;
 			}
 			_so.clear();
-			return forceSave(MinFileSize);
+			return forceSave(MinFileSize,OnPending);
+		}
+		
+		private function onFlushStatus(event:NetStatusEvent):void
+		{
+			FlxG.log("...captured user storage preference.");
+			switch (event.info.code)
+			{
+				case "SharedObject.Flush.Success":
+					if(_onPending != null)
+						_onPending(true);
+					break;
+				case "SharedObject.Flush.Failed":
+					if(_onPending != null)
+						_onPending(false);
+					else
+						FlxG.log("ERROR: There was a problem flushing\nthe shared object data from FlxSave.");
+					break;
+			}
+			
+			_so.removeEventListener(NetStatusEvent.NET_STATUS,onFlushStatus);
 		}
 	}
 }

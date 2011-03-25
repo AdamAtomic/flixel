@@ -55,6 +55,41 @@ package org.flixel
 		}
 		
 		/**
+		 * Shuffles the entries in an array into a new random order.
+		 * 
+		 * @param	A				A Flash <code>Array</code> object containing...stuff.
+		 * @param	HowManyTimes	How many swaps to perform during the shuffle operation.  Good rule of thumb is 2-4 times as many objects are in the list.
+		 * 
+		 * @return	The same Flash <code>Array</code> object that you passed in in the first place.
+		 */
+		static public function shuffle(FlashArray:Array,HowManyTimes:uint):Array
+		{
+			var i1:uint;
+			var i2:uint;
+			var o:Object;
+			for(var i:uint = 0; i < HowManyTimes; i++)
+			{
+				i1 = FlxU.random()*FlashArray.length;
+				i2 = FlxU.random()*FlashArray.length;
+				o = FlashArray[i2];
+				FlashArray[i2] = FlashArray[i1];
+				FlashArray[i1] = o;
+			}
+			return FlashArray;
+		}
+		
+		static public function getRandom(FlashArray:Array):Object
+		{
+			if(FlashArray != null)
+			{
+				var l:uint = FlashArray.length;
+				if(l > 0)
+					return FlashArray[uint(FlxU.random()*l)];
+			}
+			return null;
+		}
+		
+		/**
 		 * Generates a random number.  NOTE: To create a series of predictable
 		 * random numbers, add the random number you generate each time
 		 * to the <code>Seed</code> value before calling <code>random()</code> again.
@@ -173,7 +208,7 @@ package org.flixel
 			}
 
 			var dx:Number = X-PivotX;
-			var dy:Number = PivotY-Y;
+			var dy:Number = PivotY+Y; //Y axis is inverted in flash, normally this would be a subtract operation
 			if(P == null) P = new FlxPoint();
 			P.x = PivotX + cos*dx - sin*dy;
 			P.y = PivotY - sin*dx - cos*dy;
@@ -201,6 +236,21 @@ package org.flixel
 				angle = c2 - c1 * ((X + ay) / (ay - X));
 			return ((Y < 0)?-angle:angle)*57.2957796;
 		};
+		
+		/**
+		 * Calculate the distance between two points.
+		 * 
+		 * @param Point1	A <code>FlxPoint</code> object referring to the first location.
+		 * @param Point2	A <code>FlxPoint</code> object referring to the second location.
+		 * 
+		 * @return	The distance between the two points as a floating point <code>Number</code> object.
+		 */
+		static public function getDistance(Point1:FlxPoint,Point2:FlxPoint):Number
+		{
+			var dx:Number = Point1.x - Point2.x;
+			var dy:Number = Point1.y - Point2.y;
+			return Math.sqrt(dx * dx + dy * dy);
+		}
 		
 		/**
 		 * Generate a Flash <code>uint</code> color from RGBA components.
@@ -328,6 +378,65 @@ package org.flixel
 			
 			Results[3] = Number((Color >> 24) & 0xFF) / 255;
 			return Results;
+		}
+		
+		static public function formatTime(Seconds:Number):String
+		{
+			var ts:String = uint(Seconds/60) + ":";
+			var dts:uint = uint(Seconds)%60;
+			if(dts < 10)
+				ts += "0"+dts;
+			else
+				ts += dts;
+			return ts;
+		}
+		
+		static public function formatArray(A:Array):String
+		{
+			if(A == null)
+			{
+				FlxG.log("WARNING: Tried to format a null array [FlxU.formatArray()].");
+				return null;
+			}
+			if(A.length <= 0)
+				return null;
+			var s:String = A[0].toString();
+			for(var i:uint = 1; i < A.length; i++)
+				s += ", " + A[i].toString();
+			return s;
+		}
+		
+		static public function formatMoney(Amount:Number,ShowDecimal:Boolean=true):String
+		{
+			var h:int;
+			var a:int = Amount;
+			var s:String = "";
+			var comma:String = "";
+			var zeroes:String = "";
+			while(a > 0)
+			{
+				if((s.length > 0) && comma.length <= 0)
+					comma = ",";
+				zeroes = "";
+				h = a - int(a/1000)*1000;
+				a /= 1000;
+				if(a > 0)
+				{
+					if(h < 100)
+						zeroes += "0";
+					if(h < 10)
+						zeroes += "0";
+				}
+				s = zeroes + h + comma + s;
+			}
+			if(ShowDecimal)
+			{
+				a = int(Amount*100)-(int(Amount)*100);
+				s += "." + a;
+				if(a < 10)
+					s += "0";
+			}
+			return s;
 		}
 		
 		/**

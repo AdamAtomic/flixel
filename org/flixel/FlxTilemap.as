@@ -181,9 +181,12 @@ package org.flixel
 				updateTile(i++);
 			
 			//Also need to allocate a buffer to hold the rendered tiles
-			var bw:uint = (FlxU.ceil(FlxG.width / _tileWidth) + 1)*_tileWidth;
-			var bh:uint = (FlxU.ceil(FlxG.height / _tileHeight) + 1)*_tileHeight;
-			_buffer = new BitmapData(bw,bh,true,0);
+			if(_buffer == null)
+			{
+				var bw:uint = (FlxU.ceil(FlxG.width / _tileWidth) + 1)*_tileWidth;
+				var bh:uint = (FlxU.ceil(FlxG.height / _tileHeight) + 1)*_tileHeight;
+				_buffer = new BitmapData(bw,bh,true,0);
+			}
 
 			//Pre-set some helper variables for later
 			_screenRows = Math.ceil(FlxG.height/_tileHeight)+1;
@@ -412,12 +415,24 @@ package org.flixel
 				generateBoundingTiles();
 		}
 		
+		public function getData(Simple:Boolean=false):Array
+		{
+			if(!Simple)
+				return _data;
+			
+			var l:uint = _data.length;
+			var data:Array = new Array(l);
+			for(var i:uint = 0; i < l; i++)
+				data[i] = (_data[i] > 0)?1:0;
+			return data;
+		}
+		
 		/**
 		 * Checks for overlaps between the provided object and any tiles above the collision index.
 		 * 
-		 * @param	Core		The <code>FlxCore</code> you want to check against.
+		 * @param	Rect		The <code>FlxRect</code> you want to check against.
 		 */
-		override public function overlaps(Core:FlxObject):Boolean
+		override public function overlaps(Rect:FlxRect):Boolean
 		{
 			var d:uint;
 			
@@ -425,10 +440,10 @@ package org.flixel
 			var blocks:Array = new Array();
 			
 			//First make a list of all the blocks we'll use for collision
-			var ix:uint = Math.floor((Core.x - x)/_tileWidth);
-			var iy:uint = Math.floor((Core.y - y)/_tileHeight);
-			var iw:uint = Math.ceil(Core.width/_tileWidth)+1;
-			var ih:uint = Math.ceil(Core.height/_tileHeight)+1;
+			var ix:uint = Math.floor((Rect.x - x)/_tileWidth);
+			var iy:uint = Math.floor((Rect.y - y)/_tileHeight);
+			var iw:uint = Math.ceil(Rect.width/_tileWidth)+1;
+			var ih:uint = Math.ceil(Rect.height/_tileHeight)+1;
 			var r:uint = 0;
 			var c:uint;
 			while(r < ih)
@@ -455,7 +470,7 @@ package org.flixel
 			{
 				_block.x = blocks[i].x;
 				_block.y = blocks[i++].y;
-				if(_block.overlaps(Core))
+				if(_block.overlaps(Rect))
 					return true;
 			}
 			return false;
@@ -754,29 +769,40 @@ package org.flixel
 		 * 
 		 * @param	Data		An array full of integer tile references.
 		 * @param	Width		The number of tiles in each row.
+		 * @param	Invert		Recommended only for 1-bit arrays - changes 0s to 1s and vice versa.
 		 * 
 		 * @return	A comma-separated string containing the level data in a <code>FlxTilemap</code>-friendly format.
 		 */
-		static public function arrayToCSV(Data:Array,Width:int):String
+		static public function arrayToCSV(Data:Array,Width:int,Invert:Boolean=false):String
 		{
 			var r:uint = 0;
 			var c:uint;
 			var csv:String;
 			var Height:int = Data.length / Width;
+			var d:int;
 			while(r < Height)
 			{
 				c = 0;
 				while(c < Width)
 				{
+					d = Data[r*Width+c];
+					if(Invert)
+					{
+						if(d == 0)
+							d = 1;
+						else if(d == 1)
+							d = 0;
+					}
+					
 					if(c == 0)
 					{
 						if(r == 0)
-							csv += Data[0];
+							csv += d;
 						else
-							csv += "\n"+Data[r*Width];
+							csv += "\n"+d;
 					}
 					else
-						csv += ", "+Data[r*Width+c];
+						csv += ", "+d;
 					c++;
 				}
 				r++;
@@ -792,6 +818,7 @@ package org.flixel
 		 * 
 		 * @param	PNGFile		An embedded graphic, preferably black and white.
 		 * @param	Invert		Load white pixels as solid instead.
+		 * @param	Scale		1 pixel = Scale number of tiles.  Default is 1.
 		 * 
 		 * @return	A comma-separated string containing the level data in a <code>FlxTilemap</code>-friendly format.
 		 */

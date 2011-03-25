@@ -2,6 +2,7 @@ package org.flixel
 {
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.display.Graphics;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
@@ -15,8 +16,7 @@ package org.flixel
 	import flash.utils.Timer;
 	import flash.utils.getTimer;
 	
-	import org.flixel.data.FlxConsole;
-	import org.flixel.data.FlxPause;
+	import org.flixel.aux.FlxConsole;
 
 	/**
 	 * FlxGame is the heart of all flixel games, and contains a bunch of basic game loops and things.
@@ -37,96 +37,67 @@ package org.flixel
 		//[Embed(source="data/nokiafc22.ttf",fontFamily="system")] protected var junk:String;
 		
 		[Embed(source="data/beep.mp3")] protected var SndBeep:Class;
-		[Embed(source="data/flixel.mp3")] protected var SndFlixel:Class;
 
 		/**
 		 * Sets 0, -, and + to control the global volume and P to pause.
 		 * @default true
 		 */
 		public var useDefaultHotKeys:Boolean;
-		/**
-		 * Displayed whenever the game is paused.
-		 * Override with your own <code>FlxLayer</code> for hot custom pause action!
-		 * Defaults to <code>data.FlxPause</code>.
-		 */
-		public var pause:FlxGroup;
-		
-		//startup
-		internal var _iState:Class;
-		internal var _created:Boolean;
-		
+
 		//basic display stuff
 		internal var _state:FlxState;
-		internal var _screen:Sprite;
 		internal var _buffer:Bitmap;
 		internal var _zoom:uint;
-		internal var _gameXOffset:int;
-		internal var _gameYOffset:int;
-		internal var _frame:Class;
-		internal var _zeroPoint:Point;
+		
+		//startup
+		protected var _iState:Class;
+		protected var _created:Boolean;
 		
 		//basic update stuff
-		internal var _elapsed:Number;
-		internal var _total:uint;
-		internal var _paused:Boolean;
-		internal var _framerate:uint;
-		internal var _frameratePaused:uint;
+		protected var _total:uint;
+		protected var _accumulator:Number;
+		protected var _lostFocus:Boolean;
+		protected var _step:Number;
 		
-		//Pause screen, sound tray, support panel, dev console, and special effects objects
-		internal var _soundTray:Sprite;
-		internal var _soundTrayTimer:Number;
-		internal var _soundTrayBars:Array;
+		//"focus lost" screen, sound tray, and debugger overlays
+		protected var _focus:Sprite;
+		protected var _soundTray:Sprite;
+		protected var _soundTrayTimer:Number;
+		protected var _soundTrayBars:Array;
 		internal var _console:FlxConsole;
-		
+
 		/**
 		 * Game object constructor - sets up the basic properties of your game.
 		 * 
 		 * @param	GameSizeX		The width of your game in pixels (e.g. 320).
 		 * @param	GameSizeY		The height of your game in pixels (e.g. 240).
 		 * @param	InitialState	The class name of the state you want to create and switch to first (e.g. MenuState).
+		 * @param	FrameRate		How frequently the game should update (default is 60 times per second).
 		 * @param	Zoom			The level of zoom (e.g. 2 means all pixels are now rendered twice as big).
 		 */
-		public function FlxGame(GameSizeX:uint,GameSizeY:uint,InitialState:Class,Zoom:uint=2)
+		public function FlxGame(GameSizeX:uint,GameSizeY:uint,InitialState:Class,FrameRate:uint=60,Zoom:uint=2)
 		{
+			//super high priority init stuff (focus, mouse, etc)
 			flash.ui.Mouse.hide();
+			_lostFocus = false;
+			_focus = new Sprite();
+			_focus.visible = false;
+			_soundTray = new Sprite();
 			
+			//basic display and update setup stuff
 			_zoom = Zoom;
 			FlxState.bgColor = 0xff000000;
 			FlxG.setGameData(this,GameSizeX,GameSizeY,Zoom);
-			_elapsed = 0;
+			_step = 1/FrameRate;
 			_total = 0;
-			pause = new FlxPause();
+			_accumulator = 0;
 			_state = null;
-			_iState = InitialState;
-			_zeroPoint = new Point();
-
 			useDefaultHotKeys = true;
 			
-			_frame = null;
-			_gameXOffset = 0;
-			_gameYOffset = 0;
-			
-			_paused = false;
+			//then get ready to create the game object for real
+			_iState = InitialState;
 			_created = false;
-			
 			addEventListener(Event.ENTER_FRAME, create);
-		}
-		
-		/**
-		 * Adds a frame around your game for presentation purposes (see Canabalt, Gravity Hook).
-		 * 
-		 * @param	Frame			If you want you can add a little graphical frame to the outside edges of your game.
-		 * @param	ScreenOffsetX	Width in pixels of left side of frame.
-		 * @param	ScreenOffsetY	Height in pixels of top of frame.
-		 * 
-		 * @return	This <code>FlxGame</code> instance.
-		 */
-		protected function addFrame(Frame:Class,ScreenOffsetX:uint,ScreenOffsetY:uint):FlxGame
-		{
-			_frame = Frame;
-			_gameXOffset = ScreenOffsetX;
-			_gameYOffset = ScreenOffsetY;
-			return this;
 		}
 		
 		/**
@@ -139,7 +110,7 @@ package org.flixel
 			if(!Silent)
 				FlxG.play(SndBeep);
 			_soundTrayTimer = 1;
-			_soundTray.y = _gameYOffset*_zoom;
+			_soundTray.y = 0;
 			_soundTray.visible = true;
 			var gv:uint = Math.round(FlxG.volume*10);
 			if(FlxG.mute)
@@ -160,26 +131,25 @@ package org.flixel
 		public function switchState(State:FlxState):void
 		{ 
 			//Basic reset stuff
-			FlxG.panel.hide();
 			FlxG.unfollow();
 			FlxG.resetInput();
 			FlxG.destroySounds();
 			FlxG.flash.stop();
 			FlxG.fade.stop();
 			FlxG.quake.stop();
-			_screen.x = 0;
-			_screen.y = 0;
+			_buffer.x = 0;
+			_buffer.y = 0;
 			
 			//Swap the new state for the old one and dispose of it
-			_screen.addChild(State);
+			addChild(State);
 			if(_state != null)
 			{
 				_state.destroy(); //important that it is destroyed while still in the display list
-				_screen.swapChildren(State,_state);
-				_screen.removeChild(_state);
+				swapChildren(State,_state);
+				removeChild(_state);
 			}
 			_state = State;
-			_state.scaleX = _state.scaleY = _zoom;
+			_state.scaleX = _state.scaleY = _zoom; //important for proper mouse tracking
 			
 			//Finally, create the new state
 			_state.create();
@@ -190,37 +160,40 @@ package org.flixel
 		 */
 		protected function onKeyUp(event:KeyboardEvent):void
 		{
-			if((event.keyCode == 192) || (event.keyCode == 220)) //FOR ZE GERMANZ
+			if(!FlxG.mobile)
 			{
-				_console.toggle();
-				return;
-			}
-			if(!FlxG.mobile && useDefaultHotKeys)
-			{
-				var c:int = event.keyCode;
-				var code:String = String.fromCharCode(event.charCode);
-				switch(c)
+				if((event.keyCode == 192) || (event.keyCode == 220)) //FOR ZE GERMANZ
 				{
-					case 48:
-					case 96:
-						FlxG.mute = !FlxG.mute;
-						showSoundTray();
-						return;
-					case 109:
-					case 189:
-						FlxG.mute = false;
-			    		FlxG.volume = FlxG.volume - 0.1;
-			    		showSoundTray();
-						return;
-					case 107:
-					case 187:
-						FlxG.mute = false;
-			    		FlxG.volume = FlxG.volume + 0.1;
-			    		showSoundTray();
-						return;
-					case 80:
-						FlxG.pause = !FlxG.pause;
-					default: break;
+					_console.toggle();
+					return;
+				}
+				if(useDefaultHotKeys)
+				{
+					var c:int = event.keyCode;
+					var code:String = String.fromCharCode(event.charCode);
+					switch(c)
+					{
+						case 48:
+						case 96:
+							FlxG.mute = !FlxG.mute;
+							showSoundTray();
+							return;
+						case 109:
+						case 189:
+							FlxG.mute = false;
+				    		FlxG.volume = FlxG.volume - 0.1;
+				    		showSoundTray();
+							return;
+						case 107:
+						case 187:
+							FlxG.mute = false;
+				    		FlxG.volume = FlxG.volume + 0.1;
+				    		showSoundTray();
+							return;
+						case 80:
+							FlxG.pause = !FlxG.pause;
+						default: break;
+					}
 				}
 			}
 			FlxG.keys.handleKeyUp(event);
@@ -247,8 +220,10 @@ package org.flixel
 		 */
 		protected function onFocus(event:Event=null):void
 		{
-			if(FlxG.pause)
-				FlxG.pause = false;
+			flash.ui.Mouse.hide();
+			FlxG.resetInput();
+			_lostFocus = _focus.visible = false;
+			stage.frameRate = 30;//_framerate;
 		}
 		
 		/**
@@ -256,63 +231,54 @@ package org.flixel
 		 */
 		protected function onFocusLost(event:Event=null):void
 		{
-			FlxG.pause = true;
-		}
-		
-		/**
-		 * Internal function to help with basic pause game functionality.
-		 */
-		internal function unpauseGame():void
-		{
-			if(!FlxG.panel.visible) flash.ui.Mouse.hide();
-			FlxG.resetInput();
-			_paused = false;
-			stage.frameRate = _framerate;
-		}
-		
-		/**
-		 * Internal function to help with basic pause game functionality.
-		 */
-		internal function pauseGame():void
-		{
 			if((x != 0) || (y != 0))
 			{
 				x = 0;
 				y = 0;
 			}
 			flash.ui.Mouse.show();
-			_paused = true;
-			stage.frameRate = _frameratePaused;
+			_lostFocus = _focus.visible = true;
+			stage.frameRate = 5;//_frameratePaused;
 		}
 		
 		/**
-		 * This is the main game loop.  It controls all the updating and rendering.
+		 * Handles the onEnterFrame call, figures out how many updates and draw calls to do.
+		 * @param	event	A Flash system event, not terribly important for our purposes!
 		 */
-		protected function update(event:Event):void
+		protected function onEnterFrame(event:Event=null):void
 		{
 			var mark:uint = getTimer();
-			
-			var i:uint;
-			var soundPrefs:FlxSave;
-
-			//Frame timing
-			var ems:uint = mark-_total;
-			_elapsed = ems/1000;
-			_console.mtrTotal.add(ems);
+			_accumulator += (mark-_total)/1000;
 			_total = mark;
-			FlxG.elapsed = _elapsed;
-			if(FlxG.elapsed > FlxG.maxElapsed)
-				FlxG.elapsed = FlxG.maxElapsed;
-			FlxG.elapsed *= FlxG.timeScale;
-			
-			//Sound tray crap
+			var i:uint = 0;
+			while(_accumulator >= _step)
+			{
+				FlxG.elapsed = FlxG.timeScale*_step;
+				updateSystem();
+				update();
+				FlxG.mouse.wheel = 0;
+				_accumulator -= _step;
+				i++;
+			}
+			draw();
+		}
+
+		/**
+		 * This function handles updating the volume controls, debugger, stuff like that.
+		 * This function does NOT update the actual game state or game effects!
+		 * May be called multiple times per "frame" or draw call.
+		 */
+		protected function updateSystem():void
+		{
+			var mark:uint = getTimer();
+			var soundPrefs:FlxSave;
 			if(_soundTray != null)
 			{
 				if(_soundTrayTimer > 0)
-					_soundTrayTimer -= _elapsed;
+					_soundTrayTimer -= _step;
 				else if(_soundTray.y > -_soundTray.height)
 				{
-					_soundTray.y -= _elapsed*FlxG.height*2;
+					_soundTray.y -= _step*FlxG.height*2;
 					if(_soundTray.y <= -_soundTray.height)
 					{
 						_soundTray.visible = false;
@@ -330,19 +296,24 @@ package org.flixel
 					}
 				}
 			}
-
-			//Animate flixel HUD elements
-			FlxG.panel.update();
 			if(_console.visible)
 				_console.update();
 			
-			//State updating
-			FlxG.updateInput();
-			FlxG.updateSounds();
-			if(_paused)
-				pause.update();
-			else
+			if(!_lostFocus)
+				FlxG.updateInput();
+		}
+		
+		/**
+		 * This function updates the actual game state.
+		 * May be called multiple times per "frame" or draw call.
+		 */
+		protected function update(event:Event=null):void
+		{			
+			//var mark:uint = getTimer();
+			if(!_lostFocus)
 			{
+				FlxG.updateSounds();
+
 				//Update the camera and game state
 				FlxG.doFollow();
 				_state.update();
@@ -353,14 +324,20 @@ package org.flixel
 				if(FlxG.fade.exists)
 					FlxG.fade.update();
 				FlxG.quake.update();
-				_screen.x = FlxG.quake.x;
-				_screen.y = FlxG.quake.y;
+				x = FlxG.quake.x;
+				y = FlxG.quake.y;
 			}
 			//Keep track of how long it took to update everything
 			var updateMark:uint = getTimer();
-			_console.mtrUpdate.add(updateMark-mark);
-			
-			//Render game content, special fx, and overlays
+			//_console.mtrUpdate.add(updateMark-mark);
+		}
+		
+		/**
+		 * Goes through the game state and draws all the game objects and special effects.
+		 */
+		protected function draw(event:Event=null):void
+		{
+			//var mark:uint = getTimer();
 			FlxG.buffer.lock();
 			_state.preProcess();
 			_state.render();
@@ -368,8 +345,6 @@ package org.flixel
 				FlxG.flash.render();
 			if(FlxG.fade.exists)
 				FlxG.fade.render();
-			if(FlxG.panel.visible)
-				FlxG.panel.render();
 			if(FlxG.mouse.cursor != null)
 			{
 				if(FlxG.mouse.cursor.active)
@@ -378,42 +353,33 @@ package org.flixel
 					FlxG.mouse.cursor.render();
 			}
 			_state.postProcess();
-			if(_paused)
-				pause.render();
 			FlxG.buffer.unlock();
-			//Keep track of how long it took to draw everything
-			_console.mtrRender.add(getTimer()-updateMark);
-			//clear mouse wheel delta
-			FlxG.mouse.wheel = 0;
+			//_console.mtrRender.add(getTimer()-mark);
 		}
 		
 		/**
-		 * Used to instantiate the guts of flixel once we have a valid pointer to the root.
+		 * Used to instantiate the guts of flixel once we have a valid reference to the root.
+		 * 
+		 * @param	event	Just a Flash system event, not too important for our purposes.
 		 */
-		internal function create(event:Event):void
+		protected function create(event:Event):void
 		{
 			if(root == null)
 				return;
 
-			var i:uint;
-			var l:uint;
 			var soundPrefs:FlxSave;
 			
 			//Set up the view window and double buffering
 			stage.scaleMode = StageScaleMode.NO_SCALE;
             stage.align = StageAlign.TOP_LEFT;
-            stage.frameRate = _framerate;
-            _screen = new Sprite();
-            addChild(_screen);
-			var tmp:Bitmap = new Bitmap(new BitmapData(FlxG.width,FlxG.height,true,FlxState.bgColor));
-			tmp.x = _gameXOffset;
-			tmp.y = _gameYOffset;
-			tmp.scaleX = tmp.scaleY = _zoom;
-			_screen.addChild(tmp);
-			FlxG.buffer = tmp.bitmapData;
+            stage.frameRate = 30;//_framerate;
+			_buffer = new Bitmap(new BitmapData(FlxG.width,FlxG.height,true,FlxState.bgColor));
+			_buffer.scaleX = _buffer.scaleY = _zoom;
+			addChild(_buffer);
+			FlxG.buffer = _buffer.bitmapData;
 			
 			//Initialize game console
-			_console = new FlxConsole(_gameXOffset,_gameYOffset,_zoom);
+			_console = new FlxConsole(_zoom);
 			if(!FlxG.mobile)
 				addChild(_console);
 			var vstring:String = FlxG.LIBRARY_NAME+" v"+FlxG.LIBRARY_MAJOR_VERSION+"."+FlxG.LIBRARY_MINOR_VERSION;
@@ -422,8 +388,8 @@ package org.flixel
 			else
 				vstring += " [release]";
 			var underline:String = "";
-			i = 0;
-			l = vstring.length+32;
+			var i:uint = 0;
+			var l:uint = vstring.length+32;
 			while(i < l)
 			{
 				underline += "-";
@@ -445,43 +411,8 @@ package org.flixel
 				stage.addEventListener(Event.DEACTIVATE, onFocusLost);
 				stage.addEventListener(Event.ACTIVATE, onFocus);
 				
-				//Sound Tray popup
-				_soundTray = new Sprite();
-				_soundTray.visible = false;
-				_soundTray.scaleX = 2;
-				_soundTray.scaleY = 2;
-				tmp = new Bitmap(new BitmapData(80,30,true,0x7F000000));
-				_soundTray.x = (_gameXOffset+FlxG.width/2)*_zoom-(tmp.width/2)*_soundTray.scaleX;
-				_soundTray.addChild(tmp);
-				
-				var text:TextField = new TextField();
-				text.width = tmp.width;
-				text.height = tmp.height;
-				text.multiline = true;
-				text.wordWrap = true;
-				text.selectable = false;
-				text.embedFonts = true;
-				text.antiAliasType = AntiAliasType.NORMAL;
-				text.gridFitType = GridFitType.PIXEL;
-				text.defaultTextFormat = new TextFormat("system",8,0xffffff,null,null,null,null,null,"center");;
-				_soundTray.addChild(text);
-				text.text = "VOLUME";
-				text.y = 16;
-				
-				var bx:uint = 10;
-				var by:uint = 14;
-				_soundTrayBars = new Array();
-				i = 0;
-				while(i < 10)
-				{
-					tmp = new Bitmap(new BitmapData(4,++i,false,0xffffff));
-					tmp.x = bx;
-					tmp.y = by;
-					_soundTrayBars.push(_soundTray.addChild(tmp));
-					bx += 6;
-					by--;
-				}
-				addChild(_soundTray);
+				createSoundTray();
+				createFocusScreen();
 				
 				//Check for saved sound preference data
 				soundPrefs = new FlxSave();
@@ -491,24 +422,87 @@ package org.flixel
 						FlxG.volume = soundPrefs.data.volume;
 					if(soundPrefs.data.mute != null)
 						FlxG.mute = soundPrefs.data.mute;
-					showSoundTray(true);
+					//showSoundTray(true);
 				}
-			}
-
-			//Initialize the decorative frame (optional)
-			if(_frame != null)
-			{
-				var bmp:Bitmap = new _frame();
-				bmp.scaleX = _zoom;
-				bmp.scaleY = _zoom;
-				addChild(bmp);
 			}
 			
 			//All set!
 			switchState(new _iState());
 			FlxState.screen.unsafeBind(FlxG.buffer);
 			removeEventListener(Event.ENTER_FRAME, create);
-			addEventListener(Event.ENTER_FRAME, update);
+			addEventListener(Event.ENTER_FRAME, onEnterFrame);
+		}
+		
+		/**
+		 * Sets up the "sound tray", the little volume meter that pops down sometimes.
+		 */
+		protected function createSoundTray():void
+		{
+			_soundTray.visible = false;
+			_soundTray.scaleX = 2;
+			_soundTray.scaleY = 2;
+			var tmp:Bitmap = new Bitmap(new BitmapData(80,30,true,0x7F000000));
+			_soundTray.x = (FlxG.width/2)*_zoom-(tmp.width/2)*_soundTray.scaleX;
+			_soundTray.addChild(tmp);
+			
+			var text:TextField = new TextField();
+			text.width = tmp.width;
+			text.height = tmp.height;
+			text.multiline = true;
+			text.wordWrap = true;
+			text.selectable = false;
+			text.embedFonts = true;
+			text.antiAliasType = AntiAliasType.NORMAL;
+			text.gridFitType = GridFitType.PIXEL;
+			text.defaultTextFormat = new TextFormat("system",8,0xffffff,null,null,null,null,null,"center");;
+			_soundTray.addChild(text);
+			text.text = "VOLUME";
+			text.y = 16;
+			
+			var bx:uint = 10;
+			var by:uint = 14;
+			_soundTrayBars = new Array();
+			var i:uint = 0;
+			while(i < 10)
+			{
+				tmp = new Bitmap(new BitmapData(4,++i,false,0xffffff));
+				tmp.x = bx;
+				tmp.y = by;
+				_soundTrayBars.push(_soundTray.addChild(tmp));
+				bx += 6;
+				by--;
+			}
+			addChild(_soundTray);
+		}
+		
+		/**
+		 * Sets up the darkened overlay with the big white "play" button that appears when a flixel game loses focus.
+		 */
+		protected function createFocusScreen():void
+		{
+			var g:Graphics = _focus.graphics;
+			
+			//draw transparent black backdrop
+			g.moveTo(0,0);
+			g.beginFill(0,0.5);
+			g.lineTo(stage.width,0);
+			g.lineTo(stage.width,stage.height/2);
+			g.lineTo(0,stage.height);
+			g.lineTo(0,0);
+			g.endFill();
+			
+			//draw white arrow
+			var hw:uint = stage.width/2;
+			var hh:uint = stage.height/4; //no idea why this has to be 4 instead of 2
+			var tri:uint = FlxU.min(hw,hh)/3;
+			g.moveTo(hw-tri,hh-tri);
+			g.beginFill(0xffffff);
+			g.lineTo(hw+tri,hh);
+			g.lineTo(hw-tri,hh+tri);
+			g.lineTo(hw-tri,hh-tri);
+			g.endFill();
+
+			addChild(_focus);
 		}
 	}
 }

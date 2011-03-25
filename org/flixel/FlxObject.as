@@ -309,24 +309,18 @@ package org.flixel
 			var thrustComponents:FlxPoint;
 			if(thrust != 0)
 			{
-				thrustComponents = FlxU.rotatePoint(-thrust,0,0,0,angle);
-				var maxComponents:FlxPoint = FlxU.rotatePoint(-maxThrust,0,0,0,angle);
-				var max:Number = ((maxComponents.x>0)?maxComponents.x:-maxComponents.x);
-				if(max > ((maxComponents.y>0)?maxComponents.y:-maxComponents.y))
-					maxComponents.y = max;
-				else
-					max = ((maxComponents.y>0)?maxComponents.y:-maxComponents.y);
-				maxVelocity.x = maxVelocity.y = ((max>0)?max:-max);
+				vc = FlxU.computeVelocity(thrust,thrust,0,maxThrust);
+				thrustComponents = FlxU.rotatePoint(0,vc,0,0,angle);
 			}
 			else
 				thrustComponents = _pZero;
 			
-			vc = (FlxU.computeVelocity(velocity.x,acceleration.x+thrustComponents.x,drag.x,maxVelocity.x) - velocity.x)/2;
+			vc = (FlxU.computeVelocity(velocity.x-thrustComponents.x,acceleration.x,drag.x,maxVelocity.x) - velocity.x)/2;
 			velocity.x += vc;
 			var xd:Number = velocity.x*FlxG.elapsed;
 			velocity.x += vc;
 			
-			vc = (FlxU.computeVelocity(velocity.y,acceleration.y+thrustComponents.y,drag.y,maxVelocity.y) - velocity.y)/2;
+			vc = (FlxU.computeVelocity(velocity.y-thrustComponents.y,acceleration.y,drag.y,maxVelocity.y) - velocity.y)/2;
 			velocity.y += vc;
 			var yd:Number = velocity.y*FlxG.elapsed;
 			velocity.y += vc;
@@ -387,24 +381,6 @@ package org.flixel
 		public function render():void
 		{
 			//Objects don't have any visual logic/display of their own.
-		}
-		
-		/**
-		 * Checks to see if some <code>FlxObject</code> object overlaps this <code>FlxObject</code> object.
-		 * 
-		 * @param	Object	The object being tested.
-		 * 
-		 * @return	Whether or not the two objects overlap.
-		 */
-		public function overlaps(Object:FlxObject):Boolean
-		{
-			getScreenXY(_point);
-			var tx:Number = _point.x;
-			var ty:Number = _point.y;
-			Object.getScreenXY(_point);
-			if((_point.x <= tx-Object.width) || (_point.x >= tx+width) || (_point.y <= ty-Object.height) || (_point.y >= ty+height))
-				return false;
-			return true;
 		}
 		
 		/**

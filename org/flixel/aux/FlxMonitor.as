@@ -1,4 +1,4 @@
-package org.flixel
+package org.flixel.aux
 {
 	/**
 	 * FlxMonitor is a simple class that aggregates and averages data.
@@ -20,6 +20,15 @@ package org.flixel
 		 * An array to hold all the data we are averaging.
 		 */
 		protected var _data:Array;
+		/**
+		 * Just stores the last number we added.
+		 */
+		protected var _last:Number;
+		
+		/**
+		 * Shows whether the monitor has been filled all the way yet or not.
+		 */
+		public var full:Boolean;
 		
 		/**
 		 * Creates the monitor array and sets the size.
@@ -34,9 +43,7 @@ package org.flixel
 				_size = 1;
 			_itr = 0;
 			_data = new Array(_size);
-			var i:uint = 0;
-			while(i < _size)
-				_data[i++] = Default;
+			clear(Default);
 		}
 		
 		/**
@@ -46,9 +53,27 @@ package org.flixel
 		 */
 		public function add(Data:Number):void
 		{
-			_data[_itr++] = Data;
+			_last = Data;
+			_data[_itr++] = _last;
 			if(_itr >= _size)
+			{
 				_itr = 0;
+				full = true;
+			}
+		}
+		
+		/**
+		 * Adds up all the values in the monitor window.
+		 * 
+		 * @return	The total value of all the entries in the monitor.
+		 */
+		public function total():Number
+		{
+			var sum:Number = 0;
+			var i:uint = 0;
+			while(i < _size)
+				sum += _data[i++];
+			return sum;
 		}
 		
 		/**
@@ -58,11 +83,42 @@ package org.flixel
 		 */
 		public function average():Number
 		{
-			var sum:Number = 0;
+			return total()/_size;
+		}
+		
+		/**
+		 * Tells you if the monitor window is charting up or down.
+		 * 
+		 * @return	The difference between the oldest number in the monitor and the average.
+		 */
+		public function trend():Number
+		{
+			var i:uint = _itr+1;
+			if(i >= _size)
+				i = 0;
+			return average() - _data[i];
+		}
+		
+		/**
+		 * Goes through and sets every entry in the monitor to Default (0).
+		 * 
+		 * @param	Default		The new value you want ever entry to have.
+		 */
+		public function clear(Default:Number = 0):void
+		{
+			_last = Default;
 			var i:uint = 0;
 			while(i < _size)
-				sum += _data[i++];
-			return sum/_size;
+				_data[i++] = _last;
+			full = false;
+		}
+		
+		/**
+		 * Retrieves the last value added to the monitor.
+		 */
+		public function last():Number
+		{
+			return _last;
 		}
 	}
 }

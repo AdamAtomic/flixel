@@ -1,4 +1,4 @@
-package org.flixel.data
+package org.flixel.aux
 {
 	import flash.events.MouseEvent;
 	
@@ -12,7 +12,7 @@ package org.flixel.data
 	 */
 	public class FlxMouse
 	{
-		[Embed(source="cursor.png")] protected var ImgDefaultCursor:Class;
+		[Embed(source="../data/cursor.png")] protected var ImgDefaultCursor:Class;
 		
 		/**
 		 * Current X position of the mouse pointer in the game world.

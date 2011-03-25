@@ -1,4 +1,4 @@
-package org.flixel.data
+package org.flixel.aux
 {
 	public class FlxKeyboard extends FlxInput
 	{
@@ -41,6 +41,7 @@ package org.flixel.data
 		public var NUMPADPLUS:Boolean;
 		public var DELETE:Boolean;
 		public var BACKSPACE:Boolean;
+		public var TAB:Boolean;
 		public var Q:Boolean;
 		public var W:Boolean;
 		public var E:Boolean;
@@ -155,6 +156,7 @@ package org.flixel.data
 			addKey("DOWN",40);
 			addKey("LEFT",37);
 			addKey("RIGHT",39);
+			addKey("TAB",9);
 		}
 	}
 }

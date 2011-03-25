@@ -5,6 +5,7 @@ package org.flixel
 	import flash.media.SoundChannel;
 	import flash.media.SoundTransform;
 	import flash.net.URLRequest;
+	import org.flixel.aux.FlxMonitor;
 	
 	/**
 	 * This is the universal flixel sound object, used for streaming, music, and sound effects.
@@ -27,6 +28,18 @@ package org.flixel
 		 * The ID3 artist name.  Defaults to null.  Currently only works for streamed sounds.
 		 */
 		public var artist:String;
+		/**
+		 * Stores the average wave amplitude of both stereo channels
+		 */
+		public var amplitude:Number;
+		/**
+		 * Just the amplitude of the left stereo channel
+		 */
+		public var amplitudeLeft:Number;
+		/**
+		 * Just the amplitude of the left stereo channel
+		 */
+		public var amplitudeRight:Number;
 		
 		protected var _init:Boolean;
 		protected var _sound:Sound;
@@ -45,6 +58,9 @@ package org.flixel
 		protected var _fadeInTimer:Number;
 		protected var _fadeInTotal:Number;
 		protected var _point2:FlxPoint;
+		protected var _amplitudeCallback:Function;
+		protected var _amplitudeMonitor:FlxMonitor;
+		protected var _amplitudeThreshold:Number;
 		
 		/**
 		 * The FlxSound constructor gets all the variables initialized, but NOT ready to play a sound yet.
@@ -83,6 +99,12 @@ package org.flixel
 			playing = false;
 			name = null;
 			artist = null;
+			amplitude = 0;
+			amplitudeLeft = 0;
+			amplitudeRight = 0;
+			_amplitudeCallback = null;
+			_amplitudeMonitor = null;
+			_amplitudeThreshold = 0;
 		}
 		
 		/**
@@ -279,6 +301,13 @@ package org.flixel
 			updateTransform();
 		}
 		
+		public function onBeat(Callback:Function,Threshold:Number=0.12,SampleWindow:uint=5):void
+		{
+			_amplitudeCallback = Callback;
+			_amplitudeThreshold = Threshold;
+			_amplitudeMonitor = new FlxMonitor(SampleWindow);
+		}
+		
 		/**
 		 * Internal function that performs the actual logical updates to the sound object.
 		 * Doesn't do much except optional proximity and fade calculations.
@@ -337,6 +366,23 @@ package org.flixel
 			
 			_volumeAdjust = radial*fade;
 			updateTransform();
+			
+			if((_transform.volume > 0) && (_channel != null))
+			{
+				amplitudeLeft = _channel.leftPeak/_transform.volume;
+				amplitudeRight = _channel.rightPeak/_transform.volume;
+				amplitude = (amplitudeLeft+amplitudeRight)*0.5;
+				if(_amplitudeCallback != null)
+				{
+					var last:Number = _amplitudeMonitor.last();
+					_amplitudeMonitor.add(amplitude);
+					if(_amplitudeMonitor.full && (_amplitudeMonitor.trend() > _amplitudeThreshold) && (amplitude - last > _amplitudeThreshold*0.65))
+					{
+						_amplitudeMonitor.clear();
+						_amplitudeCallback();
+					}
+				}
+			}
 		}
 
 		/**
@@ -410,6 +456,11 @@ package org.flixel
 			if(_sound.id3.artist.length > 0)
 				artist = _sound.id3.artist;
 			_sound.removeEventListener(Event.ID3, gotID3);
+		}
+		
+		public function getActualVolume():Number
+		{
+			return _volume*_volumeAdjust;
 		}
 	}
 }

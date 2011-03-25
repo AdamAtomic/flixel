@@ -1,4 +1,4 @@
-package org.flixel.data
+package org.flixel.aux
 {
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -9,7 +9,6 @@ package org.flixel.data
 	import flash.text.TextFormat;
 	
 	import org.flixel.FlxG;
-	import org.flixel.FlxMonitor;
 
 	/**
 	 * Contains all the logic for the developer console.
@@ -77,13 +76,13 @@ package org.flixel.data
 		 * @param	Y		Y position of the console
 		 * @param	Zoom	The game's zoom level
 		 */
-		public function FlxConsole(X:uint,Y:uint,Zoom:uint)
+		public function FlxConsole(Zoom:uint)
 		{
 			super();
 			
 			visible = false;
-			x = X*Zoom;
-			_by = Y*Zoom;
+			x = 0;
+			_by = 0;
 			_byt = _by - FlxG.height*Zoom;
 			_YT = _Y = y = _byt;
 			var tmp:Bitmap = new Bitmap(new BitmapData(FlxG.width*Zoom,FlxG.height*Zoom,true,0x7F000000));

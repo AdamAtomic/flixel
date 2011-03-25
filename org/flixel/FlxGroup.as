@@ -425,9 +425,18 @@ package org.flixel
 		}
 		
 		/**
-		 * Internal function that calls kill on all members.
+		 * Remove all instances of <code>FlxObject</code> subclass (FlxSprite, FlxBlock, etc) from the list.
+		 * NOTE: does not destroy or kill any of these objects!
 		 */
-		protected function killMembers():void
+		public function clear():void
+		{
+			members.length = 0;
+		}
+		
+		/**
+		 * Calls kill on all members
+		 */
+		public function killMembers():void
 		{
 			var i:uint = 0;
 			var o:FlxObject;

@@ -106,7 +106,6 @@ package org.flixel
 			quantity = 0;
 			_counter = 0;
 			_explode = true;
-			exists = false;
 			on = false;
 			justEmitted = false;
 		}
@@ -233,7 +232,7 @@ package org.flixel
 		/**
 		 * Internal function that actually performs the emitter update (called by update()).
 		 */
-		protected function updateEmitter():void
+		public function updateEmitter():void
 		{
 			if(_explode)
 			{
@@ -345,6 +344,8 @@ package org.flixel
 		{
 			_counter++;
 			var s:FlxSprite = members[_particle] as FlxSprite;
+			if(s == null)
+				return;
 			s.visible = true;
 			s.exists = true;
 			s.active = true;
@@ -388,8 +389,8 @@ package org.flixel
 		 */
 		public function at(Object:FlxObject):void
 		{
-			x = Object.x + Object.origin.x;
-			y = Object.y + Object.origin.y;
+			x = Object.x + Object.origin.x - width/2;
+			y = Object.y + Object.origin.y - height/2;
 		}
 		
 		/**
