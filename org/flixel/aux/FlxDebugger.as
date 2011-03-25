@@ -10,6 +10,7 @@ package org.flixel.aux
 	import flash.text.TextFormat;
 	
 	import org.flixel.FlxG;
+	import org.flixel.aux.debugger.*;
 	
 	public class FlxDebugger extends Sprite
 	{
@@ -18,12 +19,12 @@ package org.flixel.aux
 		static public const TOP:uint = 2;
 		static public const LEFT:uint = 3;
 		static public const RIGHT:uint = 4;
+
+		public var perf:FlxWindow;
+		public var log:Log;
+		public var watch:FlxWindow;
 		
 		public var hasMouse:Boolean;
-		
-		protected var _perf:FlxWindow;
-		protected var _log:FlxWindow;
-		protected var _watch:FlxWindow;
 		
 		protected var _layout:uint;
 		protected var _screen:Point;
@@ -35,7 +36,6 @@ package org.flixel.aux
 			visible = false;
 			hasMouse = false;
 			_screen = new Point(Width,Height);
-			
 
 			addChild(new Bitmap(new BitmapData(Width,15,true,0x7f000000)));
 			
@@ -57,14 +57,14 @@ package org.flixel.aux
 			_gutter = 8;
 			var screenBounds:Rectangle = new Rectangle(_gutter,_gutter,_screen.x-_gutter*2,_screen.y-_gutter*2);
 			
-			_log = new FlxWindow("log",1,1,true,screenBounds);
-			addChild(_log);
+			log = new Log("log",0,0,true,screenBounds);
+			addChild(log);
 			
-			_watch = new FlxWindow("watch",1,1,true,screenBounds);
-			addChild(_watch);
+			watch = new FlxWindow("watch",0,0,true,screenBounds);
+			addChild(watch);
 			
-			_perf = new FlxWindow("performance",100,100,false,screenBounds);
-			addChild(_perf);
+			perf = new FlxWindow("performance",100,100,false,screenBounds);
+			addChild(perf);
 			
 			setLayout(STANDARD);
 			
@@ -87,40 +87,39 @@ package org.flixel.aux
 			switch(_layout)
 			{
 				case BIG:
-					_log.resize((_screen.x-_gutter*3)/2,_screen.y/2);
-					_log.reposition(0,_screen.y);
-					_watch.resize((_screen.x-_gutter*3)/2,_screen.y/2);
-					_watch.reposition(_screen.x,_screen.y);
-					_perf.reposition(_screen.x,0);
+					log.resize((_screen.x-_gutter*3)/2,_screen.y/2);
+					log.reposition(0,_screen.y);
+					watch.resize((_screen.x-_gutter*3)/2,_screen.y/2);
+					watch.reposition(_screen.x,_screen.y);
+					perf.reposition(_screen.x,0);
 					break;
 				case TOP:
-					_log.resize((_screen.x-_gutter*3)/2,_screen.y/4);
-					_log.reposition(0,0);
-					_watch.resize((_screen.x-_gutter*3)/2,_screen.y/4);
-					_watch.reposition(_screen.x,0);
-					_perf.reposition(_screen.x,_screen.y);
+					log.resize((_screen.x-_gutter*3)/2,_screen.y/4);
+					log.reposition(0,0);
+					watch.resize((_screen.x-_gutter*3)/2,_screen.y/4);
+					watch.reposition(_screen.x,0);
+					perf.reposition(_screen.x,_screen.y);
 					break;
 				case LEFT:
-					_log.resize(_screen.x/3,(_screen.y-_gutter*3)/2);
-					_log.reposition(0,0);
-					_watch.resize(_screen.x/3,(_screen.y-_gutter*3)/2);
-					_watch.reposition(0,_screen.y);
-					_perf.reposition(_screen.x,0);
+					log.resize(_screen.x/3,(_screen.y-_gutter*3)/2);
+					log.reposition(0,0);
+					watch.reposition(0,_screen.y);
+					perf.reposition(_screen.x,0);
 					break;
 				case RIGHT:
-					_log.resize(_screen.x/3,(_screen.y-_gutter*3)/2);
-					_log.reposition(_screen.x,0);
-					_watch.resize(_screen.x/3,(_screen.y-_gutter*3)/2);
-					_watch.reposition(_screen.x,_screen.y);
-					_perf.reposition(0,0);
+					log.resize(_screen.x/3,(_screen.y-_gutter*3)/2);
+					log.reposition(_screen.x,0);
+					watch.resize(_screen.x/3,(_screen.y-_gutter*3)/2);
+					watch.reposition(_screen.x,_screen.y);
+					perf.reposition(0,0);
 					break;
 				case STANDARD:
 				default:
-					_log.resize((_screen.x-_gutter*3)/2,_screen.y/4);
-					_log.reposition(0,_screen.y);
-					_watch.resize((_screen.x-_gutter*3)/2,_screen.y/4);
-					_watch.reposition(_screen.x,_screen.y);
-					_perf.reposition(_screen.x,0);
+					log.resize((_screen.x-_gutter*3)/2,_screen.y/4);
+					log.reposition(0,_screen.y);
+					watch.resize((_screen.x-_gutter*3)/2,_screen.y/4);
+					watch.reposition(_screen.x,_screen.y);
+					perf.reposition(_screen.x,0);
 					break;
 			}
 		}

@@ -15,8 +15,7 @@ package org.flixel.aux
 	public class FlxWindow extends Sprite
 	{
 		[Embed(source="../data/handle.png")] protected var ImgHandle:Class;
-		
-		public var top:Number;
+
 		public var minSize:Point;
 		public var maxSize:Point;
 		
@@ -62,7 +61,6 @@ package org.flixel.aux
 			
 			_title = new TextField();
 			_title.x = 2;
-			_title.width = _width-2;
 			_title.height = 16;
 			_title.selectable = false;
 			_title.multiline = false;
@@ -76,7 +74,8 @@ package org.flixel.aux
 				addChild(_handle);
 			}
 			
-			updateSize();
+			if((_width != 0) || (_height != 0))
+				updateSize();
 			bound();
 			
 			addEventListener(Event.ENTER_FRAME,init);
@@ -107,8 +106,6 @@ package org.flixel.aux
 			stage.addEventListener(MouseEvent.MOUSE_MOVE,onMouseMove);
 			stage.addEventListener(MouseEvent.MOUSE_DOWN,onMouseDown);
 			stage.addEventListener(MouseEvent.MOUSE_UP,onMouseUp);
-
-			bound();
 		}
 		
 		protected function onMouseMove(E:MouseEvent=null):void
@@ -180,6 +177,7 @@ package org.flixel.aux
 			_bg.scaleY = _height-15;
 			_shadow.scaleX = _width;
 			_shadow.y = _height;
+			_title.width = _width-4;
 			if(_resizable)
 			{
 				_handle.x = _width-_handle.width;
