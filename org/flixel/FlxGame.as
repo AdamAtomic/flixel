@@ -16,7 +16,7 @@ package org.flixel
 	import flash.utils.Timer;
 	import flash.utils.getTimer;
 	
-	import org.flixel.aux.FlxConsole;
+	//import org.flixel.aux.FlxConsole;
 	import org.flixel.aux.FlxDebugger;
 
 	/**
@@ -44,6 +44,11 @@ package org.flixel
 		 * @default true
 		 */
 		public var useDefaultHotKeys:Boolean;
+		/**
+		 * Initialize and allow the flixel debugger overlay even in release mode.
+		 * @default false
+		 */
+		public var debugOnRelease:Boolean;
 
 		//basic display stuff
 		internal var _state:FlxState;
@@ -95,6 +100,7 @@ package org.flixel
 			_accumulator = 0;
 			_state = null;
 			useDefaultHotKeys = true;
+			debugOnRelease = false;
 			
 			//then get ready to create the game object for real
 			_iState = InitialState;
@@ -164,7 +170,7 @@ package org.flixel
 		{
 			if(!FlxG.mobile)
 			{
-				if(FlxG.debug && ((event.keyCode == 192) || (event.keyCode == 220)))
+				if((FlxG.debug || debugOnRelease) && ((event.keyCode == 192) || (event.keyCode == 220)))
 				{
 					_debugger.visible = !_debugger.visible;
 					if(_debugger.visible)
@@ -227,7 +233,7 @@ package org.flixel
 		 */
 		protected function onMouseDown(event:MouseEvent):void
 		{
-			if(!_debugger.hasMouse)
+			if((_debugger == null) || !_debugger.hasMouse)
 				FlxG.mouse.handleMouseDown(event);
 		}
 		
@@ -236,7 +242,7 @@ package org.flixel
 		 */
 		protected function onMouseUp(event:MouseEvent):void
 		{
-			if(!_debugger.hasMouse)
+			if((_debugger == null) || !_debugger.hasMouse)
 				FlxG.mouse.handleMouseUp(event);
 		}
 		
@@ -245,7 +251,7 @@ package org.flixel
 		 */
 		protected function onMouseWheel(event:MouseEvent):void
 		{
-			if(!_debugger.hasMouse)
+			if((_debugger == null) || !_debugger.hasMouse)
 				FlxG.mouse.handleMouseWheel(event);
 		}
 		
@@ -254,7 +260,7 @@ package org.flixel
 		 */
 		protected function onFocus(event:Event=null):void
 		{
-			if(!_debugger.visible)
+			if((_debugger == null) || !_debugger.visible)
 				flash.ui.Mouse.hide();
 			FlxG.resetInput();
 			_lostFocus = _focus.visible = false;
@@ -414,26 +420,11 @@ package org.flixel
 			FlxG.buffer = _buffer.bitmapData;
 			
 			//Initialize game console
-			if(!FlxG.mobile && FlxG.debug)
+			if(!FlxG.mobile && (FlxG.debug || debugOnRelease))
 			{
 				_debugger = new FlxDebugger(FlxG.width*_zoom,FlxG.height*_zoom);
 				addChild(_debugger);
 			}
-			var vstring:String = FlxG.LIBRARY_NAME+" v"+FlxG.LIBRARY_MAJOR_VERSION+"."+FlxG.LIBRARY_MINOR_VERSION;
-			if(FlxG.debug)
-				vstring += " [debug]";
-			else
-				vstring += " [release]";
-			var underline:String = "";
-			var i:uint = 0;
-			var l:uint = vstring.length+32;
-			while(i < l)
-			{
-				underline += "-";
-				i++;
-			}
-			FlxG.log(vstring);
-			FlxG.log(underline);
 			
 			//Add basic input even listeners
 			stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
