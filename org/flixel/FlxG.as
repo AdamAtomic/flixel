@@ -27,7 +27,7 @@ package org.flixel
 		 * Assign a minor version to your library.
 		 * Appears after the decimal in the console.
 		 */
-		static public var LIBRARY_MINOR_VERSION:uint = 43;
+		static public var LIBRARY_MINOR_VERSION:uint = 50;
 
 		/**
 		 * Internal tracker for game object (so we can pause & unpause)
@@ -175,8 +175,8 @@ package org.flixel
 		 */
 		static public function log(Data:Object):void
 		{
-			if((_game != null) && (_game._console != null))
-				_game._console.log((Data == null)?"ERROR: null object":Data.toString());
+			//if((_game != null) && (_game._console != null))
+			//	_game._console.log((Data == null)?"ERROR: null object":Data.toString());
 		}
 		
 		/**

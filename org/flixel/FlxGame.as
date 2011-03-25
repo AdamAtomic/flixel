@@ -17,6 +17,7 @@ package org.flixel
 	import flash.utils.getTimer;
 	
 	import org.flixel.aux.FlxConsole;
+	import org.flixel.aux.FlxDebugger;
 
 	/**
 	 * FlxGame is the heart of all flixel games, and contains a bunch of basic game loops and things.
@@ -64,7 +65,8 @@ package org.flixel
 		protected var _soundTray:Sprite;
 		protected var _soundTrayTimer:Number;
 		protected var _soundTrayBars:Array;
-		internal var _console:FlxConsole;
+		//internal var _console:FlxConsole;
+		internal var _debugger:FlxDebugger;
 
 		/**
 		 * Game object constructor - sets up the basic properties of your game.
@@ -162,9 +164,14 @@ package org.flixel
 		{
 			if(!FlxG.mobile)
 			{
-				if((event.keyCode == 192) || (event.keyCode == 220)) //FOR ZE GERMANZ
+				if(FlxG.debug && ((event.keyCode == 192) || (event.keyCode == 220)))
 				{
-					_console.toggle();
+					_debugger.visible = !_debugger.visible;
+					if(_debugger.visible)
+						flash.ui.Mouse.show();
+					else
+						flash.ui.Mouse.hide();
+					//_console.toggle();
 					return;
 				}
 				if(useDefaultHotKeys)
@@ -296,8 +303,8 @@ package org.flixel
 					}
 				}
 			}
-			if(_console.visible)
-				_console.update();
+			//if(_console.visible)
+			//	_console.update();
 			
 			if(!_lostFocus)
 				FlxG.updateInput();
@@ -379,9 +386,11 @@ package org.flixel
 			FlxG.buffer = _buffer.bitmapData;
 			
 			//Initialize game console
-			_console = new FlxConsole(_zoom);
-			if(!FlxG.mobile)
-				addChild(_console);
+			if(!FlxG.mobile && FlxG.debug)
+			{
+				_debugger = new FlxDebugger(stage.width,stage.height/2);
+				addChild(_debugger);
+			}
 			var vstring:String = FlxG.LIBRARY_NAME+" v"+FlxG.LIBRARY_MAJOR_VERSION+"."+FlxG.LIBRARY_MINOR_VERSION;
 			if(FlxG.debug)
 				vstring += " [debug]";
