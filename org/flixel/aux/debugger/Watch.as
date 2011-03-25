@@ -6,14 +6,14 @@ package org.flixel.aux.debugger
 	
 	import org.flixel.aux.FlxWindow;
 	
-	public class Log extends FlxWindow
+	public class Watch extends FlxWindow
 	{
 		static protected const MAX_LOG_LINES:uint = 1024;
 		
 		protected var _text:TextField;
-		protected var _lines:Array;
+		protected var _watching:Array;
 		
-		public function Log(Title:String, Width:Number, Height:Number, Resizable:Boolean=true, Bounds:Rectangle=null, BGColor:uint=0xdfBABCBF, TopColor:uint=0xff4E5359)
+		public function Watch(Title:String, Width:Number, Height:Number, Resizable:Boolean=true, Bounds:Rectangle=null, BGColor:uint=0xdfBABCBF, TopColor:uint=0xff4E5359)
 		{
 			super(Title, Width, Height, Resizable, Bounds, BGColor, TopColor);
 			
@@ -26,23 +26,26 @@ package org.flixel.aux.debugger
 			_text.defaultTextFormat = new TextFormat("Courier",12,0);
 			addChild(_text);
 			
-			_lines = new Array();
+			_watching = new Array();
 		}
 		
-		public function add(Text:String):void
+		public function add(AnyObject:Object,VariableName:String):void
 		{
-			_lines.push(Text);
-			if(_lines.length > MAX_LOG_LINES)
+			_watching.push({object:AnyObject,field:VariableName});
+		}
+
+		public function update():void
+		{
+			var o:Object;
+			var i:uint = 0;
+			var l:uint = _watching.length;
+			var str:String = "";
+			while(i < l)
 			{
-				_lines.shift();
-				var newText:String = "";
-				for(var i:uint = 0; i < _lines.length; i++)
-					newText += _lines[i]+"\n";
-				_text.text = newText;
+				o = _watching[i++];
+				str += o.field + ": "+ o.object[o.field].toString() + "\n";
 			}
-			else
-				_text.appendText(Text+"\n");
-			_text.scrollV = _text.height;
+			_text.text = str;
 		}
 		
 		override protected function updateSize():void

@@ -297,6 +297,8 @@ package org.flixel
 				FlxG.elapsed = FlxG.timeScale*_step;
 				updateSystem();
 				update();
+				if((_debugger != null) && (_debugger.visible))
+					_debugger.watch.update();
 				FlxG.mouse.wheel = 0;
 				_accumulator -= _step;
 				i++;

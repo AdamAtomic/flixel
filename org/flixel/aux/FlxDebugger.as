@@ -15,14 +15,15 @@ package org.flixel.aux
 	public class FlxDebugger extends Sprite
 	{
 		static public const STANDARD:uint = 0;
-		static public const BIG:uint = 1;
-		static public const TOP:uint = 2;
-		static public const LEFT:uint = 3;
-		static public const RIGHT:uint = 4;
+		static public const MICRO:uint = 1;
+		static public const BIG:uint = 2;
+		static public const TOP:uint = 3;
+		static public const LEFT:uint = 4;
+		static public const RIGHT:uint = 5;
 
 		public var perf:FlxWindow;
 		public var log:Log;
-		public var watch:FlxWindow;
+		public var watch:Watch;
 		
 		public var hasMouse:Boolean;
 		
@@ -60,10 +61,10 @@ package org.flixel.aux
 			log = new Log("log",0,0,true,screenBounds);
 			addChild(log);
 			
-			watch = new FlxWindow("watch",0,0,true,screenBounds);
+			watch = new Watch("watch",0,0,true,screenBounds);
 			addChild(watch);
 			
-			perf = new FlxWindow("performance",100,100,false,screenBounds);
+			perf = new FlxWindow("performance",100,80,false,screenBounds);
 			addChild(perf);
 			
 			setLayout(STANDARD);
@@ -86,6 +87,13 @@ package org.flixel.aux
 		{
 			switch(_layout)
 			{
+				case MICRO:
+					log.resize(_screen.x/4,68);
+					log.reposition(0,_screen.y);
+					watch.resize(_screen.x/4,68);
+					watch.reposition(_screen.x,_screen.y);
+					perf.reposition(_screen.x,0);
+					break;
 				case BIG:
 					log.resize((_screen.x-_gutter*3)/2,_screen.y/2);
 					log.reposition(0,_screen.y);
@@ -103,6 +111,7 @@ package org.flixel.aux
 				case LEFT:
 					log.resize(_screen.x/3,(_screen.y-_gutter*3)/2);
 					log.reposition(0,0);
+					watch.resize(_screen.x/3,(_screen.y-_gutter*3)/2);
 					watch.reposition(0,_screen.y);
 					perf.reposition(_screen.x,0);
 					break;

@@ -169,7 +169,7 @@ package org.flixel
 		static public var fade:FlxFade;
 		
 		/**
-		 * Log data to the developer console.
+		 * Log data to the debugger.
 		 * 
 		 * @param	Data		Anything you want to log to the console.
 		 */
@@ -177,6 +177,19 @@ package org.flixel
 		{
 			if((_game != null) && (_game._debugger != null))
 				_game._debugger.log.add((Data == null)?"ERROR: null object":Data.toString());
+		}
+		
+		/**
+		 * Add a variable to the watch list in the debugger.
+		 * This lets you see the value of the variable all the time.
+		 * 
+		 * @param	AnyObject		A reference to any object in your game, e.g. Player or Robot or this.
+		 * @param	VariableName	The name of the variable you want to watch, in quotes, as a string: e.g. "speed" or "health".
+		 */
+		static public function watch(AnyObject:Object,VariableName:String):void
+		{
+			if((_game != null) && (_game._debugger != null))
+				_game._debugger.watch.add(AnyObject,VariableName);
 		}
 		
 		/**
