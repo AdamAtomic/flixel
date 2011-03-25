@@ -225,6 +225,33 @@ package org.flixel
 		/**
 		 * Internal event handler for input and focus.
 		 */
+		protected function onMouseDown(event:MouseEvent):void
+		{
+			if(!_debugger.hasMouse)
+				FlxG.mouse.handleMouseDown(event);
+		}
+		
+		/**
+		 * Internal event handler for input and focus.
+		 */
+		protected function onMouseUp(event:MouseEvent):void
+		{
+			if(!_debugger.hasMouse)
+				FlxG.mouse.handleMouseUp(event);
+		}
+		
+		/**
+		 * Internal event handler for input and focus.
+		 */
+		protected function onMouseWheel(event:MouseEvent):void
+		{
+			if(!_debugger.hasMouse)
+				FlxG.mouse.handleMouseWheel(event);
+		}
+		
+		/**
+		 * Internal event handler for input and focus.
+		 */
 		protected function onFocus(event:Event=null):void
 		{
 			if(!_debugger.visible)
@@ -409,15 +436,15 @@ package org.flixel
 			FlxG.log(underline);
 			
 			//Add basic input even listeners
-			stage.addEventListener(MouseEvent.MOUSE_DOWN, FlxG.mouse.handleMouseDown);
-			stage.addEventListener(MouseEvent.MOUSE_UP, FlxG.mouse.handleMouseUp);
+			stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
+			stage.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 			stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 			if(!FlxG.mobile)
 			{
 				stage.addEventListener(MouseEvent.MOUSE_OUT, FlxG.mouse.handleMouseOut);
 				stage.addEventListener(MouseEvent.MOUSE_OVER, FlxG.mouse.handleMouseOver);
-				stage.addEventListener(MouseEvent.MOUSE_WHEEL, FlxG.mouse.handleMouseWheel);
+				stage.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel);
 				stage.addEventListener(Event.DEACTIVATE, onFocusLost);
 				stage.addEventListener(Event.ACTIVATE, onFocus);
 				

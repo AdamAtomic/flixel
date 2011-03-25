@@ -3,6 +3,7 @@ package org.flixel.aux
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.Sprite;
+	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
@@ -11,6 +12,8 @@ package org.flixel.aux
 	
 	public class FlxDebugger extends Sprite
 	{
+		public var hasMouse:Boolean;
+		
 		protected var _perf:FlxWindow;
 		protected var _log:FlxWindow;
 		protected var _watch:FlxWindow;
@@ -19,6 +22,7 @@ package org.flixel.aux
 		{
 			super();
 			visible = false;
+			hasMouse = false;
 
 			addChild(new Bitmap(new BitmapData(Width,15,true,0x7f000000)));
 			
@@ -40,18 +44,27 @@ package org.flixel.aux
 			var gutter:uint = 8;
 			var screenBounds:Rectangle = new Rectangle(gutter,gutter,Width-gutter*2,Height-gutter*2);
 			
-			_log = new FlxWindow("log",(Width-gutter*3)/2,Height/4,screenBounds);
+			_log = new FlxWindow("log",(Width-gutter*3)/2,Height/4,true,screenBounds);
 			_log.y = Height;
 			addChild(_log);
 			
-			_watch = new FlxWindow("watch",(Width-gutter*3)/2,Height/4,screenBounds);
+			_watch = new FlxWindow("watch",(Width-gutter*3)/2,Height/4,true,screenBounds);
 			_watch.x = Width;
 			_watch.y = Height;
 			addChild(_watch);
 			
-			_perf = new FlxWindow("performance",100,100,screenBounds);
+			_perf = new FlxWindow("performance",100,100,false,screenBounds);
 			_perf.x = Width;
 			addChild(_perf);
+			
+			//Should help with fake mouse focus type behavior
+			addEventListener(MouseEvent.MOUSE_OVER,onMouseOver);
+			addEventListener(MouseEvent.MOUSE_OUT,onMouseOut);
 		}
+		//Should help with fake mouse focus type behavior
+		protected function onMouseOver(E:MouseEvent=null):void { hasMouse = true; }
+		protected function onMouseOut(E:MouseEvent=null):void { hasMouse = false; }
+		
+		//
 	}
 }

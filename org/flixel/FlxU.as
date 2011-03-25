@@ -27,31 +27,37 @@ package org.flixel
 			navigateToURL(new URLRequest(URL), "_blank");
 		}
 		
-		static public function abs(N:Number):Number
+		static public function abs(Value:Number):Number
 		{
-			return (N>0)?N:-N;
+			return (Value>0)?Value:-Value;
 		}
 		
-		static public function floor(N:Number):Number
+		static public function floor(Value:Number):Number
 		{
-			var n:Number = int(N);
-			return (N>0)?(n):((n!=N)?(n-1):(n));
+			var n:Number = int(Value);
+			return (Value>0)?(n):((n!=Value)?(n-1):(n));
 		}
 		
-		static public function ceil(N:Number):Number
+		static public function ceil(Value:Number):Number
 		{
-			var n:Number = int(N);
-			return (N>0)?((n!=N)?(n+1):(n)):(n);
+			var n:Number = int(Value);
+			return (Value>0)?((n!=Value)?(n+1):(n)):(n);
 		}
 		
-		static public function min(N1:Number,N2:Number):Number
+		static public function min(Number1:Number,Number2:Number):Number
 		{
-			return (N1 <= N2)?N1:N2;
+			return (Number1 <= Number2)?Number1:Number2;
 		}
 		
-		static public function max(N1:Number,N2:Number):Number
+		static public function max(Number1:Number,Number2:Number):Number
 		{
-			return (N1 >= N2)?N1:N2;
+			return (Number1 >= Number2)?Number1:Number2;
+		}
+		
+		static public function bound(Value:Number,Min:Number,Max:Number):Number
+		{
+			var lb:Number = (Value<Min)?Min:Value;
+			return (lb>Max)?Max:lb;
 		}
 		
 		/**

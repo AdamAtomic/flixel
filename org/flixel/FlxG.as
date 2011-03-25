@@ -706,7 +706,8 @@ package org.flixel
 		static internal function updateInput():void
 		{
 			keys.update();
-			mouse.update(state.mouseX,state.mouseY,scroll.x,scroll.y);
+			if(!_game._debugger.hasMouse)
+				mouse.update(state.mouseX,state.mouseY,scroll.x,scroll.y);
 			var i:uint = 0;
 			var l:uint = gamepads.length;
 			while(i < l)
