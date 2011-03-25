@@ -227,7 +227,8 @@ package org.flixel
 		 */
 		protected function onFocus(event:Event=null):void
 		{
-			flash.ui.Mouse.hide();
+			if(!_debugger.visible)
+				flash.ui.Mouse.hide();
 			FlxG.resetInput();
 			_lostFocus = _focus.visible = false;
 			stage.frameRate = 30;//_framerate;
@@ -388,7 +389,7 @@ package org.flixel
 			//Initialize game console
 			if(!FlxG.mobile && FlxG.debug)
 			{
-				_debugger = new FlxDebugger(stage.width,stage.height/2);
+				_debugger = new FlxDebugger(FlxG.width*_zoom,FlxG.height*_zoom);
 				addChild(_debugger);
 			}
 			var vstring:String = FlxG.LIBRARY_NAME+" v"+FlxG.LIBRARY_MAJOR_VERSION+"."+FlxG.LIBRARY_MINOR_VERSION;
@@ -490,19 +491,21 @@ package org.flixel
 		protected function createFocusScreen():void
 		{
 			var g:Graphics = _focus.graphics;
+			var w:uint = FlxG.width*_zoom;
+			var h:uint = FlxG.height*_zoom;
 			
 			//draw transparent black backdrop
 			g.moveTo(0,0);
 			g.beginFill(0,0.5);
-			g.lineTo(stage.width,0);
-			g.lineTo(stage.width,stage.height/2);
-			g.lineTo(0,stage.height);
+			g.lineTo(w,0);
+			g.lineTo(w,h);
+			g.lineTo(0,h);
 			g.lineTo(0,0);
 			g.endFill();
 			
 			//draw white arrow
-			var hw:uint = stage.width/2;
-			var hh:uint = stage.height/4; //no idea why this has to be 4 instead of 2
+			var hw:uint = w/2;
+			var hh:uint = h/2;
 			var tri:uint = FlxU.min(hw,hh)/3;
 			g.moveTo(hw-tri,hh-tri);
 			g.beginFill(0xffffff);
