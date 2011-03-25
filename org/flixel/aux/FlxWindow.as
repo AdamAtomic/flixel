@@ -82,6 +82,20 @@ package org.flixel.aux
 			addEventListener(Event.ENTER_FRAME,init);
 		}
 		
+		public function resize(Width:Number,Height:Number):void
+		{
+			_width = Width;
+			_height = Height;
+			updateSize();
+		}
+		
+		public function reposition(X:Number,Y:Number):void
+		{
+			x = X;
+			y = Y;
+			bound();
+		}
+		
 		//***EVENT HANDLERS***//
 		
 		protected function init(E:Event=null):void
@@ -102,16 +116,12 @@ package org.flixel.aux
 			if(_dragging) //user is moving the window around
 			{
 				_overHeader = true;
-				x = parent.mouseX - _drag.x;
-				y = parent.mouseY - _drag.y;
-				bound();
+				reposition(parent.mouseX - _drag.x, parent.mouseY - _drag.y);
 			}
 			else if(_resizing)
 			{
 				_overHandle = true;
-				_width = mouseX - _drag.x;
-				_height = mouseY - _drag.y;
-				updateSize();
+				resize(mouseX - _drag.x, mouseY - _drag.y);
 			}
 			else if((mouseX >= 0) && (mouseX <= _width) && (mouseY >= 0) && (mouseY <= _height))
 			{	//not dragging, mouse is over the window

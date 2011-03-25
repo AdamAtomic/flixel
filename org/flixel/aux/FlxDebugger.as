@@ -4,6 +4,7 @@ package org.flixel.aux
 	import flash.display.BitmapData;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
+	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
@@ -12,17 +13,29 @@ package org.flixel.aux
 	
 	public class FlxDebugger extends Sprite
 	{
+		static public const STANDARD:uint = 0;
+		static public const BIG:uint = 1;
+		static public const TOP:uint = 2;
+		static public const LEFT:uint = 3;
+		static public const RIGHT:uint = 4;
+		
 		public var hasMouse:Boolean;
 		
 		protected var _perf:FlxWindow;
 		protected var _log:FlxWindow;
 		protected var _watch:FlxWindow;
 		
+		protected var _layout:uint;
+		protected var _screen:Point;
+		protected var _gutter:uint;
+		
 		public function FlxDebugger(Width:Number,Height:Number)
 		{
 			super();
 			visible = false;
 			hasMouse = false;
+			_screen = new Point(Width,Height);
+			
 
 			addChild(new Bitmap(new BitmapData(Width,15,true,0x7f000000)));
 			
@@ -41,21 +54,19 @@ package org.flixel.aux
 			txt.text = str;
 			addChild(txt);
 			
-			var gutter:uint = 8;
-			var screenBounds:Rectangle = new Rectangle(gutter,gutter,Width-gutter*2,Height-gutter*2);
+			_gutter = 8;
+			var screenBounds:Rectangle = new Rectangle(_gutter,_gutter,_screen.x-_gutter*2,_screen.y-_gutter*2);
 			
-			_log = new FlxWindow("log",(Width-gutter*3)/2,Height/4,true,screenBounds);
-			_log.y = Height;
+			_log = new FlxWindow("log",1,1,true,screenBounds);
 			addChild(_log);
 			
-			_watch = new FlxWindow("watch",(Width-gutter*3)/2,Height/4,true,screenBounds);
-			_watch.x = Width;
-			_watch.y = Height;
+			_watch = new FlxWindow("watch",1,1,true,screenBounds);
 			addChild(_watch);
 			
 			_perf = new FlxWindow("performance",100,100,false,screenBounds);
-			_perf.x = Width;
 			addChild(_perf);
+			
+			setLayout(STANDARD);
 			
 			//Should help with fake mouse focus type behavior
 			addEventListener(MouseEvent.MOUSE_OVER,onMouseOver);
@@ -65,6 +76,53 @@ package org.flixel.aux
 		protected function onMouseOver(E:MouseEvent=null):void { hasMouse = true; }
 		protected function onMouseOut(E:MouseEvent=null):void { hasMouse = false; }
 		
-		//
+		public function setLayout(Layout:uint):void
+		{
+			_layout = Layout;
+			resetLayout();
+		}
+		
+		public function resetLayout():void
+		{
+			switch(_layout)
+			{
+				case BIG:
+					_log.resize((_screen.x-_gutter*3)/2,_screen.y/2);
+					_log.reposition(0,_screen.y);
+					_watch.resize((_screen.x-_gutter*3)/2,_screen.y/2);
+					_watch.reposition(_screen.x,_screen.y);
+					_perf.reposition(_screen.x,0);
+					break;
+				case TOP:
+					_log.resize((_screen.x-_gutter*3)/2,_screen.y/4);
+					_log.reposition(0,0);
+					_watch.resize((_screen.x-_gutter*3)/2,_screen.y/4);
+					_watch.reposition(_screen.x,0);
+					_perf.reposition(_screen.x,_screen.y);
+					break;
+				case LEFT:
+					_log.resize(_screen.x/3,(_screen.y-_gutter*3)/2);
+					_log.reposition(0,0);
+					_watch.resize(_screen.x/3,(_screen.y-_gutter*3)/2);
+					_watch.reposition(0,_screen.y);
+					_perf.reposition(_screen.x,0);
+					break;
+				case RIGHT:
+					_log.resize(_screen.x/3,(_screen.y-_gutter*3)/2);
+					_log.reposition(_screen.x,0);
+					_watch.resize(_screen.x/3,(_screen.y-_gutter*3)/2);
+					_watch.reposition(_screen.x,_screen.y);
+					_perf.reposition(0,0);
+					break;
+				case STANDARD:
+				default:
+					_log.resize((_screen.x-_gutter*3)/2,_screen.y/4);
+					_log.reposition(0,_screen.y);
+					_watch.resize((_screen.x-_gutter*3)/2,_screen.y/4);
+					_watch.reposition(_screen.x,_screen.y);
+					_perf.reposition(_screen.x,0);
+					break;
+			}
+		}
 	}
 }

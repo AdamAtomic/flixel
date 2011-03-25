@@ -623,6 +623,26 @@ package org.flixel
 			else
 				_scrollTarget.x = _scrollTarget.y = 0;
 		}
+		
+		/**
+		 * Change the way the debugger's windows are laid out.
+		 * 
+		 * @param	Layout		Check aux/FlxDebugger for helpful constants like FlxDebugger.LEFT, etc.
+		 */
+		static public function setDebuggerLayout(Layout:uint):void
+		{
+			if(_game._debugger != null)
+				_game._debugger.setLayout(Layout);
+		}
+		
+		/**
+		 * Just resets the debugger windows to whatever the sizes and positions of the selected layout are.
+		 */
+		static public function resetDebuggerLayout():void
+		{
+			if(_game._debugger != null)
+				_game._debugger.resetLayout();
+		}
 
 		/**
 		 * Called by <code>FlxGame</code> to set up <code>FlxG</code> during <code>FlxGame</code>'s constructor.
