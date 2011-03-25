@@ -374,7 +374,7 @@ package org.flixel
 		/**
 		 * Draws the tilemap.
 		 */
-		override public function render():void
+		override public function draw():void
 		{
 			if(FlxG.showBounds != _boundsVisible)
 				refresh = true;

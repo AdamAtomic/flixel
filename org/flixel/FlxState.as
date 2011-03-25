@@ -107,7 +107,7 @@ package org.flixel
 		 */
 		public function render():void
 		{
-			defaultGroup.render();
+			defaultGroup.draw();
 		}
 
 		/**

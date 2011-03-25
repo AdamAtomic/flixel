@@ -74,7 +74,7 @@ package org.flixel
 					if(FlxU.random()*total > Empties)
 					{
 						s.randomFrame();
-						draw(s,ox,oy);
+						stamp(s,ox,oy);
 					}
 					ox += sw;
 					c++;

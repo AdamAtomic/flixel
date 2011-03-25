@@ -342,15 +342,15 @@ package org.flixel
 			_state.preProcess();
 			_state.render();
 			if(FlxG.flash.exists)
-				FlxG.flash.render();
+				FlxG.flash.draw();
 			if(FlxG.fade.exists)
-				FlxG.fade.render();
+				FlxG.fade.draw();
 			if(FlxG.mouse.cursor != null)
 			{
 				if(FlxG.mouse.cursor.active)
 					FlxG.mouse.cursor.update();
 				if(FlxG.mouse.cursor.visible)
-					FlxG.mouse.cursor.render();
+					FlxG.mouse.cursor.draw();
 			}
 			_state.postProcess();
 			FlxG.buffer.unlock();

@@ -442,7 +442,7 @@ package org.flixel
 		 * @param	X			The X coordinate of the brush's top left corner on this sprite.
 		 * @param	Y			They Y coordinate of the brush's top left corner on this sprite.
 		 */
-		public function draw(Brush:FlxSprite,X:int=0,Y:int=0):void
+		public function stamp(Brush:FlxSprite,X:int=0,Y:int=0):void
 		{
 			var b:BitmapData = Brush._framePixels;
 			
@@ -590,7 +590,7 @@ package org.flixel
 		/**
 		 * Called by game loop, updates then blits or renders current frame of animation to the screen
 		 */
-		override public function render():void
+		override public function draw():void
 		{
 			renderSprite();
 		}

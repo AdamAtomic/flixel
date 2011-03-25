@@ -378,7 +378,7 @@ package org.flixel
 		/**
 		 * Override this function to draw graphics (see <code>FlxSprite</code>).
 		 */
-		public function render():void
+		public function draw():void
 		{
 			//Objects don't have any visual logic/display of their own.
 		}

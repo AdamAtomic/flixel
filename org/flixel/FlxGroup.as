@@ -402,7 +402,7 @@ package org.flixel
 		/**
 		 * Internal function that actually loops through and renders all the group members.
 		 */
-		protected function renderMembers():void
+		protected function drawMembers():void
 		{
 			var i:uint = 0;
 			var o:FlxObject;
@@ -411,7 +411,7 @@ package org.flixel
 			{
 				o = members[i++] as FlxObject;
 				if((o != null) && o.exists && o.visible)
-					o.render();
+					o.draw();
 			}
 		}
 		
@@ -419,9 +419,9 @@ package org.flixel
 		 * Automatically goes through and calls render on everything you added,
 		 * override this loop to control render order manually.
 		 */
-		override public function render():void
+		override public function draw():void
 		{
-			renderMembers();
+			drawMembers();
 		}
 		
 		/**
