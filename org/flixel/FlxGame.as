@@ -16,7 +16,6 @@ package org.flixel
 	import flash.utils.Timer;
 	import flash.utils.getTimer;
 	
-	//import org.flixel.aux.FlxConsole;
 	import org.flixel.aux.FlxDebugger;
 
 	/**
@@ -72,6 +71,7 @@ package org.flixel
 		protected var _soundTrayBars:Array;
 		//internal var _console:FlxConsole;
 		internal var _debugger:FlxDebugger;
+		internal var _debuggerUp:Boolean;
 
 		/**
 		 * Game object constructor - sets up the basic properties of your game.
@@ -101,6 +101,7 @@ package org.flixel
 			_state = null;
 			useDefaultHotKeys = true;
 			debugOnRelease = false;
+			_debuggerUp = false;
 			
 			//then get ready to create the game object for real
 			_iState = InitialState;
@@ -113,7 +114,7 @@ package org.flixel
 		 * 
 		 * @param	Silent	Whether or not it should beep.
 		 */
-		public function showSoundTray(Silent:Boolean=false):void
+		internal function showSoundTray(Silent:Boolean=false):void
 		{
 			if(!Silent)
 				FlxG.play(SndBeep);
@@ -136,7 +137,7 @@ package org.flixel
 		 * 
 		 * @param	State		The class name of the state you want (e.g. PlayState)
 		 */
-		public function switchState(State:FlxState):void
+		internal function switchState(State:FlxState):void
 		{ 
 			//Basic reset stuff
 			FlxG.unfollow();
@@ -145,6 +146,8 @@ package org.flixel
 			FlxG.flash.stop();
 			FlxG.fade.stop();
 			FlxG.quake.stop();
+			if(_debugger != null)
+				_debugger.watch.removeAll();
 			_buffer.x = 0;
 			_buffer.y = 0;
 			
@@ -170,9 +173,10 @@ package org.flixel
 		{
 			if(!FlxG.mobile)
 			{
-				if((FlxG.debug || debugOnRelease) && ((event.keyCode == 192) || (event.keyCode == 220)))
+				if((_debugger != null) && ((event.keyCode == 192) || (event.keyCode == 220)))
 				{
 					_debugger.visible = !_debugger.visible;
+					_debuggerUp = _debugger.visible;
 					if(_debugger.visible)
 						flash.ui.Mouse.show();
 					else
@@ -233,7 +237,7 @@ package org.flixel
 		 */
 		protected function onMouseDown(event:MouseEvent):void
 		{
-			if((_debugger == null) || !_debugger.hasMouse)
+			if(!_debuggerUp || !_debugger.hasMouse)
 				FlxG.mouse.handleMouseDown(event);
 		}
 		
@@ -242,7 +246,7 @@ package org.flixel
 		 */
 		protected function onMouseUp(event:MouseEvent):void
 		{
-			if((_debugger == null) || !_debugger.hasMouse)
+			if(!_debuggerUp || !_debugger.hasMouse)
 				FlxG.mouse.handleMouseUp(event);
 		}
 		
@@ -251,7 +255,7 @@ package org.flixel
 		 */
 		protected function onMouseWheel(event:MouseEvent):void
 		{
-			if((_debugger == null) || !_debugger.hasMouse)
+			if(!_debuggerUp || !_debugger.hasMouse)
 				FlxG.mouse.handleMouseWheel(event);
 		}
 		
@@ -260,7 +264,7 @@ package org.flixel
 		 */
 		protected function onFocus(event:Event=null):void
 		{
-			if((_debugger == null) || !_debugger.visible)
+			if(!_debuggerUp || !_debugger.visible)
 				flash.ui.Mouse.hide();
 			FlxG.resetInput();
 			_lostFocus = _focus.visible = false;
@@ -302,7 +306,7 @@ package org.flixel
 					FlxG.updateInput();
 					update();
 					FlxG.mouse.wheel = 0;
-					if((_debugger != null) && (_debugger.visible))
+					if(_debuggerUp)
 						_debugger.perf.objects(FlxGroup._ACTIVECOUNT,FlxGroup._EXTANTCOUNT);
 					_accumulator -= _step;
 				}
@@ -310,7 +314,7 @@ package org.flixel
 			FlxGroup._VISIBLECOUNT = 0;
 			draw();
 			
-			if((_debugger != null) && (_debugger.visible))
+			if(_debuggerUp)
 			{
 				_debugger.perf.flash(ems);
 				_debugger.perf.visibleObjects(FlxGroup._VISIBLECOUNT);
@@ -377,7 +381,7 @@ package org.flixel
 			x = FlxG.quake.x;
 			y = FlxG.quake.y;
 			
-			if((_debugger != null) && (_debugger.visible))
+			if(_debuggerUp)
 				_debugger.perf.flixelUpdate(getTimer()-mark);
 		}
 		
@@ -403,7 +407,7 @@ package org.flixel
 			}
 			_state.postProcess();
 			FlxG.buffer.unlock();
-			if((_debugger != null) && (_debugger.visible))
+			if(_debuggerUp)
 				_debugger.perf.flixelDraw(getTimer()-mark);
 		}
 		

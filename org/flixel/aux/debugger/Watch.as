@@ -36,6 +36,8 @@ package org.flixel.aux.debugger
 			addChild(_values);
 			
 			_watching = new Array();
+			
+			removeAll();
 		}
 		
 		public function add(AnyObject:Object,VariableName:String):void
@@ -43,12 +45,55 @@ package org.flixel.aux.debugger
 			_watching.push({object:AnyObject,field:VariableName});
 			updateNames();
 		}
+		
+		public function remove(AnyObject:Object,VariableName:String=null):void
+		{
+			var l:uint = _watching.length;
+			if(l <= 0)
+				return;
+			
+			var o:Object;
+			var i:int = l-1;
+			while(i >= 0)
+			{
+				o = _watching[i];
+				if((o.object == AnyObject) && ((VariableName == null) || (o.field == VariableName)))
+				{
+					_watching.splice(i,1);
+					o = null;
+				}
+				i--;
+			}
+			
+			if(_watching.length <= 0)
+				removeAll();
+		}
+		
+		public function removeAll():void
+		{
+			var o:Object;
+			var i:int = 0;
+			var l:uint = _watching.length;
+			while(i < l)
+			{
+				 o = _watching.pop();
+				 o = null;
+				 i++
+			}
+			_watching.length = 0;
+			
+			_names.text = "You can use\nFlxG.watch()\nto watch\nvariables.";
+			_values.text = "";
+		}
 
 		public function update():void
 		{
-			var o:Object;
-			var i:uint = 0;
 			var l:uint = _watching.length;
+			if(l <= 0)
+				return;
+
+			var o:Object;
+			var i:uint = 0;	
 			var str:String = "";
 			while(i < l)
 			{
@@ -60,9 +105,12 @@ package org.flixel.aux.debugger
 		
 		protected function updateNames():void
 		{
+			var l:uint = _watching.length;
+			if(l <= 0)
+				return;
+			
 			var o:Object;
 			var i:uint = 0;
-			var l:uint = _watching.length;
 			var str:String = "";
 			while(i < l)
 			{

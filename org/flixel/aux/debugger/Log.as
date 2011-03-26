@@ -27,10 +27,14 @@ package org.flixel.aux.debugger
 			addChild(_text);
 			
 			_lines = new Array();
+			
+			_text.text = "Use FlxG.log() to print log messages."
 		}
 		
 		public function add(Text:String):void
 		{
+			if(_lines.length <= 0)
+				_text.text = "";
 			_lines.push(Text);
 			if(_lines.length > MAX_LOG_LINES)
 			{

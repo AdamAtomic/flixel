@@ -189,6 +189,19 @@ package org.flixel
 		}
 		
 		/**
+		 * Remove a variable from the watch list in the debugger.
+		 * Don't pass a Variable Name to remove all watched variables for the specified object.
+		 * 
+		 * @param	AnyObject		A reference to any object in your game, e.g. Player or Robot or this.
+		 * @param	VariableName	The name of the variable you want to watch, in quotes, as a string: e.g. "speed" or "health".
+		 */
+		static public function unwatch(AnyObject:Object,VariableName:String=null):void
+		{
+			if((_game != null) && (_game._debugger != null))
+				_game._debugger.watch.remove(AnyObject,VariableName);
+		}
+		
+		/**
 		 * How many times you want your game to update each second.
 		 * More updates usually means better collisions and smoother motion.
 		 * NOTE: This is NOT the same thing as the Flash Player framerate!
@@ -774,7 +787,7 @@ package org.flixel
 		static internal function updateInput():void
 		{
 			keys.update();
-			if((_game._debugger == null) || !_game._debugger.hasMouse)
+			if(!_game._debuggerUp || !_game._debugger.hasMouse)
 				mouse.update(state.mouseX,state.mouseY,scroll.x,scroll.y);
 			var i:uint = 0;
 			var l:uint = gamepads.length;
