@@ -300,15 +300,22 @@ package org.flixel
 			updateSoundTray(ems);
 			if(!_lostFocus)
 			{
-				while(_accumulator >= _step)
+				if((_debugger != null) && _debugger.vcr.paused)
 				{
-					FlxGroup._ACTIVECOUNT = FlxGroup._EXTANTCOUNT = 0;
-					FlxG.updateInput();
-					update();
-					FlxG.mouse.wheel = 0;
-					if(_debuggerUp)
-						_debugger.perf.objects(FlxGroup._ACTIVECOUNT,FlxGroup._EXTANTCOUNT);
-					_accumulator -= _step;
+					_accumulator %= _step;
+					if(_debugger.vcr.stepRequested)
+					{
+						_debugger.vcr.stepRequested = false;
+						step();
+					}
+				}
+				else
+				{
+					while(_accumulator >= _step)
+					{
+						step();
+						_accumulator -= _step;
+					}
 				}
 			}
 			FlxGroup._VISIBLECOUNT = 0;
@@ -321,6 +328,16 @@ package org.flixel
 				_debugger.perf.update();
 				_debugger.watch.update();
 			}
+		}
+			
+		protected function step():void
+		{
+			FlxGroup._ACTIVECOUNT = FlxGroup._EXTANTCOUNT = 0;
+			FlxG.updateInput();
+			update();
+			FlxG.mouse.wheel = 0;
+			if(_debuggerUp)
+				_debugger.perf.objects(FlxGroup._ACTIVECOUNT,FlxGroup._EXTANTCOUNT);
 		}
 
 		/**

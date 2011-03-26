@@ -79,6 +79,8 @@ package org.flixel.aux.debugger
 			addEventListener(Event.ENTER_FRAME,init);
 		}
 		
+		//***ACTUAL BUTTON BEHAVIORS***//
+		
 		public function onOpen():void
 		{
 			trace("open old record");
@@ -110,7 +112,7 @@ package org.flixel.aux.debugger
 		
 		public function onPlay():void
 		{
-			paused = true;
+			paused = false;
 			_play.visible = false;
 			_pause.visible = true;
 		}
@@ -121,6 +123,8 @@ package org.flixel.aux.debugger
 				onPause();
 			stepRequested = true;
 		}
+		
+		//***EVENT HANDLERS***//
 		
 		protected function init(E:Event=null):void
 		{
@@ -178,6 +182,8 @@ package org.flixel.aux.debugger
 			checkOver();
 			updateGUI();
 		}
+		
+		//***MISC GUI MGMT STUFF***//
 		
 		protected function checkOver():Boolean
 		{
