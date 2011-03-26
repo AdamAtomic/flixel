@@ -6,6 +6,7 @@ package org.flixel
 	import flash.geom.Point;
 	
 	import org.flixel.aux.*;
+	import org.flixel.aux.debug.Debugger;
 	
 	/**
 	 * This is a global helper class full of useful functions for audio,
@@ -783,7 +784,7 @@ package org.flixel
 		{
 			keys.update();
 			if(!_game._debuggerUp || !_game._debugger.hasMouse)
-				mouse.update(state.mouseX,state.mouseY,scroll.x,scroll.y);
+				mouse.update(state.mouseX,state.mouseY);
 		}
 	}
 }

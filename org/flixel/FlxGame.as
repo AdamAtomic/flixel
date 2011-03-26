@@ -16,7 +16,9 @@ package org.flixel
 	import flash.utils.Timer;
 	import flash.utils.getTimer;
 	
-	import org.flixel.aux.FlxDebugger;
+	import org.flixel.aux.debug.Debugger;
+	import org.flixel.aux.debug.FrameRecord;
+	import org.flixel.aux.debug.MouseRecord;
 
 	/**
 	 * FlxGame is the heart of all flixel games, and contains a bunch of basic game loops and things.
@@ -70,7 +72,7 @@ package org.flixel
 		protected var _soundTrayTimer:Number;
 		protected var _soundTrayBars:Array;
 		//internal var _console:FlxConsole;
-		internal var _debugger:FlxDebugger;
+		internal var _debugger:Debugger;
 		internal var _debuggerUp:Boolean;
 
 		/**
@@ -342,15 +344,11 @@ package org.flixel
 		{
 			FlxGroup._ACTIVECOUNT = FlxGroup._EXTANTCOUNT = 0;
 			if((_debugger != null) && _debugger.vcr.playingBack)
-			{
-				//TODO: set state of input to the current recording
-			}
+				_debugger.vcr.playInputFrame();
 			else
 				FlxG.updateInput();
 			if((_debugger != null) && _debugger.vcr.recording)
-			{
-				//TODO: record state of input to some kind of local structure??
-			}
+				_debugger.vcr.recordInputFrame();
 			update();
 			FlxG.mouse.wheel = 0;
 			if(_debuggerUp)
@@ -470,7 +468,7 @@ package org.flixel
 			//Initialize game console
 			if(!FlxG.mobile && (FlxG.debug || debugOnRelease))
 			{
-				_debugger = new FlxDebugger(FlxG.width*_zoom,FlxG.height*_zoom);
+				_debugger = new Debugger(FlxG.width*_zoom,FlxG.height*_zoom);
 				addChild(_debugger);
 			}
 			

@@ -114,6 +114,50 @@ package org.flixel.aux
 		}
 		
 		/**
+		 * If any keys are not "released" (0),
+		 * this function will return an array indicating
+		 * which keys are pressed and what state they are in.
+		 * 
+		 * @return	An array of key state data.  Null if there is no data.
+		 */
+		public function record():Array
+		{
+			var data:Array = null;
+			var i:uint = 0;
+			while(i < _t)
+			{
+				var o:Object = _map[i++];
+				if((o == null) || (o.current == 0))
+					continue;
+				if(data == null)
+					data = new Array();
+				data.push({code:i-1,value:o.current});
+			}
+			return data;
+		}
+		
+		/**
+		 * Part of the keystroke recording system.
+		 * Takes data about key presses and sets it into array.
+		 * 
+		 * @param	Record	Array of data about key states.
+		 */
+		public function playback(Record:Array):void
+		{
+			var i:uint = 0;
+			var l:uint = Record.length;
+			var o:Object;
+			var o2:Object;
+			while(i < l)
+			{
+				o = Record[i++];
+				o2 = _map[o.code];
+				o2.current = o.value;
+				this[o2.name] = true;
+			}
+		}
+		
+		/**
 		 * An internal helper function used to build the key array.
 		 * 
 		 * @param	KeyName		String name of the key (e.g. "LEFT" or "A")

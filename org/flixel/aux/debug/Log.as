@@ -1,4 +1,4 @@
-package org.flixel.aux.debugger
+package org.flixel.aux.debug
 {
 	import flash.geom.Rectangle;
 	import flash.text.TextField;

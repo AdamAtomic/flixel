@@ -1,4 +1,4 @@
-package org.flixel.aux.debugger
+package org.flixel.aux.debug
 {
 	import flash.display.Bitmap;
 	import flash.display.Sprite;
@@ -45,6 +45,8 @@ package org.flixel.aux.debugger
 		protected var _pressingRestart:Boolean;
 		protected var _pressingPause:Boolean;
 		protected var _pressingStep:Boolean;
+		
+		protected var _recording:Recording;
 		
 		public function VCR()
 		{
@@ -113,6 +115,7 @@ package org.flixel.aux.debugger
 		
 		public function startRecording():void
 		{
+			_recording = new Recording();
 			recording = true;
 			onRestart();
 			
@@ -141,6 +144,8 @@ package org.flixel.aux.debugger
 		
 		public function onRestart():void
 		{
+			if(playingBack)
+				_recording.rewind();
 			onPlay();
 			FlxG.resetGame();
 		}
@@ -164,6 +169,32 @@ package org.flixel.aux.debugger
 			if(!paused)
 				onPause();
 			stepRequested = true;
+		}
+		
+		//***RECORDING MANAGEMENT***//
+		
+		public function recordInputFrame():void
+		{
+			var frameRecord:FrameRecord = null;
+			var keysRecord:Array = FlxG.keys.record();
+			var mouseRecord:MouseRecord = FlxG.mouse.record();
+			if((keysRecord != null) || (mouseRecord != null))
+				frameRecord = new FrameRecord(keysRecord,mouseRecord);
+			_recording.add(frameRecord);
+		}
+		
+		public function playInputFrame():void
+		{
+			var fr:FrameRecord = _recording.currentFrame;
+			if(fr == null)
+				return;
+			FlxG.keys.reset();
+			if(fr.keys != null)
+				FlxG.keys.playback(fr.keys);
+			FlxG.mouse.reset();
+			if(fr.mouse != null)
+				FlxG.mouse.playback(fr.mouse);
+			_recording.advance();
 		}
 		
 		//***EVENT HANDLERS***//

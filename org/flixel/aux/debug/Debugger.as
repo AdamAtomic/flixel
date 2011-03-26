@@ -1,4 +1,4 @@
-package org.flixel.aux
+package org.flixel.aux.debug
 {
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -10,9 +10,8 @@ package org.flixel.aux
 	import flash.text.TextFormat;
 	
 	import org.flixel.FlxG;
-	import org.flixel.aux.debugger.*;
 	
-	public class FlxDebugger extends Sprite
+	public class Debugger extends Sprite
 	{
 		static public const STANDARD:uint = 0;
 		static public const MICRO:uint = 1;
@@ -32,7 +31,7 @@ package org.flixel.aux
 		protected var _screen:Point;
 		protected var _gutter:uint;
 		
-		public function FlxDebugger(Width:Number,Height:Number)
+		public function Debugger(Width:Number,Height:Number)
 		{
 			super();
 			visible = false;

@@ -4,7 +4,9 @@ package org.flixel.aux
 	
 	import org.flixel.FlxPoint;
 	import org.flixel.FlxSprite;
+	import org.flixel.FlxG;
 	import org.flixel.FlxU;
+	import org.flixel.aux.debug.MouseRecord;
 	
 	/**
 	 * This class helps contain and track the mouse pointer in your game.
@@ -50,6 +52,12 @@ package org.flixel.aux
 		 * Helper for mouse visibility.
 		 */
 		protected var _out:Boolean;
+		/**
+		 * Helper variables for recording purposes.
+		 */
+		protected var _lastX:int;
+		protected var _lastY:int;
+		protected var _lastWheel:int;
 		
 		/**
 		 * Constructor.
@@ -137,22 +145,33 @@ package org.flixel.aux
 		 * @param	XScroll		The amount the game world has scrolled horizontally.
 		 * @param	YScroll		The amount the game world has scrolled vertically.
 		 */
-		public function update(X:int,Y:int,XScroll:Number,YScroll:Number):void
+		public function update(X:int,Y:int):void
 		{
+			_lastX = screenX;
+			_lastY = screenY;
 			screenX = X;
 			screenY = Y;
-			x = screenX-FlxU.floor(XScroll);
-			y = screenY-FlxU.floor(YScroll);
-			if(cursor != null)
-			{
-				cursor.x = x;
-				cursor.y = y;
-			}
+			updateCursor();
 			if((_last == -1) && (_current == -1))
 				_current = 0;
 			else if((_last == 2) && (_current == 2))
 				_current = 1;
 			_last = _current;
+			_lastWheel = wheel;
+		}
+		
+		/**
+		 * Internal function for helping to update the mouse cursor and world coordinates.
+		 */
+		protected function updateCursor():void
+		{
+			x = screenX-FlxU.floor(FlxG.scroll.x);
+			y = screenY-FlxU.floor(FlxG.scroll.y);
+			if(cursor != null)
+			{
+				cursor.x = x;
+				cursor.y = y;
+			}
 		}
 		
 		/**
@@ -240,6 +259,35 @@ package org.flixel.aux
 		public function handleMouseWheel(event:MouseEvent):void
 		{
 			wheel = event.delta;
+		}
+		
+		/**
+		 * If any keys are not "released" (0),
+		 * this function will return an array indicating
+		 * which keys are pressed and what state they are in.
+		 * 
+		 * @return	An array of key state data.  Null if there is no data.
+		 */
+		public function record():MouseRecord
+		{
+			if((_lastX == screenX) && (_lastY == screenY) && (_current == 0) && (_lastWheel == wheel))
+				return null;
+			return new MouseRecord(screenX,screenY,_current,wheel);
+		}
+		
+		/**
+		 * Part of the keystroke recording system.
+		 * Takes data about key presses and sets it into array.
+		 * 
+		 * @param	KeyStates	Array of data about key states.
+		 */
+		public function playback(Record:MouseRecord):void
+		{
+			screenX = Record.x;
+			screenY = Record.y;
+			updateCursor();
+			_current = Record.button;
+			wheel = Record.wheel;
 		}
 	}
 }
