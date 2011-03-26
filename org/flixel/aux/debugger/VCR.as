@@ -17,6 +17,7 @@ package org.flixel.aux.debugger
 		
 		public var paused:Boolean;
 		public var stepRequested:Boolean;
+		public var recording:Boolean;
 		
 		protected var _open:Bitmap;
 		protected var _recordOff:Bitmap;
@@ -72,6 +73,8 @@ package org.flixel.aux.debugger
 			addChild(_step);
 			
 			unpress();
+			checkOver();
+			updateGUI();
 			
 			addEventListener(Event.ENTER_FRAME,init);
 		}
@@ -83,7 +86,8 @@ package org.flixel.aux.debugger
 		
 		public function startRecording():void
 		{
-			trace("started recording");
+			onPlay();
+			recording = true;
 			
 			_recordOff.visible = false;
 			_recordOn.visible = true;
@@ -91,7 +95,7 @@ package org.flixel.aux.debugger
 		
 		public function stopRecording():void
 		{
-			trace("stopped recording");
+			recording = false;
 			
 			_recordOn.visible = false;
 			_recordOff.visible = true;
@@ -113,6 +117,8 @@ package org.flixel.aux.debugger
 		
 		public function onStep():void
 		{
+			if(!paused)
+				onPause();
 			stepRequested = true;
 		}
 		
@@ -129,28 +135,14 @@ package org.flixel.aux.debugger
 		
 		protected function onMouseMove(E:MouseEvent=null):void
 		{
-			if((mouseX >= 0) && (mouseX <= width) && (mouseY >= 0) && (mouseY <= height))
-			{
-				_overOpen = _overRecord = _overPause = _overStep = false;
-
-				if((mouseX >= _open.x) && (mouseX <= _open.x + _open.width))
-					_overOpen = true;
-				else if((mouseX >= _recordOff.x) && (mouseX <= _recordOff.x + _recordOff.width))
-					_overRecord = true;
-				else if((mouseX >= _pause.x) && (mouseX <= _pause.x + _pause.width))
-					_overPause = true;
-				else if((mouseX >= _step.x) && (mouseX <= _step.x + _step.width))
-					_overStep = true;
-				
-				updateGUI();
-			}
-			else
+			if(!checkOver())
 				unpress();
+			updateGUI();
 		}
 		
 		protected function onMouseDown(E:MouseEvent=null):void
 		{
-			_pressingOpen = _pressingRecord = _pressingPause = _pressingStep = false;
+			unpress();
 			if(_overOpen)
 				_pressingOpen = true;
 			if(_overRecord)
@@ -183,19 +175,43 @@ package org.flixel.aux.debugger
 				onStep();
 			
 			unpress();
+			checkOver();
+			updateGUI();
+		}
+		
+		protected function checkOver():Boolean
+		{
+			_overOpen = _overRecord = _overPause = _overStep = false;
+			if((mouseX < 0) || (mouseX > width) || (mouseY < 0) || (mouseY > height))
+				return false;
+			if((mouseX >= _recordOff.x) && (mouseX <= _recordOff.x + _recordOff.width))
+				_overRecord = true;
+			if(!recording && !_overRecord)
+			{
+				if((mouseX >= _open.x) && (mouseX <= _open.x + _open.width))
+					_overOpen = true;
+				else if((mouseX >= _pause.x) && (mouseX <= _pause.x + _pause.width))
+					_overPause = true;
+				else if((mouseX >= _step.x) && (mouseX <= _step.x + _step.width))
+					_overStep = true;
+			}
+			return true;
 		}
 		
 		protected function unpress():void
 		{
-			_overOpen = _pressingOpen = false;
-			_overRecord = _pressingRecord = false;
-			_overPause = _pressingPause = false;
-			_overStep = _pressingStep = false;
-			updateGUI();
+			_pressingOpen = _pressingRecord = _pressingPause = _pressingStep = false;
 		}
 		
 		protected function updateGUI():void
 		{
+			if(recording)
+			{
+				_open.alpha = _pause.alpha = _step.alpha = 0.35;
+				_recordOn.alpha = 1.0;
+				return;
+			}
+			
 			if(_overOpen && (_open.alpha != 1.0))
 				_open.alpha = 1.0;
 			else if(!_overOpen && (_open.alpha != 0.8))
