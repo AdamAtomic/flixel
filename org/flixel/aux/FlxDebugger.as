@@ -24,6 +24,7 @@ package org.flixel.aux
 		public var perf:Perf;
 		public var log:Log;
 		public var watch:Watch;
+		public var vcr:VCR;
 		
 		public var hasMouse:Boolean;
 		
@@ -56,7 +57,7 @@ package org.flixel.aux
 			addChild(txt);
 			
 			_gutter = 8;
-			var screenBounds:Rectangle = new Rectangle(_gutter,_gutter,_screen.x-_gutter*2,_screen.y-_gutter*2);
+			var screenBounds:Rectangle = new Rectangle(_gutter,15+_gutter/2,_screen.x-_gutter*2,_screen.y-_gutter*1.5-15);
 			
 			log = new Log("log",0,0,true,screenBounds);
 			addChild(log);
@@ -66,6 +67,11 @@ package org.flixel.aux
 			
 			perf = new Perf("stats",0,0,false,screenBounds);
 			addChild(perf);
+			
+			vcr = new VCR();
+			vcr.x = (Width - vcr.width)/2;
+			vcr.y = 2;
+			addChild(vcr);
 			
 			setLayout(STANDARD);
 			
@@ -109,16 +115,16 @@ package org.flixel.aux
 					perf.reposition(_screen.x,_screen.y);
 					break;
 				case LEFT:
-					log.resize(_screen.x/3,(_screen.y-_gutter*3)/2);
+					log.resize(_screen.x/3,(_screen.y-15-_gutter*2.5)/2);
 					log.reposition(0,0);
-					watch.resize(_screen.x/3,(_screen.y-_gutter*3)/2);
+					watch.resize(_screen.x/3,(_screen.y-15-_gutter*2.5)/2);
 					watch.reposition(0,_screen.y);
 					perf.reposition(_screen.x,0);
 					break;
 				case RIGHT:
-					log.resize(_screen.x/3,(_screen.y-_gutter*3)/2);
+					log.resize(_screen.x/3,(_screen.y-15-_gutter*2.5)/2);
 					log.reposition(_screen.x,0);
-					watch.resize(_screen.x/3,(_screen.y-_gutter*3)/2);
+					watch.resize(_screen.x/3,(_screen.y-15-_gutter*2.5)/2);
 					watch.reposition(_screen.x,_screen.y);
 					perf.reposition(0,0);
 					break;
