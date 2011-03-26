@@ -303,24 +303,20 @@ package org.flixel
 		protected function onEnterFrame(event:Event=null):void
 		{
 			var mark:uint = getTimer();
-			var ems:uint = mark-_total;				
-			_accumulator += ems/1000;
+			var ems:uint = mark-_total;
 			_total = mark;
-			FlxG.elapsed = FlxG.timeScale*_step;
 			updateSoundTray(ems);
 			if(!_lostFocus)
 			{
-				if((_debugger != null) && _debugger.vcr.paused)
+				FlxG.elapsed = FlxG.timeScale*_step;
+				if((_debugger != null) && _debugger.vcr.paused && _debugger.vcr.stepRequested)
 				{
-					_accumulator %= _step;
-					if(_debugger.vcr.stepRequested)
-					{
-						_debugger.vcr.stepRequested = false;
-						step();
-					}
+					_debugger.vcr.stepRequested = false;
+					step();
 				}
 				else
 				{
+					_accumulator += ems/1000;
 					while(_accumulator >= _step)
 					{
 						step();
