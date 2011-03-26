@@ -12,12 +12,20 @@ package org.flixel.aux.debug
 		
 		public function Recording(FileContents:String=null)
 		{
+			if(FileContents != null)
+			{
+				load(FileContents);
+				return;
+			}
+			init();
+		}
+		
+		public function init():void
+		{
 			_capacity = 100;
 			_frames = new Array(_capacity);
 			_count = 0;
 			rewind();
-			if(FileContents != null)
-				load(FileContents);
 		}
 		
 		public function add(Record:FrameRecord):void
@@ -57,12 +65,31 @@ package org.flixel.aux.debug
 
 		public function save():String
 		{
-			return "some bullshit";
+			if(_count <= 0)
+				return null;
+			var output:String = "";
+			var fr:FrameRecord;
+			var i:uint = 0;
+			while(i < _count)
+				output += _frames[i++].save() + "\n";
+			return output;
 		}
 		
 		public function load(FileContents:String):void
 		{
-			rewind();
+			init();
+			
+			var lines:Array = FileContents.split("\n");
+			
+			var line:String;
+			var i:uint = 0;
+			var l:uint = lines.length;
+			while(i < l)
+			{
+				line = lines[i++] as String;
+				if(line.length > 3)
+					add(new FrameRecord(null,null,line));
+			}
 		}
 	}
 }

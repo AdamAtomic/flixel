@@ -189,9 +189,8 @@ package org.flixel.aux.debug
 			recording = false;
 			
 			var data:String = _recording.save();
-			if(data.length > 0)
+			if((data != null) && (data.length > 0))
 			{
-
 				_file = new FileReference();
 				_file.addEventListener(Event.COMPLETE, onSaveComplete);
 				_file.addEventListener(Event.CANCEL,onSaveCancel);
