@@ -5,12 +5,16 @@ package org.flixel.aux.debugger
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
+	import org.flixel.FlxG;
+	
 	public class VCR extends Sprite
 	{
 		[Embed(source="../../data/vcr/open.png")] protected var ImgOpen:Class;
 		[Embed(source="../../data/vcr/record_off.png")] protected var ImgRecordOff:Class;
 		[Embed(source="../../data/vcr/record_on.png")] protected var ImgRecordOn:Class;
+		[Embed(source="../../data/vcr/stop.png")] protected var ImgStop:Class;
 		[Embed(source="../../data/vcr/flixel.png")] protected var ImgFlixel:Class;
+		[Embed(source="../../data/vcr/restart.png")] protected var ImgRestart:Class;
 		[Embed(source="../../data/vcr/pause.png")] protected var ImgPause:Class;
 		[Embed(source="../../data/vcr/play.png")] protected var ImgPlay:Class;
 		[Embed(source="../../data/vcr/step.png")] protected var ImgStep:Class;
@@ -18,22 +22,27 @@ package org.flixel.aux.debugger
 		public var paused:Boolean;
 		public var stepRequested:Boolean;
 		public var recording:Boolean;
+		public var playingBack:Boolean;
 		
 		protected var _open:Bitmap;
 		protected var _recordOff:Bitmap;
 		protected var _recordOn:Bitmap;
+		protected var _stop:Bitmap;
 		protected var _flixel:Bitmap;
+		protected var _restart:Bitmap;
 		protected var _pause:Bitmap;
 		protected var _play:Bitmap;
 		protected var _step:Bitmap;
 		
 		protected var _overOpen:Boolean;
 		protected var _overRecord:Boolean;
+		protected var _overRestart:Boolean;
 		protected var _overPause:Boolean;
 		protected var _overStep:Boolean;
 		
 		protected var _pressingOpen:Boolean;
 		protected var _pressingRecord:Boolean;
+		protected var _pressingRestart:Boolean;
 		protected var _pressingPause:Boolean;
 		protected var _pressingStep:Boolean;
 		
@@ -55,12 +64,21 @@ package org.flixel.aux.debugger
 			_recordOn.visible = false;
 			addChild(_recordOn);
 			
+			_stop = new ImgStop();
+			_stop.x = _recordOff.x;
+			_stop.visible = false;
+			addChild(_stop);
+			
 			_flixel = new ImgFlixel();
 			_flixel.x = _recordOff.x + _recordOff.width + spacing;
 			addChild(_flixel);
 			
+			_restart = new ImgRestart();
+			_restart.x = _flixel.x + _flixel.width + spacing;
+			addChild(_restart);
+			
 			_pause = new ImgPause();
-			_pause.x = _flixel.x + _flixel.width + spacing;
+			_pause.x = _restart.x + _restart.width + spacing;
 			addChild(_pause);
 			
 			_play = new ImgPlay();
@@ -83,13 +101,20 @@ package org.flixel.aux.debugger
 		
 		public function onOpen():void
 		{
-			trace("open old record");
+			//TODO: pop up load file dialog
+			
+			playingBack = true;
+			onRestart();
+			
+			_recordOff.visible = false;
+			_recordOn.visible = false;
+			_stop.visible = true;
 		}
 		
 		public function startRecording():void
 		{
-			onPlay();
 			recording = true;
+			onRestart();
 			
 			_recordOff.visible = false;
 			_recordOn.visible = true;
@@ -99,8 +124,25 @@ package org.flixel.aux.debugger
 		{
 			recording = false;
 			
+			//TODO: pop up save file dialog
+
 			_recordOn.visible = false;
 			_recordOff.visible = true;
+		}
+		
+		public function onStop():void
+		{
+			playingBack = false;
+			
+			_stop.visible = false;
+			_recordOn.visible = false;
+			_recordOff.visible = true;
+		}
+		
+		public function onRestart():void
+		{
+			onPlay();
+			FlxG.resetGame();
 		}
 		
 		public function onPause():void
@@ -151,6 +193,8 @@ package org.flixel.aux.debugger
 				_pressingOpen = true;
 			if(_overRecord)
 				_pressingRecord = true;
+			if(_overRestart)
+				_pressingRestart = true;
 			if(_overPause)
 				_pressingPause = true;
 			if(_overStep)
@@ -161,21 +205,27 @@ package org.flixel.aux.debugger
 		{
 			if(_overOpen && _pressingOpen)
 				onOpen();
-			if(_overRecord && _pressingRecord)
+			else if(_overRecord && _pressingRecord)
 			{
-				if(_recordOn.visible)
+				if(playingBack)
+					onStop();
+				else if(recording)
 					stopRecording();
 				else
 					startRecording();
 			}
-			if(_overPause && _pressingPause)
+			else if(_overRestart && _pressingRestart)
+			{
+				onRestart();
+			}
+			else if(_overPause && _pressingPause)
 			{
 				if(_play.visible)
 					onPlay();
 				else
 					onPause();
 			}
-			if(_overStep && _pressingStep)
+			else if(_overStep && _pressingStep)
 				onStep();
 			
 			unpress();
@@ -187,7 +237,7 @@ package org.flixel.aux.debugger
 		
 		protected function checkOver():Boolean
 		{
-			_overOpen = _overRecord = _overPause = _overStep = false;
+			_overOpen = _overRecord = _overRestart = _overPause = _overStep = false;
 			if((mouseX < 0) || (mouseX > width) || (mouseY < 0) || (mouseY > height))
 				return false;
 			if((mouseX >= _recordOff.x) && (mouseX <= _recordOff.x + _recordOff.width))
@@ -196,6 +246,8 @@ package org.flixel.aux.debugger
 			{
 				if((mouseX >= _open.x) && (mouseX <= _open.x + _open.width))
 					_overOpen = true;
+				else if((mouseX >= _restart.x) && (mouseX <= _restart.x + _restart.width))
+					_overRestart = true;
 				else if((mouseX >= _pause.x) && (mouseX <= _pause.x + _pause.width))
 					_overPause = true;
 				else if((mouseX >= _step.x) && (mouseX <= _step.x + _step.width))
@@ -206,14 +258,14 @@ package org.flixel.aux.debugger
 		
 		protected function unpress():void
 		{
-			_pressingOpen = _pressingRecord = _pressingPause = _pressingStep = false;
+			_pressingOpen = _pressingRecord = _pressingRestart = _pressingPause = _pressingStep = false;
 		}
 		
 		protected function updateGUI():void
 		{
 			if(recording)
 			{
-				_open.alpha = _pause.alpha = _step.alpha = 0.35;
+				_open.alpha = _restart.alpha = _pause.alpha = _step.alpha = 0.35;
 				_recordOn.alpha = 1.0;
 				return;
 			}
@@ -224,9 +276,14 @@ package org.flixel.aux.debugger
 				_open.alpha = 0.8;
 			
 			if(_overRecord && (_recordOff.alpha != 1.0))
-				_recordOff.alpha = _recordOn.alpha = 1.0;
+				_recordOff.alpha = _recordOn.alpha = _stop.alpha = 1.0;
 			else if(!_overRecord && (_recordOff.alpha != 0.8))
-				_recordOff.alpha = _recordOn.alpha = 0.8;
+				_recordOff.alpha = _recordOn.alpha = _stop.alpha = 0.8;
+			
+			if(_overRestart && (_restart.alpha != 1.0))
+				_restart.alpha = 1.0;
+			else if(!_overRestart && (_restart.alpha != 0.8))
+				_restart.alpha = 0.8;
 			
 			if(_overPause && (_pause.alpha != 1.0))
 				_pause.alpha = _play.alpha = 1.0;

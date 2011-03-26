@@ -266,6 +266,14 @@ package org.flixel
 		}
 		
 		/**
+		 * Like hitting the reset button on a game console, this will re-launch the game as if it just started.
+		 */
+		static public function resetGame():void
+		{
+			_game.reset();
+		}
+		
+		/**
 		 * Reset the input helper objects (useful when changing screens or states)
 		 */
 		static public function resetInput():void
@@ -787,7 +795,7 @@ package org.flixel
 		static internal function updateInput():void
 		{
 			keys.update();
-			if(!_game._debuggerUp || !_game._debugger.hasMouse)
+			if(!_game._debuggerUp || (!_game._debugger.hasMouse && !_game._debugger.vcr.playingBack))
 				mouse.update(state.mouseX,state.mouseY,scroll.x,scroll.y);
 			var i:uint = 0;
 			var l:uint = gamepads.length;

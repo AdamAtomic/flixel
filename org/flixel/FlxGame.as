@@ -94,7 +94,7 @@ package org.flixel
 			//basic display and update setup stuff
 			_zoom = Zoom;
 			FlxState.bgColor = 0xff000000;
-			FlxG.setGameData(this,GameSizeX,GameSizeY,Zoom);
+			FlxG.setGameData(this,GameSizeX,GameSizeY,_zoom);
 			_step = 1/60;
 			_total = 0;
 			_accumulator = 0;
@@ -165,6 +165,15 @@ package org.flixel
 			//Finally, create the new state
 			_state.create();
 		}
+		
+		/**
+		 * Resets the game as if it were launching for the first time.
+		 */
+		internal function reset():void
+		{
+			FlxG.setGameData(this,FlxG.width,FlxG.height,_zoom);
+			switchState(new _iState());
+		}
 
 		/**
 		 * Internal event handler for input and focus.
@@ -213,6 +222,8 @@ package org.flixel
 					}
 				}
 			}
+			if(_debuggerUp && _debugger.vcr.playingBack)
+				return;
 			FlxG.keys.handleKeyUp(event);
 			var i:uint = 0;
 			var l:uint = FlxG.gamepads.length;
@@ -225,6 +236,8 @@ package org.flixel
 		 */
 		protected function onKeyDown(event:KeyboardEvent):void
 		{
+			if(_debuggerUp && _debugger.vcr.playingBack)
+				return;
 			FlxG.keys.handleKeyDown(event);
 			var i:uint = 0;
 			var l:uint = FlxG.gamepads.length;
@@ -237,8 +250,9 @@ package org.flixel
 		 */
 		protected function onMouseDown(event:MouseEvent):void
 		{
-			if(!_debuggerUp || !_debugger.hasMouse)
-				FlxG.mouse.handleMouseDown(event);
+			if(_debuggerUp && (_debugger.hasMouse || _debugger.vcr.playingBack))
+				return;
+			FlxG.mouse.handleMouseDown(event);
 		}
 		
 		/**
@@ -246,8 +260,9 @@ package org.flixel
 		 */
 		protected function onMouseUp(event:MouseEvent):void
 		{
-			if(!_debuggerUp || !_debugger.hasMouse)
-				FlxG.mouse.handleMouseUp(event);
+			if(_debuggerUp && (_debugger.hasMouse || _debugger.vcr.playingBack))
+				return;
+			FlxG.mouse.handleMouseUp(event);
 		}
 		
 		/**
@@ -255,8 +270,9 @@ package org.flixel
 		 */
 		protected function onMouseWheel(event:MouseEvent):void
 		{
-			if(!_debuggerUp || !_debugger.hasMouse)
-				FlxG.mouse.handleMouseWheel(event);
+			if(_debuggerUp && (_debugger.hasMouse || _debugger.vcr.playingBack))
+				return;
+			FlxG.mouse.handleMouseWheel(event);
 		}
 		
 		/**
@@ -333,7 +349,16 @@ package org.flixel
 		protected function step():void
 		{
 			FlxGroup._ACTIVECOUNT = FlxGroup._EXTANTCOUNT = 0;
-			FlxG.updateInput();
+			if((_debugger != null) && _debugger.vcr.playingBack)
+			{
+				//TODO: set state of input to the current recording
+			}
+			else
+				FlxG.updateInput();
+			if((_debugger != null) && _debugger.vcr.recording)
+			{
+				//TODO: record state of input to some kind of local structure??
+			}
 			update();
 			FlxG.mouse.wheel = 0;
 			if(_debuggerUp)
@@ -437,6 +462,7 @@ package org.flixel
 		{
 			if(root == null)
 				return;
+			removeEventListener(Event.ENTER_FRAME, create);
 
 			var soundPrefs:FlxSave;
 			
@@ -487,7 +513,6 @@ package org.flixel
 			//All set!
 			switchState(new _iState());
 			FlxState.screen.unsafeBind(FlxG.buffer);
-			removeEventListener(Event.ENTER_FRAME, create);
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
 		
