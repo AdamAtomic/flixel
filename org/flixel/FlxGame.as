@@ -309,10 +309,13 @@ package org.flixel
 			if(!_lostFocus)
 			{
 				FlxG.elapsed = FlxG.timeScale*_step;
-				if((_debugger != null) && _debugger.vcr.paused && _debugger.vcr.stepRequested)
+				if((_debugger != null) && _debugger.vcr.paused)
 				{
-					_debugger.vcr.stepRequested = false;
-					step();
+					if(_debugger.vcr.stepRequested)
+					{
+						_debugger.vcr.stepRequested = false;
+						step();
+					}
 				}
 				else
 				{
