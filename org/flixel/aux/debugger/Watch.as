@@ -82,7 +82,7 @@ package org.flixel.aux.debugger
 			}
 			_watching.length = 0;
 			
-			_names.text = "You can use\nFlxG.watch()\nto watch\nvariables.";
+			_names.text = "You can use\nFlxG.watch() to\nwatch public\nvariables.";
 			_values.text = "";
 		}
 

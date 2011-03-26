@@ -28,7 +28,7 @@ package org.flixel.aux.debugger
 			
 			_lines = new Array();
 			
-			_text.text = "Use FlxG.log() to print log messages."
+			_text.text = "You can use FlxG.log() to print log messages."
 		}
 		
 		public function add(Text:String):void
