@@ -90,10 +90,6 @@ package org.flixel
 		 * A reference to a <code>FlxKeyboard</code> object.  Important for input!
 		 */
 		static public var keys:FlxKeyboard;
-		/**
-		 * An array of <code>FlxGamepad</code> objects.  Important for input!
-		 */
-		static public var gamepads:Array;
 		
 		/**
 		 * A handy container for a background music object.
@@ -280,10 +276,6 @@ package org.flixel
 		{
 			keys.reset();
 			mouse.reset();
-			var i:uint = 0;
-			var l:uint = gamepads.length;
-			while(i < l)
-				gamepads[i++].reset();
 		}
 		
 		/**
@@ -728,11 +720,6 @@ package org.flixel
 			sounds = new Array();
 			mouse = new FlxMouse();
 			keys = new FlxKeyboard();
-			gamepads = new Array(4);
-			gamepads[0] = new FlxGamepad();
-			gamepads[1] = new FlxGamepad();
-			gamepads[2] = new FlxGamepad();
-			gamepads[3] = new FlxGamepad();
 			scroll = null;
 			_scrollTarget = null;
 			unfollow();
@@ -795,12 +782,8 @@ package org.flixel
 		static internal function updateInput():void
 		{
 			keys.update();
-			if(!_game._debuggerUp || (!_game._debugger.hasMouse && !_game._debugger.vcr.playingBack))
+			if(!_game._debuggerUp || !_game._debugger.hasMouse)
 				mouse.update(state.mouseX,state.mouseY,scroll.x,scroll.y);
-			var i:uint = 0;
-			var l:uint = gamepads.length;
-			while(i < l)
-				gamepads[i++].update();
 		}
 	}
 }

@@ -225,10 +225,6 @@ package org.flixel
 			if(_debuggerUp && _debugger.vcr.playingBack)
 				return;
 			FlxG.keys.handleKeyUp(event);
-			var i:uint = 0;
-			var l:uint = FlxG.gamepads.length;
-			while(i < l)
-				FlxG.gamepads[i++].handleKeyUp(event);
 		}
 		
 		/**
@@ -239,10 +235,6 @@ package org.flixel
 			if(_debuggerUp && _debugger.vcr.playingBack)
 				return;
 			FlxG.keys.handleKeyDown(event);
-			var i:uint = 0;
-			var l:uint = FlxG.gamepads.length;
-			while(i < l)
-				FlxG.gamepads[i++].handleKeyDown(event);
 		}
 		
 		/**
