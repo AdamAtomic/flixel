@@ -187,6 +187,8 @@ package org.flixel.aux.debug
 		{
 			FlxG.resetInput();
 			
+			if(_recording.finished)
+				onStop();
 			var fr:FrameRecord = _recording.advance();
 			if(fr == null)
 				return;
@@ -194,9 +196,6 @@ package org.flixel.aux.debug
 				FlxG.keys.playback(fr.keys);
 			if(fr.mouse != null)
 				FlxG.mouse.playback(fr.mouse);
-			
-			if(_recording.finished)
-				onStop();
 		}
 		
 		//***EVENT HANDLERS***//
