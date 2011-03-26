@@ -10,12 +10,14 @@ package org.flixel.aux.debug
 		protected var _marker:int;
 		protected var _total:int;
 		
-		public function Recording()
+		public function Recording(FileContents:String=null)
 		{
 			_capacity = 100;
 			_frames = new Array(_capacity);
 			_count = 0;
 			rewind();
+			if(FileContents != null)
+				load(FileContents);
 		}
 		
 		public function add(Record:FrameRecord):void
@@ -51,6 +53,16 @@ package org.flixel.aux.debug
 			_marker = 0;
 			_total = 0;
 			finished = false;
+		}
+
+		public function save():String
+		{
+			return "some bullshit";
+		}
+		
+		public function load(FileContents:String):void
+		{
+			rewind();
 		}
 	}
 }

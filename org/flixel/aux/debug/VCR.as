@@ -3,7 +3,11 @@ package org.flixel.aux.debug
 	import flash.display.Bitmap;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.IOErrorEvent;
 	import flash.events.MouseEvent;
+	import flash.net.FileFilter;
+	import flash.net.FileReference;
+	import flash.utils.ByteArray;
 	
 	import org.flixel.FlxG;
 	
@@ -18,6 +22,9 @@ package org.flixel.aux.debug
 		[Embed(source="../../data/vcr/pause.png")] protected var ImgPause:Class;
 		[Embed(source="../../data/vcr/play.png")] protected var ImgPlay:Class;
 		[Embed(source="../../data/vcr/step.png")] protected var ImgStep:Class;
+		
+		static protected const FILE_TYPES:Array = [new FileFilter("Flixel Game Recording", "*.fgr")];
+		static protected const DEFAULT_FILE_NAME:String = "replay.fgr";
 		
 		public var paused:Boolean;
 		public var stepRequested:Boolean;
@@ -47,6 +54,8 @@ package org.flixel.aux.debug
 		protected var _pressingStep:Boolean;
 		
 		protected var _recording:Recording;
+		
+		protected var _file:FileReference;
 		
 		public function VCR()
 		{
@@ -103,14 +112,64 @@ package org.flixel.aux.debug
 		
 		public function onOpen():void
 		{
-			//TODO: pop up load file dialog
+			_file = new FileReference();
+			_file.addEventListener(Event.SELECT, onOpenSelect);
+			_file.addEventListener(Event.CANCEL, onOpenCancel);
+			_file.browse(FILE_TYPES);
+		}
+		
+		protected function onOpenSelect(E:Event=null):void
+		{
+			_file.removeEventListener(Event.SELECT, onOpenSelect);
+			_file.removeEventListener(Event.CANCEL, onOpenCancel);
 			
+			_file.addEventListener(Event.COMPLETE, onOpenComplete);
+			_file.addEventListener(IOErrorEvent.IO_ERROR, onOpenError);
+			_file.load();
+		}
+		
+		protected function onOpenComplete(E:Event=null):void
+		{
+			_file.removeEventListener(Event.COMPLETE, onOpenComplete);
+			_file.removeEventListener(IOErrorEvent.IO_ERROR, onOpenError);
+			
+			//Turn the file into a giant string
+			var fileContents:String = null;
+			var data:ByteArray = _file.data;
+			if(data != null)
+				fileContents = data.readUTFBytes(data.bytesAvailable);
+			_file = null;
+			if((fileContents == null) || (fileContents.length <= 0))
+			{
+				FlxG.log("ERROR: Empty flixel gameplay record.");
+				return;
+			}
+			
+			//create a new recording from the file contents and play it
+			_recording = new Recording(fileContents);
 			playingBack = true;
 			onRestart();
 			
 			_recordOff.visible = false;
 			_recordOn.visible = false;
 			_stop.visible = true;
+			
+			FlxG.log("FLIXEL: successfully loaded flixel gameplay record.");
+		}
+		
+		protected function onOpenCancel(E:Event=null):void
+		{
+			_file.removeEventListener(Event.SELECT, onOpenSelect);
+			_file.removeEventListener(Event.CANCEL, onOpenCancel);
+			_file = null;
+		}
+		
+		protected function onOpenError(E:Event=null):void
+		{
+			_file.removeEventListener(Event.COMPLETE, onOpenComplete);
+			_file.removeEventListener(IOErrorEvent.IO_ERROR, onOpenError);
+			_file = null;
+			FlxG.log("ERROR: Unable to open flixel gameplay record.");
 		}
 		
 		public function startRecording():void
@@ -121,16 +180,53 @@ package org.flixel.aux.debug
 			
 			_recordOff.visible = false;
 			_recordOn.visible = true;
+			
+			FlxG.log("FLIXEL: starting new flixel gameplay record.");
 		}
 		
 		public function stopRecording():void
 		{
 			recording = false;
 			
-			//TODO: pop up save file dialog
+			var data:String = _recording.save();
+			if(data.length > 0)
+			{
+
+				_file = new FileReference();
+				_file.addEventListener(Event.COMPLETE, onSaveComplete);
+				_file.addEventListener(Event.CANCEL,onSaveCancel);
+				_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
+				_file.save(data, DEFAULT_FILE_NAME);
+			}
 
 			_recordOn.visible = false;
 			_recordOff.visible = true;
+		}
+		
+		protected function onSaveComplete(E:Event=null):void
+		{
+			_file.removeEventListener(Event.COMPLETE, onSaveComplete);
+			_file.removeEventListener(Event.CANCEL,onSaveCancel);
+			_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
+			_file = null;
+			FlxG.log("FLIXEL: successfully saved flixel gameplay record.");
+		}
+		
+		protected function onSaveCancel(E:Event=null):void
+		{
+			_file.removeEventListener(Event.COMPLETE, onSaveComplete);
+			_file.removeEventListener(Event.CANCEL,onSaveCancel);
+			_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
+			_file = null;
+		}
+		
+		protected function onSaveError(E:Event=null):void
+		{
+			_file.removeEventListener(Event.COMPLETE, onSaveComplete);
+			_file.removeEventListener(Event.CANCEL,onSaveCancel);
+			_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
+			_file = null;
+			FlxG.log("ERROR: problem saving flixel gameplay record.");
 		}
 		
 		public function onStop():void
@@ -196,8 +292,6 @@ package org.flixel.aux.debug
 				FlxG.keys.playback(fr.keys);
 			if(fr.mouse != null)
 				FlxG.mouse.playback(fr.mouse);
-			
-			//twitter test
 		}
 		
 		//***EVENT HANDLERS***//
