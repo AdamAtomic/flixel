@@ -2,13 +2,13 @@ package org.flixel.aux.debug
 {
 	public class Recording
 	{
-		public var currentFrame:FrameRecord;
-
+		public var finished:Boolean;
+		
 		protected var _frames:Array;
 		protected var _capacity:int;
 		protected var _count:int;
 		protected var _marker:int;
-		protected var _skipCounter:int;
+		protected var _total:int;
 		
 		public function Recording()
 		{
@@ -22,11 +22,10 @@ package org.flixel.aux.debug
 		{
 			if(Record == null)
 			{
-				if((_count <= 0) || ((_frames[_count-1] as FrameRecord).skip <= 0))
-					_frames[_count++] = new FrameRecord(null,null);
-				_frames[_count-1].skip++;
+				_total++;
 				return;
 			}
+			Record.frame = _total++;
 			_frames[_count++] = Record;
 			if(_count >= _capacity)
 			{
@@ -35,22 +34,23 @@ package org.flixel.aux.debug
 			}
 		}
 		
-		public function advance():void
+		public function advance():FrameRecord
 		{
-			_skipCounter++;
-			if((_skipCounter > currentFrame.skip) && (_marker < _count-1))
+			if(_marker >= _count)
 			{
-				_skipCounter = 0;
-				_marker++;
-				currentFrame = _frames[_marker];
+				finished = true;
+				return null;
 			}
+			if((_frames[_marker] as FrameRecord).frame != _total++)
+				return null;
+			return _frames[_marker++];
 		}
 		
 		public function rewind():void
 		{
-			_skipCounter = 0;
 			_marker = 0;
-			currentFrame = _frames[_marker];
+			_total = 0;
+			finished = false;
 		}
 	}
 }
