@@ -1,6 +1,8 @@
-package org.flixel
+package org.flixel.aux
 {
-	import org.flixel.aux.FlxList;
+	import org.flixel.FlxGroup;
+	import org.flixel.FlxObject;
+	import org.flixel.FlxRect;
 
 	/**
 	 * A fairly generic quad tree structure for rapid overlap checks.
@@ -11,6 +13,11 @@ package org.flixel
 	 */
 	public class FlxQuadTree extends FlxRect
 	{
+		/**
+		 * Helps to eliminate false collisions and/or rendering glitches caused by rounding errors
+		 */
+		static protected const ROUNDING_ERROR:Number = 0.0000001;
+		
 		/**
 		 * Set this to null to force it to refresh on the next collide.
 		 */
@@ -160,7 +167,7 @@ package org.flixel
 		public function add(Object:FlxObject, List:uint):void
 		{
 			_oa = List;
-			if(Object._group)
+			if(Object is FlxGroup)
 			{
 				var i:uint = 0;
 				var m:FlxObject;
@@ -171,7 +178,7 @@ package org.flixel
 					m = members[i++] as FlxObject;
 					if((m != null) && m.exists)
 					{
-						if(m._group)
+						if(m is FlxGroup)
 							add(m,List);
 						else if(m.solid)
 						{
@@ -419,10 +426,10 @@ package org.flixel
 				{
 					co = itr.object;
 					if( (_o === co) || !co.exists || !_o.exists || !co.solid || !_o.solid ||
-						(_o.x + _o.width  < co.x + FlxU.roundingError) ||
-						(_o.x + FlxU.roundingError > co.x + co.width) ||
-						(_o.y + _o.height < co.y + FlxU.roundingError) ||
-						(_o.y + FlxU.roundingError > co.y + co.height) )
+						(_o.x + _o.width  < co.x + ROUNDING_ERROR) ||
+						(_o.x + ROUNDING_ERROR > co.x + co.width) ||
+						(_o.y + _o.height < co.y + ROUNDING_ERROR) ||
+						(_o.y + ROUNDING_ERROR > co.y + co.height) )
 					{
 						itr = itr.next;
 						continue;

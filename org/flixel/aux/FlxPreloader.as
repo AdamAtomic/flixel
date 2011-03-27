@@ -15,6 +15,7 @@ package org.flixel.aux
 	import flash.text.TextFormat;
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getTimer;
+	
 	import org.flixel.FlxG;
 	import org.flixel.FlxU;
 	
@@ -159,7 +160,7 @@ package org.flixel.aux
 	                var app:Object = new mainClass();
 	                addChild(app as DisplayObject);
 	            }
-                removeChild(_buffer);
+                destroy();
             }
             else
 			{
@@ -234,6 +235,16 @@ package org.flixel.aux
 			b.blendMode = "overlay";
 			b.alpha = 0.25;
 			_buffer.addChild(b);
+		}
+		
+		protected function destroy():void
+		{
+			removeChild(_buffer);
+			_buffer = null;
+			_bmpBar = null;
+			_text = null;
+			_logo = null;
+			_logoGlow = null;
 		}
 		
 		/**

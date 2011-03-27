@@ -23,6 +23,14 @@ package org.flixel.aux.debug
 			}
 		}
 		
+		public function destroy():void
+		{
+			var i:uint = _count-1;
+			while(i >= 0)
+				(_frames[i++] as FrameRecord).destroy();
+			_frames = null;
+		}
+		
 		public function add(Record:FrameRecord):void
 		{
 			if(Record == null)
@@ -64,7 +72,6 @@ package org.flixel.aux.debug
 			if(_count <= 0)
 				return null;
 			var output:String = "";
-			var fr:FrameRecord;
 			var i:uint = 0;
 			while(i < _count)
 				output += _frames[i++].save() + "\n";

@@ -401,6 +401,17 @@ package org.flixel
 		{
 			if(active)
 				stop();
+
+			_point2 = null;
+			_transform = null;
+			_sound = null;
+			_core = null;
+			name = null;
+			artist = null;
+			_amplitudeCallback = null;
+			_amplitudeMonitor = null;
+			
+			super.destroy();
 		}
 		
 		/**

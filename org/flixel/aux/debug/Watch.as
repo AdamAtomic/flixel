@@ -40,6 +40,16 @@ package org.flixel.aux.debug
 			removeAll();
 		}
 		
+		override public function destroy():void
+		{
+			removeChild(_names);
+			_names = null;
+			removeChild(_values);
+			_values = null;
+			_watching = null;
+			super.destroy();
+		}
+		
 		public function add(AnyObject:Object,VariableName:String):void
 		{
 			_watching.push({object:AnyObject,field:VariableName});

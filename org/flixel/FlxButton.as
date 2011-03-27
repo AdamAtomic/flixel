@@ -196,6 +196,15 @@ package org.flixel
 		{
 			if(FlxG.stage != null)
 				FlxG.stage.removeEventListener(MouseEvent.MOUSE_UP, onMouseUp);
+
+			_off = null;
+			_on = null;
+			_offT = null;
+			_onT = null;
+			_callback = null;
+			_sf = null;
+			
+			super.destroy();
 		}
 		
 		/**

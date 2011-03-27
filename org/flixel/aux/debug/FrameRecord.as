@@ -18,6 +18,12 @@ package org.flixel.aux.debug
 			mouse = Mouse;
 		}
 		
+		public function destroy():void
+		{
+			keys = null;
+			mouse = null;
+		}
+		
 		public function save():String
 		{
 			var output:String = frame+"k";

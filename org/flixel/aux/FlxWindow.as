@@ -22,7 +22,6 @@ package org.flixel.aux
 		protected var _width:uint;
 		protected var _height:uint;
 		protected var _bounds:Rectangle;
-		protected var _minSize:Point;
 		
 		protected var _bg:Bitmap;
 		protected var _header:Bitmap;
@@ -79,6 +78,25 @@ package org.flixel.aux
 			bound();
 			
 			addEventListener(Event.ENTER_FRAME,init);
+		}
+		
+		public function destroy():void
+		{
+			minSize = null;
+			maxSize = null;
+			_bounds = null;
+			removeChild(_shadow);
+			_shadow = null;
+			removeChild(_bg);
+			_bg = null;
+			removeChild(_header);
+			_header = null;
+			removeChild(_title);
+			_title = null;
+			if(_handle != null)
+				removeChild(_handle);
+			_handle = null;
+			_drag = null;
 		}
 		
 		public function resize(Width:Number,Height:Number):void

@@ -105,12 +105,51 @@ package org.flixel.aux.debug
 			stepRequested = false;
 			recordingRequested = false;
 			playbackRequested = false;
-			
+
+			destroyOldReplay();
 			unpress();
 			checkOver();
 			updateGUI();
 			
 			addEventListener(Event.ENTER_FRAME,init);
+		}
+		
+		public function destroy():void
+		{
+			destroyOldReplay();
+			_file = null;
+			
+			removeChild(_open);
+			_open = null;
+			removeChild(_recordOff);
+			_recordOff = null;
+			removeChild(_recordOn);
+			_recordOn = null;
+			removeChild(_stop);
+			_stop = null;
+			removeChild(_flixel);
+			_flixel = null;
+			removeChild(_restart);
+			_restart = null;
+			removeChild(_pause);
+			_pause = null;
+			removeChild(_play);
+			_play = null;
+			removeChild(_step);
+			_step = null;
+		}
+		
+		public function createNewReplay(FileContents:String=null):void
+		{
+			destroyOldReplay();
+			replay = new Recording(FileContents);
+		}
+		
+		public function destroyOldReplay():void
+		{
+			if(replay != null)
+				replay.destroy();
+			replay = null;
 		}
 		
 		//***ACTUAL BUTTON BEHAVIORS***//
@@ -148,8 +187,7 @@ package org.flixel.aux.debug
 				return FlxG.log("ERROR: Empty flixel gameplay record.");
 			
 			//create a new recording from the file contents and play it
-			replay = new Recording(fileContents);
-			fileContents = null;
+			createNewReplay(fileContents);
 			playbackRequested = true;
 			FlxG.resetGame();
 			
@@ -194,7 +232,7 @@ package org.flixel.aux.debug
 		public function startRecording():void
 		{
 			recordingRequested = false;
-			replay = new Recording();
+			createNewReplay();
 			recording = true;
 			FlxG.log("FLIXEL: starting new flixel gameplay record.");
 		}

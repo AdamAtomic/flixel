@@ -59,6 +59,19 @@ package org.flixel.aux.debug
 			_visibleObjectMarker = 0;
 		}
 		
+		override public function destroy():void
+		{
+			removeChild(_text);
+			_text = null;
+			_flixelUpdate = null;
+			_flixelDraw = null;
+			_flash = null;
+			_activeObject = null;
+			_extantObject = null;
+			_visibleObject = null;
+			super.destroy();
+		}
+		
 		public function update():void
 		{
 			var time:int = getTimer();

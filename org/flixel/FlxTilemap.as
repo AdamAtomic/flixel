@@ -114,6 +114,23 @@ package org.flixel
 			fixed = true;
 		}
 		
+		override public function destroy():void
+		{
+			_flashRect = null;
+			_flashRect2 = null;
+			_pixels = null;
+			_bbPixels = null;
+			_buffer = null;
+			_bufferLoc = null;
+			_bbKey = null;
+			_data = null;
+			_rects = null;
+			_block = null;
+			_callbacks = null;
+
+			super.destroy();
+		}
+		
 		/**
 		 * Load the tilemap with string data and a tile graphic.
 		 * 

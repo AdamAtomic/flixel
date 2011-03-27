@@ -234,8 +234,9 @@ package org.flixel
 		 */
 		static public function set flashFramerate(Framerate:Number):void
 		{
+			_game._flashFramerate = Framerate;
 			if(_game.root != null)
-				_game.stage.frameRate = Framerate;
+				_game.stage.frameRate = _game._flashFramerate;
 		}
 		
 		/**
@@ -587,6 +588,11 @@ package org.flixel
 			}
 			return pixels;
 		}
+		
+		static public function clearBitmapCache():void
+		{
+			_cache = new Object();
+		}
 
 		/**
 		 * Tells the camera subsystem what <code>FlxCore</code> object to follow.
@@ -713,13 +719,19 @@ package org.flixel
 		static internal function setGameData(Game:FlxGame,Width:uint,Height:uint,Zoom:uint):void
 		{
 			_game = Game;
-			_cache = new Object();
+			clearBitmapCache();
 			width = Width;
 			height = Height;
 			_mute = false;
 			_volume = 0.5;
+			if(sounds != null)
+				destroySounds(true);
 			sounds = new Array();
+			if(mouse != null)
+				mouse.destroy();
 			mouse = new FlxMouse();
+			if(keys != null)
+				keys.destroy();
 			keys = new FlxKeyboard();
 			scroll = null;
 			_scrollTarget = null;
@@ -735,9 +747,12 @@ package org.flixel
 			
 			mobile = false;
 
-			quake = new FlxQuake(Zoom);
-			flash = new FlxFlash();
-			fade = new FlxFade();
+			if(quake == null)
+				quake = new FlxQuake(Zoom);
+			if(flash == null)
+				flash = new FlxFlash();
+			if(fade == null)
+				fade = new FlxFade();
 
 			FlxU.setWorldBounds(0,0,FlxG.width,FlxG.height);
 		}

@@ -31,6 +31,14 @@ package org.flixel.aux.debug
 			_text.text = "You can use FlxG.log() to print log messages."
 		}
 		
+		override public function destroy():void
+		{
+			removeChild(_text);
+			_text = null;
+			_lines = null;
+			super.destroy();
+		}
+		
 		public function add(Text:String):void
 		{
 			if(_lines.length <= 0)

@@ -74,19 +74,5 @@ package org.flixel
 				return false;
 			return true;
 		}
-		
-		/**
-		 * Calculate the distance between the midpoint of this rectangle and the midpoint of another rectangle.
-		 * 
-		 * @param Rect		A <code>FlxRect</code> object referring to the second rectangle.
-		 * 
-		 * @return	The distance between the two <code>FlxRect</code>s' midpoints as a floating point <code>Number</code> object.
-		 */
-		public function getDistanceMidpoints(Rect:FlxRect):Number
-		{
-			var dx:Number = (x + width/2) - (Rect.x + Rect.width/2);
-			var dy:Number = (y + height/2) - (Rect.y + Rect.height/2);
-			return Math.sqrt(dx * dx + dy * dy);
-		}
 	}
 }

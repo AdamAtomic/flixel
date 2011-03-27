@@ -95,7 +95,7 @@ package org.flixel
 		 * Automatically goes through and calls render on everything you added to the game loop,
 		 * override this loop to manually control the rendering process.
 		 */
-		public function render():void
+		public function draw():void
 		{
 			defaultGroup.draw();
 		}

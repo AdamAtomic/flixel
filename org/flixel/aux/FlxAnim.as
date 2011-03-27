@@ -39,5 +39,10 @@ package org.flixel.aux
 			frames = Frames;
 			looped = Looped;
 		}
+		
+		public function destroy():void
+		{
+			frames = null;
+		}
 	}
 }

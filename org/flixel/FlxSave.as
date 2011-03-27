@@ -25,17 +25,27 @@ package org.flixel
 		 */
 		protected var _so:SharedObject;
 		
-		protected var _onPending:Function;
+		protected var _onComplete:Function;
+		
+		protected var _closeRequested:Boolean;
 		
 		/**
 		 * Blanks out the containers.
 		 */
 		public function FlxSave()
 		{
+			destroy();
+			_closeRequested = false;
+		}
+
+		public function destroy():void
+		{
 			name = null;
+			if(_so != null)
+				_so.close();
 			_so = null;
 			data = null;
-			_onPending = null;
+			_onComplete = null;
 		}
 		
 		/**
@@ -47,7 +57,6 @@ package org.flixel
 		 */
 		public function bind(Name:String):Boolean
 		{
-			name = null;
 			_so = null;
 			data = null;
 			name = Name;
@@ -78,11 +87,8 @@ package org.flixel
 		 */
 		public function write(FieldName:String,FieldValue:Object,MinFileSize:uint=0,OnPending:Function=null):Boolean
 		{
-			if(_so == null)
-			{
-				FlxG.log("ERROR: You must call FlxSave.bind()\nbefore calling FlxSave.write().");
+			if(!checkBinding())
 				return false;
-			}
 			data[FieldName] = FieldValue;
 			return forceSave(MinFileSize,OnPending);
 		}
@@ -96,46 +102,52 @@ package org.flixel
 		 */
 		public function read(FieldName:String):Object
 		{
-			if(_so == null)
-			{
-				FlxG.log("ERROR: You must call FlxSave.bind()\nbefore calling FlxSave.read().");
+			if(!checkBinding())
 				return null;
-			}
 			return data[FieldName];
+		}
+		
+		/**
+		 * Calls forceSave() and then cleans up the object from memory.
+		 *
+		 * @param	Force			Leave this set to false if you want to force a write and flush on your save data first.  Setting to true means data you've written to the object MAY NOT be saved!
+		 * @param	MinFileSize		If you need X amount of space for your save, specify it here.
+		 * @param	OnComplete		This callback will be triggered when the data is written successfully.
+		 *
+		 * @return	Whether the operation was completed.  If NoSave == true, then it will always return true.  If NoSave == false, then the result of ForceSave() is returned.
+		 */
+		public function close(Force:Boolean=false,MinFileSize:uint=0,OnComplete:Function=null):Boolean
+		{
+			if(Force)
+			{
+				if(checkBinding())
+					_so.close();
+				destroy();
+				return true;
+			}
+			_closeRequested = true;
+			return forceSave(MinFileSize,OnComplete);
 		}
 
 		/**
-		 * Writes the local shared object to disk immediately.
+		 * Writes the local shared object to disk immediately.  Leaves the object open in memory.
 		 *
 		 * @param	MinFileSize		If you need X amount of space for your save, specify it here.
+		 * @param	OnComplete		This callback will be triggered when the data is written successfully.
 		 *
-		 * @return	Whether or not the flush was successful.
+		 * @return	Whether or not the data was written immediately.  False could be an error or a pending/popup.
 		 */
-		public function forceSave(MinFileSize:uint=0,OnPending:Function=null):Boolean
+		public function forceSave(MinFileSize:uint=0,OnComplete:Function=null):Boolean
 		{
-			_onPending = OnPending;
-			if(_so == null)
-			{
-				FlxG.log("ERROR: You must call FlxSave.bind()\nbefore calling FlxSave.forceSave().");
+			if(!checkBinding())
 				return false;
-			}
-			
+			_onComplete = OnComplete;
 			var status:Object = null;
-			try
-			{
-				status = _so.flush(MinFileSize);
-			}
-			catch (e:Error)
-			{
-				FlxG.log("ERROR: There was a problem flushing\nthe shared object data from FlxSave.");
-				return false;
-			}
+			try { status = _so.flush(MinFileSize); }
+			catch (e:Error) { return onDone(false); }
 			if(status == SharedObjectFlushStatus.PENDING)
-			{
-				FlxG.log("WARNING: Requesting additional storage\nfor shared object data from FlxSave...");
 				_so.addEventListener(NetStatusEvent.NET_STATUS,onFlushStatus);
-			}
-			return status == SharedObjectFlushStatus.FLUSHED;
+			return onDone(status == SharedObjectFlushStatus.FLUSHED);
 		}
 		
 		/**
@@ -145,35 +157,42 @@ package org.flixel
 		 * 
 		 * @return	Whether or not the clear and flush was successful.
 		 */
-		public function erase(MinFileSize:uint=0,OnPending:Function=null):Boolean
+		public function erase(MinFileSize:uint=0,OnComplete:Function=null):Boolean
+		{
+			if(!checkBinding())
+				return false;
+			_so.clear();
+			return forceSave(MinFileSize,OnComplete);
+		}
+		
+		protected function onFlushStatus(event:NetStatusEvent):void
+		{
+			_so.removeEventListener(NetStatusEvent.NET_STATUS,onFlushStatus);
+			onDone(event.info.code == "SharedObject.Flush.Success");
+		}
+		
+		protected function onDone(State:Boolean):Boolean
+		{
+			if(_onComplete != null)
+				_onComplete(State);
+			else if(!State)
+				FlxG.log("ERROR: There was a problem flushing\nthe shared object data from FlxSave.");
+			if(_closeRequested)
+			{
+				_closeRequested = false;
+				destroy();
+			}
+			return State;
+		}
+		
+		protected function checkBinding():Boolean
 		{
 			if(_so == null)
 			{
-				FlxG.log("ERROR: You must call FlxSave.bind()\nbefore calling FlxSave.erase().");
+				FlxG.log("FLIXEL: You must call FlxSave.bind()\nbefore calling FlxSave.read().");
 				return false;
 			}
-			_so.clear();
-			return forceSave(MinFileSize,OnPending);
-		}
-		
-		private function onFlushStatus(event:NetStatusEvent):void
-		{
-			FlxG.log("...captured user storage preference.");
-			switch (event.info.code)
-			{
-				case "SharedObject.Flush.Success":
-					if(_onPending != null)
-						_onPending(true);
-					break;
-				case "SharedObject.Flush.Failed":
-					if(_onPending != null)
-						_onPending(false);
-					else
-						FlxG.log("ERROR: There was a problem flushing\nthe shared object data from FlxSave.");
-					break;
-			}
-			
-			_so.removeEventListener(NetStatusEvent.NET_STATUS,onFlushStatus);
+			return true;
 		}
 	}
 }

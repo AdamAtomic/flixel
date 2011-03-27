@@ -163,10 +163,16 @@ package org.flixel.aux
 		 * @param	KeyName		String name of the key (e.g. "LEFT" or "A")
 		 * @param	KeyCode		The numeric Flash code for this key.
 		 */
-		internal function addKey(KeyName:String,KeyCode:uint):void
+		protected function addKey(KeyName:String,KeyCode:uint):void
 		{
 			_lookup[KeyName] = KeyCode;
 			_map[KeyCode] = { name: KeyName, current: 0, last: 0 };
+		}
+		
+		public function destroy():void
+		{
+			_lookup = null;
+			_map = null;
 		}
 	}
 }

@@ -17,6 +17,11 @@ package org.flixel
 	public class FlxSprite extends FlxObject
 	{
 		/**
+		 * Helps to eliminate false collisions and/or rendering glitches caused by rounding errors
+		 */
+		static protected const ROUNDING_ERROR:Number = 0.0000001;
+		
+		/**
 		 * Useful for controlling flipped animations and checking player orientation.
 		 */
 		static public const LEFT:uint = 0;
@@ -298,26 +303,6 @@ package org.flixel
 		}
 		
 		/**
-		 * Set <code>pixels</code> to any <code>BitmapData</code> object.
-		 * Automatically adjust graphic size and render helpers.
-		 */
-		public function get pixels():BitmapData
-		{
-			return _pixels;
-		}
-		
-		/**
-		 * @private
-		 */
-		public function set pixels(Pixels:BitmapData):void
-		{
-			_pixels = Pixels;
-			width = frameWidth = _pixels.width;
-			height = frameHeight = _pixels.height;
-			resetHelpers();
-		}
-		
-		/**
 		 * Resets some important variables for sprite optimization and rendering.
 		 */
 		protected function resetHelpers():void
@@ -344,6 +329,52 @@ package org.flixel
 				drawBounds();
 			_caf = 0;
 			refreshHulls();
+		}
+		
+		override public function destroy():void
+		{
+			var a:FlxAnim;
+			var i:uint = 0;
+			var l:uint = _animations.length;
+			while(i < l)
+			{
+				a = _animations[i++];
+				if(a != null)
+					a.destroy();
+			}
+			_animations = null;
+			
+			_flashRect = null;
+			_flashRect2 = null;
+			_flashPointZero = null;
+			offset = null;
+			scale = null;
+			_curAnim = null;
+			_mtx = null;
+			_callback = null;
+			_gfxSprite == null;
+			_framePixels = null;
+			_bbb = null;
+		}
+		
+		/**
+		 * Set <code>pixels</code> to any <code>BitmapData</code> object.
+		 * Automatically adjust graphic size and render helpers.
+		 */
+		public function get pixels():BitmapData
+		{
+			return _pixels;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set pixels(Pixels:BitmapData):void
+		{
+			_pixels = Pixels;
+			width = frameWidth = _pixels.width;
+			height = frameHeight = _pixels.height;
+			resetHelpers();
 		}
 		
 		/**
@@ -722,8 +753,8 @@ package org.flixel
 		override public function getScreenXY(Point:FlxPoint=null):FlxPoint
 		{
 			if(Point == null) Point = new FlxPoint();
-			Point.x = FlxU.floor(x + FlxU.roundingError)+FlxU.floor(FlxG.scroll.x*scrollFactor.x) - offset.x;
-			Point.y = FlxU.floor(y + FlxU.roundingError)+FlxU.floor(FlxG.scroll.y*scrollFactor.y) - offset.y;
+			Point.x = FlxU.floor(x + ROUNDING_ERROR)+FlxU.floor(FlxG.scroll.x*scrollFactor.x) - offset.x;
+			Point.y = FlxU.floor(y + ROUNDING_ERROR)+FlxU.floor(FlxG.scroll.y*scrollFactor.y) - offset.y;
 			return Point;
 		}
 		

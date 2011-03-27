@@ -82,6 +82,23 @@ package org.flixel.aux.debug
 		protected function onMouseOver(E:MouseEvent=null):void { hasMouse = true; }
 		protected function onMouseOut(E:MouseEvent=null):void { hasMouse = false; }
 		
+		public function destroy():void
+		{
+			_screen = null;
+			removeChild(log);
+			log.destroy();
+			log = null;
+			removeChild(watch);
+			watch.destroy();
+			watch = null;
+			removeChild(perf);
+			perf.destroy();
+			perf = null;
+			removeChild(vcr);
+			vcr.destroy();
+			vcr = null;
+		}
+		
 		public function setLayout(Layout:uint):void
 		{
 			_layout = Layout;

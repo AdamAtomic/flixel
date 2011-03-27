@@ -10,6 +10,11 @@ package org.flixel
 	public class FlxObject extends FlxRect
 	{
 		/**
+		 * Helps to eliminate false collisions and/or rendering glitches caused by rounding errors
+		 */
+		static protected const ROUNDING_ERROR:Number = 0.0000001;
+		
+		/**
 		 * Kind of a global on/off switch for any objects descended from <code>FlxObject</code>.
 		 */
 		public var exists:Boolean;
@@ -150,10 +155,6 @@ package org.flixel
 		 */
 		public var colOffsets:Array;
 		/**
-		 * Dedicated internal flag for whether or not this class is a FlxGroup.
-		 */
-		internal var _group:Boolean;
-		/**
 		 * Flag that indicates whether or not you just hit the floor.
 		 * Primarily useful for platformers, this flag is reset during the <code>updateMotion()</code>.
 		 */
@@ -227,7 +228,6 @@ package org.flixel
 			colHullY = new FlxRect();
 			colVector = new FlxPoint();
 			colOffsets = new Array(new FlxPoint());
-			_group = false;
 		}
 		
 		/**
@@ -235,7 +235,19 @@ package org.flixel
 		 */
 		public function destroy():void
 		{
-			//Nothing to destroy yet
+			origin = null;
+			velocity = null;
+			acceleration = null;
+			drag = null;
+			maxVelocity = null;
+			scrollFactor = null;
+			_point = null;
+			_rect = null;
+			_flashPoint = null;
+			colHullX = null;
+			colHullY = null;
+			colVector = null;
+			colOffsets = null;
 		}
 		
 		/**
@@ -533,8 +545,8 @@ package org.flixel
 		public function getScreenXY(Point:FlxPoint=null):FlxPoint
 		{
 			if(Point == null) Point = new FlxPoint();
-			Point.x = FlxU.floor(x + FlxU.roundingError)+FlxU.floor(FlxG.scroll.x*scrollFactor.x);
-			Point.y = FlxU.floor(y + FlxU.roundingError)+FlxU.floor(FlxG.scroll.y*scrollFactor.y);
+			Point.x = FlxU.floor(x + ROUNDING_ERROR)+FlxU.floor(FlxG.scroll.x*scrollFactor.x);
+			Point.y = FlxU.floor(y + ROUNDING_ERROR)+FlxU.floor(FlxG.scroll.y*scrollFactor.y);
 			return Point;
 		}
 		

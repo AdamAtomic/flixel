@@ -66,6 +66,7 @@ package org.flixel
 		protected var _accumulator:Number;
 		protected var _lostFocus:Boolean;
 		internal var _step:Number;
+		internal var _flashFramerate:uint;
 		
 		//"focus lost" screen, sound tray, and debugger overlays
 		protected var _focus:Sprite;
@@ -104,6 +105,7 @@ package org.flixel
 			useDefaultHotKeys = true;
 			debugOnRelease = false;
 			_debuggerUp = false;
+			_flashFramerate = 30;
 			
 			//then get ready to create the game object for real
 			_iState = InitialState;
@@ -243,7 +245,7 @@ package org.flixel
 				flash.ui.Mouse.hide();
 			FlxG.resetInput();
 			_lostFocus = _focus.visible = false;
-			stage.frameRate = 30;//_framerate;
+			stage.frameRate = _flashFramerate;
 		}
 		
 		/**
@@ -258,7 +260,7 @@ package org.flixel
 			}
 			flash.ui.Mouse.show();
 			_lostFocus = _focus.visible = true;
-			stage.frameRate = 5;//_frameratePaused;
+			stage.frameRate = 10;
 		}
 		
 		/**
@@ -322,6 +324,8 @@ package org.flixel
 			if(_state != null)
 			{
 				_state.destroy(); //important that it is destroyed while still in the display list
+				if(FlxU.getClassName(_state) != FlxU.getClassName(_requestedState))
+					FlxG.clearBitmapCache();	//dumps any allocated graphics if player is loading a different state
 				swapChildren(_requestedState,_state);
 				removeChild(_state);
 			}
@@ -335,11 +339,7 @@ package org.flixel
 		protected function step():void
 		{
 			if(_state != _requestedState)
-			{
-				if(_debugger.vcr.replay != null)
-					FlxG.log(_debugger.vcr.replay.frame);
 				switchState();
-			}
 			
 			if(_debugger != null)
 			{
@@ -436,7 +436,7 @@ package org.flixel
 			var mark:uint = getTimer();
 			FlxG.buffer.lock();
 			_state.preProcess();
-			_state.render();
+			_state.draw();
 			if(FlxG.flash.exists)
 				FlxG.flash.draw();
 			if(FlxG.fade.exists)
@@ -468,7 +468,7 @@ package org.flixel
 			//Set up the view window and double buffering
 			stage.scaleMode = StageScaleMode.NO_SCALE;
             stage.align = StageAlign.TOP_LEFT;
-            stage.frameRate = 30;//_framerate;
+            stage.frameRate = _flashFramerate;
 			_buffer = new Bitmap(new BitmapData(FlxG.width,FlxG.height,true,FlxState.bgColor));
 			_buffer.scaleX = _buffer.scaleY = _zoom;
 			addChild(_buffer);

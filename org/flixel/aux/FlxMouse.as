@@ -115,6 +115,8 @@ package org.flixel.aux
 		{
 			if(Graphic == null)
 				Graphic = ImgDefaultCursor;
+			if(cursor != null)
+				cursor.destroy();
 			cursor = new FlxSprite(screenX,screenY,Graphic);
 			cursor.solid = false;
 			cursor.offset.x = XOffset;
@@ -132,7 +134,10 @@ package org.flixel.aux
 				if(cursor.visible)
 					load(null);
 				else
+				{
+					cursor.destroy();
 					cursor = null;
+				}
 			}
 		}
 
@@ -288,6 +293,12 @@ package org.flixel.aux
 			updateCursor();
 			_current = Record.button;
 			wheel = Record.wheel;
+		}
+		
+		public function destroy():void
+		{
+			cursor.destroy();
+			cursor = null;
 		}
 	}
 }

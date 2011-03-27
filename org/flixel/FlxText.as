@@ -55,6 +55,12 @@ package org.flixel
 			calcFrame();
 		}
 		
+		override public function destroy():void
+		{
+			_tf = null;
+			super.destroy();
+		}
+		
 		/**
 		 * You can use this if you have a lot of text parameters
 		 * to set instead of the individual properties.

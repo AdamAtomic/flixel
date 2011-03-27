@@ -5,13 +5,14 @@ package org.flixel
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
 	import flash.utils.getTimer;
+	import org.flixel.aux.FlxQuadTree;
 	
 	public class FlxU
 	{
 		/**
 		 * Helps to eliminate false collisions and/or rendering glitches caused by rounding errors
 		 */
-		static internal var roundingError:Number = 0.0000001;
+		static protected const ROUNDING_ERROR:Number = 0.0000001;
 		/**
 		 * The last quad tree you generated will be stored here for reference or whatever.
 		 */
@@ -665,10 +666,10 @@ package org.flixel
 					obj2Hull.y += oy2;
 					
 					//See if it's a actually a valid collision
-					if( (obj1Hull.x + obj1Hull.width  < obj2Hull.x + roundingError) ||
-						(obj1Hull.x + roundingError > obj2Hull.x + obj2Hull.width) ||
-						(obj1Hull.y + obj1Hull.height < obj2Hull.y + roundingError) ||
-						(obj1Hull.y + roundingError > obj2Hull.y + obj2Hull.height) )
+					if( (obj1Hull.x + obj1Hull.width  < obj2Hull.x + ROUNDING_ERROR) ||
+						(obj1Hull.x + ROUNDING_ERROR > obj2Hull.x + obj2Hull.width) ||
+						(obj1Hull.y + obj1Hull.height < obj2Hull.y + ROUNDING_ERROR) ||
+						(obj1Hull.y + ROUNDING_ERROR > obj2Hull.y + obj2Hull.height) )
 					{
 						obj2Hull.x = obj2Hull.x - ox2;
 						obj2Hull.y = obj2Hull.y - oy2;
@@ -726,30 +727,14 @@ package org.flixel
 					sv1 = Object2.velocity.x;
 					sv2 = Object1.velocity.x;
 					if(!f1 && f2)
-					{
-						if(Object1._group)
-							Object1.reset(Object1.x - overlap,Object1.y);
-						else
-							Object1.x = Object1.x - overlap;
-					}
+						Object1.x = Object1.x - overlap;
 					else if(f1 && !f2)
-					{
-						if(Object2._group)
-							Object2.reset(Object2.x + overlap,Object2.y);
-						else
-							Object2.x += overlap;
-					}
+						Object2.x += overlap;
 					else if(!f1 && !f2)
 					{
 						overlap /= 2;
-						if(Object1._group)
-							Object1.reset(Object1.x - overlap,Object1.y);
-						else
-							Object1.x = Object1.x - overlap;
-						if(Object2._group)
-							Object2.reset(Object2.x + overlap,Object2.y);
-						else
-							Object2.x += overlap;
+						Object1.x = Object1.x - overlap;
+						Object2.x += overlap;
 						sv1 *= 0.5;
 						sv2 *= 0.5;
 					}
@@ -877,10 +862,10 @@ package org.flixel
 					obj2Hull.y += oy2;
 					
 					//See if it's a actually a valid collision
-					if( (obj1Hull.x + obj1Hull.width  < obj2Hull.x + roundingError) ||
-						(obj1Hull.x + roundingError > obj2Hull.x + obj2Hull.width) ||
-						(obj1Hull.y + obj1Hull.height < obj2Hull.y + roundingError) ||
-						(obj1Hull.y + roundingError > obj2Hull.y + obj2Hull.height) )
+					if( (obj1Hull.x + obj1Hull.width  < obj2Hull.x + ROUNDING_ERROR) ||
+						(obj1Hull.x + ROUNDING_ERROR > obj2Hull.x + obj2Hull.width) ||
+						(obj1Hull.y + obj1Hull.height < obj2Hull.y + ROUNDING_ERROR) ||
+						(obj1Hull.y + ROUNDING_ERROR > obj2Hull.y + obj2Hull.height) )
 					{
 						obj2Hull.x = obj2Hull.x - ox2;
 						obj2Hull.y = obj2Hull.y - oy2;
@@ -938,30 +923,14 @@ package org.flixel
 					sv1 = Object2.velocity.y;
 					sv2 = Object1.velocity.y;
 					if(!f1 && f2)
-					{
-						if(Object1._group)
-							Object1.reset(Object1.x, Object1.y - overlap);
-						else
-							Object1.y = Object1.y - overlap;
-					}
+						Object1.y = Object1.y - overlap;
 					else if(f1 && !f2)
-					{
-						if(Object2._group)
-							Object2.reset(Object2.x, Object2.y + overlap);
-						else
-							Object2.y += overlap;
-					}
+						Object2.y += overlap;
 					else if(!f1 && !f2)
 					{
 						overlap /= 2;
-						if(Object1._group)
-							Object1.reset(Object1.x, Object1.y - overlap);
-						else
-							Object1.y = Object1.y - overlap;
-						if(Object2._group)
-							Object2.reset(Object2.x, Object2.y + overlap);
-						else
-							Object2.y += overlap;
+						Object1.y = Object1.y - overlap;
+						Object2.y += overlap;
 						sv1 *= 0.5;
 						sv2 *= 0.5;
 					}

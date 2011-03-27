@@ -110,6 +110,14 @@ package org.flixel
 			justEmitted = false;
 		}
 		
+		override public function destroy():void
+		{
+			minParticleSpeed = null;
+			maxParticleSpeed = null;
+			particleDrag = null;
+			super.destroy();
+		}
+		
 		/**
 		 * This function generates a new array of sprites to attach to the emitter.
 		 * 
