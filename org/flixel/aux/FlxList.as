@@ -26,5 +26,13 @@ package org.flixel.aux
 			object = null;
 			next = null;
 		}
+		
+		public function destroy():void
+		{
+			object = null;
+			if(next != null)
+				next.destroy();
+			next = null;
+		}
 	}
 }

@@ -69,29 +69,29 @@ package org.flixel
 		 * 
 		 * @return	The same Flash <code>Array</code> object that you passed in in the first place.
 		 */
-		static public function shuffle(FlashArray:Array,HowManyTimes:uint):Array
+		static public function shuffle(Objects:Array,HowManyTimes:uint):Array
 		{
 			var i1:uint;
 			var i2:uint;
 			var o:Object;
 			for(var i:uint = 0; i < HowManyTimes; i++)
 			{
-				i1 = FlxU.random()*FlashArray.length;
-				i2 = FlxU.random()*FlashArray.length;
-				o = FlashArray[i2];
-				FlashArray[i2] = FlashArray[i1];
-				FlashArray[i1] = o;
+				i1 = FlxU.random()*Objects.length;
+				i2 = FlxU.random()*Objects.length;
+				o = Objects[i2];
+				Objects[i2] = Objects[i1];
+				Objects[i1] = o;
 			}
-			return FlashArray;
+			return Objects;
 		}
 		
-		static public function getRandom(FlashArray:Array):Object
+		static public function getRandom(Objects:Array):Object
 		{
-			if(FlashArray != null)
+			if(Objects != null)
 			{
-				var l:uint = FlashArray.length;
+				var l:uint = Objects.length;
 				if(l > 0)
-					return FlashArray[uint(FlxU.random()*l)];
+					return Objects[uint(FlxU.random()*l)];
 			}
 			return null;
 		}
@@ -269,7 +269,7 @@ package org.flixel
 		 * 
 		 * @return  The color as a <code>uint</code>.
 		 */
-		static public function getColor(Red:uint, Green:uint, Blue:uint, Alpha:Number=1.0):uint
+		static public function makeColor(Red:uint, Green:uint, Blue:uint, Alpha:Number=1.0):uint
 		{
 			return (((Alpha>1)?Alpha:(Alpha * 255)) & 0xFF) << 24 | (Red & 0xFF) << 16 | (Green & 0xFF) << 8 | (Blue & 0xFF);
 		}
@@ -284,7 +284,7 @@ package org.flixel
 		 * 
 		 * @return	The color as a <code>uint</code>.
 		 */
-		static public function getColorHSB(Hue:Number,Saturation:Number,Brightness:Number,Alpha:Number=1.0):uint
+		static public function makeColorFromHSB(Hue:Number,Saturation:Number,Brightness:Number,Alpha:Number=1.0):uint
 		{
 			var red:Number;
 			var green:Number;
@@ -400,12 +400,7 @@ package org.flixel
 		
 		static public function formatArray(A:Array):String
 		{
-			if(A == null)
-			{
-				FlxG.log("WARNING: Tried to format a null array [FlxU.formatArray()].");
-				return null;
-			}
-			if(A.length <= 0)
+			if((A == null) || (A.length <= 0))
 				return null;
 			var s:String = A[0].toString();
 			for(var i:uint = 1; i < A.length; i++)
@@ -554,6 +549,8 @@ package org.flixel
 			if( (Object1 == null) || !Object1.exists ||
 				(Object2 == null) || !Object2.exists )
 				return false;
+			if(quadTree != null)
+				quadTree.destroy();
 			quadTree = new FlxQuadTree(FlxQuadTree.bounds.x,FlxQuadTree.bounds.y,FlxQuadTree.bounds.width,FlxQuadTree.bounds.height);
 			quadTree.add(Object1,FlxQuadTree.A_LIST);
 			if(Object1 === Object2)
@@ -578,6 +575,8 @@ package org.flixel
 			if( (Object1 == null) || !Object1.exists ||
 				(Object2 == null) || !Object2.exists )
 				return false;
+			if(quadTree != null)
+				quadTree.destroy();
 			quadTree = new FlxQuadTree(FlxQuadTree.bounds.x,FlxQuadTree.bounds.y,FlxQuadTree.bounds.width,FlxQuadTree.bounds.height);
 			quadTree.add(Object1,FlxQuadTree.A_LIST);
 			var match:Boolean = Object1 === Object2;

@@ -17,11 +17,7 @@ package org.flixel.aux
 		 * Helps to eliminate false collisions and/or rendering glitches caused by rounding errors
 		 */
 		static protected const ROUNDING_ERROR:Number = 0.0000001;
-		
-		/**
-		 * Set this to null to force it to refresh on the next collide.
-		 */
-		static public var quadTree:FlxQuadTree;
+
 		/**
 		 * This variable stores the dimensions of the root of the quad tree.
 		 * This is the eligible game collision space.
@@ -154,6 +150,34 @@ package org.flixel.aux
 			_b = y+height;
 			_hh = height/2;
 			_my = _t+_hh;
+		}
+		
+		public function destroy():void
+		{
+			_headA.destroy();
+			_headA = null;
+			_tailA.destroy();
+			_tailA = null;
+			_headB.destroy();
+			_headB = null;
+			_tailB.destroy();
+			_tailB = null;
+
+			if(_nw != null)
+				_nw.destroy();
+			_nw = null;
+			if(_ne != null)
+				_ne.destroy();
+			_ne = null;
+			if(_se != null)
+				_se.destroy();
+			_se = null;
+			if(_sw != null)
+				_sw.destroy();
+			_sw = null;
+
+			_o = null;
+			_oc = null;
 		}
 		
 		/**
