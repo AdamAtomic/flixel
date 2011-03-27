@@ -1,4 +1,4 @@
-package org.flixel.aux
+package org.flixel.helpers
 {
 	/**
 	 * Just a helper structure for the FlxSprite animation system

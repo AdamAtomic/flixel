@@ -1,4 +1,4 @@
-package org.flixel.aux.debug
+package org.flixel.helpers.debug
 {
 	import flash.geom.Rectangle;
 	import flash.system.System;
@@ -7,7 +7,7 @@ package org.flixel.aux.debug
 	import flash.utils.getTimer;
 	
 	import org.flixel.FlxG;
-	import org.flixel.aux.FlxWindow;
+	import org.flixel.helpers.FlxWindow;
 	
 	public class Perf extends FlxWindow
 	{

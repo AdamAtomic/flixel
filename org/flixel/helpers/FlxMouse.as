@@ -1,4 +1,4 @@
-package org.flixel.aux
+package org.flixel.helpers
 {
 	import flash.events.MouseEvent;
 	
@@ -6,7 +6,7 @@ package org.flixel.aux
 	import org.flixel.FlxSprite;
 	import org.flixel.FlxG;
 	import org.flixel.FlxU;
-	import org.flixel.aux.debug.MouseRecord;
+	import org.flixel.helpers.debug.MouseRecord;
 	
 	/**
 	 * This class helps contain and track the mouse pointer in your game.

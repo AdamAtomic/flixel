@@ -1,4 +1,4 @@
-package org.flixel.aux
+package org.flixel.helpers
 {
 	import org.flixel.FlxG;
 	

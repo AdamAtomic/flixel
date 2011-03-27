@@ -1,4 +1,4 @@
-package org.flixel.aux.debug
+package org.flixel.helpers.debug
 {
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;

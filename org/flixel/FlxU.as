@@ -5,7 +5,7 @@ package org.flixel
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
 	import flash.utils.getTimer;
-	import org.flixel.aux.FlxQuadTree;
+	import org.flixel.helpers.FlxQuadTree;
 	
 	public class FlxU
 	{

@@ -5,8 +5,8 @@ package org.flixel
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	
-	import org.flixel.aux.*;
-	import org.flixel.aux.debug.Debugger;
+	import org.flixel.helpers.*;
+	import org.flixel.helpers.debug.Debugger;
 	
 	/**
 	 * This is a global helper class full of useful functions for audio,

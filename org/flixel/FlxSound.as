@@ -5,7 +5,7 @@ package org.flixel
 	import flash.media.SoundChannel;
 	import flash.media.SoundTransform;
 	import flash.net.URLRequest;
-	import org.flixel.aux.FlxMonitor;
+	import org.flixel.helpers.FlxMonitor;
 	
 	/**
 	 * This is the universal flixel sound object, used for streaming, music, and sound effects.

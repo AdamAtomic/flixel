@@ -1,4 +1,4 @@
-package org.flixel.aux.debug
+package org.flixel.helpers.debug
 {
 	public class MouseRecord
 	{

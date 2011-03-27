@@ -1,4 +1,4 @@
-package org.flixel.aux
+package org.flixel.helpers
 {
 	public class FlxKeyboard extends FlxInput
 	{

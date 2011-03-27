@@ -9,7 +9,7 @@ package org.flixel
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
-	import org.flixel.aux.FlxAnim;
+	import org.flixel.helpers.FlxAnim;
 	
 	/**
 	* The main "game object" class, handles basic physics and animation.

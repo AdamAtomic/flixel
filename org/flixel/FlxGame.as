@@ -16,9 +16,9 @@ package org.flixel
 	import flash.utils.Timer;
 	import flash.utils.getTimer;
 	
-	import org.flixel.aux.debug.Debugger;
-	import org.flixel.aux.debug.FrameRecord;
-	import org.flixel.aux.debug.MouseRecord;
+	import org.flixel.helpers.debug.Debugger;
+	import org.flixel.helpers.debug.FrameRecord;
+	import org.flixel.helpers.debug.MouseRecord;
 
 	/**
 	 * FlxGame is the heart of all flixel games, and contains a bunch of basic game loops and things.
