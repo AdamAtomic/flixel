@@ -239,6 +239,11 @@ package org.flixel
 				_game.stage.frameRate = _game._flashFramerate;
 		}
 		
+		static public function resetState():void
+		{
+			_game._requestedState = new (FlxU.getClass(FlxU.getClassName(_game._state,false)))();
+		}
+		
 		/**
 		 * Like hitting the reset button on a game console, this will re-launch the game as if it just started.
 		 */

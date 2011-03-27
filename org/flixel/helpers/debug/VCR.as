@@ -223,10 +223,13 @@ package org.flixel.helpers.debug
 			playingBack = true;
 		}
 		
-		public function onRecord():void
+		public function onRecord(AltMode:Boolean):void
 		{
 			recordingRequested = true;
-			FlxG.resetGame();
+			if(AltMode)
+				FlxG.resetState();
+			else
+				FlxG.resetGame();
 			
 			_recordOff.visible = false;
 			_recordOn.visible = true;
@@ -297,7 +300,13 @@ package org.flixel.helpers.debug
 		public function onRestart():void
 		{
 			if(replay != null)
+			{
 				playbackRequested = true;
+				
+				_recordOff.visible = false;
+				_recordOn.visible = false;
+				_stop.visible = true;
+			}
 			FlxG.resetGame();
 		}
 		
@@ -393,7 +402,7 @@ package org.flixel.helpers.debug
 				else if(recording)
 					stopRecording();
 				else if(!recordingRequested)
-					onRecord();
+					onRecord(E.shiftKey);
 			}
 			else if(_overRestart && _pressingRestart)
 				onRestart();

@@ -118,13 +118,5 @@ package org.flixel
 		{
 			defaultGroup.destroy();
 		}
-		
-		/**
-		 * Reloads the current game state.
-		 */
-		public function reload():void
-		{
-			FlxG.state = new (FlxU.getClass(FlxU.getClassName(this,false)))();
-		}
 	}
 }
