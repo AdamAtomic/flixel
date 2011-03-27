@@ -54,6 +54,7 @@ package org.flixel
 		//basic display stuff
 		internal var _state:FlxState;
 		internal var _requestedState:FlxState;
+		internal var _requestedReset:Boolean;
 		internal var _buffer:Bitmap;
 		internal var _zoom:uint;
 		
@@ -97,7 +98,7 @@ package org.flixel
 			//basic display and update setup stuff
 			_zoom = Zoom;
 			FlxState.bgColor = 0xff000000;
-			FlxG.setGameData(this,GameSizeX,GameSizeY,_zoom);
+			FlxG.init(this,GameSizeX,GameSizeY);
 			_step = 1/60;
 			_total = 0;
 			_accumulator = 0;
@@ -109,6 +110,8 @@ package org.flixel
 			
 			//then get ready to create the game object for real
 			_iState = InitialState;
+			_requestedState null;
+			_requestedReset = true;
 			_created = false;
 			addEventListener(Event.ENTER_FRAME, create);
 		}
@@ -133,15 +136,6 @@ package org.flixel
 				if(i < gv) _soundTrayBars[i].alpha = 1;
 				else _soundTrayBars[i].alpha = 0.5;
 			}
-		}
-		
-		/**
-		 * Resets the game as if it were launching for the first time.
-		 */
-		internal function reset():void
-		{
-			FlxG.setGameData(this,FlxG.width,FlxG.height,_zoom);
-			_requestedState = new _iState();
 		}
 
 		/**
@@ -185,8 +179,6 @@ package org.flixel
 				    		FlxG.volume = FlxG.volume + 0.1;
 				    		showSoundTray();
 							return;
-						case 80:
-							FlxG.pause = !FlxG.pause;
 						default: break;
 					}
 				}
@@ -246,6 +238,7 @@ package org.flixel
 			FlxG.resetInput();
 			_lostFocus = _focus.visible = false;
 			stage.frameRate = _flashFramerate;
+			FlxG.playSounds();
 		}
 		
 		/**
@@ -261,6 +254,7 @@ package org.flixel
 			flash.ui.Mouse.show();
 			_lostFocus = _focus.visible = true;
 			stage.frameRate = 10;
+			FlxG.pauseSounds();
 		}
 		
 		/**
@@ -338,6 +332,13 @@ package org.flixel
 			
 		protected function step():void
 		{
+			if(_requestedReset)
+			{
+				_requestedReset = false;
+				_requestedState = new _iState();
+				FlxG.reset();
+			}
+			
 			if(_state != _requestedState)
 				switchState();
 			
@@ -520,8 +521,6 @@ package org.flixel
 				}
 			}
 			
-			//Finally, we can set up our first gameplay state - and off we go!
-			_requestedState = new _iState();
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
 		

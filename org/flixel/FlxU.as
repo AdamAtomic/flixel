@@ -18,6 +18,8 @@ package org.flixel
 		 */
 		static public var quadTree:FlxQuadTree;
 		
+		static public var globalSeed:Number;
+		
 		/**
 		 * Opens a web page in a new tab or window.
 		 * 
@@ -101,31 +103,15 @@ package org.flixel
 		 * random numbers, add the random number you generate each time
 		 * to the <code>Seed</code> value before calling <code>random()</code> again.
 		 * 
-		 * @param	Seed	A user-provided value used to calculate a predictable random number.
+		 * @param	Seed	A number between 0 and 1, used to generate a predictable random number (very optional).
 		 * 
 		 * @return	A <code>Number</code> between 0 and 1.
 		 */
 		static public function random(Seed:Number=NaN):Number
 		{
 			if(isNaN(Seed))
-				return Math.random();
-			else
-			{
-				//Make sure the seed value is OK
-				if(Seed == 0)
-					Seed = Number.MIN_VALUE;
-				if(Seed >= 1)
-				{
-					if((Seed%1) == 0)
-						Seed /= Math.PI;
-					Seed %= 1;
-				}
-				else if(Seed < 0)
-					Seed = (Seed % 1) + 1;
-				
-				//Then do an LCG thing and return a predictable random number
-				return ((69621 * int(Seed * 0x7FFFFFFF)) % 0x7FFFFFFF) / 0x7FFFFFFF;
-			}
+				return globalSeed = ((69621 * int(globalSeed * 0x7FFFFFFF)) % 0x7FFFFFFF) / 0x7FFFFFFF;
+			return ((69621 * int(Seed * 0x7FFFFFFF)) % 0x7FFFFFFF) / 0x7FFFFFFF;
 		}
 		
 		/**

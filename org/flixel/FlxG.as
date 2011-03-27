@@ -35,9 +35,9 @@ package org.flixel
 		 */
 		static internal var _game:FlxGame;
 		/**
-		 * Internal tracker for game pause state.
+		 * Handy shared variable for implementing your own pause behavior.
 		 */
-		static protected var _pause:Boolean;
+		static public var paused:Boolean;
 		/**
 		 * Whether you are running in Debug or Release mode.
 		 * Set automatically by <code>FlxFactory</code> during startup.
@@ -240,35 +240,11 @@ package org.flixel
 		}
 		
 		/**
-		 * Set <code>pause</code> to true to pause the game, all sounds, and display the pause popup.
-		 */
-		static public function get pause():Boolean
-		{
-			return _pause;
-		}
-		
-		/**
-		 * @private
-		 */
-		static public function set pause(Pause:Boolean):void
-		{
-			var op:Boolean = _pause;
-			_pause = Pause;
-			if(_pause != op)
-			{
-				if(_pause)
-					pauseSounds();
-				else
-					playSounds();
-			}
-		}
-		
-		/**
 		 * Like hitting the reset button on a game console, this will re-launch the game as if it just started.
 		 */
 		static public function resetGame():void
 		{
-			_game.reset();
+			_game._requestedReset = true;
 		}
 		
 		/**
@@ -426,6 +402,7 @@ package org.flixel
 				if((s != null) && (ForceDestroy || !s.survive))
 					s.destroy();
 			}
+			sounds.length = 0;
 		}
 
 		/**
@@ -465,9 +442,9 @@ package org.flixel
 		}
 		
 		/**
-		 * Internal helper, pauses all game sounds.
+		 * Pause all sounds currently playing.
 		 */
-		static protected function pauseSounds():void
+		static public function pauseSounds():void
 		{
 			if((music != null) && music.active)
 				music.pause();
@@ -483,9 +460,9 @@ package org.flixel
 		}
 		
 		/**
-		 * Internal helper, pauses all game sounds.
+		 * Resume playing existing sounds.
 		 */
-		static protected function playSounds():void
+		static public function playSounds():void
 		{
 			if((music != null) && music.active)
 				music.play();
@@ -716,45 +693,56 @@ package org.flixel
 		/**
 		 * Called by <code>FlxGame</code> to set up <code>FlxG</code> during <code>FlxGame</code>'s constructor.
 		 */
-		static internal function setGameData(Game:FlxGame,Width:uint,Height:uint,Zoom:uint):void
+		static internal function init(Game:FlxGame,Width:uint,Height:uint):void
 		{
 			_game = Game;
-			clearBitmapCache();
 			width = Width;
 			height = Height;
 			_mute = false;
 			_volume = 0.5;
+			mobile = false;
+			
+			sounds = new Array();
+			FlxG.levels = new Array();
+			FlxG.scores = new Array();
+			
+			mouse = new FlxMouse();
+			keys = new FlxKeyboard();
+			
+			clearBitmapCache();
+			
+			FlxU.setWorldBounds(0,0,FlxG.width,FlxG.height);
+		}
+		
+		static internal function reset():void
+		{
+			clearBitmapCache();
+			quake = new FlxQuake(_game._zoom);
+			if(flash != null)
+				flash.destroy();
+			flash = new FlxFlash();
+			if(fade != null)
+				fade.destroy();
+			fade = new FlxFade();
+			
+			resetInput();
 			if(sounds != null)
 				destroySounds(true);
-			sounds = new Array();
-			if(mouse != null)
-				mouse.destroy();
-			mouse = new FlxMouse();
-			if(keys != null)
-				keys.destroy();
-			keys = new FlxKeyboard();
 			scroll = null;
 			_scrollTarget = null;
 			unfollow();
-			FlxG.levels = new Array();
-			FlxG.scores = new Array();
+			levels.length = 0;
+			scores.length = 0;
 			level = 0;
 			score = 0;
-			pause = false;
+			paused = false;
 			timeScale = 1.0;
 			FlxG.elapsed = 0;
 			showBounds = false;
-			
-			mobile = false;
-
-			if(quake == null)
-				quake = new FlxQuake(Zoom);
-			if(flash == null)
-				flash = new FlxFlash();
-			if(fade == null)
-				fade = new FlxFade();
-
-			FlxU.setWorldBounds(0,0,FlxG.width,FlxG.height);
+			if((_game._debugger != null) && _game._debugger.vcr.playbackRequested)
+				FlxU.globalSeed = _game._debugger.vcr.replay.seed;
+			else
+				FlxU.globalSeed = Math.random();
 		}
 
 		/**

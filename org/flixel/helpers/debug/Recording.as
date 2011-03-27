@@ -2,6 +2,7 @@ package org.flixel.helpers.debug
 {
 	public class Recording
 	{
+		public var seed:Number;
 		public var frame:int;
 		public var finished:Boolean;
 		
@@ -71,7 +72,7 @@ package org.flixel.helpers.debug
 		{
 			if(_count <= 0)
 				return null;
-			var output:String = "";
+			var output:String = seed+"\n";
 			var i:uint = 0;
 			while(i < _count)
 				output += _frames[i++].save() + "\n";
@@ -82,8 +83,10 @@ package org.flixel.helpers.debug
 		{
 			var lines:Array = FileContents.split("\n");
 			
+			seed = Number(lines[0]);
+			
 			var line:String;
-			var i:uint = 0;
+			var i:uint = 1;
 			var l:uint = lines.length;
 			while(i < l)
 			{

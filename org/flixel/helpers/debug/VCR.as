@@ -10,6 +10,7 @@ package org.flixel.helpers.debug
 	import flash.utils.ByteArray;
 	
 	import org.flixel.FlxG;
+	import org.flixel.FlxU;
 	
 	public class VCR extends Sprite
 	{
@@ -143,6 +144,8 @@ package org.flixel.helpers.debug
 		{
 			destroyOldReplay();
 			replay = new Recording(FileContents);
+			if(FileContents == null)
+				replay.seed = FlxU.globalSeed;
 		}
 		
 		public function destroyOldReplay():void
