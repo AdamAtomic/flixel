@@ -41,16 +41,6 @@ package org.flixel
 		{
 			super();
 			defaultGroup = new FlxGroup();
-			if(screen == null)
-			{
-				screen = new FlxSprite();
-				screen.createGraphic(FlxG.width,FlxG.height,0,true);
-				screen.origin.x = screen.origin.y = 0;
-				screen.antialiasing = true;
-				screen.exists = false;
-				screen.solid = false;
-				screen.fixed = true;
-			}
 		}
 		
 		/**

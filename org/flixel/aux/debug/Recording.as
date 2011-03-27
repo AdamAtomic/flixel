@@ -2,40 +2,36 @@ package org.flixel.aux.debug
 {
 	public class Recording
 	{
+		public var frame:int;
 		public var finished:Boolean;
 		
 		protected var _frames:Array;
 		protected var _capacity:int;
 		protected var _count:int;
 		protected var _marker:int;
-		protected var _total:int;
 		
 		public function Recording(FileContents:String=null)
-		{
-			if(FileContents != null)
-			{
-				load(FileContents);
-				return;
-			}
-			init();
-		}
-		
-		public function init():void
 		{
 			_capacity = 100;
 			_frames = new Array(_capacity);
 			_count = 0;
 			rewind();
+			if(FileContents != null)
+			{
+				load(FileContents);
+				return;
+			}
 		}
 		
 		public function add(Record:FrameRecord):void
 		{
 			if(Record == null)
 			{
-				_total++;
+				frame++;
 				return;
 			}
-			Record.frame = _total++;
+			if(Record.frame < 0)
+				Record.frame = frame++;
 			_frames[_count++] = Record;
 			if(_count >= _capacity)
 			{
@@ -51,7 +47,7 @@ package org.flixel.aux.debug
 				finished = true;
 				return null;
 			}
-			if((_frames[_marker] as FrameRecord).frame != _total++)
+			if((_frames[_marker] as FrameRecord).frame != frame++)
 				return null;
 			return _frames[_marker++];
 		}
@@ -59,7 +55,7 @@ package org.flixel.aux.debug
 		public function rewind():void
 		{
 			_marker = 0;
-			_total = 0;
+			frame = 0;
 			finished = false;
 		}
 
@@ -77,8 +73,6 @@ package org.flixel.aux.debug
 		
 		public function load(FileContents:String):void
 		{
-			init();
-			
 			var lines:Array = FileContents.split("\n");
 			
 			var line:String;
@@ -90,6 +84,8 @@ package org.flixel.aux.debug
 				if(line.length > 3)
 					add(new FrameRecord(null,null,line));
 			}
+			
+			rewind();
 		}
 	}
 }

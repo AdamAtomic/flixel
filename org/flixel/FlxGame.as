@@ -53,6 +53,7 @@ package org.flixel
 
 		//basic display stuff
 		internal var _state:FlxState;
+		internal var _requestedState:FlxState;
 		internal var _buffer:Bitmap;
 		internal var _zoom:uint;
 		
@@ -71,7 +72,6 @@ package org.flixel
 		protected var _soundTray:Sprite;
 		protected var _soundTrayTimer:Number;
 		protected var _soundTrayBars:Array;
-		//internal var _console:FlxConsole;
 		internal var _debugger:Debugger;
 		internal var _debuggerUp:Boolean;
 
@@ -134,47 +134,12 @@ package org.flixel
 		}
 		
 		/**
-		 * Switch from one <code>FlxState</code> to another.
-		 * Usually called from <code>FlxG</code>.
-		 * 
-		 * @param	State		The class name of the state you want (e.g. PlayState)
-		 */
-		internal function switchState(State:FlxState):void
-		{ 
-			//Basic reset stuff
-			FlxG.unfollow();
-			FlxG.resetInput();
-			FlxG.destroySounds();
-			FlxG.flash.stop();
-			FlxG.fade.stop();
-			FlxG.quake.stop();
-			if(_debugger != null)
-				_debugger.watch.removeAll();
-			_buffer.x = 0;
-			_buffer.y = 0;
-			
-			//Swap the new state for the old one and dispose of it
-			addChild(State);
-			if(_state != null)
-			{
-				_state.destroy(); //important that it is destroyed while still in the display list
-				swapChildren(State,_state);
-				removeChild(_state);
-			}
-			_state = State;
-			_state.scaleX = _state.scaleY = _zoom; //important for proper mouse tracking
-			
-			//Finally, create the new state
-			_state.create();
-		}
-		
-		/**
 		 * Resets the game as if it were launching for the first time.
 		 */
 		internal function reset():void
 		{
 			FlxG.setGameData(this,FlxG.width,FlxG.height,_zoom);
-			switchState(new _iState());
+			_requestedState = new _iState();
 		}
 
 		/**
@@ -301,14 +266,13 @@ package org.flixel
 		 * @param	event	A Flash system event, not terribly important for our purposes!
 		 */
 		protected function onEnterFrame(event:Event=null):void
-		{
+		{			
 			var mark:uint = getTimer();
 			var ems:uint = mark-_total;
 			_total = mark;
 			updateSoundTray(ems);
 			if(!_lostFocus)
 			{
-				FlxG.elapsed = FlxG.timeScale*_step;
 				if((_debugger != null) && _debugger.vcr.paused)
 				{
 					if(_debugger.vcr.stepRequested)
@@ -338,9 +302,53 @@ package org.flixel
 				_debugger.watch.update();
 			}
 		}
+
+		protected function switchState():void
+		{ 
+			//Basic reset stuff
+			FlxG.unfollow();
+			FlxG.resetInput();
+			FlxG.destroySounds();
+			FlxG.flash.stop();
+			FlxG.fade.stop();
+			FlxG.quake.stop();
+			if(_debugger != null)
+				_debugger.watch.removeAll();
+			_buffer.x = 0;
+			_buffer.y = 0;
+			
+			//Swap the new state for the old one and dispose of it
+			addChild(_requestedState);
+			if(_state != null)
+			{
+				_state.destroy(); //important that it is destroyed while still in the display list
+				swapChildren(_requestedState,_state);
+				removeChild(_state);
+			}
+			_state = _requestedState;
+			_state.scaleX = _state.scaleY = _zoom; //important for proper mouse tracking
+			
+			//Finally, create the new state
+			_state.create();
+		}
 			
 		protected function step():void
 		{
+			if(_state != _requestedState)
+			{
+				if(_debugger.vcr.replay != null)
+					FlxG.log(_debugger.vcr.replay.frame);
+				switchState();
+			}
+			
+			if(_debugger != null)
+			{
+				if(_debugger.vcr.recordingRequested)
+					_debugger.vcr.startRecording();
+				else if(_debugger.vcr.playbackRequested)
+					_debugger.vcr.startPlayback();
+			}
+			
 			FlxGroup._ACTIVECOUNT = FlxGroup._EXTANTCOUNT = 0;
 			if((_debugger != null) && _debugger.vcr.playingBack)
 				_debugger.vcr.playInputFrame();
@@ -397,10 +405,14 @@ package org.flixel
 		{			
 			var mark:uint = getTimer();
 			
+			FlxG.elapsed = FlxG.timeScale*_step;
+			
 			FlxG.updateSounds();
 
 			//Update the camera and game state
 			FlxG.doFollow();
+			if(FlxG.mouse.cursor.active)
+				FlxG.mouse.cursor.update();
 			_state.update();
 			
 			//Update the various special effects
@@ -431,8 +443,6 @@ package org.flixel
 				FlxG.fade.draw();
 			if(FlxG.mouse.cursor != null)
 			{
-				if(FlxG.mouse.cursor.active)
-					FlxG.mouse.cursor.update();
 				if(FlxG.mouse.cursor.visible)
 					FlxG.mouse.cursor.draw();
 			}
@@ -463,6 +473,17 @@ package org.flixel
 			_buffer.scaleX = _buffer.scaleY = _zoom;
 			addChild(_buffer);
 			FlxG.buffer = _buffer.bitmapData;
+			
+			//Set up the FlxState.screen static reference (sometimes easier/better than using FlxG.buffer)
+			var s:FlxSprite = new FlxSprite();
+			s.createGraphic(FlxG.width,FlxG.height,0,true);
+			s.origin.x = s.origin.y = 0;
+			s.antialiasing = true;
+			s.exists = false;
+			s.solid = false;
+			s.fixed = true;
+			s.unsafeBind(FlxG.buffer);
+			FlxState.screen = s;
 			
 			//Initialize game console
 			if(!FlxG.mobile && (FlxG.debug || debugOnRelease))
@@ -499,9 +520,8 @@ package org.flixel
 				}
 			}
 			
-			//All set!
-			switchState(new _iState());
-			FlxState.screen.unsafeBind(FlxG.buffer);
+			//Finally, we can set up our first gameplay state - and off we go!
+			_requestedState = new _iState();
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
 		

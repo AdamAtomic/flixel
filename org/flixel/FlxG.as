@@ -664,7 +664,7 @@ package org.flixel
 		 */
 		static public function set state(State:FlxState):void
 		{
-			_game.switchState(State);
+			_game._requestedState = State;
 		}
 		
 		/**

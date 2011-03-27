@@ -29,7 +29,10 @@ package org.flixel.aux.debug
 		public var paused:Boolean;
 		public var stepRequested:Boolean;
 		public var recording:Boolean;
+		public var recordingRequested:Boolean;
 		public var playingBack:Boolean;
+		public var playbackRequested:Boolean;
+		public var replay:Recording;
 		
 		protected var _open:Bitmap;
 		protected var _recordOff:Bitmap;
@@ -52,8 +55,6 @@ package org.flixel.aux.debug
 		protected var _pressingRestart:Boolean;
 		protected var _pressingPause:Boolean;
 		protected var _pressingStep:Boolean;
-		
-		protected var _recording:Recording;
 		
 		protected var _file:FileReference;
 		
@@ -101,6 +102,10 @@ package org.flixel.aux.debug
 			_step.x = _pause.x + _pause.width + spacing;
 			addChild(_step);
 			
+			stepRequested = false;
+			recordingRequested = false;
+			playbackRequested = false;
+			
 			unpress();
 			checkOver();
 			updateGUI();
@@ -140,15 +145,13 @@ package org.flixel.aux.debug
 				fileContents = data.readUTFBytes(data.bytesAvailable);
 			_file = null;
 			if((fileContents == null) || (fileContents.length <= 0))
-			{
-				FlxG.log("ERROR: Empty flixel gameplay record.");
-				return;
-			}
+				return FlxG.log("ERROR: Empty flixel gameplay record.");
 			
 			//create a new recording from the file contents and play it
-			_recording = new Recording(fileContents);
-			playingBack = true;
-			onRestart();
+			replay = new Recording(fileContents);
+			fileContents = null;
+			playbackRequested = true;
+			FlxG.resetGame();
 			
 			_recordOff.visible = false;
 			_recordOn.visible = false;
@@ -172,15 +175,27 @@ package org.flixel.aux.debug
 			FlxG.log("ERROR: Unable to open flixel gameplay record.");
 		}
 		
-		public function startRecording():void
+		public function startPlayback():void
 		{
-			_recording = new Recording();
-			recording = true;
-			onRestart();
+			playbackRequested = false;
+			replay.rewind();
+			playingBack = true;
+		}
+		
+		public function onRecord():void
+		{
+			recordingRequested = true;
+			FlxG.resetGame();
 			
 			_recordOff.visible = false;
 			_recordOn.visible = true;
-			
+		}
+		
+		public function startRecording():void
+		{
+			recordingRequested = false;
+			replay = new Recording();
+			recording = true;
 			FlxG.log("FLIXEL: starting new flixel gameplay record.");
 		}
 		
@@ -188,7 +203,7 @@ package org.flixel.aux.debug
 		{
 			recording = false;
 			
-			var data:String = _recording.save();
+			var data:String = replay.save();
 			if((data != null) && (data.length > 0))
 			{
 				_file = new FileReference();
@@ -231,6 +246,7 @@ package org.flixel.aux.debug
 		public function onStop():void
 		{
 			playingBack = false;
+			FlxG.resetInput();
 			
 			_stop.visible = false;
 			_recordOn.visible = false;
@@ -239,9 +255,8 @@ package org.flixel.aux.debug
 		
 		public function onRestart():void
 		{
-			if(playingBack)
-				_recording.rewind();
-			onPlay();
+			if(replay != null)
+				playbackRequested = true;
 			FlxG.resetGame();
 		}
 		
@@ -275,16 +290,14 @@ package org.flixel.aux.debug
 			var mouseRecord:MouseRecord = FlxG.mouse.record();
 			if((keysRecord != null) || (mouseRecord != null))
 				frameRecord = new FrameRecord(keysRecord,mouseRecord);
-			_recording.add(frameRecord);
+			replay.add(frameRecord);
 		}
 		
 		public function playInputFrame():void
 		{
 			FlxG.resetInput();
-			
-			if(_recording.finished)
-				onStop();
-			var fr:FrameRecord = _recording.advance();
+
+			var fr:FrameRecord = replay.advance();
 			if(fr == null)
 				return;
 			if(fr.keys != null)
@@ -330,21 +343,19 @@ package org.flixel.aux.debug
 		
 		protected function onMouseUp(E:MouseEvent=null):void
 		{
-			if(_overOpen && _pressingOpen)
+			if(_overOpen && _pressingOpen && !playbackRequested)
 				onOpen();
-			else if(_overRecord && _pressingRecord)
+			else if(!playbackRequested && _overRecord && _pressingRecord)
 			{
 				if(playingBack)
 					onStop();
 				else if(recording)
 					stopRecording();
-				else
-					startRecording();
+				else if(!recordingRequested)
+					onRecord();
 			}
 			else if(_overRestart && _pressingRestart)
-			{
 				onRestart();
-			}
 			else if(_overPause && _pressingPause)
 			{
 				if(_play.visible)
@@ -369,7 +380,7 @@ package org.flixel.aux.debug
 				return false;
 			if((mouseX >= _recordOff.x) && (mouseX <= _recordOff.x + _recordOff.width))
 				_overRecord = true;
-			if(!recording && !_overRecord)
+			if(!(recordingRequested || recording) && !_overRecord)
 			{
 				if((mouseX >= _open.x) && (mouseX <= _open.x + _open.width))
 					_overOpen = true;
@@ -390,7 +401,7 @@ package org.flixel.aux.debug
 		
 		protected function updateGUI():void
 		{
-			if(recording)
+			if(recordingRequested || recording)
 			{
 				_open.alpha = _restart.alpha = _pause.alpha = _step.alpha = 0.35;
 				_recordOn.alpha = 1.0;

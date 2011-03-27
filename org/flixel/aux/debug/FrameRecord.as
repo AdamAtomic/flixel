@@ -13,7 +13,7 @@ package org.flixel.aux.debug
 				load(Data);
 				return;
 			}
-			frame = 0;
+			frame = -1;
 			keys = Keys;
 			mouse = Mouse;
 		}
