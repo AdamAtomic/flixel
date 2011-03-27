@@ -235,7 +235,7 @@ package org.flixel
 		 */
 		protected function onMouseUp(event:MouseEvent):void
 		{
-			if(!exists || !visible || !active || !FlxG.mouse.justReleased() || (FlxG.pause && !pauseProof) || (_callback == null)) return;
+			if(!exists || !visible || !active || !FlxG.mouse.justReleased() || (FlxG.paused && !pauseProof) || (_callback == null)) return;
 			if(overlapsPoint(FlxG.mouse.x,FlxG.mouse.y)) _callback();
 		}
 	}
