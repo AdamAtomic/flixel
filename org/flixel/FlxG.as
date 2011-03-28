@@ -303,7 +303,9 @@ package org.flixel
 				FlxG.resetGame();
 			else
 				FlxG.state = State;
-			//TODO: support cancel keys, timeout number, and callback function
+			_game._replayCancelKeys = CancelKeys;
+			_game._replayTimer = Timeout;
+			_game._replayCallback = Callback;
 			_game._replayRequested = true;
 		}
 		

@@ -40,10 +40,10 @@ package org.flixel
 		[Embed(source="data/beep.mp3")] protected var SndBeep:Class;
 
 		/**
-		 * Sets 0, -, and + to control the global volume and P to pause.
+		 * Sets 0, -, and + to control the global volume sound volume.
 		 * @default true
 		 */
-		public var useDefaultHotKeys:Boolean;
+		public var useSoundHotKeys:Boolean;
 		/**
 		 * Initialize and allow the flixel debugger overlay even in release mode.
 		 * @default false
@@ -82,6 +82,9 @@ package org.flixel
 		internal var _recordingRequested:Boolean;
 		internal var _replaying:Boolean;
 		internal var _recording:Boolean;
+		internal var _replayCancelKeys:Array;
+		internal var _replayTimer:Number;
+		internal var _replayCallback:Function;
 
 		/**
 		 * Game object constructor - sets up the basic properties of your game.
@@ -109,7 +112,7 @@ package org.flixel
 			_total = 0;
 			_accumulator = 0;
 			_state = null;
-			useDefaultHotKeys = true;
+			useSoundHotKeys = true;
 			debugOnRelease = false;
 			_debuggerUp = false;
 			_flashFramerate = 30;
@@ -169,7 +172,7 @@ package org.flixel
 					//_console.toggle();
 					return;
 				}
-				if(useDefaultHotKeys)
+				if(useSoundHotKeys)
 				{
 					var c:int = event.keyCode;
 					var code:String = String.fromCharCode(event.charCode);
@@ -274,7 +277,7 @@ package org.flixel
 		 * Handles the onEnterFrame call, figures out how many updates and draw calls to do.
 		 * @param	event	A Flash system event, not terribly important for our purposes!
 		 */
-		protected function onEnterFrame(event:Event=null):void
+		protected function onEnterFrame(E:Event=null):void
 		{			
 			var mark:uint = getTimer();
 			var ems:uint = mark-_total;
@@ -383,18 +386,32 @@ package org.flixel
 			FlxGroup._ACTIVECOUNT = FlxGroup._EXTANTCOUNT = 0;
 			if(_replaying)
 			{
-				trace(_replay.frame);
 				_replay.playNextFrame();
+				_replayTimer -= _step;
+				if(_replayTimer <= 0)
+				{
+					if(_replayCallback != null)
+					{
+						_replayCallback();
+						_replayCallback = null;
+					}
+					else
+						FlxG.stopReplay();
+				}
 				if(_replay.finished)
+				{
 					FlxG.stopReplay();
+					if(_replayCallback != null)
+					{
+						_replayCallback();
+						_replayCallback = null;
+					}
+				}
 			}
 			else
 				FlxG.updateInput();
 			if(_recording)
-			{
-				trace(_replay.frame);
 				_replay.recordFrame();
-			}
 			update();
 			FlxG.mouse.wheel = 0;
 			if(_debuggerUp)
@@ -409,7 +426,7 @@ package org.flixel
 		protected function updateSoundTray(MS:Number):void
 		{
 			//animate stupid sound tray thing
-			var soundPrefs:FlxSave;
+			
 			if(_soundTray != null)
 			{
 				if(_soundTrayTimer > 0)
@@ -422,14 +439,14 @@ package org.flixel
 						_soundTray.visible = false;
 						
 						//Save sound preferences
-						soundPrefs = new FlxSave();
+						var soundPrefs:FlxSave = new FlxSave();
 						if(soundPrefs.bind("flixel"))
 						{
 							if(soundPrefs.data.sound == null)
 								soundPrefs.data.sound = new Object;
-							soundPrefs.data.mute = FlxG.mute;
-							soundPrefs.data.volume = FlxG.volume;
-							soundPrefs.forceSave();
+							soundPrefs.data.sound.mute = FlxG.mute;
+							soundPrefs.data.sound.volume = FlxG.volume;
+							soundPrefs.close();
 						}
 					}
 				}
@@ -440,7 +457,7 @@ package org.flixel
 		 * This function updates the actual game state.
 		 * May be called multiple times per "frame" or draw call.
 		 */
-		protected function update(event:Event=null):void
+		protected function update():void
 		{			
 			var mark:uint = getTimer();
 			
@@ -470,7 +487,7 @@ package org.flixel
 		/**
 		 * Goes through the game state and draws all the game objects and special effects.
 		 */
-		protected function draw(event:Event=null):void
+		protected function draw():void
 		{
 			var mark:uint = getTimer();
 			FlxG.buffer.lock();
@@ -496,13 +513,12 @@ package org.flixel
 		 * 
 		 * @param	event	Just a Flash system event, not too important for our purposes.
 		 */
-		protected function create(event:Event):void
+		protected function create(E:Event):void
 		{
 			if(root == null)
 				return;
 			removeEventListener(Event.ENTER_FRAME, create);
-
-			var soundPrefs:FlxSave;
+			_total = getTimer();
 			
 			//Set up the view window and double buffering
 			stage.scaleMode = StageScaleMode.NO_SCALE;
@@ -546,17 +562,6 @@ package org.flixel
 				
 				createSoundTray();
 				createFocusScreen();
-				
-				//Check for saved sound preference data
-				soundPrefs = new FlxSave();
-				if(soundPrefs.bind("flixel") && (soundPrefs.data.sound != null))
-				{
-					if(soundPrefs.data.volume != null)
-						FlxG.volume = soundPrefs.data.volume;
-					if(soundPrefs.data.mute != null)
-						FlxG.mute = soundPrefs.data.mute;
-					//showSoundTray(true);
-				}
 			}
 			
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
@@ -601,7 +606,21 @@ package org.flixel
 				bx += 6;
 				by--;
 			}
+			
+			_soundTray.y = -_soundTray.height;
+			_soundTray.visible = false;
 			addChild(_soundTray);
+			
+			//load saved sound preferences for this game if they exist
+			var soundPrefs:FlxSave = new FlxSave();
+			if(soundPrefs.bind("flixel") && (soundPrefs.data.sound != null))
+			{
+				if(soundPrefs.data.sound.volume != null)
+					FlxG.volume = soundPrefs.data.sound.volume;
+				if(soundPrefs.data.sound.mute != null)
+					FlxG.mute = soundPrefs.data.sound.mute;
+				soundPrefs.destroy();
+			}
 		}
 		
 		/**
