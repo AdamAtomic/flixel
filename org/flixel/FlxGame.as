@@ -209,8 +209,29 @@ package org.flixel
 		 */
 		protected function onKeyDown(event:KeyboardEvent):void
 		{
-			if(_replaying)
+			if(_replaying && (_replayCancelKeys != null) && (_debugger == null) && (event.keyCode != 192) && (event.keyCode != 220))
+			{
+				var cancel:Boolean = false;
+				var k:String;
+				var i:uint = 0;
+				var l:uint = _replayCancelKeys.length;
+				while(i < l)
+				{
+					k = _replayCancelKeys[i++];
+					if((k == "ANY") || (FlxG.keys.getKeyCode(k) == event.keyCode))
+					{
+						if(_replayCallback != null)
+						{
+							_replayCallback();
+							_replayCallback = null;
+						}
+						else
+							FlxG.stopReplay();
+						break;
+					}
+				}
 				return;
+			}
 			FlxG.keys.handleKeyDown(event);
 		}
 		
@@ -219,35 +240,57 @@ package org.flixel
 		 */
 		protected function onMouseDown(event:MouseEvent):void
 		{
-			if((_debuggerUp && _debugger.hasMouse) || _replaying)
+			if(_debuggerUp && _debugger.hasMouse)
 				return;
+			if(_replaying && (_replayCancelKeys != null))
+			{
+				var m:String;
+				var i:uint = 0;
+				var l:uint = _replayCancelKeys.length;
+				while(i < l)
+				{
+					m = _replayCancelKeys[i++] as String;
+					if((m == "MOUSE") || (m == "ANY"))
+					{
+						if(_replayCallback != null)
+						{
+							_replayCallback();
+							_replayCallback = null;
+						}
+						else
+							FlxG.stopReplay();
+						break;
+					}
+				}
+				return;
+			}
 			FlxG.mouse.handleMouseDown(event);
 		}
 		
 		/**
 		 * Internal event handler for input and focus.
 		 */
-		protected function onMouseUp(event:MouseEvent):void
+		protected function onMouseUp(E:MouseEvent):void
 		{
 			if((_debuggerUp && _debugger.hasMouse) || _replaying)
 				return;
-			FlxG.mouse.handleMouseUp(event);
+			FlxG.mouse.handleMouseUp(E);
 		}
 		
 		/**
 		 * Internal event handler for input and focus.
 		 */
-		protected function onMouseWheel(event:MouseEvent):void
+		protected function onMouseWheel(E:MouseEvent):void
 		{
 			if((_debuggerUp && _debugger.hasMouse) || _replaying)
 				return;
-			FlxG.mouse.handleMouseWheel(event);
+			FlxG.mouse.handleMouseWheel(E);
 		}
 		
 		/**
 		 * Internal event handler for input and focus.
 		 */
-		protected function onFocus(event:Event=null):void
+		protected function onFocus(E:Event=null):void
 		{
 			if(!_debuggerUp || !_debugger.visible)
 				flash.ui.Mouse.hide();
@@ -260,7 +303,7 @@ package org.flixel
 		/**
 		 * Internal event handler for input and focus.
 		 */
-		protected function onFocusLost(event:Event=null):void
+		protected function onFocusLost(E:Event=null):void
 		{
 			if((x != 0) || (y != 0))
 			{
@@ -398,7 +441,7 @@ package org.flixel
 					else
 						FlxG.stopReplay();
 				}
-				if(_replay.finished)
+				if(_replaying && _replay.finished)
 				{
 					FlxG.stopReplay();
 					if(_replayCallback != null)

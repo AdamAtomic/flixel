@@ -159,6 +159,35 @@ package org.flixel.helpers
 		}
 		
 		/**
+		 * Look up the key code for any given string name of the key or button.
+		 * 
+		 * @param	KeyName		The <code>String</code> name of the key.
+		 * 
+		 * @return	The key code for that key.
+		 */
+		public function getKeyCode(KeyName:String):int
+		{
+			return _lookup[KeyName];
+		}
+		
+		/**
+		 * Check to see if any keys are pressed right now.
+		 * 
+		 * @return	Whether any keys are currently pressed.
+		 */
+		public function any():Boolean
+		{
+			var i:uint = 0;
+			while(i < _t)
+			{
+				var o:Object = _map[i++];
+				if((o != null) || (o.current > 0))
+					return true;
+			}
+			return false;
+		}
+		
+		/**
 		 * An internal helper function used to build the key array.
 		 * 
 		 * @param	KeyName		String name of the key (e.g. "LEFT" or "A")

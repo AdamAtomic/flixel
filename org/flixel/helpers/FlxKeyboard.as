@@ -89,7 +89,6 @@ package org.flixel.helpers
 		public var LEFT:Boolean;
 		public var RIGHT:Boolean;
 
-
 		public function FlxKeyboard()
 		{
 			var i:uint;
