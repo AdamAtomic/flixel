@@ -5,6 +5,7 @@ package org.flixel
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
 	import flash.utils.getTimer;
+	
 	import org.flixel.helpers.FlxQuadTree;
 	
 	public class FlxU
@@ -17,8 +18,6 @@ package org.flixel
 		 * The last quad tree you generated will be stored here for reference or whatever.
 		 */
 		static public var quadTree:FlxQuadTree;
-		
-		static public var globalSeed:Number;
 		
 		/**
 		 * Opens a web page in a new tab or window.
@@ -64,53 +63,14 @@ package org.flixel
 		}
 		
 		/**
-		 * Shuffles the entries in an array into a new random order.
-		 * 
-		 * @param	A				A Flash <code>Array</code> object containing...stuff.
-		 * @param	HowManyTimes	How many swaps to perform during the shuffle operation.  Good rule of thumb is 2-4 times as many objects are in the list.
-		 * 
-		 * @return	The same Flash <code>Array</code> object that you passed in in the first place.
-		 */
-		static public function shuffle(Objects:Array,HowManyTimes:uint):Array
-		{
-			var i1:uint;
-			var i2:uint;
-			var o:Object;
-			for(var i:uint = 0; i < HowManyTimes; i++)
-			{
-				i1 = FlxU.random()*Objects.length;
-				i2 = FlxU.random()*Objects.length;
-				o = Objects[i2];
-				Objects[i2] = Objects[i1];
-				Objects[i1] = o;
-			}
-			return Objects;
-		}
-		
-		static public function getRandom(Objects:Array):Object
-		{
-			if(Objects != null)
-			{
-				var l:uint = Objects.length;
-				if(l > 0)
-					return Objects[uint(FlxU.random()*l)];
-			}
-			return null;
-		}
-		
-		/**
-		 * Generates a random number.  NOTE: To create a series of predictable
-		 * random numbers, add the random number you generate each time
-		 * to the <code>Seed</code> value before calling <code>random()</code> again.
+		 * Generates a random number based on the seed provided.
 		 * 
 		 * @param	Seed	A number between 0 and 1, used to generate a predictable random number (very optional).
 		 * 
 		 * @return	A <code>Number</code> between 0 and 1.
 		 */
-		static public function random(Seed:Number=NaN):Number
+		static public function srand(Seed:Number):Number
 		{
-			if(isNaN(Seed))
-				return globalSeed = ((69621 * int(globalSeed * 0x7FFFFFFF)) % 0x7FFFFFFF) / 0x7FFFFFFF;
 			return ((69621 * int(Seed * 0x7FFFFFFF)) % 0x7FFFFFFF) / 0x7FFFFFFF;
 		}
 		
@@ -202,32 +162,34 @@ package org.flixel
 
 			var dx:Number = X-PivotX;
 			var dy:Number = PivotY+Y; //Y axis is inverted in flash, normally this would be a subtract operation
-			if(P == null) P = new FlxPoint();
+			if(P == null)
+				P = new FlxPoint();
 			P.x = PivotX + cos*dx - sin*dy;
 			P.y = PivotY - sin*dx - cos*dy;
 			return P;
 		};
 		
 		/**
-		 * Calculates the angle between a point and the origin (0,0).
+		 * Calculates the angle between two points.  0 degrees points straight up.
 		 * 
-		 * @param	X		The X coordinate of the point.
-		 * @param	Y		The Y coordinate of the point.
+		 * @param	Point1		The X coordinate of the point.
+		 * @param	Point2		The Y coordinate of the point.
 		 * 
-		 * @return	The angle in degrees.
+		 * @return	The angle in degrees, between -90 and 270.
 		 */
-		static public function getAngle(X:Number, Y:Number):Number
+		static public function getAngle(Point1:FlxPoint, Point2:FlxPoint):Number
 		{
-			
-			var c1:Number = 3.14159265 / 4;
+			var x:Number = Point2.x - Point1.x;
+			var y:Number = Point2.y - Point1.y;
+			var c1:Number = 3.14159265 * 0.25;
 			var c2:Number = 3 * c1;
-			var ay:Number = (Y < 0)?-Y:Y;
+			var ay:Number = (y < 0)?-y:y;
 			var angle:Number = 0;
-			if (X >= 0)
-				angle = c1 - c1 * ((X - ay) / (X + ay));
+			if (x >= 0)
+				angle = c1 - c1 * ((x - ay) / (x + ay));
 			else
-				angle = c2 - c1 * ((X + ay) / (ay - X));
-			return ((Y < 0)?-angle:angle)*57.2957796;
+				angle = c2 - c1 * ((x + ay) / (ay - x));
+			return ((y < 0)?-angle:angle)*57.2957796 + 90;
 		};
 		
 		/**

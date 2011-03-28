@@ -264,7 +264,7 @@ package org.flixel.helpers
 			}
 			else if(Percent < 0.15)
 			{
-				_logoGlow.alpha = FlxU.random();
+				_logoGlow.alpha = Math.random();
 				_logo.alpha = 0;
 			}
 			else if(Percent < 0.2)
@@ -275,7 +275,7 @@ package org.flixel.helpers
 			else if(Percent < 0.25)
 			{
 				_logoGlow.alpha = 0;
-				_logo.alpha = FlxU.random();
+				_logo.alpha = Math.random();
 			}
 			else if(Percent < 0.7)
 			{

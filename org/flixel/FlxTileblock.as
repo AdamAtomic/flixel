@@ -71,7 +71,7 @@ package org.flixel
 				c = 0;
 				while(c < widthInTiles)
 				{
-					if(FlxU.random()*total > Empties)
+					if(FlxG.random()*total > Empties)
 					{
 						s.randomFrame();
 						stamp(s,ox,oy);

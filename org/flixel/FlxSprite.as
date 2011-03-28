@@ -714,7 +714,7 @@ package org.flixel
 		public function randomFrame():void
 		{
 			_curAnim = null;
-			_caf = int(FlxU.random()*(_pixels.width/frameWidth));
+			_caf = int(FlxG.random()*(_pixels.width/frameWidth));
 			calcFrame();
 		}
 		

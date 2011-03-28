@@ -1,4 +1,4 @@
-package org.flixel.helpers.debug
+package org.flixel.helpers.replay
 {
 	public class FrameRecord
 	{
@@ -6,16 +6,19 @@ package org.flixel.helpers.debug
 		public var keys:Array;
 		public var mouse:MouseRecord;
 		
-		public function FrameRecord(Keys:Array,Mouse:MouseRecord,Data:String=null)
+		public function FrameRecord()
 		{
-			if(Data != null)
-			{
-				load(Data);
-				return;
-			}
-			frame = -1;
+			frame = 0;
+			keys = null;
+			mouse = null;
+		}
+		
+		public function create(Frame:Number,Keys:Array=null,Mouse:MouseRecord=null):FrameRecord
+		{
+			frame = Frame;
 			keys = Keys;
 			mouse = Mouse;
+			return this;
 		}
 		
 		public function destroy():void
@@ -49,7 +52,7 @@ package org.flixel.helpers.debug
 			return output;
 		}
 		
-		public function load(Data:String):void
+		public function load(Data:String):FrameRecord
 		{
 			var i:uint;
 			var l:uint;
@@ -92,6 +95,8 @@ package org.flixel.helpers.debug
 				if(a.length >= 4)
 					mouse = new MouseRecord(int(a[0] as String),int(a[1] as String),int(a[2] as String),int(a[3] as String));
 			}
+			
+			return this;
 		}
 	}
 }

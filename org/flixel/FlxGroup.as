@@ -304,16 +304,7 @@ package org.flixel
 		 */
 		public function getRandom():FlxObject
 		{
-			var c:uint = 0;
-			var o:FlxObject = null;
-			var l:uint = members.length;
-			var i:uint = uint(FlxU.random()*l);
-			while((o == null) && (c < members.length))
-			{
-				o = members[(++i)%l] as FlxObject;
-				c++;
-			}
-			return o;
+			return FlxG.getRandom(members) as FlxObject;
 		}
 		
 		/**

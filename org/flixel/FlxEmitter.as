@@ -1,6 +1,6 @@
 package org.flixel
 {
-	import org.flixel.data.FlxParticle;
+	import org.flixel.helpers.FlxParticle;
 
 	/**
 	 * <code>FlxEmitter</code> is a lightweight particle emitter.
@@ -153,7 +153,7 @@ package org.flixel
 					s = new FlxSprite();
 				if(Multiple)
 				{
-					r = FlxU.random()*tf;
+					r = FlxG.random()*tf;
 					if(BakedRotations > 0)
 						s.loadRotatedGraphic(Graphics,BakedRotations,r);
 					else
@@ -365,16 +365,16 @@ package org.flixel
 			s.visible = true;
 			s.exists = true;
 			s.active = true;
-			s.x = x - (s.width>>1) + FlxU.random()*width;
-			s.y = y - (s.height>>1) + FlxU.random()*height;
+			s.x = x - (s.width>>1) + FlxG.random()*width;
+			s.y = y - (s.height>>1) + FlxG.random()*height;
 			s.velocity.x = minParticleSpeed.x;
-			if(minParticleSpeed.x != maxParticleSpeed.x) s.velocity.x += FlxU.random()*(maxParticleSpeed.x-minParticleSpeed.x);
+			if(minParticleSpeed.x != maxParticleSpeed.x) s.velocity.x += FlxG.random()*(maxParticleSpeed.x-minParticleSpeed.x);
 			s.velocity.y = minParticleSpeed.y;
-			if(minParticleSpeed.y != maxParticleSpeed.y) s.velocity.y += FlxU.random()*(maxParticleSpeed.y-minParticleSpeed.y);
+			if(minParticleSpeed.y != maxParticleSpeed.y) s.velocity.y += FlxG.random()*(maxParticleSpeed.y-minParticleSpeed.y);
 			s.acceleration.y = gravity;
 			s.angularVelocity = minRotation;
-			if(minRotation != maxRotation) s.angularVelocity += FlxU.random()*(maxRotation-minRotation);
-			if(s.angularVelocity != 0) s.angle = FlxU.random()*360-180;
+			if(minRotation != maxRotation) s.angularVelocity += FlxG.random()*(maxRotation-minRotation);
+			if(s.angularVelocity != 0) s.angle = FlxG.random()*360-180;
 			s.drag.x = particleDrag.x;
 			s.drag.y = particleDrag.y;
 			_particle++;

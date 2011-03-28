@@ -16,9 +16,8 @@ package org.flixel
 	import flash.utils.Timer;
 	import flash.utils.getTimer;
 	
+	import org.flixel.helpers.FlxReplay;
 	import org.flixel.helpers.debug.Debugger;
-	import org.flixel.helpers.debug.FrameRecord;
-	import org.flixel.helpers.debug.MouseRecord;
 
 	/**
 	 * FlxGame is the heart of all flixel games, and contains a bunch of basic game loops and things.
@@ -53,8 +52,6 @@ package org.flixel
 
 		//basic display stuff
 		internal var _state:FlxState;
-		internal var _requestedState:FlxState;
-		internal var _requestedReset:Boolean;
 		internal var _buffer:Bitmap;
 		internal var _zoom:uint;
 		
@@ -68,6 +65,8 @@ package org.flixel
 		protected var _lostFocus:Boolean;
 		internal var _step:Number;
 		internal var _flashFramerate:uint;
+		internal var _requestedState:FlxState;
+		internal var _requestedReset:Boolean;
 		
 		//"focus lost" screen, sound tray, and debugger overlays
 		protected var _focus:Sprite;
@@ -76,6 +75,13 @@ package org.flixel
 		protected var _soundTrayBars:Array;
 		internal var _debugger:Debugger;
 		internal var _debuggerUp:Boolean;
+		
+		//replays
+		internal var _replay:FlxReplay;
+		internal var _replayRequested:Boolean;
+		internal var _recordingRequested:Boolean;
+		internal var _replaying:Boolean;
+		internal var _recording:Boolean;
 
 		/**
 		 * Game object constructor - sets up the basic properties of your game.
@@ -107,6 +113,13 @@ package org.flixel
 			debugOnRelease = false;
 			_debuggerUp = false;
 			_flashFramerate = 30;
+			
+			//replay data
+			_replay = new FlxReplay();
+			_replayRequested = false;
+			_recordingRequested = false;
+			_replaying = false;
+			_recording = false;
 			
 			//then get ready to create the game object for real
 			_iState = InitialState;
@@ -183,7 +196,7 @@ package org.flixel
 					}
 				}
 			}
-			if(_debuggerUp && _debugger.vcr.playingBack)
+			if(_replaying)
 				return;
 			FlxG.keys.handleKeyUp(event);
 		}
@@ -193,7 +206,7 @@ package org.flixel
 		 */
 		protected function onKeyDown(event:KeyboardEvent):void
 		{
-			if(_debuggerUp && _debugger.vcr.playingBack)
+			if(_replaying)
 				return;
 			FlxG.keys.handleKeyDown(event);
 		}
@@ -203,7 +216,7 @@ package org.flixel
 		 */
 		protected function onMouseDown(event:MouseEvent):void
 		{
-			if(_debuggerUp && (_debugger.hasMouse || _debugger.vcr.playingBack))
+			if((_debuggerUp && _debugger.hasMouse) || _replaying)
 				return;
 			FlxG.mouse.handleMouseDown(event);
 		}
@@ -213,7 +226,7 @@ package org.flixel
 		 */
 		protected function onMouseUp(event:MouseEvent):void
 		{
-			if(_debuggerUp && (_debugger.hasMouse || _debugger.vcr.playingBack))
+			if((_debuggerUp && _debugger.hasMouse) || _replaying)
 				return;
 			FlxG.mouse.handleMouseUp(event);
 		}
@@ -223,7 +236,7 @@ package org.flixel
 		 */
 		protected function onMouseWheel(event:MouseEvent):void
 		{
-			if(_debuggerUp && (_debugger.hasMouse || _debugger.vcr.playingBack))
+			if((_debuggerUp && _debugger.hasMouse) || _replaying)
 				return;
 			FlxG.mouse.handleMouseWheel(event);
 		}
@@ -332,6 +345,7 @@ package org.flixel
 			
 		protected function step():void
 		{
+			//handle game reset request
 			if(_requestedReset)
 			{
 				_requestedReset = false;
@@ -339,24 +353,44 @@ package org.flixel
 				FlxG.reset();
 			}
 			
+			//handle replay-related requests
+			if(_recordingRequested)
+			{
+				_recordingRequested = false;
+				_replay.create(FlxG.globalSeed);
+				_recording = true;
+				if(_debugger != null)
+				{
+					_debugger.vcr.recording();
+					FlxG.log("FLIXEL: starting new flixel gameplay record.");
+				}
+			}
+			else if(_replayRequested)
+			{
+				_replayRequested = false;
+				_replay.rewind();
+				FlxG.globalSeed = _replay.seed;
+				if(_debugger != null)
+					_debugger.vcr.playing();
+				_replaying = true;
+			}
+			
+			//handle state switching requests
 			if(_state != _requestedState)
 				switchState();
 			
-			if(_debugger != null)
-			{
-				if(_debugger.vcr.recordingRequested)
-					_debugger.vcr.startRecording();
-				else if(_debugger.vcr.playbackRequested)
-					_debugger.vcr.startPlayback();
-			}
-			
+			//finally actually step through the game physics
 			FlxGroup._ACTIVECOUNT = FlxGroup._EXTANTCOUNT = 0;
-			if((_debugger != null) && _debugger.vcr.playingBack)
-				_debugger.vcr.playInputFrame();
+			if(_replaying)
+			{
+				_replay.playNextFrame();
+				if(_replay.finished)
+					FlxG.stopReplay();
+			}
 			else
 				FlxG.updateInput();
-			if((_debugger != null) && _debugger.vcr.recording)
-				_debugger.vcr.recordInputFrame();
+			if(_recording)
+				_replay.recordFrame();
 			update();
 			FlxG.mouse.wheel = 0;
 			if(_debuggerUp)

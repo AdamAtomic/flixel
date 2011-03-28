@@ -6,24 +6,16 @@ package org.flixel.helpers
 	import org.flixel.FlxSprite;
 	import org.flixel.FlxG;
 	import org.flixel.FlxU;
-	import org.flixel.helpers.debug.MouseRecord;
+	import org.flixel.helpers.replay.MouseRecord;
 	
 	/**
 	 * This class helps contain and track the mouse pointer in your game.
 	 * Automatically accounts for parallax scrolling, etc.
 	 */
-	public class FlxMouse
+	public class FlxMouse extends FlxPoint
 	{
 		[Embed(source="../data/cursor.png")] protected var ImgDefaultCursor:Class;
-		
-		/**
-		 * Current X position of the mouse pointer in the game world.
-		 */
-		public var x:int;
-		/**
-		 * Current Y position of the mouse pointer in the game world.
-		 */
-		public var y:int;
+
 		/**
 		 * Current "delta" value of mouse wheel.  If the wheel was just scrolled up, it will have a positive value.  If it was just scrolled down, it will have a negative value.  If it wasn't just scroll this frame, it will be 0.
 		 */

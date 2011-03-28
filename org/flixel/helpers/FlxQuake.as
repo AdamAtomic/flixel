@@ -78,8 +78,8 @@ package org.flixel.helpers
 				}
 				else
 				{
-					x = (Math.random()*_intensity*FlxG.width*2-_intensity*FlxG.width)*_zoom;
-					y = (Math.random()*_intensity*FlxG.height*2-_intensity*FlxG.height)*_zoom;
+					x = (FlxG.random()*_intensity*FlxG.width*2-_intensity*FlxG.width)*_zoom;
+					y = (FlxG.random()*_intensity*FlxG.height*2-_intensity*FlxG.height)*_zoom;
 				}
 			}
 		}

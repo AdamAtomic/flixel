@@ -83,15 +83,6 @@ package org.flixel
 		 */
 		public var origin:FlxPoint;
 		/**
-		 * If you want to do Asteroids style stuff, check out thrust,
-		 * instead of directly accessing the object's velocity or acceleration.
-		 */
-		public var thrust:Number;
-		/**
-		 * Used to cap <code>thrust</code>, helpful and easy!
-		 */
-		public var maxThrust:Number;
-		/**
 		 * A handy "empty point" object
 		 */
 		static protected const _pZero:FlxPoint = new FlxPoint();
@@ -213,8 +204,6 @@ package org.flixel
 			angularDrag = 0;
 			maxAngular = 10000;
 			
-			thrust = 0;
-			
 			scrollFactor = new FlxPoint(1,1);
 			_flicker = false;
 			_flickerTimer = -1;
@@ -318,21 +307,12 @@ package org.flixel
 			angle += angularVelocity*FlxG.elapsed;
 			angularVelocity += vc;
 			
-			var thrustComponents:FlxPoint;
-			if(thrust != 0)
-			{
-				vc = FlxU.computeVelocity(thrust,thrust,0,maxThrust);
-				thrustComponents = FlxU.rotatePoint(0,vc,0,0,angle);
-			}
-			else
-				thrustComponents = _pZero;
-			
-			vc = (FlxU.computeVelocity(velocity.x-thrustComponents.x,acceleration.x,drag.x,maxVelocity.x) - velocity.x)/2;
+			vc = (FlxU.computeVelocity(velocity.x,acceleration.x,drag.x,maxVelocity.x) - velocity.x)/2;
 			velocity.x += vc;
 			var xd:Number = velocity.x*FlxG.elapsed;
 			velocity.x += vc;
 			
-			vc = (FlxU.computeVelocity(velocity.y-thrustComponents.y,acceleration.y,drag.y,maxVelocity.y) - velocity.y)/2;
+			vc = (FlxU.computeVelocity(velocity.y,acceleration.y,drag.y,maxVelocity.y) - velocity.y)/2;
 			velocity.y += vc;
 			var yd:Number = velocity.y*FlxG.elapsed;
 			velocity.y += vc;

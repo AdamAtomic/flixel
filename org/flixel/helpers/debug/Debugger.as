@@ -13,13 +13,6 @@ package org.flixel.helpers.debug
 	
 	public class Debugger extends Sprite
 	{
-		static public const STANDARD:uint = 0;
-		static public const MICRO:uint = 1;
-		static public const BIG:uint = 2;
-		static public const TOP:uint = 3;
-		static public const LEFT:uint = 4;
-		static public const RIGHT:uint = 5;
-
 		public var perf:Perf;
 		public var log:Log;
 		public var watch:Watch;
@@ -72,7 +65,7 @@ package org.flixel.helpers.debug
 			vcr.y = 2;
 			addChild(vcr);
 			
-			setLayout(STANDARD);
+			setLayout(FlxG.DEBUGGER_STANDARD);
 			
 			//Should help with fake mouse focus type behavior
 			addEventListener(MouseEvent.MOUSE_OVER,onMouseOver);
@@ -109,42 +102,42 @@ package org.flixel.helpers.debug
 		{
 			switch(_layout)
 			{
-				case MICRO:
+				case FlxG.DEBUGGER_MICRO:
 					log.resize(_screen.x/4,68);
 					log.reposition(0,_screen.y);
 					watch.resize(_screen.x/4,68);
 					watch.reposition(_screen.x,_screen.y);
 					perf.reposition(_screen.x,0);
 					break;
-				case BIG:
+				case FlxG.DEBUGGER_BIG:
 					log.resize((_screen.x-_gutter*3)/2,_screen.y/2);
 					log.reposition(0,_screen.y);
 					watch.resize((_screen.x-_gutter*3)/2,_screen.y/2);
 					watch.reposition(_screen.x,_screen.y);
 					perf.reposition(_screen.x,0);
 					break;
-				case TOP:
+				case FlxG.DEBUGGER_TOP:
 					log.resize((_screen.x-_gutter*3)/2,_screen.y/4);
 					log.reposition(0,0);
 					watch.resize((_screen.x-_gutter*3)/2,_screen.y/4);
 					watch.reposition(_screen.x,0);
 					perf.reposition(_screen.x,_screen.y);
 					break;
-				case LEFT:
+				case FlxG.DEBUGGER_LEFT:
 					log.resize(_screen.x/3,(_screen.y-15-_gutter*2.5)/2);
 					log.reposition(0,0);
 					watch.resize(_screen.x/3,(_screen.y-15-_gutter*2.5)/2);
 					watch.reposition(0,_screen.y);
 					perf.reposition(_screen.x,0);
 					break;
-				case RIGHT:
+				case FlxG.DEBUGGER_RIGHT:
 					log.resize(_screen.x/3,(_screen.y-15-_gutter*2.5)/2);
 					log.reposition(_screen.x,0);
 					watch.resize(_screen.x/3,(_screen.y-15-_gutter*2.5)/2);
 					watch.reposition(_screen.x,_screen.y);
 					perf.reposition(0,0);
 					break;
-				case STANDARD:
+				case FlxG.DEBUGGER_STANDARD:
 				default:
 					log.resize((_screen.x-_gutter*3)/2,_screen.y/4);
 					log.reposition(0,_screen.y);

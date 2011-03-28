@@ -29,6 +29,13 @@ package org.flixel
 		 * Appears after the decimal in the console.
 		 */
 		static public var LIBRARY_MINOR_VERSION:uint = 50;
+		
+		static public const DEBUGGER_STANDARD:uint = 0;
+		static public const DEBUGGER_MICRO:uint = 1;
+		static public const DEBUGGER_BIG:uint = 2;
+		static public const DEBUGGER_TOP:uint = 3;
+		static public const DEBUGGER_LEFT:uint = 4;
+		static public const DEBUGGER_RIGHT:uint = 5;
 
 		/**
 		 * Internal tracker for game object (so we can pause & unpause)
@@ -68,6 +75,10 @@ package org.flixel
 		 * Setting this to true will disable/skip stuff that isn't necessary for mobile platforms like Android. [BETA]
 		 */
 		static public var mobile:Boolean; 
+		/**
+		 * The global random number generator seed (for deterministic behavior in recordings and saves).
+		 */
+		static public var globalSeed:Number;
 		/**
 		 * <code>FlxG.levels</code> and <code>FlxG.scores</code> are generic
 		 * global variables that can be used for various cross-state stuff.
@@ -239,6 +250,98 @@ package org.flixel
 				_game.stage.frameRate = _game._flashFramerate;
 		}
 		
+		/**
+		 * Generates a random number.  Deterministic, meaning safe
+		 * to use if you want to record replays in random environments.
+		 * 
+		 * @return	A <code>Number</code> between 0 and 1.
+		 */
+		static public function random():Number
+		{
+			return globalSeed = FlxU.srand(globalSeed);
+		}
+		
+		/**
+		 * Shuffles the entries in an array into a new random order.
+		 * 
+		 * @param	A				A Flash <code>Array</code> object containing...stuff.
+		 * @param	HowManyTimes	How many swaps to perform during the shuffle operation.  Good rule of thumb is 2-4 times as many objects are in the list.
+		 * 
+		 * @return	The same Flash <code>Array</code> object that you passed in in the first place.
+		 */
+		static public function shuffle(Objects:Array,HowManyTimes:uint):Array
+		{
+			var i1:uint;
+			var i2:uint;
+			var o:Object;
+			for(var i:uint = 0; i < HowManyTimes; i++)
+			{
+				i1 = FlxG.random()*Objects.length;
+				i2 = FlxG.random()*Objects.length;
+				o = Objects[i2];
+				Objects[i2] = Objects[i1];
+				Objects[i1] = o;
+			}
+			return Objects;
+		}
+		
+		static public function getRandom(Objects:Array):Object
+		{
+			if(Objects != null)
+			{
+				var l:uint = Objects.length;
+				if(l > 0)
+					return Objects[uint(FlxG.random()*l)];
+			}
+			return null;
+		}
+		
+		static public function loadReplay(Data:String,State:FlxState=null,CancelKeys:Array=null,Timeout:Number=NaN,Callback:Function=null):void
+		{
+			_game._replay.load(Data);
+			if(State == null)
+				FlxG.resetGame();
+			else
+				FlxG.state = State;
+			//TODO: support cancel keys, timeout number, and callback function
+			_game._replayRequested = true;
+		}
+		
+		static public function reloadReplay(StandardMode:Boolean=true):void
+		{
+			if(StandardMode)
+				FlxG.resetGame();
+			else
+				FlxG.resetState();
+			if(_game._replay.frameCount > 0)
+				_game._replayRequested = true;
+		}
+		
+		static public function stopReplay():void
+		{
+			_game._replaying = false;
+			if(_game._debugger != null)
+				_game._debugger.vcr.stopped();
+			resetInput();
+		}
+		
+		static public function recordReplay(StandardMode:Boolean=true):void
+		{
+			if(StandardMode)
+				FlxG.resetGame();
+			else
+				FlxG.resetState();
+			_game._recordingRequested = true;
+		}
+		
+		static public function stopRecording():String
+		{
+			_game._recording = false;
+			if(_game._debugger != null)
+				_game._debugger.vcr.stopped();
+			return _game._replay.save();
+		}
+		
 		static public function resetState():void
 		{
 			_game._requestedState = new (FlxU.getClass(FlxU.getClassName(_game._state,false)))();
@@ -397,7 +500,10 @@ package org.flixel
 			if(sounds == null)
 				return;
 			if((music != null) && (ForceDestroy || !music.survive))
+			{
 				music.destroy();
+				music = null;
+			}
 			var i:uint = 0;
 			var s:FlxSound;
 			var sl:uint = sounds.length;
@@ -744,10 +850,7 @@ package org.flixel
 			timeScale = 1.0;
 			FlxG.elapsed = 0;
 			showBounds = false;
-			if((_game._debugger != null) && _game._debugger.vcr.playbackRequested)
-				FlxU.globalSeed = _game._debugger.vcr.replay.seed;
-			else
-				FlxU.globalSeed = Math.random();
+			FlxG.globalSeed = Math.random();
 		}
 
 		/**

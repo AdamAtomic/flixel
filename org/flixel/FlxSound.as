@@ -5,6 +5,7 @@ package org.flixel
 	import flash.media.SoundChannel;
 	import flash.media.SoundTransform;
 	import flash.net.URLRequest;
+	
 	import org.flixel.helpers.FlxMonitor;
 	
 	/**
@@ -68,8 +69,6 @@ package org.flixel
 		public function FlxSound()
 		{
 			super();
-			_point2 = new FlxPoint();
-			_transform = new SoundTransform();
 			init();
 			fixed = true; //no movement usually
 		}
@@ -79,6 +78,10 @@ package org.flixel
 		 */
 		protected function init():void
 		{
+			if(_point2 == null)
+				_point2 = new FlxPoint();
+			if(_transform == null)
+				_transform = new SoundTransform();
 			_transform.pan = 0;
 			_sound = null;
 			_position = 0;
@@ -399,8 +402,7 @@ package org.flixel
 		 */
 		override public function destroy():void
 		{
-			if(active)
-				stop();
+			stop();
 
 			_point2 = null;
 			_transform = null;
