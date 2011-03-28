@@ -153,7 +153,8 @@ package org.flixel.helpers
 				o = Record[i++];
 				o2 = _map[o.code];
 				o2.current = o.value;
-				this[o2.name] = true;
+				if(o.value > 0)
+					this[o2.name] = true;
 			}
 		}
 		

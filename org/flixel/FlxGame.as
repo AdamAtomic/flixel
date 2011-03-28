@@ -383,6 +383,7 @@ package org.flixel
 			FlxGroup._ACTIVECOUNT = FlxGroup._EXTANTCOUNT = 0;
 			if(_replaying)
 			{
+				trace(_replay.frame);
 				_replay.playNextFrame();
 				if(_replay.finished)
 					FlxG.stopReplay();
@@ -390,7 +391,10 @@ package org.flixel
 			else
 				FlxG.updateInput();
 			if(_recording)
+			{
+				trace(_replay.frame);
 				_replay.recordFrame();
+			}
 			update();
 			FlxG.mouse.wheel = 0;
 			if(_debuggerUp)
@@ -456,8 +460,8 @@ package org.flixel
 			if(FlxG.fade.exists)
 				FlxG.fade.update();
 			FlxG.quake.update();
-			x = FlxG.quake.x;
-			y = FlxG.quake.y;
+			_buffer.x = FlxG.quake.x;
+			_buffer.y = FlxG.quake.y;
 			
 			if(_debuggerUp)
 				_debugger.perf.flixelUpdate(getTimer()-mark);

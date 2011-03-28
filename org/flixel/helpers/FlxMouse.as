@@ -2,9 +2,9 @@ package org.flixel.helpers
 {
 	import flash.events.MouseEvent;
 	
+	import org.flixel.FlxG;
 	import org.flixel.FlxPoint;
 	import org.flixel.FlxSprite;
-	import org.flixel.FlxG;
 	import org.flixel.FlxU;
 	import org.flixel.helpers.replay.MouseRecord;
 	
@@ -58,8 +58,9 @@ package org.flixel.helpers
 		{
 			x = 0;
 			y = 0;
-			screenX = 0;
-			screenY = 0;
+			_lastX = screenX = 0;
+			_lastY = screenY = 0;
+			_lastWheel = wheel = 0;
 			_current = 0;
 			_last = 0;
 			cursor = null;
@@ -144,8 +145,6 @@ package org.flixel.helpers
 		 */
 		public function update(X:int,Y:int):void
 		{
-			_lastX = screenX;
-			_lastY = screenY;
 			screenX = X;
 			screenY = Y;
 			updateCursor();
@@ -154,7 +153,6 @@ package org.flixel.helpers
 			else if((_last == 2) && (_current == 2))
 				_current = 1;
 			_last = _current;
-			_lastWheel = wheel;
 		}
 		
 		/**
@@ -259,9 +257,7 @@ package org.flixel.helpers
 		}
 		
 		/**
-		 * If any keys are not "released" (0),
-		 * this function will return an array indicating
-		 * which keys are pressed and what state they are in.
+		 * If the mouse changed state or is pressed, return that info now
 		 * 
 		 * @return	An array of key state data.  Null if there is no data.
 		 */
@@ -269,6 +265,9 @@ package org.flixel.helpers
 		{
 			if((_lastX == screenX) && (_lastY == screenY) && (_current == 0) && (_lastWheel == wheel))
 				return null;
+			_lastX = screenX;
+			_lastY = screenY;
+			_lastWheel = wheel;
 			return new MouseRecord(screenX,screenY,_current,wheel);
 		}
 		
@@ -282,9 +281,9 @@ package org.flixel.helpers
 		{
 			screenX = Record.x;
 			screenY = Record.y;
-			updateCursor();
 			_current = Record.button;
 			wheel = Record.wheel;
+			updateCursor();
 		}
 		
 		public function destroy():void
