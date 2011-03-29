@@ -16,8 +16,8 @@ package org.flixel
 	import flash.utils.Timer;
 	import flash.utils.getTimer;
 	
-	import org.flixel.helpers.FlxReplay;
-	import org.flixel.helpers.debug.Debugger;
+	import org.flixel.system.FlxReplay;
+	import org.flixel.system.FlxDebugger;
 
 	/**
 	 * FlxGame is the heart of all flixel games, and contains a bunch of basic game loops and things.
@@ -73,7 +73,7 @@ package org.flixel
 		protected var _soundTray:Sprite;
 		protected var _soundTrayTimer:Number;
 		protected var _soundTrayBars:Array;
-		internal var _debugger:Debugger;
+		internal var _debugger:FlxDebugger;
 		internal var _debuggerUp:Boolean;
 		
 		//replays
@@ -586,7 +586,7 @@ package org.flixel
 			//Initialize game console
 			if(!FlxG.mobile && (FlxG.debug || debugOnRelease))
 			{
-				_debugger = new Debugger(FlxG.width*_zoom,FlxG.height*_zoom);
+				_debugger = new FlxDebugger(FlxG.width*_zoom,FlxG.height*_zoom);
 				addChild(_debugger);
 			}
 			

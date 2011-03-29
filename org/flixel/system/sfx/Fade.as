@@ -1,11 +1,11 @@
-package org.flixel.helpers
+package org.flixel.system.sfx
 {
 	import org.flixel.*;
 	
 	/**
 	 * This is a special effects utility class to help FlxGame do the 'fade' effect.
 	 */
-	public class FlxFade extends FlxSprite
+	public class Fade extends FlxSprite
 	{
 		/**
 		 * How long the effect should last.
@@ -19,7 +19,7 @@ package org.flixel.helpers
 		/**
 		 * Constructor initializes the fade object
 		 */
-		public function FlxFade()
+		public function Fade()
 		{
 			super();
 			createGraphic(FlxG.width,FlxG.height,0,true);

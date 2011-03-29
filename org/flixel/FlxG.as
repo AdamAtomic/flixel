@@ -5,8 +5,9 @@ package org.flixel
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	
-	import org.flixel.helpers.*;
-	import org.flixel.helpers.debug.Debugger;
+	import org.flixel.system.FlxDebugger;
+	import org.flixel.system.input.*;
+	import org.flixel.system.sfx.*;
 	
 	/**
 	 * This is a global helper class full of useful functions for audio,
@@ -97,11 +98,11 @@ package org.flixel
 		/**
 		 * A reference to a <code>FlxMouse</code> object.  Important for input!
 		 */
-		static public var mouse:FlxMouse;
+		static public var mouse:Mouse;
 		/**
 		 * A reference to a <code>FlxKeyboard</code> object.  Important for input!
 		 */
-		static public var keys:FlxKeyboard;
+		static public var keys:Keyboard;
 		
 		/**
 		 * A handy container for a background music object.
@@ -162,15 +163,15 @@ package org.flixel
 		/**
 		 * A special effect that shakes the screen.  Usage: FlxG.quake.start();
 		 */
-		static public var quake:FlxQuake;
+		static public var quake:Quake;
 		/**
 		 * A special effect that flashes a color on the screen.  Usage: FlxG.flash.start();
 		 */
-		static public var flash:FlxFlash;
+		static public var flash:Flash;
 		/**
 		 * A special effect that fades a color onto the screen.  Usage: FlxG.fade.start();
 		 */
-		static public var fade:FlxFade;
+		static public var fade:Fade;
 		
 		/**
 		 * Log data to the debugger.
@@ -828,8 +829,8 @@ package org.flixel
 			FlxG.levels = new Array();
 			FlxG.scores = new Array();
 			
-			mouse = new FlxMouse();
-			keys = new FlxKeyboard();
+			mouse = new Mouse();
+			keys = new Keyboard();
 			
 			clearBitmapCache();
 			
@@ -839,13 +840,13 @@ package org.flixel
 		static internal function reset():void
 		{
 			clearBitmapCache();
-			quake = new FlxQuake(_game._zoom);
+			quake = new Quake(_game._zoom);
 			if(flash != null)
 				flash.destroy();
-			flash = new FlxFlash();
+			flash = new Flash();
 			if(fade != null)
 				fade.destroy();
-			fade = new FlxFade();
+			fade = new Fade();
 			
 			resetInput();
 			if(sounds != null)

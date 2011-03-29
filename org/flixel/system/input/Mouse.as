@@ -1,4 +1,4 @@
-package org.flixel.helpers
+package org.flixel.system.input
 {
 	import flash.events.MouseEvent;
 	
@@ -6,13 +6,13 @@ package org.flixel.helpers
 	import org.flixel.FlxPoint;
 	import org.flixel.FlxSprite;
 	import org.flixel.FlxU;
-	import org.flixel.helpers.replay.MouseRecord;
+	import org.flixel.system.replay.MouseRecord;
 	
 	/**
 	 * This class helps contain and track the mouse pointer in your game.
 	 * Automatically accounts for parallax scrolling, etc.
 	 */
-	public class FlxMouse extends FlxPoint
+	public class Mouse extends FlxPoint
 	{
 		[Embed(source="../data/cursor.png")] protected var ImgDefaultCursor:Class;
 
@@ -54,7 +54,7 @@ package org.flixel.helpers
 		/**
 		 * Constructor.
 		 */
-		public function FlxMouse()
+		public function Mouse()
 		{
 			x = 0;
 			y = 0;

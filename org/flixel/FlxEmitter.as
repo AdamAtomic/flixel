@@ -1,6 +1,5 @@
 package org.flixel
 {
-	import org.flixel.helpers.FlxParticle;
 
 	/**
 	 * <code>FlxEmitter</code> is a lightweight particle emitter.

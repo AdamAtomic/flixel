@@ -1,7 +1,8 @@
-package org.flixel.helpers
+package org.flixel.system
 {
 	import org.flixel.FlxG;
-	import org.flixel.helpers.replay.*;
+	import org.flixel.system.replay.FrameRecord;
+	import org.flixel.system.replay.MouseRecord;
 
 	public class FlxReplay
 	{

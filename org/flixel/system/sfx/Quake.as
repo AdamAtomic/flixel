@@ -1,11 +1,11 @@
-package org.flixel.helpers
+package org.flixel.system.sfx
 {
 	import org.flixel.FlxG;
 	
 	/**
 	 * This is a special effects utility class to help FlxGame do the 'quake' or screenshake effect.
 	 */
-	public class FlxQuake
+	public class Quake
 	{
 		/**
 		 * The game's level of zoom.
@@ -32,7 +32,7 @@ package org.flixel.helpers
 		/**
 		 * Constructor.
 		 */
-		public function FlxQuake(Zoom:uint)
+		public function Quake(Zoom:uint)
 		{
 			_zoom = Zoom;
 			start(0);

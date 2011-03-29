@@ -1,6 +1,5 @@
-package org.flixel.helpers
+package org.flixel
 {
-	import org.flixel.*;
 	
 	public class FlxParticle extends FlxSprite
 	{

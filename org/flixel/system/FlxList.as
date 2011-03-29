@@ -1,4 +1,4 @@
-package org.flixel.helpers
+package org.flixel.system
 {
 	import org.flixel.*;
 	

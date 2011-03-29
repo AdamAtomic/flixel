@@ -1,11 +1,11 @@
-package org.flixel.helpers
+package org.flixel.system.sfx
 {
 	import org.flixel.*;
 	
 	/**
 	 * This is a special effects utility class to help FlxGame do the 'flash' effect
 	 */
-	public class FlxFlash extends FlxSprite
+	public class Flash extends FlxSprite
 	{
 		/**
 		 * How long the effect should last.
@@ -19,7 +19,7 @@ package org.flixel.helpers
 		/**
 		 * Constructor for this special effect
 		 */
-		public function FlxFlash()
+		public function Flash()
 		{
 			super();
 			createGraphic(FlxG.width,FlxG.height,0,true);

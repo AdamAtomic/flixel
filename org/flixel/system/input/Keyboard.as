@@ -1,6 +1,6 @@
-package org.flixel.helpers
+package org.flixel.system.input
 {
-	public class FlxKeyboard extends FlxInput
+	public class Keyboard extends Input
 	{
 		public var ESCAPE:Boolean;
 		public var F1:Boolean;
@@ -89,7 +89,7 @@ package org.flixel.helpers
 		public var LEFT:Boolean;
 		public var RIGHT:Boolean;
 
-		public function FlxKeyboard()
+		public function Keyboard()
 		{
 			var i:uint;
 			

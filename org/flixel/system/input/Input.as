@@ -1,8 +1,8 @@
-package org.flixel.helpers
+package org.flixel.system.input
 {
 	import flash.events.KeyboardEvent;
 	
-	public class FlxInput
+	public class Input
 	{
 		/**
 		 * @private
@@ -20,7 +20,7 @@ package org.flixel.helpers
 		/**
 		 * Constructor
 		 */
-		public function FlxInput()
+		public function Input()
 		{
 			_lookup = new Object();
 			_map = new Array(_t);

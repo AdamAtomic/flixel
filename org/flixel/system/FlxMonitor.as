@@ -1,4 +1,4 @@
-package org.flixel.helpers
+package org.flixel.system
 {
 	/**
 	 * FlxMonitor is a simple class that aggregates and averages data.

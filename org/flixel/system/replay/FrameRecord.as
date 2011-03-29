@@ -1,4 +1,4 @@
-package org.flixel.helpers.replay
+package org.flixel.system.replay
 {
 	public class FrameRecord
 	{

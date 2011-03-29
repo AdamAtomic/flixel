@@ -1,10 +1,10 @@
-package org.flixel.helpers.debug
+package org.flixel.system.debug
 {
 	import flash.geom.Rectangle;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
+	import org.flixel.system.FlxWindow;
 	
-	import org.flixel.helpers.FlxWindow;
 	
 	public class Log extends FlxWindow
 	{

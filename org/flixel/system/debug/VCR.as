@@ -1,4 +1,4 @@
-package org.flixel.helpers.debug
+package org.flixel.system.debug
 {
 	import flash.display.Bitmap;
 	import flash.display.Sprite;
@@ -11,9 +11,9 @@ package org.flixel.helpers.debug
 	
 	import org.flixel.FlxG;
 	import org.flixel.FlxU;
-	import org.flixel.helpers.replay.FrameRecord;
-	import org.flixel.helpers.replay.MouseRecord;
-	import org.flixel.helpers.FlxReplay;
+	import org.flixel.system.replay.FrameRecord;
+	import org.flixel.system.replay.MouseRecord;
+	import org.flixel.system.FlxReplay;
 	
 	public class VCR extends Sprite
 	{

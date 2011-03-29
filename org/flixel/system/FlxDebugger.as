@@ -1,4 +1,4 @@
-package org.flixel.helpers.debug
+package org.flixel.system
 {
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -10,8 +10,12 @@ package org.flixel.helpers.debug
 	import flash.text.TextFormat;
 	
 	import org.flixel.FlxG;
+	import org.flixel.system.debug.Log;
+	import org.flixel.system.debug.Perf;
+	import org.flixel.system.debug.VCR;
+	import org.flixel.system.debug.Watch;
 	
-	public class Debugger extends Sprite
+	public class FlxDebugger extends Sprite
 	{
 		public var perf:Perf;
 		public var log:Log;
@@ -24,7 +28,7 @@ package org.flixel.helpers.debug
 		protected var _screen:Point;
 		protected var _gutter:uint;
 		
-		public function Debugger(Width:Number,Height:Number)
+		public function FlxDebugger(Width:Number,Height:Number)
 		{
 			super();
 			visible = false;

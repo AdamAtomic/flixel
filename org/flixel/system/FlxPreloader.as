@@ -1,4 +1,4 @@
-package org.flixel.helpers
+package org.flixel.system
 {
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;

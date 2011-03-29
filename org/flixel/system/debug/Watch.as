@@ -1,11 +1,11 @@
-package org.flixel.helpers.debug
+package org.flixel.system.debug
 {
 	import flash.geom.Rectangle;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
 	import org.flixel.FlxU;
-	import org.flixel.helpers.FlxWindow;
+	import org.flixel.system.FlxWindow;
 	
 	public class Watch extends FlxWindow
 	{
