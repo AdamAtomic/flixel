@@ -66,6 +66,11 @@ package org.flixel
 			exists = true;
 		}
 		
+		public function onScreen():Boolean
+		{
+			return true;
+		}
+		
 		/**
 		 * Convert object to readable string name.  Useful for debugging, save games, etc.
 		 */

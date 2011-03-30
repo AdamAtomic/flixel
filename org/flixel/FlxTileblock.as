@@ -20,7 +20,8 @@ package org.flixel
 		public function FlxTileblock(X:int,Y:int,Width:uint,Height:uint)
 		{
 			super(X,Y);
-			makeGraphic(Width,Height,0,true);		
+			makeGraphic(Width,Height,0,true);
+			active = false;
 			fixed = true;
 		}
 		
@@ -74,6 +75,7 @@ package org.flixel
 					if(FlxG.random()*total > Empties)
 					{
 						s.randomFrame();
+						s.drawFrame();
 						stamp(s,ox,oy);
 					}
 					ox += sw;

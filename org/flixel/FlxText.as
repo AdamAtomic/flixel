@@ -227,7 +227,6 @@ package org.flixel
 					height += _tf.getLineMetrics(i++).height;
 				height += 4; //account for 2px gutter on top and bottom
 				_pixels = new BitmapData(width,height,true,0);
-				_bbb = new BitmapData(width,height,true,0);
 				frameHeight = height;
 				_tf.height = height*1.2;
 				_flashRect.x = 0;
@@ -270,8 +269,6 @@ package org.flixel
 			if((_framePixels == null) || (_framePixels.width != _pixels.width) || (_framePixels.height != _pixels.height))
 				_framePixels = new BitmapData(_pixels.width,_pixels.height,true,0);
 			_framePixels.copyPixels(_pixels,_flashRect,_flashPointZero);
-			if(FlxG.showBounds)
-				drawBounds();
 			if(solid)
 				refreshHulls();
 		}

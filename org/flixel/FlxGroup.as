@@ -102,7 +102,7 @@ package org.flixel
 			while(i < length)
 			{
 				b = members[i++] as FlxBasic;
-				if((b != null) && b.exists && b.visible)
+				if((b != null) && b.exists && b.visible && b.onScreen())
 				{
 					b.draw();
 					FlxGroup._VISIBLECOUNT++;

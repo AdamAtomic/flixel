@@ -22,13 +22,13 @@ package org.flixel
 		public var height:Number;
 		
 		/**
-		 * Internal tracker for whether or not the object collides (see <code>solid</code>).
+		 * Whether or not the object collides.
 		 */
-		protected var _solid:Boolean;
+		public var solid:Boolean;
 		/**
-		 * Internal tracker for whether an object will move/alter position after a collision (see <code>fixed</code>).
+		 * Whether an object will move/alter position after a collision.
 		 */
-		protected var _fixed:Boolean;
+		public var fixed:Boolean;
 		
 		/**
 		 * The basic speed of this object.
@@ -167,8 +167,8 @@ package org.flixel
 			width = Width;
 			height = Height;
 			
-			_solid = true;
-			_fixed = false;
+			solid = true;
+			fixed = false;
 			moves = true;
 			
 			collideLeft = true;
@@ -189,7 +189,7 @@ package org.flixel
 			
 			scrollFactor = new FlxPoint(1,1);
 			_flicker = false;
-			_flickerTimer = -1;
+			_flickerTimer = 0;
 			
 			_point = new FlxPoint();
 			_rect = new FlxRect();
@@ -240,39 +240,6 @@ package org.flixel
 		}
 		
 		/**
-		 * Set <code>solid</code> to true if you want to collide this object.
-		 */
-		public function get solid():Boolean
-		{
-			return _solid;
-		}
-		
-		/**
-		 * @private
-		 */
-		public function set solid(Solid:Boolean):void
-		{
-			_solid = Solid;
-		}
-		
-		/**
-		 * Set <code>fixed</code> to true if you want the object to stay in place during collisions.
-		 * Useful for levels and other environmental objects.
-		 */
-		public function get fixed():Boolean
-		{
-			return _fixed;
-		}
-		
-		/**
-		 * @private
-		 */
-		public function set fixed(Fixed:Boolean):void
-		{
-			_fixed = Fixed;
-		}
-		
-		/**
 		 * Called by <code>FlxObject.updateMotion()</code> and some constructors to
 		 * rebuild the basic collision data for this object.
 		 */
@@ -297,7 +264,7 @@ package org.flixel
 			if(!moves)
 				return;
 			
-			if(_solid)
+			if(solid)
 				refreshHulls();
 			onFloor = false;
 			var vc:Number;
@@ -321,7 +288,7 @@ package org.flixel
 			y += yd;
 			
 			//Update collision data with new movement results
-			if(!_solid)
+			if(!solid)
 				return;
 			colVector.x = xd;
 			colVector.y = yd;
@@ -340,20 +307,16 @@ package org.flixel
 		 */
 		protected function updateFlickering():void
 		{
-			if(flickering())
+			if(flickering)
 			{
 				if(_flickerTimer > 0)
 				{
 					_flickerTimer = _flickerTimer - FlxG.elapsed;
-					if(_flickerTimer == 0)
-						_flickerTimer = -1;
-				}
-				if(_flickerTimer < 0)
-					flicker(-1);
-				else
-				{
-					_flicker = !_flicker;
-					visible = !_flicker;
+					if(_flickerTimer <= 0)
+					{
+						_flickerTimer = 0;
+						_flicker = false;
+					}
 				}
 			}
 		}
@@ -467,17 +430,26 @@ package org.flixel
 		
 		/**
 		 * Tells this object to flicker, retro-style.
+		 * Pass a negative value to flicker forever.
 		 * 
 		 * @param	Duration	How many seconds to flicker for.
 		 */
-		public function flicker(Duration:Number=1):void { _flickerTimer = Duration; if(_flickerTimer < 0) { _flicker = false; visible = true; } }
+		public function flicker(Duration:Number=1):void
+		{
+			_flickerTimer = Duration;
+			if(_flickerTimer == 0)
+				_flicker = false;
+		}
 		
 		/**
 		 * Check to see if the object is still flickering.
 		 * 
 		 * @return	Whether the object is flickering or not.
 		 */
-		public function flickering():Boolean { return _flickerTimer >= 0; }
+		public function get flickering():Boolean
+		{
+			return _flickerTimer != 0;
+		}
 		
 		/**
 		 * Call this function to figure out the on-screen position of the object.
@@ -499,12 +471,10 @@ package org.flixel
 		 * 
 		 * @return	Whether the object is on screen or not.
 		 */
-		public function onScreen():Boolean
+		override public function onScreen():Boolean
 		{
 			getScreenXY(_point);
-			if((_point.x + width < 0) || (_point.x > FlxG.width) || (_point.y + height < 0) || (_point.y > FlxG.height))
-				return false;
-			return true;
+			return ((_point.x + width > 0) && (_point.x < FlxG.width) && (_point.y + height > 0) && (_point.y < FlxG.height))
 		}
 		
 		public function getMidpoint(Point:FlxPoint=null):FlxPoint

@@ -86,6 +86,11 @@ package org.flixel
 		 * The total number of frames in this image (assumes each row is full).
 		 */
 		public var frames:uint;
+		/**
+		 * Set this flag to true to force the sprite to update during the draw() call.
+		 * NOTE: Rarely if ever necessary, most sprite operations will flip this flag automatically.
+		 */
+		public var dirty:Boolean;
 		
 		//Animation helpers
 		protected var _animations:Array;
@@ -108,8 +113,6 @@ package org.flixel
 		protected var _color:uint;
 		protected var _ct:ColorTransform;
 		protected var _mtx:Matrix;
-		protected var _bbb:BitmapData;
-		protected var _boundsVisible:Boolean;
 		static protected var _gfxSprite:Sprite;
 		static protected var _gfx:Graphics;
 		
@@ -189,7 +192,6 @@ package org.flixel
 			_callback = null;
 			_gfxSprite == null;
 			_framePixels = null;
-			_bbb = null;
 		}
 		
 		/**
@@ -344,7 +346,6 @@ package org.flixel
 		 */
 		protected function resetHelpers():void
 		{
-			_boundsVisible = false;
 			_flashRect.x = 0;
 			_flashRect.y = 0;
 			_flashRect.width = frameWidth;
@@ -355,15 +356,11 @@ package org.flixel
 			_flashRect2.height = _pixels.height;
 			if((_framePixels == null) || (_framePixels.width != width) || (_framePixels.height != height))
 				_framePixels = new BitmapData(width,height);
-			if((_bbb == null) || (_bbb.width != width) || (_bbb.height != height))
-				_bbb = new BitmapData(width,height);
 			origin.x = frameWidth*0.5;
 			origin.y = frameHeight*0.5;
 			_framePixels.copyPixels(_pixels,_flashRect,_flashPointZero);
 			frames = (_flashRect2.width / _flashRect.width) * (_flashRect2.height / _flashRect.height);
 			if(_ct != null) _framePixels.colorTransform(_flashRect,_ct);
-			if(FlxG.showBounds)
-				drawBounds();
 			_caf = 0;
 			refreshHulls();
 		}
@@ -389,28 +386,6 @@ package org.flixel
 		}
 		
 		/**
-		 * @private
-		 */
-		override public function set solid(Solid:Boolean):void
-		{
-			var os:Boolean = _solid;
-			_solid = Solid;
-			if((os != _solid) && FlxG.showBounds)
-				calcFrame();
-		}
-		
-		/**
-		 * @private
-		 */
-		override public function set fixed(Fixed:Boolean):void
-		{
-			var of:Boolean = _fixed;
-			_fixed = Fixed;
-			if((of != _fixed) && FlxG.showBounds)
-				calcFrame();
-		}
-		
-		/**
 		 * Set <code>facing</code> using <code>FlxSprite.LEFT</code>,<code>RIGHT</code>,
 		 * <code>UP</code>, and <code>DOWN</code> to take advantage of
 		 * flipped sprites and/or just track player orientation more easily.
@@ -425,9 +400,9 @@ package org.flixel
 		 */
 		public function set facing(Direction:uint):void
 		{
-			var c:Boolean = _facing != Direction;
+			if(_facing != Direction)
+				dirty = true;
 			_facing = Direction;
-			if(c) calcFrame();
 		}
 		
 		/**
@@ -449,7 +424,7 @@ package org.flixel
 			_alpha = Alpha;
 			if((_alpha != 1) || (_color != 0x00ffffff)) _ct = new ColorTransform((_color>>16)*0.00392,(_color>>8&0xff)*0.00392,(_color&0xff)*0.00392,_alpha);
 			else _ct = null;
-			calcFrame();
+			dirty = true;
 		}
 		
 		/**
@@ -468,11 +443,12 @@ package org.flixel
 		public function set color(Color:uint):void
 		{
 			Color &= 0x00ffffff;
-			if(_color == Color) return;
+			if(_color == Color)
+				return;
 			_color = Color;
 			if((_alpha != 1) || (_color != 0x00ffffff)) _ct = new ColorTransform((_color>>16)*0.00392,(_color>>8&0xff)*0.00392,(_color&0xff)*0.00392,_alpha);
 			else _ct = null;
-			calcFrame();
+			dirty = true;
 		}
 		
 
@@ -537,7 +513,7 @@ package org.flixel
 			
 			//Cache line to bitmap
 			_pixels.draw(_gfxSprite);
-			calcFrame();
+			dirty = true;
 		}
 		
 		/**
@@ -549,7 +525,7 @@ package org.flixel
 		{
 			_pixels.fillRect(_flashRect2,Color);
 			if(_pixels != _framePixels)
-				calcFrame();
+				dirty = true;
 		}
 		
 		/**
@@ -567,7 +543,7 @@ package org.flixel
 					ta += 360;
 				_caf = ta/_bakedRotation;
 				if(oc != _caf)
-					calcFrame();
+					dirty = true;
 				return;
 			}
 			if((_curAnim != null) && (_curAnim.delay > 0) && (_curAnim.looped || !finished))
@@ -584,7 +560,7 @@ package org.flixel
 					else
 						_curFrame++;
 					_caf = _curAnim.frames[_curFrame];
-					calcFrame();
+					dirty = true;
 				}
 			}
 		}
@@ -605,9 +581,15 @@ package org.flixel
 		 */
 		protected function drawSprite():void
 		{
-			if(FlxG.showBounds != _boundsVisible)
+			if(_flickerTimer != 0)
+			{
+				_flicker = !_flicker;
+				if(_flicker)
+					return;
+			}
+			if(dirty)
 				calcFrame();
-			
+
 			getScreenXY(_point);
 			_flashPoint.x = _point.x;
 			_flashPoint.y = _point.y;
@@ -635,6 +617,18 @@ package org.flixel
 		override public function draw():void
 		{
 			drawSprite();
+		}
+		
+		/**
+		 * Request (or force) that the sprite update the frame before rendering.
+		 * Useful if you are doing procedural generation or other weirdness!
+		 * 
+		 * @param	Force	Force the frame to redraw, even if its not flagged as necessary.
+		 */
+		public function drawFrame(Force:Boolean=false):void
+		{
+			if(Force || dirty)
+				calcFrame();
 		}
 		
 		/**
@@ -711,7 +705,7 @@ package org.flixel
 					else
 						finished = false;
 					_caf = _curAnim.frames[_curFrame];
-					calcFrame();
+					dirty = true;
 					return;
 				}
 				i++;
@@ -726,7 +720,7 @@ package org.flixel
 		{
 			_curAnim = null;
 			_caf = int(FlxG.random()*(_pixels.width/frameWidth));
-			calcFrame();
+			dirty = true;
 		}
 		
 		/**
@@ -746,7 +740,7 @@ package org.flixel
 		{
 			_curAnim = null;
 			_caf = Frame;
-			calcFrame();
+			dirty = true;
 		}
 		
 		public function corner():void
@@ -790,9 +784,17 @@ package org.flixel
 		override public function onScreen():Boolean
 		{
 			getScreenXY(_point);
-			if((_point.x + frameWidth < 0) || (_point.x > FlxG.width) || (_point.y + frameHeight < 0) || (_point.y > FlxG.height))
-				return false;
-			return true;
+			if(((angle == 0) || (_bakedRotation > 0)) && (scale.x == 1) && (scale.y == 1))
+				return ((_point.x + frameWidth > 0) && (_point.x < FlxG.width) && (_point.y + frameHeight > 0) && (_point.y < FlxG.height));
+			else
+			{
+				var hw:Number = width/2;
+				var hh:Number = height/2;
+				var radius:Number = Math.sqrt(hw*hw+hh*hh)*((scale.x >= scale.y)?scale.x:scale.y);
+				_point.x += hw;
+				_point.y += hh;
+				return ((_point.x + radius > 0) && (_point.x - radius < FlxG.width) && (_point.y + radius > 0) && (_point.y - radius < FlxG.height));
+			}
 		}
 		
 		/**
@@ -800,7 +802,6 @@ package org.flixel
 		 */
 		protected function calcFrame():void
 		{
-			_boundsVisible = false;
 			var rx:uint = _caf*frameWidth;
 			var ry:uint = 0;
 
@@ -822,34 +823,8 @@ package org.flixel
 			_framePixels.copyPixels(_pixels,_flashRect,_flashPointZero);
 			_flashRect.x = _flashRect.y = 0;
 			if(_ct != null) _framePixels.colorTransform(_flashRect,_ct);
-			if(FlxG.showBounds)
-				drawBounds();
 			if(_callback != null) _callback(_curAnim.name,_curFrame,_caf);
-		}
-		
-		protected function drawBounds():void
-		{
-			_boundsVisible = true;
-			if((_bbb == null) || (_bbb.width != width) || (_bbb.height != height))
-				_bbb = new BitmapData(width,height);
-			var bbbc:uint = getBoundingColor();
-			_bbb.fillRect(_flashRect,0);
-			var ofrw:uint = _flashRect.width;
-			var ofrh:uint = _flashRect.height;
-			_flashRect.width = int(width);
-			_flashRect.height = int(height);
-			_bbb.fillRect(_flashRect,bbbc);
-			_flashRect.width = _flashRect.width - 2;
-			_flashRect.height = _flashRect.height - 2;
-			_flashRect.x = 1;
-			_flashRect.y = 1;
-			_bbb.fillRect(_flashRect,0);
-			_flashRect.width = ofrw;
-			_flashRect.height = ofrh;
-			_flashRect.x = _flashRect.y = 0;
-			_flashPoint.x = int(offset.x);
-			_flashPoint.y = int(offset.y);
-			_framePixels.copyPixels(_bbb,_flashRect,_flashPoint,null,null,true);
+			dirty = false;
 		}
 		
 		/**

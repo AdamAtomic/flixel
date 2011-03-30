@@ -52,10 +52,6 @@ package org.flixel
 		 * Set automatically by <code>FlxFactory</code> during startup.
 		 */
 		static public var debug:Boolean;
-		/**
-		 * Set <code>showBounds</code> to true to display the bounding boxes of the in-game objects.
-		 */
-		static public var showBounds:Boolean;
 		
 		/**
 		 * Represents the amount of time in seconds that passed since last frame.
@@ -780,7 +776,6 @@ package org.flixel
 			paused = false;
 			timeScale = 1.0;
 			FlxG.elapsed = 0;
-			showBounds = false;
 			FlxG.globalSeed = Math.random();
 		}
 

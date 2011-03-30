@@ -111,6 +111,7 @@ package org.flixel
 			_block.width = _block.height = 0;
 			_block.fixed = true;
 			_callbacks = new Array();
+			active = false;
 			fixed = true;
 		}
 		
