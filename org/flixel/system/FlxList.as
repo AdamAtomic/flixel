@@ -1,6 +1,6 @@
 package org.flixel.system
 {
-	import org.flixel.*;
+	import org.flixel.FlxObject;
 	
 	/**
 	 * The world's smallest linked list class.

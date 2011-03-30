@@ -6,8 +6,9 @@ package org.flixel
 	import flash.geom.Point;
 	
 	import org.flixel.system.FlxDebugger;
+	import org.flixel.system.FlxSound;
+	import org.flixel.system.fx.*;
 	import org.flixel.system.input.*;
-	import org.flixel.system.sfx.*;
 	
 	/**
 	 * This is a global helper class full of useful functions for audio,
@@ -111,11 +112,11 @@ package org.flixel
 		/**
 		 * A list of all the sounds being played in the game.
 		 */
-		static public var sounds:Array;
+		static public var sounds:FlxGroup;
 		/**
-		 * Internal flag for whether or not the game is muted.
+		 * Whether or not the game sounds are muted.
 		 */
-		static protected var _mute:Boolean;
+		static public var mute:Boolean;
 		/**
 		 * Internal volume level, used for global sound control.
 		 */
@@ -312,7 +313,7 @@ package org.flixel
 			if(State == null)
 				FlxG.resetGame();
 			else
-				FlxG.state = State;
+				FlxG.switchState(State);
 			_game._replayCancelKeys = CancelKeys;
 			_game._replayTimer = Timeout;
 			_game._replayCallback = Callback;
@@ -405,17 +406,7 @@ package org.flixel
 		 */
 		static public function play(EmbeddedSound:Class,Volume:Number=1.0,Looped:Boolean=false):FlxSound
 		{
-			var i:uint = 0;
-			var sl:uint = sounds.length;
-			while(i < sl)
-			{
-				if(!(sounds[i] as FlxSound).active)
-					break;
-				i++;
-			}
-			if(sounds[i] == null)
-				sounds[i] = new FlxSound();
-			var s:FlxSound = sounds[i];
+			var s:FlxSound = sounds.recycle(FlxSound) as FlxSound;
 			s.loadEmbedded(EmbeddedSound,Looped);
 			s.volume = Volume;
 			s.play();
@@ -433,53 +424,11 @@ package org.flixel
 		 */
 		static public function stream(URL:String,Volume:Number=1.0,Looped:Boolean=false):FlxSound
 		{
-			var i:uint = 0;
-			var sl:uint = sounds.length;
-			while(i < sl)
-			{
-				if(!(sounds[i] as FlxSound).active)
-					break;
-				i++;
-			}
-			if(sounds[i] == null)
-				sounds[i] = new FlxSound();
-			var s:FlxSound = sounds[i];
+			var s:FlxSound = sounds.recycle(FlxSound) as FlxSound;
 			s.loadStream(URL,Looped);
 			s.volume = Volume;
 			s.play();
 			return s;
-		}
-		
-		/**
-		 * Set <code>mute</code> to true to turn off the sound.
-		 * 
-		 * @default false
-		 */
-		static public function get mute():Boolean
-		{
-			return _mute;
-		}
-		
-		/**
-		 * @private
-		 */
-		static public function set mute(Mute:Boolean):void
-		{
-			_mute = Mute;
-			changeSounds();
-		}
-		
-		/**
-		 * Get a number that represents the mute state that we can multiply into a sound transform.
-		 * 
-		 * @return		An unsigned integer - 0 if muted, 1 if not muted.
-		 */
-		static public function getMuteValue():uint
-		{
-			if(_mute)
-				return 0;
-			else
-				return 1;
 		}
 		
 		/**
@@ -499,7 +448,6 @@ package org.flixel
 				_volume = 0;
 			else if(_volume > 1)
 				_volume = 1;
-			changeSounds();
 		}
 
 		/**
@@ -509,8 +457,6 @@ package org.flixel
 		 */
 		static internal function destroySounds(ForceDestroy:Boolean=false):void
 		{
-			if(sounds == null)
-				return;
 			if((music != null) && (ForceDestroy || !music.survive))
 			{
 				music.destroy();
@@ -518,31 +464,12 @@ package org.flixel
 			}
 			var i:uint = 0;
 			var s:FlxSound;
-			var sl:uint = sounds.length;
-			while(i < sl)
+			var l:uint = sounds.members.length;
+			while(i < l)
 			{
-				s = sounds[i++] as FlxSound;
+				s = sounds.members[i++] as FlxSound;
 				if((s != null) && (ForceDestroy || !s.survive))
 					s.destroy();
-			}
-			sounds.length = 0;
-		}
-
-		/**
-		 * An internal function that adjust the volume levels and the music channel after a change.
-		 */
-		static protected function changeSounds():void
-		{
-			if((music != null) && music.active)
-				music.updateTransform();
-			var i:uint = 0;
-			var s:FlxSound;
-			var sl:uint = sounds.length;
-			while(i < sl)
-			{
-				s = sounds[i++] as FlxSound;
-				if((s != null) && s.active)
-					s.updateTransform();
 			}
 		}
 		
@@ -553,15 +480,8 @@ package org.flixel
 		{
 			if((music != null) && music.active)
 				music.update();
-			var i:uint = 0;
-			var s:FlxSound;
-			var sl:uint = sounds.length;
-			while(i < sl)
-			{
-				s = sounds[i++] as FlxSound;
-				if((s != null) && s.active)
-					s.update();
-			}
+			if((sounds != null) && sounds.active)
+				sounds.update();
 		}
 		
 		/**
@@ -573,11 +493,11 @@ package org.flixel
 				music.pause();
 			var i:uint = 0;
 			var s:FlxSound;
-			var sl:uint = sounds.length;
-			while(i < sl)
+			var l:uint = sounds.members.length;
+			while(i < l)
 			{
-				s = sounds[i++] as FlxSound;
-				if((s != null) && s.active)
+				s = sounds.members[i++] as FlxSound;
+				if((s != null) && s.exists && s.active)
 					s.pause();
 			}
 		}
@@ -591,11 +511,11 @@ package org.flixel
 				music.play();
 			var i:uint = 0;
 			var s:FlxSound;
-			var sl:uint = sounds.length;
-			while(i < sl)
+			var l:uint = sounds.members.length;
+			while(i < l)
 			{
-				s = sounds[i++] as FlxSound;
-				if((s != null) && s.active)
+				s = sounds.members[i++] as FlxSound;
+				if((s != null) && s.exists && s.active)
 					s.play();
 			}
 		}
@@ -656,7 +576,7 @@ package org.flixel
 			var key:String = Key;
 			if(key == null)
 			{
-				key = String(Graphic);
+				key = String(Graphic)+(Reverse?"_REVERSE_":"");
 				if(Unique && (_cache[key] != undefined) && (_cache[key] != null))
 				{
 					//Generate a unique key
@@ -752,13 +672,13 @@ package org.flixel
 		 */
 		static public function get stage():Stage
 		{
-			if((_game._state != null)  && (_game._state.parent != null))
-				return _game._state.parent.stage;
+			if(_game.root != null)
+				return _game.stage;
 			return null;
 		}
 		
 		/**
-		 * Safely access the current game state.
+		 * Access the current game state from anywhere.
 		 */
 		static public function get state():FlxState
 		{
@@ -766,9 +686,9 @@ package org.flixel
 		}
 		
 		/**
-		 * @private
+		 * Switch from the current game state to the one specified here.
 		 */
-		static public function set state(State:FlxState):void
+		static public function switchState(State:FlxState):void
 		{
 			_game._requestedState = State;
 		}
@@ -821,19 +741,19 @@ package org.flixel
 			_game = Game;
 			width = Width;
 			height = Height;
-			_mute = false;
+			
+			mute = false;
 			_volume = 0.5;
-			mobile = false;
-			
-			sounds = new Array();
-			FlxG.levels = new Array();
-			FlxG.scores = new Array();
-			
-			mouse = new Mouse();
-			keys = new Keyboard();
+			sounds = new FlxGroup();
 			
 			clearBitmapCache();
 			
+			mouse = new Mouse();
+			keys = new Keyboard();
+			mobile = false;
+
+			FlxG.levels = new Array();
+			FlxG.scores = new Array();
 			FlxU.setWorldBounds(0,0,FlxG.width,FlxG.height);
 		}
 		
@@ -849,8 +769,7 @@ package org.flixel
 			fade = new Fade();
 			
 			resetInput();
-			if(sounds != null)
-				destroySounds(true);
+			destroySounds(true);
 			scroll = null;
 			_scrollTarget = null;
 			unfollow();
@@ -907,7 +826,7 @@ package org.flixel
 		{
 			keys.update();
 			if(!_game._debuggerUp || !_game._debugger.hasMouse)
-				mouse.update(state.mouseX,state.mouseY);
+				mouse.update(_game._buffer.mouseX,_game._buffer.mouseY);
 		}
 	}
 }

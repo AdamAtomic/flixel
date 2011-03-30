@@ -1,5 +1,6 @@
 package org.flixel.system
 {
+	import org.flixel.FlxBasic;
 	import org.flixel.FlxGroup;
 	import org.flixel.FlxObject;
 	import org.flixel.FlxRect;
@@ -93,9 +94,8 @@ package org.flixel.system
 			_headA = _tailA = new FlxList();
 			_headB = _tailB = new FlxList();
 			
-			/*DEBUG: draw a randomly colored rectangle indicating this quadrant (may induce seizures)
-			var brush:FlxSprite = new FlxSprite().createGraphic(Width,Height,0xffffffff*FlxU.random());
-			FlxState.screen.draw(brush,X+FlxG.scroll.x,Y+FlxG.scroll.y);//*/
+			//DEBUG: draw a randomly colored rectangle indicating this quadrant (may induce seizures)
+			//org.flixel.FlxState.screen.stamp(new org.flixel.FlxSprite().makeGraphic(Width,Height,0xffffffff*Math.random()),X+org.flixel.FlxG.scroll.x,Y+org.flixel.FlxG.scroll.y);
 			
 			//Copy the parent's children (if there are any)
 			if(Parent != null)
@@ -185,45 +185,51 @@ package org.flixel.system
 		 * This function will recursively add all group members, but
 		 * not the groups themselves.
 		 * 
-		 * @param	Object		The <code>FlxObject</code> you want to add.  <code>FlxGroup</code> objects will be recursed and their applicable members added automatically.
-		 * @param	List		A <code>uint</code> flag indicating the list to which you want to add the objects.  Options are <code>A_LIST</code> and <code>B_LIST</code>.
+		 * @param	ObjectOrGroup	FlxObjects are just added, FlxGroups are recursed and their applicable members added accordingly.
+		 * @param	List			A <code>uint</code> flag indicating the list to which you want to add the objects.  Options are <code>A_LIST</code> and <code>B_LIST</code>.
 		 */
-		public function add(Object:FlxObject, List:uint):void
+		public function add(ObjectOrGroup:FlxBasic, List:uint):void
 		{
 			_oa = List;
-			if(Object is FlxGroup)
+			if(ObjectOrGroup is FlxGroup)
 			{
 				var i:uint = 0;
-				var m:FlxObject;
-				var members:Array = (Object as FlxGroup).members;
+				var m:FlxBasic;
+				var members:Array = (ObjectOrGroup as FlxGroup).members;
 				var l:uint = members.length;
 				while(i < l)
 				{
-					m = members[i++] as FlxObject;
+					m = members[i++] as FlxBasic;
 					if((m != null) && m.exists)
 					{
 						if(m is FlxGroup)
 							add(m,List);
-						else if(m.solid)
+						else if(m is FlxObject)
 						{
-							_o = m;
-							_ol = _o.x;
-							_ot = _o.y;
-							_or = _o.x + _o.width;
-							_ob = _o.y + _o.height;
-							addObject();
+							_o = m as FlxObject;
+							if(_o.exists && _o.solid)
+							{
+								_ol = _o.x;
+								_ot = _o.y;
+								_or = _o.x + _o.width;
+								_ob = _o.y + _o.height;
+								addObject();
+							}
 						}
 					}
 				}
 			}
-			if(Object.solid)
+			else
 			{
-				_o = Object;
-				_ol = _o.x;
-				_ot = _o.y;
-				_or = _o.x + _o.width;
-				_ob = _o.y + _o.height;
-				addObject();
+				_o = ObjectOrGroup as FlxObject;
+				if(_o.exists && _o.solid)
+				{
+					_ol = _o.x;
+					_ot = _o.y;
+					_or = _o.x + _o.width;
+					_ob = _o.y + _o.height;
+					addObject();
+				}
 			}
 		}
 		
@@ -430,44 +436,32 @@ package org.flixel.system
 		 */
 		protected function overlapNode(Iterator:FlxList=null):Boolean
 		{
-			//member list setup
-			var c:Boolean = false;
-			var co:FlxObject;
-			var itr:FlxList = Iterator;
-			if(itr == null)
+			//Get a valid iterator if we don't have one yet
+			if(Iterator == null)
 			{
 				if(_oa == A_LIST)
-					itr = _headA;
+					Iterator = _headA;
 				else
-					itr = _headB;
+					Iterator = _headB;
 			}
-			
-			//Make sure this is a valid list to walk first!
-			if(itr.object != null)
+			if(Iterator.object == null)
+				return false;
+
+			//Walk the list and check for overlaps
+			var c:Boolean = false;
+			var co:FlxObject;
+			while(Iterator != null)
 			{
-				//Walk the list and check for overlaps
-				while(itr != null)
-				{
-					co = itr.object;
-					if( (_o === co) || !co.exists || !_o.exists || !co.solid || !_o.solid ||
-						(_o.x + _o.width  < co.x + ROUNDING_ERROR) ||
-						(_o.x + ROUNDING_ERROR > co.x + co.width) ||
-						(_o.y + _o.height < co.y + ROUNDING_ERROR) ||
-						(_o.y + ROUNDING_ERROR > co.y + co.height) )
-					{
-						itr = itr.next;
-						continue;
-					}
-					if(_oc == null)
-					{
-						_o.kill();
-						co.kill();
-						c = true;
-					}
-					else if(_oc(_o,co))
-						c = true;
-					itr = itr.next;
-				}
+				co = Iterator.object;
+				if( (_o === co) || !co.exists || !co.solid ||
+					(_o.x + _o.width  < co.x + ROUNDING_ERROR) ||
+					(_o.x + ROUNDING_ERROR > co.x + co.width) ||
+					(_o.y + _o.height < co.y + ROUNDING_ERROR) ||
+					(_o.y + ROUNDING_ERROR > co.y + co.height) )
+				{ }
+				else if((_oc == null) || _oc(_o,co))
+					c = true;
+				Iterator = Iterator.next;
 			}
 			
 			return c;

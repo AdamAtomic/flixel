@@ -2,30 +2,25 @@ package org.flixel
 {
 	import flash.geom.Point;
 	
+	import org.flixel.FlxBasic;
+	
 	/**
 	 * This is the base class for most of the display objects (<code>FlxSprite</code>, <code>FlxText</code>, etc).
 	 * It includes some basic attributes about game objects, including retro-style flickering,
 	 * basic state information, sizes, scrolling, and basic physics & motion.
 	 */
-	public class FlxObject extends FlxRect
+	public class FlxObject extends FlxBasic
 	{
 		/**
 		 * Helps to eliminate false collisions and/or rendering glitches caused by rounding errors
 		 */
 		static protected const ROUNDING_ERROR:Number = 0.0000001;
 		
-		/**
-		 * Kind of a global on/off switch for any objects descended from <code>FlxObject</code>.
-		 */
-		public var exists:Boolean;
-		/**
-		 * If an object is not alive, the game loop will not automatically call <code>update()</code> on it.
-		 */
-		public var active:Boolean;
-		/**
-		 * If an object is not visible, the game loop will not automatically call <code>render()</code> on it.
-		 */
-		public var visible:Boolean;
+		public var x:Number;
+		public var y:Number;
+		public var width:Number;
+		public var height:Number;
+		
 		/**
 		 * Internal tracker for whether or not the object collides (see <code>solid</code>).
 		 */
@@ -77,12 +72,6 @@ package org.flixel
 		 */
 		public var maxAngular:Number;
 		/**
-		 * WARNING: The origin of the sprite will default to its center.
-		 * If you change this, the visuals and the collisions will likely be
-		 * pretty out-of-sync if you do any rotation.
-		 */
-		public var origin:FlxPoint;
-		/**
 		 * A handy "empty point" object
 		 */
 		static protected const _pZero:FlxPoint = new FlxPoint();
@@ -107,10 +96,6 @@ package org.flixel
 		 * Handy for storing health percentage or armor points or whatever.
 		 */
 		public var health:Number;
-		/**
-		 * Handy for tracking gameplay or animations.
-		 */
-		public var dead:Boolean;
 		/**
 		 * This is just a pre-allocated x-y point container to be used however you like
 		 */
@@ -168,20 +153,20 @@ package org.flixel
 		public var collideBottom:Boolean;
 		
 		/**
-		 * Creates a new <code>FlxObject</code>.
+		 * Instantiates a <code>FlxObject</code>.
 		 * 
 		 * @param	X		The X-coordinate of the point in space.
 		 * @param	Y		The Y-coordinate of the point in space.
 		 * @param	Width	Desired width of the rectangle.
 		 * @param	Height	Desired height of the rectangle.
 		 */
-		public function FlxObject(X:Number=0, Y:Number=0, Width:Number=0, Height:Number=0)
+		public function FlxObject(X:Number=0,Y:Number=0,Width:Number=0,Height:Number=0)
 		{
-			super(X,Y,Width,Height);
+			x = X;
+			y = Y;
+			width = Width;
+			height = Height;
 			
-			exists = true;
-			active = true;
-			visible = true;
 			_solid = true;
 			_fixed = false;
 			moves = true;
@@ -191,8 +176,6 @@ package org.flixel
 			collideTop = true;
 			collideBottom = true;
 			
-			origin = new FlxPoint();
-
 			velocity = new FlxPoint();
 			acceleration = new FlxPoint();
 			drag = new FlxPoint();
@@ -207,8 +190,7 @@ package org.flixel
 			scrollFactor = new FlxPoint(1,1);
 			_flicker = false;
 			_flickerTimer = -1;
-			health = 1;
-			dead = false;
+			
 			_point = new FlxPoint();
 			_rect = new FlxRect();
 			_flashPoint = new Point();
@@ -220,11 +202,12 @@ package org.flixel
 		}
 		
 		/**
-		 * Called by <code>FlxGroup</code>, commonly when game states are changed.
+		 * Override this function to null out variables or
+		 * manually call destroy() on class members if necessary.
+		 * Don't forget to call super.destroy()!
 		 */
-		public function destroy():void
+		override public function destroy():void
 		{
-			origin = null;
 			velocity = null;
 			acceleration = null;
 			drag = null;
@@ -237,6 +220,23 @@ package org.flixel
 			colHullY = null;
 			colVector = null;
 			colOffsets = null;
+		}
+		
+		/**
+		 * Called by the main game loop, handles motion/physics and game logic
+		 */
+		override public function update():void
+		{
+			updateMotion();
+			updateFlickering();
+		}
+		
+		/**
+		 * Override this function to draw graphics (see <code>FlxSprite</code>).
+		 */
+		override public function draw():void
+		{
+			//Objects don't have any visual logic/display of their own.
 		}
 		
 		/**
@@ -358,22 +358,7 @@ package org.flixel
 			}
 		}
 		
-		/**
-		 * Called by the main game loop, handles motion/physics and game logic
-		 */
-		public function update():void
-		{
-			updateMotion();
-			updateFlickering();
-		}
-		
-		/**
-		 * Override this function to draw graphics (see <code>FlxSprite</code>).
-		 */
-		public function draw():void
-		{
-			//Objects don't have any visual logic/display of their own.
-		}
+
 		
 		/**
 		 * Checks to see if a point in 2D space overlaps this <code>FlxObject</code> object.
@@ -481,27 +466,6 @@ package org.flixel
 		}
 		
 		/**
-		 * Call this function to "damage" (or give health bonus) to this sprite.
-		 * 
-		 * @param	Damage		How much health to take away (use a negative number to give a health bonus).
-		 */
-		virtual public function hurt(Damage:Number):void
-		{
-			health = health - Damage;
-			if(health <= 0)
-				kill();
-		}
-		
-		/**
-		 * Call this function to "kill" a sprite so that it no longer 'exists'.
-		 */
-		public function kill():void
-		{
-			exists = false;
-			dead = true;
-		}
-		
-		/**
 		 * Tells this object to flicker, retro-style.
 		 * 
 		 * @param	Duration	How many seconds to flicker for.
@@ -543,6 +507,14 @@ package org.flixel
 			return true;
 		}
 		
+		public function getMidpoint(Point:FlxPoint=null):FlxPoint
+		{
+			if(Point == null) Point = new FlxPoint();
+			Point.x = x + width/2;
+			Point.y = y + height/2;
+			return Point;
+		}
+		
 		/**
 		 * Handy function for reviving game objects.
 		 * Resets their existence flags and position, including LAST position.
@@ -552,10 +524,11 @@ package org.flixel
 		 */
 		public function reset(X:Number,Y:Number):void
 		{
+			revive();
 			x = X;
 			y = Y;
-			exists = true;
-			dead = false;
+			velocity.x = velocity.y = 0;
+			refreshHulls();
 		}
 		
 		/**

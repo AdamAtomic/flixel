@@ -1,4 +1,4 @@
-package org.flixel.system.sfx
+package org.flixel.system.fx
 {
 	import org.flixel.FlxG;
 	

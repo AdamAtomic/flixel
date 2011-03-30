@@ -372,20 +372,16 @@ package org.flixel
 			_buffer.x = 0;
 			_buffer.y = 0;
 			
-			//Swap the new state for the old one and dispose of it
-			addChild(_requestedState);
+			//Destroy the old state (if there is an old state)
 			if(_state != null)
 			{
-				_state.destroy(); //important that it is destroyed while still in the display list
+				_state.destroy();
 				if(FlxU.getClassName(_state) != FlxU.getClassName(_requestedState))
-					FlxG.clearBitmapCache();	//dumps any allocated graphics if player is loading a different state
-				swapChildren(_requestedState,_state);
-				removeChild(_state);
+					FlxG.clearBitmapCache();
 			}
-			_state = _requestedState;
-			_state.scaleX = _state.scaleY = _zoom; //important for proper mouse tracking
 			
-			//Finally, create the new state
+			//Finally assign and create the new state
+			_state = _requestedState;
 			_state.create();
 		}
 			
@@ -574,7 +570,7 @@ package org.flixel
 			
 			//Set up the FlxState.screen static reference (sometimes easier/better than using FlxG.buffer)
 			var s:FlxSprite = new FlxSprite();
-			s.createGraphic(FlxG.width,FlxG.height,0,true);
+			s.makeGraphic(FlxG.width,FlxG.height,0,true);
 			s.origin.x = s.origin.y = 0;
 			s.antialiasing = true;
 			s.exists = false;

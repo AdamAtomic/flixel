@@ -9,13 +9,8 @@ package org.flixel
 	 * It acts as a kind of container for all your game objects.
 	 * You can also access the game's background color
 	 * and screen buffer through this object.
-	 * FlxState is kind of a funny class from the technical side,
-	 * it is just a regular Flash Sprite display object,
-	 * with one member variable: a flixel <code>FlxGroup</code>.
-	 * This means you can load it up with regular Flash stuff
-	 * or with flixel elements, whatever works!
 	 */
-	public class FlxState extends Sprite
+	public class FlxState extends FlxGroup
 	{
 		/**
 		 * This static variable holds the screen buffer,
@@ -28,39 +23,15 @@ package org.flixel
 		 * Change it at ANY time using <code>FlxState.bgColor</code>.
 		 */
 		static public var bgColor:uint;
-		/**
-		 * Internal group used to organize and display objects you add to this state.
-		 */
-		public var defaultGroup:FlxGroup;
 		
 		/**
-		 * Creates a new <code>FlxState</code> object,
-		 * instantiating <code>screen</code> if necessary.
-		 */
-		public function FlxState()
-		{
-			super();
-			defaultGroup = new FlxGroup();
-		}
-		
-		/**
-		 * Override this function to set up your game state.
-		 * This is where you create your groups and game objects and all that good stuff.
+		 * This function is called after the game engine successfully switches states.
+		 * Override this function to initialize or set up your game state.
+		 * Do NOT override the constructor, unless you want some crazy unpredictable things to happen!
 		 */
 		public function create():void
 		{
-			//nothing to create initially
-		}
-		
-		/**
-		 * Adds a new <code>FlxObject</code> subclass (FlxSprite, FlxBlock, etc) to the game loop.
-		 * FlxState is adding this object to its built-in FlxGroup to automate updating and rendering.
-		 * 
-		 * @param	Object	The object you want to add to the game loop.
-		 */
-		public function add(Object:FlxObject):FlxObject
-		{
-			return defaultGroup.add(Object);
+			
 		}
 		
 		/**
@@ -72,33 +43,6 @@ package org.flixel
 		{
 			screen.fill(bgColor);	//Default behavior - just overwrite buffer with background color
 		}
-		
-		/**
-		 * Automatically goes through and calls update on everything you added to the game loop,
-		 * override this function to handle custom input and perform collisions/
-		 */
-		public function update():void
-		{
-			defaultGroup.update();
-		}
-		
-		/**
-		 * This function collides <code>defaultGroup</code> against <code>defaultGroup</code>
-		 * (basically everything you added to this state).
-		 */
-		public function collide():void
-		{
-			FlxU.collide(defaultGroup,defaultGroup);
-		}
-		
-		/**
-		 * Automatically goes through and calls render on everything you added to the game loop,
-		 * override this loop to manually control the rendering process.
-		 */
-		public function draw():void
-		{
-			defaultGroup.draw();
-		}
 
 		/**
 		 * Override this function to do special pre-processing FX like light bloom.
@@ -108,15 +52,6 @@ package org.flixel
 		public function postProcess():void
 		{
 			//no fx by default
-		}
-		
-		/**
-		 * Override this function to handle any deleting or "shutdown" type operations you
-		 * might need (such as removing traditional Flash children like Sprite objects).
-		 */
-		public function destroy():void
-		{
-			defaultGroup.destroy();
 		}
 	}
 }

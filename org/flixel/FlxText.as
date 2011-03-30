@@ -29,7 +29,7 @@ package org.flixel
 		public function FlxText(X:Number, Y:Number, Width:uint, Text:String=null, EmbeddedFont:Boolean=true)
 		{
 			super(X,Y);
-			createGraphic(Width,1,0);
+			makeGraphic(Width,1,0);
 			
 			if(Text == null)
 				Text = "";

@@ -25,13 +25,5 @@ package org.flixel
 			x = X;
 			y = Y;
 		}
-		
-		/**
-		 * Convert object to readable string name.  Useful for debugging, save games, etc.
-		 */
-		public function toString():String
-		{
-			return FlxU.getClassName(this,true);
-		}
 	}
 }

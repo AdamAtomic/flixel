@@ -56,7 +56,7 @@ package org.flixel
 		 * @param	Callback	The function to call whenever the button is clicked.
 		 * @param	Label		The text that you want to appear on the button.
 		 */
-		public function FlxButton(X:int,Y:int,Callback:Function,Label:String=null,Color:uint=0xffffffff)
+		public function FlxButton(X:int,Y:int,Callback:Function,Label:String=null)
 		{
 			super(X,Y);
 			_onClick = Callback;
@@ -67,7 +67,6 @@ package org.flixel
 				labelOffset = new FlxPoint(-1,3);
 			}
 			loadGraphic(ImgDefault,true,false,80,20);
-			color = Color;
 
 			_status = NORMAL;
 			pauseProof = false;
@@ -164,7 +163,6 @@ package org.flixel
 		override public function draw():void
 		{
 			super.draw();
-			trace(y + ", " + label.y);
 			label.draw();
 		}
 		

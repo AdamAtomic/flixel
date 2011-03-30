@@ -488,22 +488,22 @@ package org.flixel
 		 * together using a <code>FlxGroup</code> (even bundling groups together!)
 		 * NOTE: does NOT take objects' scrollfactor into account.
 		 * 
-		 * @param	Object1		The first object or group you want to check.
-		 * @param	Object2		The second object or group you want to check.  If it is the same as the first, flixel knows to just do a comparison within that group.
-		 * @param	Callback	A function with two <code>FlxObject</code> parameters - e.g. <code>myOverlapFunction(Object1:FlxObject,Object2:FlxObject);</code>  If no function is provided, <code>FlxQuadTree</code> will call <code>kill()</code> on both objects.
+		 * @param	ObjectOrGroup1	The first object or group you want to check.
+		 * @param	ObjectOrGroup2	The second object or group you want to check.  If it is the same as the first, flixel knows to just do a comparison within that group.
+		 * @param	Callback		A function with two <code>FlxObject</code> parameters - e.g. <code>myOverlapFunction(Object1:FlxObject,Object2:FlxObject);</code>  If no function is provided, <code>FlxQuadTree</code> will call <code>kill()</code> on both objects.
 		 */
-		static public function overlap(Object1:FlxObject,Object2:FlxObject,Callback:Function=null):Boolean
+		static public function overlap(ObjectOrGroup1:FlxBasic,ObjectOrGroup2:FlxBasic,Callback:Function=null):Boolean
 		{
-			if( (Object1 == null) || !Object1.exists ||
-				(Object2 == null) || !Object2.exists )
+			if( (ObjectOrGroup1 == null) || !ObjectOrGroup1.exists ||
+				(ObjectOrGroup2 == null) || !ObjectOrGroup2.exists )
 				return false;
 			if(quadTree != null)
 				quadTree.destroy();
 			quadTree = new FlxQuadTree(FlxQuadTree.bounds.x,FlxQuadTree.bounds.y,FlxQuadTree.bounds.width,FlxQuadTree.bounds.height);
-			quadTree.add(Object1,FlxQuadTree.A_LIST);
-			if(Object1 === Object2)
+			quadTree.add(ObjectOrGroup1,FlxQuadTree.A_LIST);
+			if(ObjectOrGroup1 === ObjectOrGroup2)
 				return quadTree.overlap(false,Callback);
-			quadTree.add(Object2,FlxQuadTree.B_LIST);
+			quadTree.add(ObjectOrGroup2,FlxQuadTree.B_LIST);
 			return quadTree.overlap(true,Callback);
 		}
 		
@@ -515,24 +515,24 @@ package org.flixel
 		 * together using a <code>FlxGroup</code> (even bundling groups together!)
 		 * NOTE: does NOT take objects' scrollfactor into account.
 		 * 
-		 * @param	Object1		The first object or group you want to check.
-		 * @param	Object2		The second object or group you want to check.  If it is the same as the first, flixel knows to just do a comparison within that group.
+		 * @param	ObjectOrGroup1		The first object or group you want to check.
+		 * @param	ObjectOrGroup2		The second object or group you want to check.  If it is the same as the first, flixel knows to just do a comparison within that group.
 		 */
-		static public function collide(Object1:FlxObject,Object2:FlxObject):Boolean
+		static public function collide(ObjectOrGroup1:FlxBasic,ObjectOrGroup2:FlxBasic):Boolean
 		{
-			if( (Object1 == null) || !Object1.exists ||
-				(Object2 == null) || !Object2.exists )
+			if( (ObjectOrGroup1 == null) || !ObjectOrGroup1.exists ||
+				(ObjectOrGroup2 == null) || !ObjectOrGroup2.exists )
 				return false;
 			if(quadTree != null)
 				quadTree.destroy();
 			quadTree = new FlxQuadTree(FlxQuadTree.bounds.x,FlxQuadTree.bounds.y,FlxQuadTree.bounds.width,FlxQuadTree.bounds.height);
-			quadTree.add(Object1,FlxQuadTree.A_LIST);
-			var match:Boolean = Object1 === Object2;
+			quadTree.add(ObjectOrGroup1,FlxQuadTree.A_LIST);
+			var match:Boolean = ObjectOrGroup1 === ObjectOrGroup2;
 			if(!match)
-				quadTree.add(Object2,FlxQuadTree.B_LIST);
+				quadTree.add(ObjectOrGroup2,FlxQuadTree.B_LIST);
 			var cx:Boolean = quadTree.overlap(!match,solveXCollision);
 			var cy:Boolean = quadTree.overlap(!match,solveYCollision);
-			return cx || cy;			
+			return cx || cy;
 		}
 		
 		/**

@@ -3,36 +3,48 @@ package org.flixel
 	
 	public class FlxParticle extends FlxSprite
 	{
-		protected var _bounce:Number;
+		public var bounce:Number;
+		public var lifespan:Number;
 		
-		public function FlxParticle(Bounce:Number)
+		public function FlxParticle(Bounce:Number=0,Lifespan:Number=0)
 		{
 			super();
-			_bounce = Bounce;
+			bounce = Bounce;
+			lifespan = Lifespan;
+		}
+		
+		override public function update():void
+		{
+			super.update();
+			if(lifespan <= 0)
+				return;
+			lifespan -= FlxG.elapsed;
+			if(lifespan <= 0)
+				kill();
 		}
 		
 		override public function hitSide(Contact:FlxObject,Velocity:Number):void
 		{
-			velocity.x = -velocity.x * _bounce;
+			velocity.x = -velocity.x * bounce;
 			if(angularVelocity != 0)
-				angularVelocity = -angularVelocity * _bounce;
+				angularVelocity = -angularVelocity * bounce;
 		}
 		
 		override public function hitBottom(Contact:FlxObject,Velocity:Number):void
 		{
 			onFloor = true;
-			if(((velocity.y > 0)?velocity.y:-velocity.y) > _bounce*100)
+			if(((velocity.y > 0)?velocity.y:-velocity.y) > bounce*100)
 			{
-				velocity.y = -velocity.y * _bounce;
+				velocity.y = -velocity.y * bounce;
 				if(angularVelocity != 0)
-					angularVelocity *= -_bounce;
+					angularVelocity *= -bounce;
 			}
 			else
 			{
 				angularVelocity = 0;
 				super.hitBottom(Contact,Velocity);
 			}
-			velocity.x *= _bounce;
+			velocity.x *= bounce;
 		}
 	}
 }

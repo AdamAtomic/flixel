@@ -3,8 +3,16 @@ package org.flixel
 	/**
 	 * Stores a rectangle.
 	 */
-	public class FlxRect extends FlxPoint
+	public class FlxRect
 	{
+		/**
+		 * @default 0
+		 */
+		public var x:Number;
+		/**
+		 * @default 0
+		 */
+		public var y:Number;
 		/**
 		 * @default 0
 		 */
@@ -24,7 +32,8 @@ package org.flixel
 		 */
 		public function FlxRect(X:Number=0, Y:Number=0, Width:Number=0, Height:Number=0)
 		{
-			super(X,Y);
+			x = X;
+			y = Y;
 			width = Width;
 			height = Height;
 		}

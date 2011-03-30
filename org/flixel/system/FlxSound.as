@@ -1,4 +1,4 @@
-package org.flixel
+package org.flixel.system
 {
 	import flash.events.Event;
 	import flash.media.Sound;
@@ -6,21 +6,23 @@ package org.flixel
 	import flash.media.SoundTransform;
 	import flash.net.URLRequest;
 	
-	import org.flixel.system.FlxMonitor;
+	import org.flixel.FlxBasic;
+	import org.flixel.FlxG;
+	import org.flixel.FlxObject;
+	import org.flixel.FlxPoint;
+	import org.flixel.FlxU;
 	
 	/**
 	 * This is the universal flixel sound object, used for streaming, music, and sound effects.
 	 */
-	public class FlxSound extends FlxObject
+	public class FlxSound extends FlxBasic
 	{
+		public var x:Number;
+		public var y:Number;
 		/**
 		 * Whether or not this sound should be automatically destroyed when you switch states.
 		 */
 		public var survive:Boolean;
-		/**
-		 * Whether the sound is currently playing or not.
-		 */
-		public var playing:Boolean;
 		/**
 		 * The ID3 song name.  Defaults to null.  Currently only works for streamed sounds.
 		 */
@@ -50,7 +52,7 @@ package org.flixel
 		protected var _volume:Number;
 		protected var _volumeAdjust:Number;
 		protected var _looped:Boolean;
-		protected var _core:FlxObject;
+		protected var _target:FlxObject;
 		protected var _radius:Number;
 		protected var _pan:Boolean;
 		protected var _fadeOutTimer:Number;
@@ -69,15 +71,17 @@ package org.flixel
 		public function FlxSound()
 		{
 			super();
-			init();
-			fixed = true; //no movement usually
+			createSound();
 		}
 		
 		/**
 		 * An internal function for clearing all the variables used by sounds.
 		 */
-		protected function init():void
+		protected function createSound():void
 		{
+			destroy();
+			x = 0;
+			y = 0;
 			if(_point2 == null)
 				_point2 = new FlxPoint();
 			if(_transform == null)
@@ -88,7 +92,7 @@ package org.flixel
 			_volume = 1.0;
 			_volumeAdjust = 1.0;
 			_looped = false;
-			_core = null;
+			_target = null;
 			_radius = 0;
 			_pan = false;
 			_fadeOutTimer = 0;
@@ -96,10 +100,9 @@ package org.flixel
 			_pauseOnFadeOut = false;
 			_fadeInTimer = 0;
 			_fadeInTotal = 0;
+			exists = false;
 			active = false;
 			visible = false;
-			solid = false;
-			playing = false;
 			name = null;
 			artist = null;
 			amplitude = 0;
@@ -108,6 +111,95 @@ package org.flixel
 			_amplitudeCallback = null;
 			_amplitudeMonitor = null;
 			_amplitudeThreshold = 0;
+		}
+		
+		/**
+		 * The basic class destructor, stops the music and removes any leftover events.
+		 */
+		override public function destroy():void
+		{
+			stop();
+			
+			_point2 = null;
+			_transform = null;
+			_sound = null;
+			_target = null;
+			name = null;
+			artist = null;
+			_amplitudeCallback = null;
+			_amplitudeMonitor = null;
+			
+			super.destroy();
+		}
+		
+		/**
+		 * The basic game loop update function.  Just calls <code>updateSound()</code>.
+		 */
+		override public function update():void
+		{
+			if(_position != 0)
+				return;
+			
+			var radial:Number = 1.0;
+			var fade:Number = 1.0;
+			
+			//Distance-based volume control
+			if(_target != null)
+			{
+				radial = FlxU.getDistance(new FlxPoint(_target.x,_target.y),new FlxPoint(x,y))/_radius;
+				if(radial < 0) radial = 0;
+				if(radial > 1) radial = 1;
+				
+				if(_pan)
+				{
+					var d:Number = (_target.x-x)/_radius;
+					if(d < -1) d = -1;
+					else if(d > 1) d = 1;
+					_transform.pan = d;
+				}
+			}
+			
+			//Cross-fading volume control
+			if(_fadeOutTimer > 0)
+			{
+				_fadeOutTimer -= FlxG.elapsed;
+				if(_fadeOutTimer <= 0)
+				{
+					if(_pauseOnFadeOut)
+						pause();
+					else
+						stop();
+				}
+				fade = _fadeOutTimer/_fadeOutTotal;
+				if(fade < 0) fade = 0;
+			}
+			else if(_fadeInTimer > 0)
+			{
+				_fadeInTimer -= FlxG.elapsed;
+				fade = _fadeInTimer/_fadeInTotal;
+				if(fade < 0) fade = 0;
+				fade = 1 - fade;
+			}
+			
+			_volumeAdjust = radial*fade;
+			updateTransform();
+			
+			if((_transform.volume > 0) && (_channel != null))
+			{
+				amplitudeLeft = _channel.leftPeak/_transform.volume;
+				amplitudeRight = _channel.rightPeak/_transform.volume;
+				amplitude = (amplitudeLeft+amplitudeRight)*0.5;
+				if(_amplitudeCallback != null)
+				{
+					var last:Number = _amplitudeMonitor.last();
+					_amplitudeMonitor.add(amplitude);
+					if(_amplitudeMonitor.full && (_amplitudeMonitor.trend() > _amplitudeThreshold) && (amplitude - last > _amplitudeThreshold*0.65))
+					{
+						_amplitudeMonitor.clear();
+						_amplitudeCallback();
+					}
+				}
+			}
 		}
 		
 		/**
@@ -121,12 +213,12 @@ package org.flixel
 		public function loadEmbedded(EmbeddedSound:Class, Looped:Boolean=false):FlxSound
 		{
 			stop();
-			init();
+			createSound();
 			_sound = new EmbeddedSound();
 			//NOTE: can't pull ID3 info from embedded sound currently
 			_looped = Looped;
 			updateTransform();
-			active = true;
+			exists = true;
 			return this;
 		}
 		
@@ -141,13 +233,13 @@ package org.flixel
 		public function loadStream(SoundURL:String, Looped:Boolean=false):FlxSound
 		{
 			stop();
-			init();
+			createSound();
 			_sound = new Sound();
 			_sound.addEventListener(Event.ID3, gotID3);
 			_sound.load(new URLRequest(SoundURL));
 			_looped = Looped;
 			updateTransform();
-			active = true;
+			exists = true;
 			return this;
 		}
 		
@@ -157,16 +249,17 @@ package org.flixel
 		 * 
 		 * @param	X		The X position of the sound.
 		 * @param	Y		The Y position of the sound.
-		 * @param	Core	The object you want to track.
+		 * @param	Object	The object you want to track.
 		 * @param	Radius	The maximum distance this sound can travel.
+		 * @param	Pan		Whether the sound should pan in addition to the volume changes (default: true).
 		 * 
 		 * @return	This FlxSound instance (nice for chaining stuff together, if you're into that).
 		 */
-		public function proximity(X:Number,Y:Number,Core:FlxObject,Radius:Number,Pan:Boolean=true):FlxSound
+		public function proximity(X:Number,Y:Number,Object:FlxObject,Radius:Number,Pan:Boolean=true):FlxSound
 		{
 			x = X;
 			y = Y;
-			_core = Core;
+			_target = Object;
 			_radius = Radius;
 			_pan = Pan;
 			return this;
@@ -186,13 +279,13 @@ package org.flixel
 					if(_channel == null)
 						_channel = _sound.play(0,9999,_transform);
 					if(_channel == null)
-						active = false;
+						exists = false;
 				}
 				else
 				{
 					_channel = _sound.play(_position,0,_transform);
 					if(_channel == null)
-						active = false;
+						exists = false;
 					else
 						_channel.addEventListener(Event.SOUND_COMPLETE, looped);
 				}
@@ -205,7 +298,7 @@ package org.flixel
 					{
 						_channel = _sound.play(0,0,_transform);
 						if(_channel == null)
-							active = false;
+							exists = false;
 						else
 							_channel.addEventListener(Event.SOUND_COMPLETE, stopped);
 					}
@@ -214,10 +307,10 @@ package org.flixel
 				{
 					_channel = _sound.play(_position,0,_transform);
 					if(_channel == null)
-						active = false;
+						exists = false;
 				}
 			}
-			playing = (_channel != null);
+			active = (_channel != null);
 			_position = 0;
 		}
 		
@@ -239,7 +332,7 @@ package org.flixel
 					_position -= _sound.length;
 			}
 			_channel = null;
-			playing = false;
+			active = false;
 		}
 		
 		/**
@@ -312,116 +405,11 @@ package org.flixel
 		}
 		
 		/**
-		 * Internal function that performs the actual logical updates to the sound object.
-		 * Doesn't do much except optional proximity and fade calculations.
+		 * Call after adjusting the volume to update the sound channel's settings.
 		 */
-		protected function updateSound():void
+		public function updateTransform():void
 		{
-			if(_position != 0)
-				return;
-			
-			var radial:Number = 1.0;
-			var fade:Number = 1.0;
-			
-			//Distance-based volume control
-			if(_core != null)
-			{
-				var _point:FlxPoint = new FlxPoint();
-				var _point2:FlxPoint = new FlxPoint();
-				_core.getScreenXY(_point);
-				getScreenXY(_point2);
-				var dx:Number = _point.x - _point2.x;
-				var dy:Number = _point.y - _point2.y;
-				radial = (_radius - Math.sqrt(dx*dx + dy*dy))/_radius;
-				if(radial < 0) radial = 0;
-				if(radial > 1) radial = 1;
-				
-				if(_pan)
-				{
-					var d:Number = -dx/_radius;
-					if(d < -1) d = -1;
-					else if(d > 1) d = 1;
-					_transform.pan = d;
-				}
-			}
-			
-			//Cross-fading volume control
-			if(_fadeOutTimer > 0)
-			{
-				_fadeOutTimer -= FlxG.elapsed;
-				if(_fadeOutTimer <= 0)
-				{
-					if(_pauseOnFadeOut)
-						pause();
-					else
-						stop();
-				}
-				fade = _fadeOutTimer/_fadeOutTotal;
-				if(fade < 0) fade = 0;
-			}
-			else if(_fadeInTimer > 0)
-			{
-				_fadeInTimer -= FlxG.elapsed;
-				fade = _fadeInTimer/_fadeInTotal;
-				if(fade < 0) fade = 0;
-				fade = 1 - fade;
-			}
-			
-			_volumeAdjust = radial*fade;
-			updateTransform();
-			
-			if((_transform.volume > 0) && (_channel != null))
-			{
-				amplitudeLeft = _channel.leftPeak/_transform.volume;
-				amplitudeRight = _channel.rightPeak/_transform.volume;
-				amplitude = (amplitudeLeft+amplitudeRight)*0.5;
-				if(_amplitudeCallback != null)
-				{
-					var last:Number = _amplitudeMonitor.last();
-					_amplitudeMonitor.add(amplitude);
-					if(_amplitudeMonitor.full && (_amplitudeMonitor.trend() > _amplitudeThreshold) && (amplitude - last > _amplitudeThreshold*0.65))
-					{
-						_amplitudeMonitor.clear();
-						_amplitudeCallback();
-					}
-				}
-			}
-		}
-
-		/**
-		 * The basic game loop update function.  Just calls <code>updateSound()</code>.
-		 */
-		override public function update():void
-		{
-			super.update();
-			updateSound();			
-		}
-		
-		/**
-		 * The basic class destructor, stops the music and removes any leftover events.
-		 */
-		override public function destroy():void
-		{
-			stop();
-
-			_point2 = null;
-			_transform = null;
-			_sound = null;
-			_core = null;
-			name = null;
-			artist = null;
-			_amplitudeCallback = null;
-			_amplitudeMonitor = null;
-			
-			super.destroy();
-		}
-		
-		/**
-		 * An internal function used to help organize and change the volume of the sound.
-		 */
-		internal function updateTransform():void
-		{
-			_transform.volume = FlxG.getMuteValue()*FlxG.volume*_volume*_volumeAdjust;
+			_transform.volume = (FlxG.mute?0:1)*FlxG.volume*_volume*_volumeAdjust;
 			if(_channel != null)
 				_channel.soundTransform = _transform;
 		}
@@ -452,8 +440,8 @@ package org.flixel
 	        else
 	        	_channel.removeEventListener(Event.SOUND_COMPLETE,looped);
 	        _channel = null;
+			exists = false;
 	        active = false;
-			playing = false;
 		}
 		
 		/**

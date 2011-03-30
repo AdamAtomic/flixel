@@ -39,6 +39,12 @@ package org.flixel
 		static public const DOWN:uint = 3;
 		 
 		/**
+		 * WARNING: The origin of the sprite will default to its center.
+		 * If you change this, the visuals and the collisions will likely be
+		 * pretty out-of-sync if you do any rotation.
+		 */
+		public var origin:FlxPoint;
+		/**
 		* If you changed the size of your sprite object to shrink the bounding box,
 		* you might need to offset the new bounding box from the top-left corner of the sprite.
 		*/
@@ -117,14 +123,15 @@ package org.flixel
 		 */
 		public function FlxSprite(X:Number=0,Y:Number=0,SimpleGraphic:Class=null)
 		{
-			super();
-			x = X;
-			y = Y;
+			super(X,Y);
+			
+			health = 1;
 
 			_flashRect = new Rectangle();
 			_flashRect2 = new Rectangle();
 			_flashPointZero = new Point();
 			offset = new FlxPoint();
+			origin = new FlxPoint();
 			
 			scale = new FlxPoint(1,1);
 			_alpha = 1;
@@ -150,9 +157,39 @@ package org.flixel
 			}
 			
 			if(SimpleGraphic == null)
-				createGraphic(8,8);
+				makeGraphic(8,8);
 			else
 				loadGraphic(SimpleGraphic);
+		}
+		
+		override public function destroy():void
+		{
+			if(_animations != null)
+			{
+				var a:FlxAnim;
+				var i:uint = 0;
+				var l:uint = _animations.length;
+				while(i < l)
+				{
+					a = _animations[i++];
+					if(a != null)
+						a.destroy();
+				}
+				_animations = null;
+			}
+			
+			_flashRect = null;
+			_flashRect2 = null;
+			_flashPointZero = null;
+			offset = null;
+			origin = null;
+			scale = null;
+			_curAnim = null;
+			_mtx = null;
+			_callback = null;
+			_gfxSprite == null;
+			_framePixels = null;
+			_bbb = null;
 		}
 		
 		/**
@@ -292,7 +329,7 @@ package org.flixel
 		 * 
 		 * @return	This FlxSprite instance (nice for chaining stuff together, if you're into that).
 		 */
-		public function createGraphic(Width:uint,Height:uint,Color:uint=0xffffffff,Unique:Boolean=false,Key:String=null):FlxSprite
+		public function makeGraphic(Width:uint,Height:uint,Color:uint=0xffffffff,Unique:Boolean=false,Key:String=null):FlxSprite
 		{
 			_bakedRotation = 0;
 			_pixels = FlxG.createBitmap(Width,Height,Color,Unique,Key);
@@ -329,32 +366,6 @@ package org.flixel
 				drawBounds();
 			_caf = 0;
 			refreshHulls();
-		}
-		
-		override public function destroy():void
-		{
-			var a:FlxAnim;
-			var i:uint = 0;
-			var l:uint = _animations.length;
-			while(i < l)
-			{
-				a = _animations[i++];
-				if(a != null)
-					a.destroy();
-			}
-			_animations = null;
-			
-			_flashRect = null;
-			_flashRect2 = null;
-			_flashPointZero = null;
-			offset = null;
-			scale = null;
-			_curAnim = null;
-			_mtx = null;
-			_callback = null;
-			_gfxSprite == null;
-			_framePixels = null;
-			_bbb = null;
 		}
 		
 		/**
@@ -592,7 +603,7 @@ package org.flixel
 		/**
 		 * Internal function that performs the actual sprite rendering, called by render().
 		 */
-		protected function renderSprite():void
+		protected function drawSprite():void
 		{
 			if(FlxG.showBounds != _boundsVisible)
 				calcFrame();
@@ -623,7 +634,7 @@ package org.flixel
 		 */
 		override public function draw():void
 		{
-			renderSprite();
+			drawSprite();
 		}
 		
 		/**
@@ -741,6 +752,19 @@ package org.flixel
 		public function corner():void
 		{
 			origin.x = origin.y = 0;
+		}
+		
+		/**
+		 * Reduces the "health" variable of this sprite by the amount specified in Damage.
+		 * Calls kill() if health drops to or below zero.
+		 * 
+		 * @param	Damage		How much health to take away (use a negative number to give a health bonus).
+		 */
+		public function hurt(Damage:Number):void
+		{
+			health = health - Damage;
+			if(health <= 0)
+				kill();
 		}
 		
 		/**
