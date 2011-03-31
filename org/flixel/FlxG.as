@@ -187,11 +187,12 @@ package org.flixel
 		 * 
 		 * @param	AnyObject		A reference to any object in your game, e.g. Player or Robot or this.
 		 * @param	VariableName	The name of the variable you want to watch, in quotes, as a string: e.g. "speed" or "health".
+		 * @param	DisplayName		Optional, display your own string instead of the class name + variable name: e.g. "enemy count".
 		 */
-		static public function watch(AnyObject:Object,VariableName:String):void
+		static public function watch(AnyObject:Object,VariableName:String,DisplayName:String=null):void
 		{
 			if((_game != null) && (_game._debugger != null))
-				_game._debugger.watch.add(AnyObject,VariableName);
+				_game._debugger.watch.add(AnyObject,VariableName,DisplayName);
 		}
 		
 		/**

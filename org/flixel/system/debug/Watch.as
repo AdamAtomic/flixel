@@ -50,20 +50,27 @@ package org.flixel.system.debug
 			super.destroy();
 		}
 		
-		public function add(AnyObject:Object,VariableName:String):void
+		public function add(AnyObject:Object,VariableName:String,DisplayName:String):void
 		{
-			_watching.push({object:AnyObject,field:VariableName});
+			//Don't add repeats
+			var o:Object;
+			var i:int = 0;
+			var l:uint = _watching.length;
+			while(i < l)
+			{
+				o = _watching[i++];
+				if((o.object == AnyObject) && (o.field == VariableName))
+					return;
+			}
+			//Good, no repeats, add away!
+			_watching.push({object:AnyObject,field:VariableName,custom:DisplayName});
 			updateNames();
 		}
 		
 		public function remove(AnyObject:Object,VariableName:String=null):void
 		{
-			var l:uint = _watching.length;
-			if(l <= 0)
-				return;
-			
 			var o:Object;
-			var i:int = l-1;
+			var i:int = _watching.length-1;
 			while(i >= 0)
 			{
 				o = _watching[i];
@@ -74,9 +81,6 @@ package org.flixel.system.debug
 				}
 				i--;
 			}
-			
-			if(_watching.length <= 0)
-				removeAll();
 		}
 		
 		public function removeAll():void
@@ -125,9 +129,14 @@ package org.flixel.system.debug
 			while(i < l)
 			{
 				o = _watching[i++];
-				if(_width > 300)
-					str += FlxU.getClassName(o.object,(_width < 500)) + ".";
-				str += o.field + "\n";
+				if(o.custom != null)
+					str += o.custom + "\n";
+				else
+				{
+					if(_width > 300)
+						str += FlxU.getClassName(o.object,(_width < 500)) + ".";
+					str += o.field + "\n";
+				}
 			}
 			_names.text = str;
 		}

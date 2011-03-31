@@ -785,7 +785,9 @@ package org.flixel
 		{
 			getScreenXY(_point);
 			if(((angle == 0) || (_bakedRotation > 0)) && (scale.x == 1) && (scale.y == 1))
+			{
 				return ((_point.x + frameWidth > 0) && (_point.x < FlxG.width) && (_point.y + frameHeight > 0) && (_point.y < FlxG.height));
+			}
 			else
 			{
 				var hw:Number = width/2;

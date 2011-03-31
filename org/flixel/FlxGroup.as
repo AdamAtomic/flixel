@@ -193,7 +193,7 @@ package org.flixel
 		 * Recycling is designed to help you reuse game objects without always re-allocating or "newing" them.
 		 * 
 		 * If you specified a maximum size for this group (like in FlxEmitter),
-		 * then recycle will employ what we're calling "strict" recycling.
+		 * then recycle will employ what we're calling "rotating" recycling.
 		 * Recycle() will first check to see if the group is at capacity yet.
 		 * If group is not yet at capacity, recycle() returns a new object.
 		 * If the group IS at capacity, then recycle() just returns the next object in line.
@@ -233,7 +233,7 @@ package org.flixel
 			}
 			else
 			{
-				b = getFirstAvail();
+				b = getFirstAvail(ObjectClass);
 				if(b != null)
 					return b;
 				if(ObjectClass == null)
@@ -315,16 +315,18 @@ package org.flixel
 		 * Call this function to retrieve the first object with exists == false in the group.
 		 * This is handy for recycling in general, e.g. respawning enemies.
 		 * 
+		 * @param	ObjectClass		An optional parameter that lets you narrow the results to instances of this particular class.
+		 * 
 		 * @return	A <code>FlxBasic</code> currently flagged as not existing.
 		 */
-		public function getFirstAvail():FlxBasic
+		public function getFirstAvail(ObjectClass:Class=null):FlxBasic
 		{
 			var b:FlxBasic;
 			var i:uint = 0;
 			while(i < length)
 			{
 				b = members[i++] as FlxBasic;
-				if((b != null) && !b.exists)
+				if((b != null) && !b.exists && ((ObjectClass == null) || (b is ObjectClass)))
 					return b;
 			}
 			return null;

@@ -502,8 +502,20 @@ package org.flixel
 		}
 		
 		/**
-		 * Returns the appropriate color for the bounding box depending on object state.
+		 * Checks to see if some <code>FlxObject</code> object overlaps this <code>FlxObject</code> object.
+		 * 
+		 * @param	Object	The object being tested.
+		 * 
+		 * @return	Whether or not the two objects overlap.
 		 */
+		public function overlaps(Object:FlxObject):Boolean
+		{
+			if((Object.x + Object.width <= x) || (Object.x >= x+width) || (Object.y + Object.height <= y) || (Object.y >= y+height))
+				return false;
+			return true;
+		}
+		
+		/*
 		public function getBoundingColor():uint
 		{
 			if(solid)
@@ -515,6 +527,6 @@ package org.flixel
 			}
 			else
 				return 0x7f0090e9;
-		}
+		}*/
 	}
 }
