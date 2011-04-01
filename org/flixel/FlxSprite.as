@@ -16,6 +16,8 @@ package org.flixel
 	*/
 	public class FlxSprite extends FlxObject
 	{
+		[Embed(source="data/default.png")] protected var ImgDefault:Class;
+		
 		/**
 		 * Helps to eliminate false collisions and/or rendering glitches caused by rounding errors
 		 */
@@ -163,9 +165,8 @@ package org.flixel
 			}
 			
 			if(SimpleGraphic == null)
-				makeGraphic(8,8);
-			else
-				loadGraphic(SimpleGraphic);
+				SimpleGraphic = ImgDefault;
+			loadGraphic(SimpleGraphic);
 		}
 		
 		override public function destroy():void
@@ -580,6 +581,7 @@ package org.flixel
 		 */
 		override public function update():void
 		{
+			_ACTIVECOUNT++;
 			updateMotion();
 			updateAnimation();
 			updateFlickering();
@@ -609,6 +611,7 @@ package org.flixel
 				c = cameras[i++];
 				if(!onScreen(c))
 					continue;
+				_VISIBLECOUNT++;
 				getScreenXY(_point,c).copyToFlash(_flashPoint);
 				
 				//Simple render
@@ -648,7 +651,7 @@ package org.flixel
 		}
 		
 		/**
-		 * Checks to see if a point in 2D space overlaps this FlxCore object.
+		 * Checks to see if a point in 2D world space overlaps this FlxCore object.
 		 * 
 		 * @param	X			The X coordinate of the point.
 		 * @param	Y			The Y coordinate of the point.
@@ -661,12 +664,16 @@ package org.flixel
 		{
 			if(Camera == null)
 				Camera = FlxG.camera;
-			X = X + FlxU.floor(Camera.scroll.x);
-			Y = Y + FlxU.floor(Camera.scroll.y);
+			
+			//convert the passed in point to screen space
+			X = X - FlxU.floor(Camera.scroll.x);
+			Y = Y - FlxU.floor(Camera.scroll.y);
+			
+			//then compare
 			getScreenXY(_point,Camera);
 			if(PerPixel)
 				return _framePixels.hitTest(new Point(0,0),0xFF,new Point(X-_point.x,Y-_point.y));
-			return (X < _point.x) && (X < _point.x+frameWidth) && (Y > _point.y) && (Y < _point.y+frameHeight);
+			return (X > _point.x) && (X < _point.x+frameWidth) && (Y > _point.y) && (Y < _point.y+frameHeight);
 		}
 		
 		/**

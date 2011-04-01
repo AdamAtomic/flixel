@@ -8,11 +8,16 @@ package org.flixel
 
 	public class FlxCamera extends FlxBasic
 	{
-		static public const BOTH_AXES:uint = 0;
-		static public const VERTICAL_ONLY:uint = 1;
-		static public const HORIZONTAL_ONLY:uint = 2;
+		static public const STYLE_LOCKON:uint = 0;
+		static public const STYLE_PLATFORMER:uint = 1;
+		static public const STYLE_TOPDOWN:uint = 2;
+		static public const STYLE_TOPDOWN_TIGHT:uint = 3;
 		
-		static public var defaultZoom:uint;
+		static public const SHAKE_BOTH_AXES:uint = 0;
+		static public const SHAKE_VERTICAL_ONLY:uint = 1;
+		static public const SHAKE_HORIZONTAL_ONLY:uint = 2;
+		
+		static public var defaultZoom:Number;
 		
 		public var x:Number;
 		public var y:Number;
@@ -23,15 +28,10 @@ package org.flixel
 		 */
 		public var target:FlxObject;
 		/**
-		 * How fast the camera catches up with the target object.
+		 * You can assign a "dead zone" to the camera in order to better control its movement.
+		 * The camera will always keep the player inside the dead zone.
 		 */
-		public var speed:Number;
-		/**
-		 * Used to force the camera to look ahead of the <code>followTarget</code>.
-		 * The look-ahead distance is calculated by multiplying this value by
-		 * the target object's velocity on each axis.
-		 */
-		public var lead:FlxPoint;
+		public var deadzone:FlxRect;
 		/**
 		 * The edges of the camera's range, i.e. where to stop scrolling.
 		 */
@@ -52,9 +52,9 @@ package org.flixel
 		public var bgColor:uint;
 		
 		/**
-		 * Internal, used to assist camera and scrolling.
+		 * Indicates how far the camera is zoomed in.
 		 */
-		protected var _scrollTarget:FlxPoint;
+		protected var _zoom:Number;
 		/**
 		 * Internal, to help avoid costly allocations.
 		 */
@@ -90,18 +90,16 @@ package org.flixel
 		
 		protected var _fill:BitmapData;
 		
-		public function FlxCamera(X:int,Y:int,Width:int,Height:int,Zoom:uint=0)
+		public function FlxCamera(X:int,Y:int,Width:int,Height:int,Zoom:Number=0)
 		{
 			x = X;
 			y = Y;
 			width = Width;
 			height = Height;
 			target = null;
+			deadzone = null;
 			scroll = new FlxPoint();
-			_scrollTarget = new FlxPoint();
 			_point = new FlxPoint();
-			speed = 0;
-			lead = new FlxPoint();
 			bounds = null;
 			bgColor = FlxG.bgColor;
 			buffer = new BitmapData(width,height,true,0);
@@ -110,10 +108,7 @@ package org.flixel
 			_flashBitmap = new Bitmap(buffer);
 			_flashBitmap.x = x;
 			_flashBitmap.y = y;
-			if(Zoom == 0)
-				Zoom = defaultZoom;
-			_flashBitmap.scaleX = Zoom;
-			_flashBitmap.scaleY = Zoom;
+			zoom = Zoom; //requires flashbitmap in order to work
 			_flashRect = new Rectangle(0,0,width,height);
 			_flashPoint = new Point();
 			
@@ -138,31 +133,49 @@ package org.flixel
 		
 		override public function destroy():void
 		{
+			target = null;
 			scroll = null;
-			lead = null;
+			deadzone = null;
 			bounds = null;
 			buffer = null;
 			_flashBitmap = null;
+			_flashRect = null;
+			_flashPoint = null;
 			_fxFlashComplete = null;
 			_fxFadeComplete = null;
 			_fxShakeComplete = null;
 			_fxShakeOffset = null;
+			_fill = null;
 		}
 		
 		override public function update():void
 		{
-			//If we're tracking something, pick our new target destination
+			//Either follow the object closely, 
+			//or doublecheck our deadzone and update accordingly.
 			if(target != null)
 			{
-				target.getMidpoint(_point);
-				_scrollTarget.make(_point.x - (width>>1) + target.velocity.x * lead.x,_point.y - (height>>1) + target.velocity.y * lead.y);
+				if(deadzone == null)
+					focusOn(target.getMidpoint(_point));
+				else
+				{
+					var t:Number;
+					t = target.x - deadzone.x;
+					if(scroll.x > t)
+						scroll.x = t;
+					t = target.x + target.width - deadzone.x - deadzone.width;
+					if(scroll.x < t)
+						scroll.x = t;
+					
+					t = target.y - deadzone.y;
+					if(scroll.y > t)
+						scroll.y = t;
+					t = target.y + target.height - deadzone.y - deadzone.height;
+					if(scroll.y < t)
+						scroll.y = t;
+				}
 			}
 			
-			//Then, step the camera toward that destination
-			scroll.x += (_scrollTarget.x-scroll.x) * speed * FlxG.elapsed;
-			scroll.y += (_scrollTarget.y-scroll.y) * speed * FlxG.elapsed;
-			
-			//Finally, make sure the camera hasn't gone outside the bounds we set for it
+			//Make sure we didn't go outside the camera's bounds
 			if(bounds != null)
 			{
 				if(scroll.x < bounds.left)
@@ -207,10 +220,10 @@ package org.flixel
 				}
 				else
 				{
-					if((_fxShakeDirection == BOTH_AXES) || (_fxShakeDirection == HORIZONTAL_ONLY))
-						_fxShakeOffset.x = (FlxG.random()*_fxShakeIntensity*width*2-_fxShakeIntensity*width)*_flashBitmap.scaleX;
-					if((_fxShakeDirection == BOTH_AXES) || (_fxShakeDirection == VERTICAL_ONLY))
-						_fxShakeOffset.y = (FlxG.random()*_fxShakeIntensity*height*2-_fxShakeIntensity*height)*_flashBitmap.scaleY;
+					if((_fxShakeDirection == SHAKE_BOTH_AXES) || (_fxShakeDirection == SHAKE_HORIZONTAL_ONLY))
+						_fxShakeOffset.x = (FlxG.random()*_fxShakeIntensity*width*2-_fxShakeIntensity*width)*_zoom;
+					if((_fxShakeDirection == SHAKE_BOTH_AXES) || (_fxShakeDirection == SHAKE_VERTICAL_ONLY))
+						_fxShakeOffset.y = (FlxG.random()*_fxShakeIntensity*height*2-_fxShakeIntensity*height)*_zoom;
 				}
 			}
 		}
@@ -224,31 +237,40 @@ package org.flixel
 		 * @param	LeadY		How far in front of the camera to look on the Y axis, times the target's Y velocity (default: 0).
 		 * @param	Snap		Whether the camera should start on the new object, or smoothly scroll over to it (default: true).
 		 */
-		public function follow(Target:FlxObject, Speed:Number=1, LeadX:Number=0, LeadY:Number=0, Snap:Boolean=true):void
+		public function follow(Target:FlxObject, Style:uint=STYLE_LOCKON):void
 		{
 			target = Target;
-			lead.make(LeadX,LeadY);
-			goTo(target.getMidpoint(_point),Speed,Snap);
+			var d:Number;
+			switch(Style)
+			{
+				case STYLE_PLATFORMER:
+					var w:Number = width/8;
+					var h:Number = height/3;
+					deadzone = new FlxRect((width-w)/2,(height-h)/2 - h*0.25,w,h);
+					break;
+				case STYLE_TOPDOWN:
+					d = FlxU.max(width,height)/4;
+					deadzone = new FlxRect((width-d)/2,(height-d)/2,d,d);
+					break;
+				case STYLE_TOPDOWN_TIGHT:
+					d = FlxU.max(width,height)/8;
+					deadzone = new FlxRect((width-d)/2,(height-d)/2,d,d);
+					break;
+				case STYLE_LOCKON:
+				default:
+					deadzone = null;
+					break;
+			}
 		}
 		
 		/**
-		 * Tells the camera to move to the specified location.
+		 * Move the camera focus to this location instantly.
 		 * 
-		 * @param	Location	The point in game-space you want the camera to scroll to.
-		 * @param	Speed		How fast to go there.
-		 * @param	Snap		Whether to go there instantly.
+		 * @param	Point		Where you want the camera to focus.
 		 */
-		public function goTo(Location:FlxPoint,Speed:Number=1,Snap:Boolean=false):void
+		public function focusOn(Point:FlxPoint):void
 		{
-			if(Location == null)
-				return;
-			speed = Speed;
-			_scrollTarget.make(Location.x - (width>>1), Location.y - (height>>1));
-			if(Snap)
-			{
-				scroll.copyFrom(_scrollTarget);
-				update();
-			}
+			scroll.make(Point.x - (width>>1),Point.y - (height>>1));
 		}
 		
 		/**
@@ -317,9 +339,9 @@ package org.flixel
 		 * @param	Duration	The length in seconds that the shaking effect should last.
 		 * @param	OnComplete	A function you want to run when the shake effect finishes.
 		 * @param	Force		Force the effect to reset (default = true, unlike flash() and fade()!).
-		 * @param	Direction	Whether to shake on both axes, just up and down, or just side to side (use class constants BOTH_AXES, VERTICAL_ONLY, or HORIZONTAL_ONLY).
+		 * @param	Direction	Whether to shake on both axes, just up and down, or just side to side (use class constants SHAKE_BOTH_AXES, SHAKE_VERTICAL_ONLY, or SHAKE_HORIZONTAL_ONLY).
 		 */
-		public function shake(Intensity:Number=0.05, Duration:Number=0.5, OnComplete:Function=null, Force:Boolean=true, Direction:uint=BOTH_AXES):void
+		public function shake(Intensity:Number=0.05, Duration:Number=0.5, OnComplete:Function=null, Force:Boolean=true, Direction:uint=SHAKE_BOTH_AXES):void
 		{
 			if(!Force && ((_fxShakeOffset.x != 0) || (_fxShakeOffset.y != 0)))
 				return;
@@ -349,8 +371,34 @@ package org.flixel
 					bounds = new FlxRect();
 				bounds.copyFrom(Camera.bounds);
 			}
-			follow(Camera.target,Camera.speed,Camera.lead.x,Camera.lead.y);
+			target = Camera.target;
+			if(target != null)
+			{
+				if(Camera.deadzone == null)
+					deadzone = null;
+				else
+				{
+					if(deadzone == null)
+						deadzone = new FlxRect();
+					deadzone.copyFrom(Camera.deadzone);
+				}
+			}
 			return this;
+		}
+		
+		public function get zoom():Number
+		{
+			return _zoom;
+		}
+		
+		public function set zoom(Zoom:Number):void
+		{
+			if(Zoom == 0)
+				_zoom = defaultZoom;
+			else
+				_zoom = Zoom;
+			_flashBitmap.scaleX = _zoom;
+			_flashBitmap.scaleY = _zoom;
 		}
 		
 		public function get alpha():Number
@@ -388,15 +436,25 @@ package org.flixel
 			_flashBitmap.transform.colorTransform = ct;
 		}
 		
-		public function setScale(X:Number,Y:Number):void
+		public function get antialiasing():Boolean
 		{
-			_flashBitmap.scaleX = X;
-			_flashBitmap.scaleY = Y;
+			return _flashBitmap.smoothing;
+		}
+		
+		public function set antialiasing(Antialiasing:Boolean):void
+		{
+			_flashBitmap.smoothing = Antialiasing;
 		}
 		
 		public function getScale():FlxPoint
 		{
 			return _point.make(_flashBitmap.scaleX,_flashBitmap.scaleY);
+		}
+		
+		public function setScale(X:Number,Y:Number):void
+		{
+			_flashBitmap.scaleX = X;
+			_flashBitmap.scaleY = Y;
 		}
 		
 		public function fill(Color:uint=0):void

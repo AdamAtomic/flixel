@@ -7,7 +7,7 @@ package org.flixel
 	 */
 	public class FlxButton extends FlxSprite
 	{
-		[Embed(source="data/button.png")] protected var ImgDefault:Class;
+		[Embed(source="data/button.png")] protected var ImgDefaultButton:Class;
 		
 		static public var NORMAL:uint = 0;
 		static public var HIGHLIGHT:uint = 1;
@@ -66,7 +66,7 @@ package org.flixel
 				label.setFormat(null,8,0x333333,"center");
 				labelOffset = new FlxPoint(-1,3);
 			}
-			loadGraphic(ImgDefault,true,false,80,20);
+			loadGraphic(ImgDefaultButton,true,false,80,20);
 
 			_status = NORMAL;
 			pauseProof = false;
@@ -90,6 +90,17 @@ package org.flixel
 		 */
 		override public function update():void
 		{
+			//Super basic update/stage event stuff.
+			if(!_initialized)
+			{
+				if(FlxG.stage != null)
+				{
+					FlxG.stage.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
+					_initialized = true;
+				}
+			}
+			super.update();
+			
 			updateButton(); //Basic button logic
 
 			//Default button appearance is to simply update
@@ -117,29 +128,33 @@ package org.flixel
 		 */
 		protected function updateButton():void
 		{
-			//Super basic update/stage event stuff.
-			if(!_initialized)
-			{
-				if(FlxG.stage != null)
-				{
-					FlxG.stage.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
-					_initialized = true;
-				}
-			}
-			super.update();
-			
 			//Figure out if the button is highlighted or pressed or what
 			// (ignore checkbox behavior for now).
-			if(overlapsPoint(FlxG.mouse.x,FlxG.mouse.y))
+			if(FlxG.mouse.visible)
 			{
-				if(FlxG.mouse.justPressed())
-					_status = PRESSED;
-				if(_status == NORMAL)
-					_status = HIGHLIGHT;
+				if(cameras == null)
+					cameras = FlxG.cameras;
+				var c:FlxCamera;
+				var i:uint = 0;
+				var l:uint = cameras.length;
+				var offAll:Boolean = true;
+				while(i < l)
+				{
+					c = cameras[i++] as FlxCamera;
+					FlxG.mouse.getWorldPosition(c,_point);
+					if(overlapsPoint(_point.x,_point.y,c))
+					{
+						offAll = false;
+						if(FlxG.mouse.justPressed())
+							_status = PRESSED;
+						if(_status == NORMAL)
+							_status = HIGHLIGHT;
+					}
+				}
+				if(offAll)
+					_status = NORMAL;
 			}
-			else
-				_status = NORMAL;
-			
+		
 			//Then if the label and/or the label offset exist,
 			// position them to match the button.
 			if(label != null)

@@ -23,7 +23,6 @@ package org.flixel.system.debug
 		protected var _flash:Array;
 		protected var _flashMarker:uint;
 		protected var _activeObject:Array;
-		protected var _extantObject:Array;
 		protected var _objectMarker:uint;
 		protected var _visibleObject:Array;
 		protected var _visibleObjectMarker:uint;
@@ -46,16 +45,15 @@ package org.flixel.system.debug
 			_text.defaultTextFormat = new TextFormat("Courier",12,0);
 			addChild(_text);
 			
-			_flixelUpdate = new Array(256);
+			_flixelUpdate = new Array(32);
 			_flixelUpdateMarker = 0;
-			_flixelDraw = new Array(256);
+			_flixelDraw = new Array(32);
 			_flixelDrawMarker = 0;
-			_flash = new Array(256);
+			_flash = new Array(32);
 			_flashMarker = 0;
-			_activeObject = new Array(256);
-			_extantObject = new Array(256);
+			_activeObject = new Array(32);
 			_objectMarker = 0;
-			_visibleObject = new Array(256);
+			_visibleObject = new Array(32);
 			_visibleObjectMarker = 0;
 		}
 		
@@ -67,7 +65,6 @@ package org.flixel.system.debug
 			_flixelDraw = null;
 			_flash = null;
 			_activeObject = null;
-			_extantObject = null;
 			_visibleObject = null;
 			super.destroy();
 		}
@@ -102,10 +99,8 @@ package org.flixel.system.debug
 				{
 					ta += _activeObject[i];
 					tv += _visibleObject[i];
-					te += _extantObject[i];
 				}
 				ta /= _objectMarker;
-				te /= _objectMarker;
 				
 				str += "U:" + ta + " " + uint(tu/_flixelDrawMarker) + "ms\n";
 				
@@ -146,10 +141,9 @@ package org.flixel.system.debug
 			_flash[_flashMarker++] = Time;
 		}
 		
-		public function objects(Active:int,Extant:int):void
+		public function activeObjects(Count:int):void
 		{
-			_activeObject[_objectMarker] = Active;
-			_extantObject[_objectMarker++] = Extant;
+			_activeObject[_objectMarker++] = Count;
 		}
 		
 		public function visibleObjects(Count:int):void

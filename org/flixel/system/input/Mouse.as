@@ -1,7 +1,10 @@
 package org.flixel.system.input
 {
+	import flash.display.Bitmap;
+	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	
+	import org.flixel.FlxCamera;
 	import org.flixel.FlxG;
 	import org.flixel.FlxPoint;
 	import org.flixel.FlxSprite;
@@ -28,10 +31,7 @@ package org.flixel.system.input
 		 * Current Y position of the mouse pointer on the screen.
 		 */
 		public var screenY:int;
-		/**
-		 * Graphical representation of the mouse pointer.
-		 */
-		public var cursor:FlxSprite;
+		
 		/**
 		 * Helper variable for tracking whether the mouse was just pressed or just released.
 		 */
@@ -45,44 +45,65 @@ package org.flixel.system.input
 		 */
 		protected var _out:Boolean;
 		/**
+		 * A display container for the mouse cursor.
+		 * This container is a child of FlxGame and sits at the right "height".
+		 */
+		protected var _cursorContainer:Sprite;
+		/**
+		 * This is just a reference to the current cursor image, if there is one.
+		 */
+		protected var _cursor:Bitmap;
+		/**
 		 * Helper variables for recording purposes.
 		 */
 		protected var _lastX:int;
 		protected var _lastY:int;
 		protected var _lastWheel:int;
+		protected var _point:FlxPoint;
+		protected var _screenPosition:FlxPoint;
 		
 		/**
 		 * Constructor.
 		 */
-		public function Mouse()
+		public function Mouse(CursorContainer:Sprite)
 		{
-			x = 0;
-			y = 0;
+			super();
+			_cursorContainer = CursorContainer;
 			_lastX = screenX = 0;
 			_lastY = screenY = 0;
 			_lastWheel = wheel = 0;
 			_current = 0;
 			_last = 0;
-			cursor = null;
+			_cursor = null;
 			_out = false;
+			_point = new FlxPoint();
+			_screenPosition = new FlxPoint();
+		}
+		
+		public function destroy():void
+		{
+			_cursorContainer = null;
+			_cursor = null;
+			_point = null;
+			_screenPosition = null;
 		}
 		
 		/**
 		 * Either show an existing cursor or load a new one.
 		 * 
 		 * @param	Graphic		The image you want to use for the cursor.
+		 * @param	Scale		Change the size of the cursor.  Default = 1, or native size.  2 = 2x as big, 0.5 = half size, etc.
 		 * @param	XOffset		The number of pixels between the mouse's screen position and the graphic's top left corner.
-		 * * @param	YOffset		The number of pixels between the mouse's screen position and the graphic's top left corner. 
+		 * @param	YOffset		The number of pixels between the mouse's screen position and the graphic's top left corner. 
 		 */
-		public function show(Graphic:Class=null,XOffset:int=0,YOffset:int=0):void
+		public function show(Graphic:Class=null,Scale:Number=1,XOffset:int=0,YOffset:int=0):void
 		{
 			_out = true;
+			_cursorContainer.visible = true;
 			if(Graphic != null)
-				load(Graphic,XOffset,YOffset);
-			else if(cursor != null)
-				cursor.visible = true;
-			else
-				load(null);
+				load(Graphic,Scale,XOffset,YOffset);
+			else if(_cursor == null)
+				load();
 		}
 		
 		/**
@@ -90,30 +111,37 @@ package org.flixel.system.input
 		 */
 		public function hide():void
 		{
-			if(cursor != null)
-			{
-				cursor.visible = false;
-				_out = false;
-			}
+			_cursorContainer.visible = false;
+			_out = false;
+		}
+		
+		public function get visible():Boolean
+		{
+			return _cursorContainer.visible;
 		}
 		
 		/**
 		 * Load a new mouse cursor graphic
 		 * 
 		 * @param	Graphic		The image you want to use for the cursor.
+		 * @param	Scale		Change the size of the cursor.
 		 * @param	XOffset		The number of pixels between the mouse's screen position and the graphic's top left corner.
-		 * * @param	YOffset		The number of pixels between the mouse's screen position and the graphic's top left corner. 
+		 * @param	YOffset		The number of pixels between the mouse's screen position and the graphic's top left corner. 
 		 */
-		public function load(Graphic:Class,XOffset:int=0,YOffset:int=0):void
+		public function load(Graphic:Class=null,Scale:Number=1,XOffset:int=0,YOffset:int=0):void
 		{
+			if(_cursor != null)
+				_cursorContainer.removeChild(_cursor);
+
 			if(Graphic == null)
 				Graphic = ImgDefaultCursor;
-			if(cursor != null)
-				cursor.destroy();
-			cursor = new FlxSprite(screenX,screenY,Graphic);
-			cursor.solid = false;
-			cursor.offset.x = XOffset;
-			cursor.offset.y = YOffset;
+			_cursor = new Graphic();
+			_cursor.x = XOffset;
+			_cursor.y = YOffset;
+			_cursor.scaleX = Scale;
+			_cursor.scaleY = Scale;
+			
+			_cursorContainer.addChild(_cursor);
 		}
 		
 		/**
@@ -122,14 +150,14 @@ package org.flixel.system.input
 		 */
 		public function unload():void
 		{
-			if(cursor != null)
+			if(_cursor != null)
 			{
-				if(cursor.visible)
-					load(null);
+				if(_cursorContainer.visible)
+					load();
 				else
 				{
-					cursor.destroy();
-					cursor = null;
+					_cursorContainer.removeChild(_cursor)
+					_cursor = null;
 				}
 			}
 		}
@@ -145,8 +173,10 @@ package org.flixel.system.input
 		 */
 		public function update(X:int,Y:int):void
 		{
-			screenX = X;
-			screenY = Y;
+			_screenPosition.make(X,Y);
+			getScreenPosition(null,_point);
+			screenX = _point.x;
+			screenY = _point.y;
 			updateCursor();
 			if((_last == -1) && (_current == -1))
 				_current = 0;
@@ -160,13 +190,28 @@ package org.flixel.system.input
 		 */
 		protected function updateCursor():void
 		{
-			x = screenX;//-FlxU.floor(FlxG.scroll.x);
-			y = screenY;//-FlxU.floor(FlxG.scroll.y);
-			if(cursor != null)
-			{
-				cursor.x = x;
-				cursor.y = y;
-			}
+			getWorldPosition(null,this);
+			_cursorContainer.x = _screenPosition.x;
+			_cursorContainer.y = _screenPosition.y;
+		}
+		
+		public function getWorldPosition(Camera:FlxCamera=null,Point:FlxPoint=null):FlxPoint
+		{
+			if(Camera == null)
+				Camera = FlxG.camera;
+			if(Point == null)
+				Point = new FlxPoint();
+			getScreenPosition(Camera,_point);
+			return Point.make(_point.x + Camera.scroll.x, _point.y + Camera.scroll.y);
+		}
+		
+		public function getScreenPosition(Camera:FlxCamera=null,Point:FlxPoint=null):FlxPoint
+		{
+			if(Camera == null)
+				Camera = FlxG.camera;
+			if(Point == null)
+				Point = new FlxPoint();
+			return Point.make(_screenPosition.x/Camera.zoom,_screenPosition.y/Camera.zoom);
 		}
 		
 		/**
@@ -228,11 +273,8 @@ package org.flixel.system.input
 		 */
 		public function handleMouseOut(event:MouseEvent):void
 		{
-			if(cursor != null)
-			{
-				_out = cursor.visible;
-				cursor.visible = false;
-			}
+			_out = _cursorContainer.visible;
+			_cursorContainer.visible = false;
 		}
 		
 		/**
@@ -242,8 +284,7 @@ package org.flixel.system.input
 		 */
 		public function handleMouseOver(event:MouseEvent):void
 		{
-			if(cursor != null)
-				cursor.visible = _out;
+			_cursorContainer.visible = _out;
 		}
 		
 		/**
@@ -284,12 +325,6 @@ package org.flixel.system.input
 			_current = Record.button;
 			wheel = Record.wheel;
 			updateCursor();
-		}
-		
-		public function destroy():void
-		{
-			cursor.destroy();
-			cursor = null;
 		}
 	}
 }

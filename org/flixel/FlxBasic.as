@@ -2,6 +2,9 @@ package org.flixel
 {
 	public class FlxBasic
 	{
+		static internal var _ACTIVECOUNT:uint;
+		static internal var _VISIBLECOUNT:uint;
+
 		/**
 		 * IDs seem like they could be pretty useful, huh?
 		 */
@@ -43,16 +46,22 @@ package org.flixel
 		/**
 		 * Override this function to update your class's position & appearance.
 		 * This is where most of your game rules and behavioral code will go.
-		 * If you are extending a class more advanced than FlxBasic, don't forget to call super.update()!
+		 * Don't forget to call super.update()!
 		 */
-		public function update():void {}
+		public function update():void
+		{
+			_ACTIVECOUNT++;
+		}
 		
 		/**
 		 * Override this function to control how the object is drawn.
 		 * Overriding draw() is rarely necessary, but can be very useful.
-		 * If you are extending a class more advanced than FlxBasic, don't forget to call super.draw()!
+		 * Don't forget to call super.draw()!
 		 */
-		public function draw():void {}
+		public function draw():void
+		{
+			_VISIBLECOUNT++;
+		}
 		
 		public function kill():void
 		{

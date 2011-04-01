@@ -280,6 +280,8 @@ package org.flixel
 		 */
 		override public function draw():void
 		{
+			_VISIBLECOUNT++;
+			
 			if(cameras == null)
 				cameras = FlxG.cameras;
 			var c:FlxCamera;

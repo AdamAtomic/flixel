@@ -227,16 +227,9 @@ package org.flixel
 		 */
 		override public function update():void
 		{
+			_ACTIVECOUNT++;
 			updateMotion();
 			updateFlickering();
-		}
-		
-		/**
-		 * Override this function to draw graphics (see <code>FlxSprite</code>).
-		 */
-		override public function draw():void
-		{
-			//Objects don't have any visual logic/display of their own.
 		}
 		
 		/**
@@ -315,7 +308,7 @@ package org.flixel
 		}
 		
 		/**
-		 * Checks to see if a point in 2D space overlaps this <code>FlxObject</code> object.
+		 * Checks to see if a point in 2D world space overlaps this <code>FlxObject</code> object.
 		 * 
 		 * @param	X			The X coordinate of the point.
 		 * @param	Y			The Y coordinate of the point.
@@ -328,8 +321,12 @@ package org.flixel
 		{
 			if(Camera == null)
 				Camera = FlxG.camera;
-			X = X + FlxU.floor(Camera.scroll.x);
-			Y = Y + FlxU.floor(Camera.scroll.y);
+			
+			//convert passed point into screen space
+			X = X - FlxU.floor(Camera.scroll.x);
+			Y = Y - FlxU.floor(Camera.scroll.y);
+			
+			//then compare
 			getScreenXY(_point,Camera);
 			return (X > _point.x) && (X < _point.x+width) && (Y > _point.y) && (Y < _point.y+height);
 		}

@@ -13,10 +13,6 @@ package org.flixel
 		static public const STRICT:uint = 0;
 		static public const GROW:uint = 1;
 		
-		static internal var _ACTIVECOUNT:uint;
-		static internal var _VISIBLECOUNT:uint;
-		static internal var _EXTANTCOUNT:uint;
-		
 		/**
 		 * Array of all the <code>FlxBasic</code>s that exist in this layer.
 		 */
@@ -78,16 +74,8 @@ package org.flixel
 			while(i < length)
 			{
 				b = members[i++] as FlxBasic;
-				if(b == null)
-					continue;
-				FlxGroup._EXTANTCOUNT++;
-				if(!b.exists)
-					continue;
-				if(b.active)
-				{
+				if((b != null) && b.exists && b.active)
 					b.update();
-					FlxGroup._ACTIVECOUNT++;
-				}
 			}
 		}
 		
@@ -103,10 +91,7 @@ package org.flixel
 			{
 				b = members[i++] as FlxBasic;
 				if((b != null) && b.exists && b.visible)
-				{
 					b.draw();
-					FlxGroup._VISIBLECOUNT++;
-				}
 			}
 		}
 		

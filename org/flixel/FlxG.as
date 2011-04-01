@@ -631,7 +631,7 @@ package org.flixel
 		
 		static public function addCamera(NewCamera:FlxCamera):FlxCamera
 		{
-			FlxG._game.addCameraBitmap(NewCamera._flashBitmap);
+			FlxG._game.addChildAt(NewCamera._flashBitmap,FlxG._game.getChildIndex(FlxG._game._mouse));
 			FlxG.cameras.push(NewCamera);
 			return NewCamera;
 		}
@@ -695,9 +695,9 @@ package org.flixel
 		 * @param	Duration	The length in seconds that the shaking effect should last.
 		 * @param	OnComplete	A function you want to run when the shake effect finishes.
 		 * @param	Force		Force the effect to reset (default = true, unlike flash() and fade()!).
-		 * @param	Direction	Whether to shake on both axes, just up and down, or just side to side (use class constants BOTH_AXES, VERTICAL_ONLY, or HORIZONTAL_ONLY).
+		 * @param	Direction	Whether to shake on both axes, just up and down, or just side to side (use class constants SHAKE_BOTH_AXES, SHAKE_VERTICAL_ONLY, or SHAKE_HORIZONTAL_ONLY).
 		 */
-		static public function shake(Intensity:Number=0.05, Duration:Number=0.5, OnComplete:Function=null, Force:Boolean=true, Direction:uint=FlxCamera.BOTH_AXES):void
+		static public function shake(Intensity:Number=0.05, Duration:Number=0.5, OnComplete:Function=null, Force:Boolean=true, Direction:uint=FlxCamera.SHAKE_BOTH_AXES):void
 		{
 			var c:FlxCamera;
 			var i:uint = 0;
@@ -726,7 +726,7 @@ package org.flixel
 		/**
 		 * Called by <code>FlxGame</code> to set up <code>FlxG</code> during <code>FlxGame</code>'s constructor.
 		 */
-		static internal function init(Game:FlxGame,Width:uint,Height:uint,Zoom:uint):void
+		static internal function init(Game:FlxGame,Width:uint,Height:uint,Zoom:Number):void
 		{
 			FlxG._game = Game;
 			FlxG.width = Width;
@@ -742,7 +742,7 @@ package org.flixel
 			FlxG._cameraRect = new Rectangle();
 			FlxG.cameras = new Array();
 			
-			FlxG.mouse = new Mouse();
+			FlxG.mouse = new Mouse(FlxG._game._mouse);
 			FlxG.keys = new Keyboard();
 			FlxG.mobile = false;
 
@@ -820,9 +820,9 @@ package org.flixel
 		 */
 		static internal function updateInput():void
 		{
-			keys.update();
+			FlxG.keys.update();
 			if(!_game._debuggerUp || !_game._debugger.hasMouse)
-				mouse.update(camera._flashBitmap.mouseX,camera._flashBitmap.mouseY);
+				FlxG.mouse.update(FlxG._game.mouseX,FlxG._game.mouseY);
 		}
 	}
 }
