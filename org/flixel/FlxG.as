@@ -119,12 +119,7 @@ package org.flixel
 		 * Internal volume level, used for global sound control.
 		 */
 		static protected var _volume:Number;
-		
-		/**
-		 * This static variable indicates the "clear color"
-		 * or default background color of the game.
-		 */
-		static public var bgColor:uint;
+
 		/**
 		 * An array of <code>FlxCamera</code> objects that are used to draw stuff.
 		 * By default flixel creates one camera the size of the screen.
@@ -144,19 +139,6 @@ package org.flixel
 		 * Internal storage system to prevent graphics from being used repeatedly in memory.
 		 */
 		static protected var _cache:Object;
-
-		/**
-		 * A special effect that shakes the screen.  Usage: FlxG.quake.start();
-		 */
-		static public var quake:Quake;
-		/**
-		 * A special effect that flashes a color on the screen.  Usage: FlxG.flash.start();
-		 */
-		static public var flash:Flash;
-		/**
-		 * A special effect that fades a color onto the screen.  Usage: FlxG.fade.start();
-		 */
-		static public var fade:Fade;
 		
 		/**
 		 * Log data to the debugger.
@@ -654,7 +636,7 @@ package org.flixel
 			return NewCamera;
 		}
 		
-		static public function resetCameras():void
+		static public function resetCameras(NewCamera:FlxCamera=null):void
 		{
 			var c:FlxCamera;
 			var i:uint = 0;
@@ -666,7 +648,79 @@ package org.flixel
 				c.destroy();
 			}
 			cameras.length = 0;
-			camera = FlxG.addCamera(new FlxCamera(0,0,FlxG.width,FlxG.height));
+			
+			if(NewCamera == null)
+				NewCamera = new FlxCamera(0,0,FlxG.width,FlxG.height)
+			camera = FlxG.addCamera(NewCamera);
+		}
+		
+		/**
+		 * All screens are filled with this color and gradually return to normal.
+		 * 
+		 * @param	Color		The color you want to use.
+		 * @param	Duration	How long it takes for the flash to fade.
+		 * @param	OnComplete	A function you want to run when the flash finishes.
+		 * @param	Force		Force the effect to reset.
+		 */
+		static public function flash(Color:uint=0xffffffff, Duration:Number=1, OnComplete:Function=null, Force:Boolean=false):void
+		{
+			var c:FlxCamera;
+			var i:uint = 0;
+			var l:uint = cameras.length;
+			while(i < l)
+				(cameras[i++] as FlxCamera).flash(Color,Duration,OnComplete,Force);
+		}
+		
+		/**
+		 * The screen is gradually filled with this color.
+		 * 
+		 * @param	Color		The color you want to use.
+		 * @param	Duration	How long it takes for the fade to finish.
+		 * @param	OnComplete	A function you want to run when the fade finishes.
+		 * @param	Force		Force the effect to reset.
+		 */
+		static public function fade(Color:uint=0xffffffff, Duration:Number=1, OnComplete:Function=null, Force:Boolean=false):void
+		{
+			var c:FlxCamera;
+			var i:uint = 0;
+			var l:uint = cameras.length;
+			while(i < l)
+				(cameras[i++] as FlxCamera).fade(Color,Duration,OnComplete,Force);
+		}
+		
+		/**
+		 * A simple screen-shake effect.
+		 * 
+		 * @param	Intensity	Percentage of screen size representing the maximum distance that the screen can move while shaking.
+		 * @param	Duration	The length in seconds that the shaking effect should last.
+		 * @param	OnComplete	A function you want to run when the shake effect finishes.
+		 * @param	Force		Force the effect to reset (default = true, unlike flash() and fade()!).
+		 * @param	Direction	Whether to shake on both axes, just up and down, or just side to side (use class constants BOTH_AXES, VERTICAL_ONLY, or HORIZONTAL_ONLY).
+		 */
+		static public function shake(Intensity:Number=0.05, Duration:Number=0.5, OnComplete:Function=null, Force:Boolean=true, Direction:uint=FlxCamera.BOTH_AXES):void
+		{
+			var c:FlxCamera;
+			var i:uint = 0;
+			var l:uint = cameras.length;
+			while(i < l)
+				(cameras[i++] as FlxCamera).shake(Intensity,Duration,OnComplete,Force,Direction);
+		}
+		
+		static public function get bgColor():uint
+		{
+			if(FlxG.camera == null)
+				return 0xff000000;
+			else
+				return FlxG.camera.bgColor;
+		}
+		
+		static public function set bgColor(Color:uint):void
+		{
+			var c:FlxCamera;
+			var i:uint = 0;
+			var l:uint = cameras.length;
+			while(i < l)
+				(cameras[i++] as FlxCamera).bgColor = Color;
 		}
 
 		/**
@@ -701,15 +755,6 @@ package org.flixel
 		static internal function reset():void
 		{
 			FlxG.clearBitmapCache();
-			
-			FlxG.quake = new Quake(2);//_game._zoom);
-			if(FlxG.flash != null)
-				FlxG.flash.destroy();
-			FlxG.flash = new Flash();
-			if(FlxG.fade != null)
-				FlxG.fade.destroy();
-			FlxG.fade = new Fade();
-			
 			FlxG.resetInput();
 			FlxG.destroySounds(true);
 			FlxG.levels.length = 0;
@@ -734,7 +779,7 @@ package org.flixel
 				if((c == null) || !c.exists || !c.visible)
 					continue;
 				c.buffer.lock();
-				c.buffer.fillRect(c._flashRect,FlxG.bgColor);
+				c.fill();
 			}
 		}
 		
@@ -748,7 +793,7 @@ package org.flixel
 				c = cameras[i++] as FlxCamera;
 				if((c == null) || !c.exists || !c.visible)
 					continue;
-				//TODO: per-camera flash, fade and quake and mouse drawing
+				c.drawFX();
 				c.buffer.unlock();
 			}
 		}
@@ -765,6 +810,8 @@ package org.flixel
 					continue;
 				c.update();
 				c._flashBitmap.visible = c.exists && c.visible;
+				c._flashBitmap.x = c.x;
+				c._flashBitmap.y = c.y;
 			}
 		}
 		

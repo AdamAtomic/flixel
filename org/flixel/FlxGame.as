@@ -362,9 +362,6 @@ package org.flixel
 			FlxG.resetCameras();
 			FlxG.resetInput();
 			FlxG.destroySounds();
-			//FlxG.flash.stop();
-			//FlxG.fade.stop();
-			//FlxG.quake.stop();
 			if(_debugger != null)
 				_debugger.watch.removeAll();
 			
@@ -507,10 +504,6 @@ package org.flixel
 			_state.update();
 			
 			//Update the various special effects
-			//if(FlxG.flash.exists)
-			//	FlxG.flash.update();
-			//if(FlxG.fade.exists)
-			//	FlxG.fade.update();
 			//FlxG.quake.update();
 			//_buffer.x = FlxG.quake.x;
 			//_buffer.y = FlxG.quake.y;
@@ -527,10 +520,6 @@ package org.flixel
 			var mark:uint = getTimer();
 			FlxG.lockCameras();
 			_state.draw();
-			//if(FlxG.flash.exists)
-			//	FlxG.flash.draw();
-			//if(FlxG.fade.exists)
-			//	FlxG.fade.draw();
 			//if(FlxG.mouse.cursor != null)
 			//{
 			//	if(FlxG.mouse.cursor.visible)
