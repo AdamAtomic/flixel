@@ -1,8 +1,6 @@
 package org.flixel
 {
 	import flash.geom.Rectangle;
-	
-	import org.flixel.system.fx.Flash;
 
 	/**
 	 * Stores a rectangle.
