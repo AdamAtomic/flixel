@@ -4,8 +4,10 @@ package org.flixel
 	import flash.display.Stage;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	
 	import org.flixel.system.FlxDebugger;
+	import org.flixel.system.FlxQuadTree;
 	import org.flixel.system.FlxSound;
 	import org.flixel.system.fx.*;
 	import org.flixel.system.input.*;
@@ -119,39 +121,25 @@ package org.flixel
 		static protected var _volume:Number;
 		
 		/**
-		 * Tells the camera to follow this <code>FlxCore</code> object around.
+		 * This static variable indicates the "clear color"
+		 * or default background color of the game.
 		 */
-		static public var followTarget:FlxObject;
+		static public var bgColor:uint;
 		/**
-		 * Used to force the camera to look ahead of the <code>followTarget</code>.
+		 * An array of <code>FlxCamera</code> objects that are used to draw stuff.
+		 * By default flixel creates one camera the size of the screen.
 		 */
-		static public var followLead:Point;
+		static public var cameras:Array;
 		/**
-		 * Used to smoothly track the camera as it follows.
+		 * By default this just refers to the first entry in the cameras array
+		 * declared above, but you can do what you like with it.
 		 */
-		static public var followLerp:Number;
+		static public var camera:FlxCamera;
 		/**
-		 * Stores the top and left edges of the camera area.
+		 * Internal helper variable for clearing the cameras each frame.
 		 */
-		static public var followMin:Point;
-		/**
-		 * Stores the bottom and right edges of the camera area.
-		 */
-		static public var followMax:Point;
-		/**
-		 * Internal, used to assist camera and scrolling.
-		 */
-		static protected var _scrollTarget:Point;
-		
-		/**
-		 * Stores the basic parallax scrolling values.
-		 */
-		static public var scroll:Point;
-		/**
-		 * Reference to the active graphics buffer.
-		 * Can also be referenced via <code>FlxState.screen</code>.
-		 */
-		static public var buffer:BitmapData;
+		static protected var _cameraRect:Rectangle;
+
 		/**
 		 * Internal storage system to prevent graphics from being used repeatedly in memory.
 		 */
@@ -486,7 +474,7 @@ package org.flixel
 		 */
 		static public function pauseSounds():void
 		{
-			if((music != null) && music.active)
+			if((music != null) && music.exists && music.active)
 				music.pause();
 			var i:uint = 0;
 			var s:FlxSound;
@@ -504,7 +492,7 @@ package org.flixel
 		 */
 		static public function playSounds():void
 		{
-			if((music != null) && music.active)
+			if((music != null) && music.exists)
 				music.play();
 			var i:uint = 0;
 			var s:FlxSound;
@@ -512,7 +500,7 @@ package org.flixel
 			while(i < l)
 			{
 				s = sounds.members[i++] as FlxSound;
-				if((s != null) && s.exists && s.active)
+				if((s != null) && s.exists)
 					s.play();
 			}
 		}
@@ -610,57 +598,6 @@ package org.flixel
 		{
 			_cache = new Object();
 		}
-
-		/**
-		 * Tells the camera subsystem what <code>FlxCore</code> object to follow.
-		 * 
-		 * @param	Target		The object to follow.
-		 * @param	Lerp		How much lag the camera should have (can help smooth out the camera movement).
-		 */
-		static public function follow(Target:FlxObject, Lerp:Number=1):void
-		{
-			followTarget = Target;
-			followLerp = Lerp;
-			_scrollTarget.x = (width>>1)-followTarget.x-(followTarget.width>>1);
-			_scrollTarget.y = (height>>1)-followTarget.y-(followTarget.height>>1);
-			scroll.x = _scrollTarget.x;
-			scroll.y = _scrollTarget.y;
-			doFollow();
-		}
-		
-		/**
-		 * Specify an additional camera component - the velocity-based "lead",
-		 * or amount the camera should track in front of a sprite.
-		 * 
-		 * @param	LeadX		Percentage of X velocity to add to the camera's motion.
-		 * @param	LeadY		Percentage of Y velocity to add to the camera's motion.
-		 */
-		static public function followAdjust(LeadX:Number = 0, LeadY:Number = 0):void
-		{
-			followLead = new Point(LeadX,LeadY);
-		}
-		
-		/**
-		 * Specify the boundaries of the level or where the camera is allowed to move.
-		 * 
-		 * @param	MinX				The smallest X value of your level (usually 0).
-		 * @param	MinY				The smallest Y value of your level (usually 0).
-		 * @param	MaxX				The largest X value of your level (usually the level width).
-		 * @param	MaxY				The largest Y value of your level (usually the level height).
-		 * @param	UpdateWorldBounds	Whether the quad tree's dimensions should be updated to match.
-		 */
-		static public function followBounds(MinX:int=0, MinY:int=0, MaxX:int=0, MaxY:int=0, UpdateWorldBounds:Boolean=true):void
-		{
-			followMin = new Point(-MinX,-MinY);
-			followMax = new Point(-MaxX+width,-MaxY+height);
-			if(followMax.x > followMin.x)
-				followMax.x = followMin.x;
-			if(followMax.y > followMin.y)
-				followMax.y = followMin.y;
-			if(UpdateWorldBounds)
-				FlxU.setWorldBounds(MinX,MinY,MaxX-MinX,MaxY-MinY);
-			doFollow();
-		}
 		
 		/**
 		 * Retrieves the Flash stage object (required for event listeners)
@@ -691,26 +628,6 @@ package org.flixel
 		}
 		
 		/**
-		 * Stops and resets the camera.
-		 */
-		static public function unfollow():void
-		{
-			followTarget = null;
-			followLead = null;
-			followLerp = 1;
-			followMin = null;
-			followMax = null;
-			if(scroll == null)
-				scroll = new Point();
-			else
-				scroll.x = scroll.y = 0;
-			if(_scrollTarget == null)
-				_scrollTarget = new Point();
-			else
-				_scrollTarget.x = _scrollTarget.y = 0;
-		}
-		
-		/**
 		 * Change the way the debugger's windows are laid out.
 		 * 
 		 * @param	Layout		Check aux/FlxDebugger for helpful constants like FlxDebugger.LEFT, etc.
@@ -729,89 +646,125 @@ package org.flixel
 			if(_game._debugger != null)
 				_game._debugger.resetLayout();
 		}
+		
+		static public function addCamera(NewCamera:FlxCamera):FlxCamera
+		{
+			FlxG._game.addCameraBitmap(NewCamera._flashBitmap);
+			FlxG.cameras.push(NewCamera);
+			return NewCamera;
+		}
+		
+		static public function resetCameras():void
+		{
+			var c:FlxCamera;
+			var i:uint = 0;
+			var l:uint = cameras.length;
+			while(i < l)
+			{
+				c = cameras[i++] as FlxCamera;
+				FlxG._game.removeChild(c._flashBitmap);
+				c.destroy();
+			}
+			cameras.length = 0;
+			camera = FlxG.addCamera(new FlxCamera(0,0,FlxG.width,FlxG.height));
+		}
 
 		/**
 		 * Called by <code>FlxGame</code> to set up <code>FlxG</code> during <code>FlxGame</code>'s constructor.
 		 */
-		static internal function init(Game:FlxGame,Width:uint,Height:uint):void
+		static internal function init(Game:FlxGame,Width:uint,Height:uint,Zoom:uint):void
 		{
-			_game = Game;
-			width = Width;
-			height = Height;
+			FlxG._game = Game;
+			FlxG.width = Width;
+			FlxG.height = Height;
 			
-			mute = false;
-			_volume = 0.5;
-			sounds = new FlxGroup();
+			FlxG.mute = false;
+			FlxG._volume = 0.5;
+			FlxG.sounds = new FlxGroup();
 			
-			clearBitmapCache();
+			FlxG.clearBitmapCache();
+
+			FlxCamera.defaultZoom = Zoom;
+			FlxG._cameraRect = new Rectangle();
+			FlxG.cameras = new Array();
 			
-			mouse = new Mouse();
-			keys = new Keyboard();
-			mobile = false;
+			FlxG.mouse = new Mouse();
+			FlxG.keys = new Keyboard();
+			FlxG.mobile = false;
 
 			FlxG.levels = new Array();
 			FlxG.scores = new Array();
-			FlxU.setWorldBounds(0,0,FlxG.width,FlxG.height);
+			FlxU.worldBounds = new FlxRect(0,0,FlxG.width,FlxG.height);
+			FlxQuadTree.divisions = 3;
 		}
 		
 		static internal function reset():void
 		{
-			clearBitmapCache();
-			quake = new Quake(_game._zoom);
-			if(flash != null)
-				flash.destroy();
-			flash = new Flash();
-			if(fade != null)
-				fade.destroy();
-			fade = new Fade();
+			FlxG.clearBitmapCache();
 			
-			resetInput();
-			destroySounds(true);
-			scroll = null;
-			_scrollTarget = null;
-			unfollow();
-			levels.length = 0;
-			scores.length = 0;
-			level = 0;
-			score = 0;
-			paused = false;
-			timeScale = 1.0;
+			FlxG.quake = new Quake(2);//_game._zoom);
+			if(FlxG.flash != null)
+				FlxG.flash.destroy();
+			FlxG.flash = new Flash();
+			if(FlxG.fade != null)
+				FlxG.fade.destroy();
+			FlxG.fade = new Fade();
+			
+			FlxG.resetInput();
+			FlxG.destroySounds(true);
+			FlxG.levels.length = 0;
+			FlxG.scores.length = 0;
+			FlxG.level = 0;
+			FlxG.score = 0;
+			FlxG.paused = false;
+			FlxG.timeScale = 1.0;
 			FlxG.elapsed = 0;
 			FlxG.globalSeed = Math.random();
 		}
-
-		/**
-		 * Internal function that updates the camera and parallax scrolling.
-		 */
-		static internal function doFollow():void
+		
+		static internal function lockCameras():void
 		{
-			if(followTarget != null)
+			var c:FlxCamera;
+			var b:FlxRect;
+			var i:uint = 0;
+			var l:uint = cameras.length;
+			while(i < l)
 			{
-				_scrollTarget.x = (width>>1)-followTarget.x-(followTarget.width>>1);
-				_scrollTarget.y = (height>>1)-followTarget.y-(followTarget.height>>1);
-				if((followLead != null) && (followTarget is FlxSprite))
-				{
-					_scrollTarget.x -= (followTarget as FlxSprite).velocity.x*followLead.x;
-					_scrollTarget.y -= (followTarget as FlxSprite).velocity.y*followLead.y;
-				}
-				scroll.x += (_scrollTarget.x-scroll.x)*followLerp*FlxG.elapsed;
-				scroll.y += (_scrollTarget.y-scroll.y)*followLerp*FlxG.elapsed;
-				
-				if(followMin != null)
-				{
-					if(scroll.x > followMin.x)
-						scroll.x = followMin.x;
-					if(scroll.y > followMin.y)
-						scroll.y = followMin.y;
-				}
-				
-				if(followMax != null)
-				{
-					if(scroll.x < followMax.x)
-						scroll.x = followMax.x;
-					if(scroll.y < followMax.y)
-						scroll.y = followMax.y;
-				}
+				c = cameras[i++] as FlxCamera;
+				if((c == null) || !c.exists || !c.visible)
+					continue;
+				c.buffer.lock();
+				c.buffer.fillRect(c._flashRect,FlxG.bgColor);
+			}
+		}
+		
+		static internal function unlockCameras():void
+		{
+			var c:FlxCamera;
+			var i:uint = 0;
+			var l:uint = cameras.length;
+			while(i < l)
+			{
+				c = cameras[i++] as FlxCamera;
+				if((c == null) || !c.exists || !c.visible)
+					continue;
+				//TODO: per-camera flash, fade and quake and mouse drawing
+				c.buffer.unlock();
+			}
+		}
+		
+		static internal function updateCameras():void
+		{
+			var c:FlxCamera;
+			var i:uint = 0;
+			var l:uint = cameras.length;
+			while(i < l)
+			{
+				c = cameras[i++] as FlxCamera;
+				if((c == null) || !c.exists || !c.visible || !c.active)
+					continue;
+				c.update();
+				c._flashBitmap.visible = c.exists && c.visible;
 			}
 		}
 		
@@ -822,7 +775,7 @@ package org.flixel
 		{
 			keys.update();
 			if(!_game._debuggerUp || !_game._debugger.hasMouse)
-				mouse.update(_game._buffer.mouseX,_game._buffer.mouseY);
+				mouse.update(camera._flashBitmap.mouseX,camera._flashBitmap.mouseY);
 		}
 	}
 }

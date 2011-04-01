@@ -18,16 +18,6 @@ package org.flixel.system
 		 * Helps to eliminate false collisions and/or rendering glitches caused by rounding errors
 		 */
 		static protected const ROUNDING_ERROR:Number = 0.0000001;
-
-		/**
-		 * This variable stores the dimensions of the root of the quad tree.
-		 * This is the eligible game collision space.
-		 */
-		static public var bounds:FlxRect;
-		/**
-		 * Controls the granularity of the quad tree.  Default is 3 (decent performance on large and small worlds).
-		 */
-		static public var divisions:uint;
 		/**
 		 * Flag for specifying that you want to add an object to the A list.
 		 */
@@ -36,6 +26,11 @@ package org.flixel.system
 		 * Flag for specifying that you want to add an object to the B list.
 		 */
 		static public const B_LIST:uint = 1;
+		
+		/**
+		 * Controls the granularity of the quad tree.  Default is 3 (decent performance on large and small worlds).
+		 */
+		static public var divisions:uint;
 		
 		/**
 		 * Whether this branch of the tree can be subdivided or not.

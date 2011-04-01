@@ -66,7 +66,7 @@ package org.flixel
 			exists = true;
 		}
 		
-		public function onScreen():Boolean
+		public function onScreen(Camera:FlxCamera=null):Boolean
 		{
 			return true;
 		}

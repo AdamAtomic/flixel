@@ -1,5 +1,9 @@
 package org.flixel
 {
+	import flash.geom.Rectangle;
+	
+	import org.flixel.system.fx.Flash;
+
 	/**
 	 * Stores a rectangle.
 	 */
@@ -68,6 +72,61 @@ package org.flixel
 		public function get bottom():Number
 		{
 			return y + height;
+		}
+		
+		/**
+		 * Instantiate a new rectangle.
+		 * 
+		 * @param	X		The X-coordinate of the point in space.
+		 * @param	Y		The Y-coordinate of the point in space.
+		 * @param	Width	Desired width of the rectangle.
+		 * @param	Height	Desired height of the rectangle.
+		 * 
+		 * @return	A reference to itself.
+		 */
+		public function make(X:Number=0, Y:Number=0, Width:Number=0, Height:Number=0):FlxRect
+		{
+			x = X;
+			y = Y;
+			width = Width;
+			height = Height;
+			return this;
+		}
+		
+		public function copyFrom(Rect:FlxRect):FlxRect
+		{
+			x = Rect.x;
+			y = Rect.y;
+			width = Rect.width;
+			height = Rect.height;
+			return this;
+		}
+		
+		public function copyTo(Rect:FlxRect):FlxRect
+		{
+			Rect.x = x;
+			Rect.y = y;
+			Rect.width = width;
+			Rect.height = height;
+			return Rect;
+		}
+		
+		public function copyFromFlash(FlashRect:Rectangle):FlxRect
+		{
+			x = FlashRect.x;
+			y = FlashRect.y;
+			width = FlashRect.width;
+			height = FlashRect.height;
+			return this;
+		}
+		
+		public function copyToFlash(FlashRect:Rectangle):Rectangle
+		{
+			FlashRect.x = x;
+			FlashRect.y = y;
+			FlashRect.width = width;
+			FlashRect.height = height;
+			return FlashRect;
 		}
 		
 		/**

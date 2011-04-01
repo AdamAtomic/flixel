@@ -102,7 +102,7 @@ package org.flixel
 			while(i < length)
 			{
 				b = members[i++] as FlxBasic;
-				if((b != null) && b.exists && b.visible && b.onScreen())
+				if((b != null) && b.exists && b.visible)
 				{
 					b.draw();
 					FlxGroup._VISIBLECOUNT++;
@@ -298,16 +298,21 @@ package org.flixel
 			_sortOrder = Order;
 			members.sort(sortHandler);
 		}
-		
-		public function setAll(VariableName:String,Value:Object):void
+
+		public function setAll(VariableName:String,Value:Object,Recurse:Boolean=true):void
 		{
 			var b:FlxBasic;
 			var i:uint = 0;
 			while(i < length)
 			{
 				b = members[i++] as FlxBasic;
-				if((b != null) && b[VariableName] != null)
-					b[VariableName] = Value;
+				if(b != null)
+				{
+					if(Recurse && (b is FlxGroup))
+						(b as FlxGroup).setAll(VariableName,Value);
+					else
+						b[VariableName] = Value;
+				}
 			}
 		}
 		

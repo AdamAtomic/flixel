@@ -16,8 +16,8 @@ package org.flixel
 	import flash.utils.Timer;
 	import flash.utils.getTimer;
 	
-	import org.flixel.system.FlxReplay;
 	import org.flixel.system.FlxDebugger;
+	import org.flixel.system.FlxReplay;
 
 	/**
 	 * FlxGame is the heart of all flixel games, and contains a bunch of basic game loops and things.
@@ -50,10 +50,8 @@ package org.flixel
 		 */
 		public var debugOnRelease:Boolean;
 
-		//basic display stuff
+		//a reference to the current game state
 		internal var _state:FlxState;
-		internal var _buffer:Bitmap;
-		internal var _zoom:uint;
 		
 		//startup
 		protected var _iState:Class;
@@ -93,7 +91,7 @@ package org.flixel
 		 * @param	GameSizeY		The height of your game in pixels (e.g. 240).
 		 * @param	InitialState	The class name of the state you want to create and switch to first (e.g. MenuState).
 		 * @param	FrameRate		How frequently the game should update (default is 60 times per second).
-		 * @param	Zoom			The level of zoom (e.g. 2 means all pixels are now rendered twice as big).
+		 * @param	Zoom			The default level of zoom for the game's cameras (default 2 = all pixels are now drawn at 2x).
 		 */
 		public function FlxGame(GameSizeX:uint,GameSizeY:uint,InitialState:Class,Zoom:uint=2)
 		{
@@ -105,9 +103,7 @@ package org.flixel
 			_soundTray = new Sprite();
 			
 			//basic display and update setup stuff
-			_zoom = Zoom;
-			FlxState.bgColor = 0xff000000;
-			FlxG.init(this,GameSizeX,GameSizeY);
+			FlxG.init(this,GameSizeX,GameSizeY,Zoom);
 			_step = 1/60;
 			_total = 0;
 			_accumulator = 0;
@@ -339,6 +335,8 @@ package org.flixel
 				else
 				{
 					_accumulator += ems/1000;
+					if(_accumulator > 4/_flashFramerate)
+						_accumulator = 4/_flashFramerate;
 					while(_accumulator >= _step)
 					{
 						step();
@@ -361,16 +359,14 @@ package org.flixel
 		protected function switchState():void
 		{ 
 			//Basic reset stuff
-			FlxG.unfollow();
+			FlxG.resetCameras();
 			FlxG.resetInput();
 			FlxG.destroySounds();
-			FlxG.flash.stop();
-			FlxG.fade.stop();
-			FlxG.quake.stop();
+			//FlxG.flash.stop();
+			//FlxG.fade.stop();
+			//FlxG.quake.stop();
 			if(_debugger != null)
 				_debugger.watch.removeAll();
-			_buffer.x = 0;
-			_buffer.y = 0;
 			
 			//Destroy the old state (if there is an old state)
 			if(_state != null)
@@ -505,19 +501,19 @@ package org.flixel
 			FlxG.updateSounds();
 
 			//Update the camera and game state
-			FlxG.doFollow();
-			if(FlxG.mouse.cursor.active)
-				FlxG.mouse.cursor.update();
+			FlxG.updateCameras();
+			//if(FlxG.mouse.cursor.active)
+			//	FlxG.mouse.cursor.update();
 			_state.update();
 			
 			//Update the various special effects
-			if(FlxG.flash.exists)
-				FlxG.flash.update();
-			if(FlxG.fade.exists)
-				FlxG.fade.update();
-			FlxG.quake.update();
-			_buffer.x = FlxG.quake.x;
-			_buffer.y = FlxG.quake.y;
+			//if(FlxG.flash.exists)
+			//	FlxG.flash.update();
+			//if(FlxG.fade.exists)
+			//	FlxG.fade.update();
+			//FlxG.quake.update();
+			//_buffer.x = FlxG.quake.x;
+			//_buffer.y = FlxG.quake.y;
 			
 			if(_debuggerUp)
 				_debugger.perf.flixelUpdate(getTimer()-mark);
@@ -529,20 +525,18 @@ package org.flixel
 		protected function draw():void
 		{
 			var mark:uint = getTimer();
-			FlxG.buffer.lock();
-			_state.preProcess();
+			FlxG.lockCameras();
 			_state.draw();
-			if(FlxG.flash.exists)
-				FlxG.flash.draw();
-			if(FlxG.fade.exists)
-				FlxG.fade.draw();
-			if(FlxG.mouse.cursor != null)
-			{
-				if(FlxG.mouse.cursor.visible)
-					FlxG.mouse.cursor.draw();
-			}
-			_state.postProcess();
-			FlxG.buffer.unlock();
+			//if(FlxG.flash.exists)
+			//	FlxG.flash.draw();
+			//if(FlxG.fade.exists)
+			//	FlxG.fade.draw();
+			//if(FlxG.mouse.cursor != null)
+			//{
+			//	if(FlxG.mouse.cursor.visible)
+			//		FlxG.mouse.cursor.draw();
+			//}
+			FlxG.unlockCameras();
 			if(_debuggerUp)
 				_debugger.perf.flixelDraw(getTimer()-mark);
 		}
@@ -563,47 +557,50 @@ package org.flixel
 			stage.scaleMode = StageScaleMode.NO_SCALE;
             stage.align = StageAlign.TOP_LEFT;
             stage.frameRate = _flashFramerate;
-			_buffer = new Bitmap(new BitmapData(FlxG.width,FlxG.height,true,FlxState.bgColor));
-			_buffer.scaleX = _buffer.scaleY = _zoom;
-			addChild(_buffer);
-			FlxG.buffer = _buffer.bitmapData;
-			
-			//Set up the FlxState.screen static reference (sometimes easier/better than using FlxG.buffer)
-			var s:FlxSprite = new FlxSprite();
-			s.makeGraphic(FlxG.width,FlxG.height,0,true);
-			s.origin.x = s.origin.y = 0;
-			s.antialiasing = true;
-			s.exists = false;
-			s.solid = false;
-			s.fixed = true;
-			s.unsafeBind(FlxG.buffer);
-			FlxState.screen = s;
-			
-			//Initialize game console
-			if(!FlxG.mobile && (FlxG.debug || debugOnRelease))
-			{
-				_debugger = new FlxDebugger(FlxG.width*_zoom,FlxG.height*_zoom);
-				addChild(_debugger);
-			}
 			
 			//Add basic input even listeners
 			stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 			stage.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
+			stage.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel);
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 			stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
-			if(!FlxG.mobile)
+			
+			//Let mobile devs opt out of unnecessary overlays.
+			if(FlxG.mobile)
 			{
-				stage.addEventListener(MouseEvent.MOUSE_OUT, FlxG.mouse.handleMouseOut);
-				stage.addEventListener(MouseEvent.MOUSE_OVER, FlxG.mouse.handleMouseOver);
-				stage.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel);
-				stage.addEventListener(Event.DEACTIVATE, onFocusLost);
-				stage.addEventListener(Event.ACTIVATE, onFocus);
-				
-				createSoundTray();
-				createFocusScreen();
+				addEventListener(Event.ENTER_FRAME, onEnterFrame);
+				return;
 			}
 			
+			//Debugger overlay
+			if(FlxG.debug || debugOnRelease)
+			{
+				_debugger = new FlxDebugger(FlxG.width*FlxCamera.defaultZoom,FlxG.height*FlxCamera.defaultZoom);
+				addChild(_debugger);
+			}
+			
+			//Volume display tab
+			createSoundTray();
+			
+			//Focus gained/lost monitoring
+			stage.addEventListener(MouseEvent.MOUSE_OUT, FlxG.mouse.handleMouseOut);
+			stage.addEventListener(MouseEvent.MOUSE_OVER, FlxG.mouse.handleMouseOver);
+			stage.addEventListener(Event.DEACTIVATE, onFocusLost);
+			stage.addEventListener(Event.ACTIVATE, onFocus);
+			createFocusScreen();
+			
+			//Finally, set up an event for the actual game loop stuff
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
+		}
+		
+		internal function addCameraBitmap(CameraBitmap:Bitmap):void
+		{
+			if(FlxG.mobile)
+				addChild(CameraBitmap);
+			else if(_debugger != null)
+				addChildAt(CameraBitmap,getChildIndex(_debugger));
+			else
+				addChildAt(CameraBitmap,getChildIndex(_soundTray));
 		}
 		
 		/**
@@ -615,7 +612,7 @@ package org.flixel
 			_soundTray.scaleX = 2;
 			_soundTray.scaleY = 2;
 			var tmp:Bitmap = new Bitmap(new BitmapData(80,30,true,0x7F000000));
-			_soundTray.x = (FlxG.width/2)*_zoom-(tmp.width/2)*_soundTray.scaleX;
+			_soundTray.x = (FlxG.width/2)*FlxCamera.defaultZoom-(tmp.width/2)*_soundTray.scaleX;
 			_soundTray.addChild(tmp);
 			
 			var text:TextField = new TextField();
@@ -668,8 +665,8 @@ package org.flixel
 		protected function createFocusScreen():void
 		{
 			var g:Graphics = _focus.graphics;
-			var w:uint = FlxG.width*_zoom;
-			var h:uint = FlxG.height*_zoom;
+			var w:uint = FlxG.width*FlxCamera.defaultZoom;
+			var h:uint = FlxG.height*FlxCamera.defaultZoom;
 			
 			//draw transparent black backdrop
 			g.moveTo(0,0);

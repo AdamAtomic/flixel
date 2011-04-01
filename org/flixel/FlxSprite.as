@@ -92,6 +92,8 @@ package org.flixel
 		 */
 		public var dirty:Boolean;
 		
+		public var cameras:Array;
+		
 		//Animation helpers
 		protected var _animations:Array;
 		protected var _flipped:uint;
@@ -141,6 +143,7 @@ package org.flixel
 			_color = 0x00ffffff;
 			blend = null;
 			antialiasing = false;
+			cameras = null;
 			
 			finished = false;
 			_facing = RIGHT;
@@ -356,8 +359,7 @@ package org.flixel
 			_flashRect2.height = _pixels.height;
 			if((_framePixels == null) || (_framePixels.width != width) || (_framePixels.height != height))
 				_framePixels = new BitmapData(width,height);
-			origin.x = frameWidth*0.5;
-			origin.y = frameHeight*0.5;
+			origin.make(frameWidth*0.5,frameHeight*0.5);
 			_framePixels.copyPixels(_pixels,_flashRect,_flashPointZero);
 			frames = (_flashRect2.width / _flashRect.width) * (_flashRect2.height / _flashRect.height);
 			if(_ct != null) _framePixels.colorTransform(_flashRect,_ct);
@@ -418,12 +420,17 @@ package org.flixel
 		 */
 		public function set alpha(Alpha:Number):void
 		{
-			if(Alpha > 1) Alpha = 1;
-			if(Alpha < 0) Alpha = 0;
-			if(Alpha == _alpha) return;
+			if(Alpha > 1)
+				Alpha = 1;
+			if(Alpha < 0)
+				Alpha = 0;
+			if(Alpha == _alpha)
+				return;
 			_alpha = Alpha;
-			if((_alpha != 1) || (_color != 0x00ffffff)) _ct = new ColorTransform((_color>>16)*0.00392,(_color>>8&0xff)*0.00392,(_color&0xff)*0.00392,_alpha);
-			else _ct = null;
+			if((_alpha != 1) || (_color != 0x00ffffff))
+				_ct = new ColorTransform((_color>>16)*0.00392,(_color>>8&0xff)*0.00392,(_color&0xff)*0.00392,_alpha);
+			else
+				_ct = null;
 			dirty = true;
 		}
 		
@@ -446,8 +453,10 @@ package org.flixel
 			if(_color == Color)
 				return;
 			_color = Color;
-			if((_alpha != 1) || (_color != 0x00ffffff)) _ct = new ColorTransform((_color>>16)*0.00392,(_color>>8&0xff)*0.00392,(_color&0xff)*0.00392,_alpha);
-			else _ct = null;
+			if((_alpha != 1) || (_color != 0x00ffffff))
+				_ct = new ColorTransform((_color>>16)*0.00392,(_color>>8&0xff)*0.00392,(_color&0xff)*0.00392,_alpha);
+			else
+				_ct = null;
 			dirty = true;
 		}
 		
@@ -589,26 +598,33 @@ package org.flixel
 			}
 			if(dirty)
 				calcFrame();
-
-			getScreenXY(_point);
-			_flashPoint.x = _point.x;
-			_flashPoint.y = _point.y;
 			
-			//Simple render
-			if(((angle == 0) || (_bakedRotation > 0)) && (scale.x == 1) && (scale.y == 1) && (blend == null))
+			if(cameras == null)
+				cameras = FlxG.cameras;
+			var c:FlxCamera;
+			var i:uint = 0;
+			var l:uint = cameras.length;
+			while(i < l)
 			{
-				FlxG.buffer.copyPixels(_framePixels,_flashRect,_flashPoint,null,null,true);
-				return;
+				c = cameras[i++];
+				if(!onScreen(c))
+					continue;
+				getScreenXY(_point,c).copyToFlash(_flashPoint);
+				
+				//Simple render
+				if(((angle == 0) || (_bakedRotation > 0)) && (scale.x == 1) && (scale.y == 1) && (blend == null))
+					c.buffer.copyPixels(_framePixels,_flashRect,_flashPoint,null,null,true);
+				else //Advanced render
+				{
+					_mtx.identity();
+					_mtx.translate(-origin.x,-origin.y);
+					_mtx.scale(scale.x,scale.y);
+					if((angle != 0) && (_bakedRotation <= 0))
+						_mtx.rotate(angle * 0.017453293);
+					_mtx.translate(_point.x+origin.x,_point.y+origin.y);
+					c.buffer.draw(_framePixels,_mtx,null,blend,null,antialiasing);
+				}
 			}
-			
-			//Advanced render
-			_mtx.identity();
-			_mtx.translate(-origin.x,-origin.y);
-			_mtx.scale(scale.x,scale.y);
-			if(angle != 0)
-				_mtx.rotate(angle * 0.017453293);
-			_mtx.translate(_point.x+origin.x,_point.y+origin.y);
-			FlxG.buffer.draw(_framePixels,_mtx,null,blend,null,antialiasing);
 		}
 		
 		/**
@@ -636,20 +652,21 @@ package org.flixel
 		 * 
 		 * @param	X			The X coordinate of the point.
 		 * @param	Y			The Y coordinate of the point.
+		 * @param	Camera		Specify which game camera you want.  If null getScreenXY() will just grab the first global camera.
 		 * @param	PerPixel	Whether or not to use per pixel collision checking.
 		 * 
 		 * @return	Whether or not the point overlaps this object.
 		 */
-		override public function overlapsPoint(X:Number,Y:Number,PerPixel:Boolean = false):Boolean
+		override public function overlapsPoint(X:Number,Y:Number,Camera:FlxCamera=null,PerPixel:Boolean = false):Boolean
 		{
-			X = X + FlxU.floor(FlxG.scroll.x);
-			Y = Y + FlxU.floor(FlxG.scroll.y);
-			getScreenXY(_point);
+			if(Camera == null)
+				Camera = FlxG.camera;
+			X = X + FlxU.floor(Camera.scroll.x);
+			Y = Y + FlxU.floor(Camera.scroll.y);
+			getScreenXY(_point,Camera);
 			if(PerPixel)
 				return _framePixels.hitTest(new Point(0,0),0xFF,new Point(X-_point.x,Y-_point.y));
-			else if((X <= _point.x) || (X >= _point.x+frameWidth) || (Y <= _point.y) || (Y >= _point.y+frameHeight))
-				return false;
-			return true;
+			return (X < _point.x) && (X < _point.x+frameWidth) && (Y > _point.y) && (Y < _point.y+frameHeight);
 		}
 		
 		/**
@@ -764,29 +781,37 @@ package org.flixel
 		/**
 		 * Call this function to figure out the on-screen position of the object.
 		 * 
+		 * @param	Camera		Specify which game camera you want.  If null getScreenXY() will just grab the first global camera.
 		 * @param	P	Takes a <code>Point</code> object and assigns the post-scrolled X and Y values of this object to it.
 		 * 
 		 * @return	The <code>Point</code> you passed in, or a new <code>Point</code> if you didn't pass one, containing the screen X and Y position of this object.
 		 */
-		override public function getScreenXY(Point:FlxPoint=null):FlxPoint
+		override public function getScreenXY(Point:FlxPoint=null,Camera:FlxCamera=null):FlxPoint
 		{
-			if(Point == null) Point = new FlxPoint();
-			Point.x = FlxU.floor(x + ROUNDING_ERROR)+FlxU.floor(FlxG.scroll.x*scrollFactor.x) - offset.x;
-			Point.y = FlxU.floor(y + ROUNDING_ERROR)+FlxU.floor(FlxG.scroll.y*scrollFactor.y) - offset.y;
+			if(Point == null)
+				Point = new FlxPoint();
+			if(Camera == null)
+				Camera = FlxG.camera;
+			Point.x = FlxU.floor(x + ROUNDING_ERROR)-FlxU.floor(Camera.scroll.x*scrollFactor.x) - offset.x;
+			Point.y = FlxU.floor(y + ROUNDING_ERROR)-FlxU.floor(Camera.scroll.y*scrollFactor.y) - offset.y;
 			return Point;
 		}
 		
 		/**
 		 * Check and see if this object is currently on screen.
 		 * 
+		 * @param	Camera		Specify which game camera you want.  If null getScreenXY() will just grab the first global camera.
+		 * 
 		 * @return	Whether the object is on screen or not.
 		 */
-		override public function onScreen():Boolean
+		override public function onScreen(Camera:FlxCamera=null):Boolean
 		{
-			getScreenXY(_point);
+			if(Camera == null)
+				Camera = FlxG.camera;
+			getScreenXY(_point,Camera);
 			if(((angle == 0) || (_bakedRotation > 0)) && (scale.x == 1) && (scale.y == 1))
 			{
-				return ((_point.x + frameWidth > 0) && (_point.x < FlxG.width) && (_point.y + frameHeight > 0) && (_point.y < FlxG.height));
+				return ((_point.x + frameWidth > 0) && (_point.x < Camera.width) && (_point.y + frameHeight > 0) && (_point.y < Camera.height));
 			}
 			else
 			{
@@ -795,7 +820,7 @@ package org.flixel
 				var radius:Number = Math.sqrt(hw*hw+hh*hh)*((scale.x >= scale.y)?scale.x:scale.y);
 				_point.x += hw;
 				_point.y += hh;
-				return ((_point.x + radius > 0) && (_point.x - radius < FlxG.width) && (_point.y + radius > 0) && (_point.y - radius < FlxG.height));
+				return ((_point.x + radius > 0) && (_point.x - radius < Camera.width) && (_point.y + radius > 0) && (_point.y - radius < Camera.height));
 			}
 		}
 		
@@ -827,17 +852,6 @@ package org.flixel
 			if(_ct != null) _framePixels.colorTransform(_flashRect,_ct);
 			if(_callback != null) _callback(_curAnim.name,_curFrame,_caf);
 			dirty = false;
-		}
-		
-		/**
-		 * Internal function, currently only used to quickly update FlxState.screen for post-processing.
-		 * Potentially super-unsafe, since it doesn't call <code>resetHelpers()</code>!
-		 * 
-		 * @param	Pixels		The <code>BitmapData</code> object you want to point at.
-		 */
-		internal function unsafeBind(Pixels:BitmapData):void
-		{
-			_pixels = _framePixels = Pixels;
 		}
 	}
 }

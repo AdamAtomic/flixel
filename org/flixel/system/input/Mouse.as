@@ -160,8 +160,8 @@ package org.flixel.system.input
 		 */
 		protected function updateCursor():void
 		{
-			x = screenX-FlxU.floor(FlxG.scroll.x);
-			y = screenY-FlxU.floor(FlxG.scroll.y);
+			x = screenX;//-FlxU.floor(FlxG.scroll.x);
+			y = screenY;//-FlxU.floor(FlxG.scroll.y);
 			if(cursor != null)
 			{
 				cursor.x = x;

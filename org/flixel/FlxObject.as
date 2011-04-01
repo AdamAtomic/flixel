@@ -245,14 +245,8 @@ package org.flixel
 		 */
 		public function refreshHulls():void
 		{
-			colHullX.x = x;
-			colHullX.y = y;
-			colHullX.width = width;
-			colHullX.height = height;
-			colHullY.x = x;
-			colHullY.y = y;
-			colHullY.width = width;
-			colHullY.height = height;
+			colHullX.make(x,y,width,height);
+			colHullY.copyFrom(colHullX);
 		}
 		
 		/**
@@ -290,8 +284,7 @@ package org.flixel
 			//Update collision data with new movement results
 			if(!solid)
 				return;
-			colVector.x = xd;
-			colVector.y = yd;
+			colVector.make(xd,yd);
 			colHullX.width += ((colVector.x>0)?colVector.x:-colVector.x);
 			if(colVector.x < 0)
 				colHullX.x += colVector.x;
@@ -321,25 +314,24 @@ package org.flixel
 			}
 		}
 		
-
-		
 		/**
 		 * Checks to see if a point in 2D space overlaps this <code>FlxObject</code> object.
 		 * 
 		 * @param	X			The X coordinate of the point.
 		 * @param	Y			The Y coordinate of the point.
+		 * @param	Camera		Specify which game camera you want.  If null getScreenXY() will just grab the first global camera.
 		 * @param	PerPixel	Whether or not to use per pixel collision checking (only available in <code>FlxSprite</code> subclass).
 		 * 
 		 * @return	Whether or not the point overlaps this object.
 		 */
-		public function overlapsPoint(X:Number,Y:Number,PerPixel:Boolean = false):Boolean
+		public function overlapsPoint(X:Number,Y:Number,Camera:FlxCamera=null,PerPixel:Boolean = false):Boolean
 		{
-			X = X + FlxU.floor(FlxG.scroll.x);
-			Y = Y + FlxU.floor(FlxG.scroll.y);
-			getScreenXY(_point);
-			if((X <= _point.x) || (X >= _point.x+width) || (Y <= _point.y) || (Y >= _point.y+height))
-				return false;
-			return true;
+			if(Camera == null)
+				Camera = FlxG.camera;
+			X = X + FlxU.floor(Camera.scroll.x);
+			Y = Y + FlxU.floor(Camera.scroll.y);
+			getScreenXY(_point,Camera);
+			return (X > _point.x) && (X < _point.x+width) && (Y > _point.y) && (Y < _point.y+height);
 		}
 		
 		/**
@@ -454,35 +446,42 @@ package org.flixel
 		/**
 		 * Call this function to figure out the on-screen position of the object.
 		 * 
-		 * @param	P	Takes a <code>Point</code> object and assigns the post-scrolled X and Y values of this object to it.
+		 * @param	Camera		Specify which game camera you want.  If null getScreenXY() will just grab the first global camera.
+		 * @param	Point		Takes a <code>FlxPoint</code> object and assigns the post-scrolled X and Y values of this object to it.
 		 * 
 		 * @return	The <code>Point</code> you passed in, or a new <code>Point</code> if you didn't pass one, containing the screen X and Y position of this object.
 		 */
-		public function getScreenXY(Point:FlxPoint=null):FlxPoint
+		public function getScreenXY(Point:FlxPoint=null,Camera:FlxCamera=null):FlxPoint
 		{
-			if(Point == null) Point = new FlxPoint();
-			Point.x = FlxU.floor(x + ROUNDING_ERROR)+FlxU.floor(FlxG.scroll.x*scrollFactor.x);
-			Point.y = FlxU.floor(y + ROUNDING_ERROR)+FlxU.floor(FlxG.scroll.y*scrollFactor.y);
+			if(Point == null)
+				Point = new FlxPoint();
+			if(Camera == null)
+				Camera = FlxG.camera;
+			Point.x = FlxU.floor(x + ROUNDING_ERROR)-FlxU.floor(Camera.scroll.x*scrollFactor.x);
+			Point.y = FlxU.floor(y + ROUNDING_ERROR)-FlxU.floor(Camera.scroll.y*scrollFactor.y);
 			return Point;
 		}
 		
 		/**
 		 * Check and see if this object is currently on screen.
 		 * 
+		 * @param	Camera		Specify which game camera you want.  If null getScreenXY() will just grab the first global camera.
+		 * 
 		 * @return	Whether the object is on screen or not.
 		 */
-		override public function onScreen():Boolean
+		override public function onScreen(Camera:FlxCamera=null):Boolean
 		{
-			getScreenXY(_point);
-			return ((_point.x + width > 0) && (_point.x < FlxG.width) && (_point.y + height > 0) && (_point.y < FlxG.height))
+			if(Camera == null)
+				Camera = FlxG.camera;
+			getScreenXY(_point,Camera);
+			return (_point.x + width > 0) && (_point.x < Camera.width) && (_point.y + height > 0) && (_point.y < Camera.height);
 		}
 		
 		public function getMidpoint(Point:FlxPoint=null):FlxPoint
 		{
-			if(Point == null) Point = new FlxPoint();
-			Point.x = x + width/2;
-			Point.y = y + height/2;
-			return Point;
+			if(Point == null)
+				Point = new FlxPoint();
+			return Point.make(x + (width>>1),y + (height>>1));
 		}
 		
 		/**
@@ -497,7 +496,7 @@ package org.flixel
 			revive();
 			x = X;
 			y = Y;
-			velocity.x = velocity.y = 0;
+			velocity.make();
 			refreshHulls();
 		}
 		
@@ -510,9 +509,7 @@ package org.flixel
 		 */
 		public function overlaps(Object:FlxObject):Boolean
 		{
-			if((Object.x + Object.width <= x) || (Object.x >= x+width) || (Object.y + Object.height <= y) || (Object.y >= y+height))
-				return false;
-			return true;
+			return (Object.x + Object.width > x) && (Object.x < x + width) && (Object.y + Object.height > y) && (Object.y < y + height);
 		}
 		
 		/*

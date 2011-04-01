@@ -15,6 +15,10 @@ package org.flixel
 		 */
 		static protected const ROUNDING_ERROR:Number = 0.0000001;
 		/**
+		 * The dimensions of the game world, used for the quad tree for collisions and overlap checks.
+		 */
+		static public var worldBounds:FlxRect;
+		/**
 		 * The last quad tree you generated will be stored here for reference or whatever.
 		 */
 		static public var quadTree:FlxQuadTree;
@@ -452,33 +456,6 @@ package org.flixel
 			}
 			return Velocity;
 		}
-
-		/**
-		 * Call this function to specify a more efficient boundary for your game world.
-		 * This boundary is used by <code>overlap()</code> and <code>collide()</code>, so it
-		 * can't hurt to have it be the right size!  Flixel will invent a size for you, but
-		 * it's pretty huge - 256x the size of the screen, whatever that may be.
-		 * Leave width and height empty if you want to just update the game world's position.
-		 * 
-		 * @param	X			The X-coordinate of the left side of the game world.
-		 * @param	Y			The Y-coordinate of the top of the game world.
-		 * @param	Width		Desired width of the game world.
-		 * @param	Height		Desired height of the game world.
-		 * @param	Divisions	Pass a non-zero value to set <code>quadTreeDivisions</code>.  Default value is 3.
-		 */
-		static public function setWorldBounds(X:Number=0, Y:Number=0, Width:Number=0, Height:Number=0, Divisions:uint=3):void
-		{
-			if(FlxQuadTree.bounds == null)
-				FlxQuadTree.bounds = new FlxRect();
-			FlxQuadTree.bounds.x = X;
-			FlxQuadTree.bounds.y = Y;
-			if(Width > 0)
-				FlxQuadTree.bounds.width = Width;
-			if(Height > 0)
-				FlxQuadTree.bounds.height = Height;
-			if(Divisions > 0)
-				FlxQuadTree.divisions = Divisions;
-		}
 		
 		/**
 		 * Call this function to see if one <code>FlxObject</code> overlaps another.
@@ -499,7 +476,7 @@ package org.flixel
 				return false;
 			if(quadTree != null)
 				quadTree.destroy();
-			quadTree = new FlxQuadTree(FlxQuadTree.bounds.x,FlxQuadTree.bounds.y,FlxQuadTree.bounds.width,FlxQuadTree.bounds.height);
+			quadTree = new FlxQuadTree(worldBounds.x,worldBounds.y,worldBounds.width,worldBounds.height);
 			quadTree.add(ObjectOrGroup1,FlxQuadTree.A_LIST);
 			if(ObjectOrGroup1 === ObjectOrGroup2)
 				return quadTree.overlap(false,Callback);
@@ -525,7 +502,7 @@ package org.flixel
 				return false;
 			if(quadTree != null)
 				quadTree.destroy();
-			quadTree = new FlxQuadTree(FlxQuadTree.bounds.x,FlxQuadTree.bounds.y,FlxQuadTree.bounds.width,FlxQuadTree.bounds.height);
+			quadTree = new FlxQuadTree(worldBounds.x,worldBounds.y,worldBounds.width,worldBounds.height);
 			quadTree.add(ObjectOrGroup1,FlxQuadTree.A_LIST);
 			var match:Boolean = ObjectOrGroup1 === ObjectOrGroup2;
 			if(!match)

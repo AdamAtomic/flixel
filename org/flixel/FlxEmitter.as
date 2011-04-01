@@ -76,6 +76,7 @@ package org.flixel
 		 * Internal counter for figuring out how many particles to launch.
 		 */
 		protected var _counter:uint;
+		protected var _point:FlxPoint;
 		
 		/**
 		 * Creates a new <code>FlxEmitter</code> object at a specific position.
@@ -102,6 +103,7 @@ package org.flixel
 			_counter = 0;
 			_explode = true;
 			on = false;
+			_point = new FlxPoint();
 			
 			initEmitter(X, Y, Size);
 		}
@@ -119,6 +121,7 @@ package org.flixel
 			minParticleSpeed = null;
 			maxParticleSpeed = null;
 			particleDrag = null;
+			_point = null;
 			super.destroy();
 		}
 		
@@ -177,8 +180,7 @@ package org.flixel
 					sh = s.height;
 					s.width *= Collide;
 					s.height *= Collide;
-					s.offset.x = (sw-s.width)/2;
-					s.offset.y = (sh-s.height)/2;
+					s.offset.make(((sw-s.width)>>1),((sh-s.height)>>1));
 					s.solid = true;
 				}
 				else
@@ -324,8 +326,7 @@ package org.flixel
 			if(p.angularVelocity != 0)
 				p.angle = FlxG.random()*360-180;
 			
-			p.drag.x = particleDrag.x;
-			p.drag.y = particleDrag.y;
+			p.drag.copyFrom(particleDrag);
 			p.onEmit();
 		}
 		
@@ -336,8 +337,9 @@ package org.flixel
 		 */
 		public function at(Object:FlxObject):void
 		{
-			x = Object.x + Object.width/2 - width/2;
-			y = Object.y + Object.height/2 - height/2;
+			Object.getMidpoint(_point);
+			x = _point.x - (width>>1);
+			y = _point.y - (height>>1);
 		}
 		
 		/**

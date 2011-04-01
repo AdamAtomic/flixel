@@ -4,6 +4,8 @@ package org.flixel
 	import flash.display.BitmapData;
 	import flash.geom.Matrix;
 	import flash.geom.Rectangle;
+	
+	import org.flixel.system.FlxTilemapBuffer;
 
 	/**
 	 * This is a traditional tilemap display and collision class.
@@ -47,10 +49,6 @@ package org.flixel
 		 * Set this flag to use one of the 16-tile binary auto-tile algorithms (OFF, AUTO, or ALT).
 		 */
 		public var auto:uint;
-		/**
-		 * Set this flag to true to force the tilemap to re-render itself.
-		 */
-		public var dirty:Boolean;
 		
 		/**
 		 * Read-only variable, do NOT recommend changing after the map is loaded!
@@ -64,15 +62,16 @@ package org.flixel
 		 * Read-only variable, do NOT recommend changing after the map is loaded!
 		 */
 		public var totalTiles:uint;
+		
+		public var cameras:Array;
+		
 		/**
 		 * Rendering helper.
 		 */
 		protected var _flashRect:Rectangle;
-		protected var _flashRect2:Rectangle;
 		
-		protected var _pixels:BitmapData;
-		protected var _buffer:BitmapData;
-		protected var _bufferLoc:FlxPoint;
+		protected var _tiles:BitmapData;
+		protected var _buffers:Array;
 		protected var _data:Array;
 		protected var _rects:Array;
 		protected var _tileWidth:uint;
@@ -95,29 +94,30 @@ package org.flixel
 			widthInTiles = 0;
 			heightInTiles = 0;
 			totalTiles = 0;
-			_buffer = null;
-			_bufferLoc = new FlxPoint();
-			_flashRect2 = new Rectangle();
-			_flashRect = _flashRect2;
+			_buffers = new Array();
+			_flashRect = null;
 			_data = null;
 			_tileWidth = 0;
 			_tileHeight = 0;
 			_rects = null;
-			_pixels = null;
+			_tiles = null;
 			_block = new FlxObject();
 			_block.width = _block.height = 0;
 			_block.fixed = true;
 			_callbacks = new Array();
 			fixed = true;
+			cameras = null;
 		}
 		
 		override public function destroy():void
 		{
 			_flashRect = null;
-			_flashRect2 = null;
-			_pixels = null;
-			_buffer = null;
-			_bufferLoc = null;
+			_tiles = null;
+			var i:uint = 0;
+			var l:uint = _buffers.length;
+			while(i < l)
+				(_buffers[i++] as FlxTilemapBuffer).destroy();
+			_buffers = null;
 			_data = null;
 			_rects = null;
 			_block = null;
@@ -137,9 +137,7 @@ package org.flixel
 		 * @return	A pointer this instance of FlxTilemap, for chaining as usual :)
 		 */
 		public function loadMap(MapData:String, TileGraphic:Class, TileWidth:uint=0, TileHeight:uint=0):FlxTilemap
-		{
-			dirty = true;
-			
+		{			
 			//Figure out the map dimensions based on the data string
 			var cols:Array;
 			var rows:Array = MapData.split("\n");
@@ -174,10 +172,10 @@ package org.flixel
 			}
 
 			//Figure out the size of the tiles
-			_pixels = FlxG.addBitmap(TileGraphic);
+			_tiles = FlxG.addBitmap(TileGraphic);
 			_tileWidth = TileWidth;
 			if(_tileWidth == 0)
-				_tileWidth = _pixels.height;
+				_tileWidth = _tiles.height;
 			_tileHeight = TileHeight;
 			if(_tileHeight == 0)
 				_tileHeight = _tileWidth;
@@ -191,14 +189,6 @@ package org.flixel
 			i = 0;
 			while(i < totalTiles)
 				updateTile(i++);
-			
-			//Also need to allocate a buffer to hold the rendered tiles
-			if(_buffer == null)
-			{
-				var bw:uint = (FlxU.ceil(FlxG.width / _tileWidth) + 1)*_tileWidth;
-				var bh:uint = (FlxU.ceil(FlxG.height / _tileHeight) + 1)*_tileHeight;
-				_buffer = new BitmapData(bw,bh,true,0);
-			}
 
 			//Pre-set some helper variables for later
 			_screenRows = Math.ceil(FlxG.height/_tileHeight)+1;
@@ -210,23 +200,18 @@ package org.flixel
 
 			refreshHulls();
 			
-			_flashRect.x = 0;
-			_flashRect.y = 0;
-			_flashRect.width = _buffer.width;
-			_flashRect.height = _buffer.height;
-			
 			return this;
 		}
 
 		/**
 		 * Internal function that actually renders the tilemap to the tilemap buffer.  Called by render().
 		 */
-		protected function drawTilemap():void
+		protected function drawTilemap(Buffer:FlxTilemapBuffer,Camera:FlxCamera):void
 		{
-			_buffer.fillRect(_flashRect,0);
+			Buffer.fill();
 
 			//Copy tile images into the tile buffer
-			getScreenXY(_point);
+			getScreenXY(_point,Camera);
 			_flashPoint.x = _point.x;
 			_flashPoint.y = _point.y;
 			var tx:int = Math.floor(-_flashPoint.x/_tileWidth);
@@ -249,7 +234,7 @@ package org.flixel
 				{
 					_flashRect = _rects[cri++] as Rectangle;
 					if(_flashRect != null)
-						_buffer.copyPixels(_pixels,_flashRect,_flashPoint,null,null,true);
+						Buffer.pixels.copyPixels(_tiles,_flashRect,_flashPoint,null,null,true);
 					_flashPoint.x += _tileWidth;
 					c++;
 				}
@@ -257,9 +242,8 @@ package org.flixel
 				_flashPoint.y += _tileHeight;
 				r++;
 			}
-			_flashRect = _flashRect2;
-			_bufferLoc.x = tx*_tileWidth;
-			_bufferLoc.y = ty*_tileHeight;
+			Buffer.x = tx*_tileWidth;
+			Buffer.y = ty*_tileHeight;
 		}
 		
 		/**
@@ -268,11 +252,27 @@ package org.flixel
 		override public function update():void
 		{
 			super.update();
-			getScreenXY(_point);
-			_point.x += _bufferLoc.x;
-			_point.y += _bufferLoc.y;
-			if((_point.x > 0) || (_point.y > 0) || (_point.x + _buffer.width < FlxG.width) || (_point.y + _buffer.height < FlxG.height))
-				dirty = true;
+			
+			if(cameras == null)
+				cameras = FlxG.cameras;
+			var b:FlxTilemapBuffer;
+			var c:FlxCamera;
+			var i:uint = 0;
+			var l:uint = cameras.length;
+			while(i < l)
+			{
+				c = cameras[i];
+				if(_buffers[i] == null)
+					_buffers[i] = new FlxTilemapBuffer(_tileWidth,_tileHeight,c);
+				b = _buffers[i] as FlxTilemapBuffer;
+				
+				getScreenXY(_point,c);
+				_point.x += b.x;
+				_point.y += b.y;
+				if((_point.x > 0) || (_point.y > 0) || (_point.x + b.width < c.width) || (_point.y + b.height < c.height))
+					b.dirty = true;
+				i++;
+			}
 		}
 		
 		/**
@@ -280,18 +280,33 @@ package org.flixel
 		 */
 		override public function draw():void
 		{
-			//Redraw the tilemap buffer if necessary
-			if(dirty)
+			if(cameras == null)
+				cameras = FlxG.cameras;
+			var c:FlxCamera;
+			var b:FlxTilemapBuffer;
+			var i:uint = 0;
+			var l:uint = cameras.length;
+			while(i < l)
 			{
-				drawTilemap();
-				dirty = false;
+				c = cameras[i];
+				if(_buffers[i] == null)
+					_buffers[i] = new FlxTilemapBuffer(_tileWidth,_tileHeight,c);
+				b = _buffers[i] as FlxTilemapBuffer;
+				
+				//Redraw the tilemap buffer if necessary
+				if(b.dirty)
+				{
+					drawTilemap(b,c);
+					b.dirty = false;
+				}
+				
+				//Render the buffer no matter what
+				getScreenXY(_point,c);
+				_flashPoint.x = _point.x + b.x;
+				_flashPoint.y = _point.y + b.y;
+				b.draw(c,_flashPoint);
+				i++;
 			}
-			
-			//Render the buffer no matter what
-			getScreenXY(_point);
-			_flashPoint.x = _point.x + _bufferLoc.x;
-			_flashPoint.y = _point.y + _bufferLoc.y;
-			FlxG.buffer.copyPixels(_buffer,_flashRect,_flashPoint,null,null,true);
 		}
 		
 		public function getData(Simple:Boolean=false):Array
@@ -304,6 +319,13 @@ package org.flixel
 			for(var i:uint = 0; i < l; i++)
 				data[i] = (_data[i] > 0)?1:0;
 			return data;
+		}
+		
+		public function setDirty(Dirty:Boolean=true):void
+		{
+			var l:uint = _buffers.length;
+			for(var i:uint = 0; i < l; i++)
+				(_buffers[i] as FlxTilemapBuffer).dirty = Dirty;
 		}
 		
 		/**
@@ -360,13 +382,19 @@ package org.flixel
 		 * 
 		 * @param	X			The X coordinate of the point.
 		 * @param	Y			The Y coordinate of the point.
+		 * @param	Camera		Specify which game camera you want.  If null getScreenXY() will just grab the first global camera.
 		 * @param	PerPixel	Not available in <code>FlxTilemap</code>, ignored.
 		 * 
 		 * @return	Whether or not the point overlaps this object.
 		 */
-		override public function overlapsPoint(X:Number,Y:Number,PerPixel:Boolean = false):Boolean
+		override public function overlapsPoint(X:Number,Y:Number,Camera:FlxCamera=null,PerPixel:Boolean = false):Boolean
 		{
-			return getTile(uint((X-x)/_tileWidth),uint((Y-y)/_tileHeight)) >= this.collideIndex;
+			if(Camera == null)
+				Camera = FlxG.camera;
+			X = X + FlxU.floor(Camera.scroll.x);
+			Y = Y + FlxU.floor(Camera.scroll.y);
+			getScreenXY(_point,Camera);
+			return getTile(uint((X-_point.x)/_tileWidth),uint((Y-_point.y)/_tileHeight)) >= collideIndex;
 		}
 		
 		/**
@@ -496,7 +524,7 @@ package org.flixel
 			if(!UpdateGraphics)
 				return ok;
 			
-			dirty = true;
+			setDirty();
 			
 			if(auto == OFF)
 			{
@@ -547,11 +575,14 @@ package org.flixel
 		/**
 		 * Call this function to lock the automatic camera to the map's edges.
 		 * 
+		 * @param	Camera		Specify which game camera you want.  If null getScreenXY() will just grab the first global camera.
 		 * @param	Border		Adjusts the camera follow boundary by whatever number of tiles you specify here.  Handy for blocking off deadends that are offscreen, etc.  Use a negative number to add padding instead of hiding the edges.
 		 */
-		public function follow(Border:int=0):void
+		public function follow(Camera:FlxCamera=null,Border:int=0,UpdateWorld:Boolean=true):void
 		{
-			FlxG.followBounds(x+Border*_tileWidth,y+Border*_tileHeight,width-Border*_tileWidth,height-Border*_tileHeight);
+			if(Camera == null)
+				Camera = FlxG.camera;
+			Camera.setBounds(x+Border*_tileWidth,y+Border*_tileHeight,width-Border*_tileWidth*2,height-Border*_tileHeight*2,UpdateWorld);
 		}
 		
 		/**
@@ -810,10 +841,10 @@ package org.flixel
 			}
 			var rx:uint = (_data[Index]-startingIndex)*_tileWidth;
 			var ry:uint = 0;
-			if(rx >= _pixels.width)
+			if(rx >= _tiles.width)
 			{
-				ry = uint(rx/_pixels.width)*_tileHeight;
-				rx %= _pixels.width;
+				ry = uint(rx/_tiles.width)*_tileHeight;
+				rx %= _tiles.width;
 			}
 			_rects[Index] = (new Rectangle(rx,ry,_tileWidth,_tileHeight));
 		}
