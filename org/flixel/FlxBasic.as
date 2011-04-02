@@ -10,7 +10,7 @@ package org.flixel
 		 */
 		public var ID:int;
 		/**
-		 * Controls whether update() & draw() are automatically called by FlxState/FlxGroup.
+		 * Controls whether update() and draw() are automatically called by FlxState/FlxGroup.
 		 */
 		public var exists:Boolean;
 		/**
@@ -44,7 +44,7 @@ package org.flixel
 		public function destroy():void {}
 		
 		/**
-		 * Override this function to update your class's position & appearance.
+		 * Override this function to update your class's position and appearance.
 		 * This is where most of your game rules and behavioral code will go.
 		 * Don't forget to call super.update()!
 		 */

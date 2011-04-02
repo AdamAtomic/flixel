@@ -244,7 +244,7 @@ package org.flixel
 		 * Create a pre-rotated sprite sheet from a simple sprite.
 		 * This can make a huge difference in graphical performance!
 		 * 
-		 * @param	Graphic			The image you want to rotate & stamp.
+		 * @param	Graphic			The image you want to rotate and stamp.
 		 * @param	Frames			The number of frames you want to use (more == smoother rotations).
 		 * @param	Offset			Use this to select a specific frame to draw from the graphic.
 		 * @param	AntiAliasing	Whether to use high quality rotations when creating the graphic.
@@ -292,7 +292,7 @@ package org.flixel
 			height = frameHeight = _pixels.height;
 			_bakedRotation = 360/Rotations;
 			
-			//Generate a new sheet if necessary, then fix up the width & height
+			//Generate a new sheet if necessary, then fix up the width and height
 			if(!skipGen)
 			{
 				var r:uint = 0;

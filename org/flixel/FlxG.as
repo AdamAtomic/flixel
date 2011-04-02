@@ -41,7 +41,7 @@ package org.flixel
 		static public const DEBUGGER_RIGHT:uint = 5;
 
 		/**
-		 * Internal tracker for game object (so we can pause & unpause)
+		 * Internal tracker for game object (so we can pause and unpause)
 		 */
 		static internal var _game:FlxGame;
 		/**

@@ -534,7 +534,7 @@ package org.flixel
             stage.align = StageAlign.TOP_LEFT;
             stage.frameRate = _flashFramerate;
 			
-			//Add basic input event listeners & mouse container
+			//Add basic input event listeners and mouse container
 			stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 			stage.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
 			stage.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel);
