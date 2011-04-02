@@ -9,7 +9,6 @@ package org.flixel
 	import org.flixel.system.FlxDebugger;
 	import org.flixel.system.FlxQuadTree;
 	import org.flixel.system.FlxSound;
-	import org.flixel.system.fx.*;
 	import org.flixel.system.input.*;
 	
 	/**
