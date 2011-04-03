@@ -805,12 +805,14 @@ package org.flixel
 			while(i < l)
 			{
 				c = cameras[i++] as FlxCamera;
-				if((c == null) || !c.exists || !c.visible || !c.active)
-					continue;
-				c.update();
-				c._flashBitmap.visible = c.exists && c.visible;
-				c._flashBitmap.x = c.x;
-				c._flashBitmap.y = c.y;
+				if((c != null) && c.exists)
+				{
+					if(c.active)
+						c.update();
+					c._flashBitmap.x = c.x;
+					c._flashBitmap.y = c.y;
+					c._flashBitmap.visible = c.exists && c.visible;
+				}
 			}
 		}
 		
