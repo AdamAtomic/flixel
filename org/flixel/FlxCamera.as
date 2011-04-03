@@ -457,12 +457,12 @@ package org.flixel
 			_flashBitmap.scaleY = Y;
 		}
 		
-		public function fill(Color:uint=0):void
+		public function fill(Color:uint=0,BlendAlpha:Boolean=true):void
 		{
 			if(Color == 0)
 				Color = bgColor;
 			_fill.fillRect(_flashRect,Color);
-			buffer.copyPixels(_fill,_flashRect,_flashPoint,null,null,true);
+			buffer.copyPixels(_fill,_flashRect,_flashPoint,null,null,BlendAlpha);
 		}
 		
 		internal function drawFX():void
@@ -476,7 +476,7 @@ package org.flixel
 				fill((uint(((a <= 0)?0xff:a)*_fxFlashAlpha)<<24)+(_fxFlashColor&0x00ffffff));
 			}
 			
-			//Draw the "flash" special effect onto the buffer
+			//Draw the "fade" special effect onto the buffer
 			if(_fxFadeAlpha > 0.0)
 			{
 				a = _fxFadeColor>>24;
