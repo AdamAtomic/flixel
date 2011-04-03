@@ -15,17 +15,28 @@ package org.flixel.system
 		public var width:Number;
 		public var height:Number;
 		public var dirty:Boolean;
+		public var screenRows:uint;
+		public var screenCols:uint;
 
 		protected var _pixels:BitmapData;	
 		protected var _flashRect:Rectangle;
 
-		public function FlxTilemapBuffer(TileWidth:Number,TileHeight:Number,Camera:FlxCamera=null)
+		public function FlxTilemapBuffer(TileWidth:Number,TileHeight:Number,WidthInTiles:uint,HeightInTiles:uint,Camera:FlxCamera=null)
 		{
 			if(Camera == null)
 				Camera = FlxG.camera;
 			_pixels = new BitmapData((FlxU.ceil(Camera.width / TileWidth) + 1)*TileWidth,(FlxU.ceil(Camera.height / TileHeight) + 1)*TileHeight,true,0);
 			width = _pixels.width;
 			height = _pixels.height;
+			
+			//Pre-set some helper variables for later
+			screenRows = Math.ceil(height/TileHeight)+1;
+			if(screenRows > HeightInTiles)
+				screenRows = HeightInTiles;
+			screenCols = Math.ceil(width/TileWidth)+1;
+			if(screenCols > WidthInTiles)
+				screenCols = WidthInTiles;
+			
 			_flashRect = new Rectangle(0,0,width,height);
 			dirty = true;
 		}

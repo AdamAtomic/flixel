@@ -78,8 +78,6 @@ package org.flixel
 		protected var _tileHeight:uint;
 		protected var _block:FlxObject;
 		protected var _callbacks:Array;
-		protected var _screenRows:uint;
-		protected var _screenCols:uint;
 		
 		/**
 		 * The tilemap constructor just initializes some basic variables.
@@ -190,14 +188,6 @@ package org.flixel
 			while(i < totalTiles)
 				updateTile(i++);
 
-			//Pre-set some helper variables for later
-			_screenRows = Math.ceil(FlxG.height/_tileHeight)+1;
-			if(_screenRows > heightInTiles)
-				_screenRows = heightInTiles;
-			_screenCols = Math.ceil(FlxG.width/_tileWidth)+1;
-			if(_screenCols > widthInTiles)
-				_screenCols = widthInTiles;
-
 			refreshHulls();
 			
 			return this;
@@ -216,21 +206,23 @@ package org.flixel
 			_flashPoint.y = _point.y;
 			var tx:int = Math.floor(-_flashPoint.x/_tileWidth);
 			var ty:int = Math.floor(-_flashPoint.y/_tileHeight);
+			var sr:uint = Buffer.screenRows;
+			var sc:uint = Buffer.screenCols;
 			if(tx < 0) tx = 0;
-			if(tx > widthInTiles-_screenCols) tx = widthInTiles-_screenCols;
+			if(tx > widthInTiles-sc) tx = widthInTiles-sc;
 			if(ty < 0) ty = 0;
-			if(ty > heightInTiles-_screenRows) ty = heightInTiles-_screenRows;
+			if(ty > heightInTiles-sr) ty = heightInTiles-sr;
 			var ri:int = ty*widthInTiles+tx;
 			_flashPoint.y = 0;
 			var r:uint = 0;
 			var c:uint;
 			var cri:uint;
-			while(r < _screenRows)
+			while(r < sr)
 			{
 				cri = ri;
 				c = 0;
 				_flashPoint.x = 0;
-				while(c < _screenCols)
+				while(c < sc)
 				{
 					_flashRect = _rects[cri++] as Rectangle;
 					if(_flashRect != null)
@@ -263,7 +255,7 @@ package org.flixel
 			{
 				c = cameras[i];
 				if(_buffers[i] == null)
-					_buffers[i] = new FlxTilemapBuffer(_tileWidth,_tileHeight,c);
+					_buffers[i] = new FlxTilemapBuffer(_tileWidth,_tileHeight,widthInTiles,heightInTiles,c);
 				b = _buffers[i] as FlxTilemapBuffer;
 				
 				getScreenXY(_point,c);
@@ -292,7 +284,7 @@ package org.flixel
 			{
 				c = cameras[i];
 				if(_buffers[i] == null)
-					_buffers[i] = new FlxTilemapBuffer(_tileWidth,_tileHeight,c);
+					_buffers[i] = new FlxTilemapBuffer(_tileWidth,_tileHeight,widthInTiles,heightInTiles,c);
 				b = _buffers[i] as FlxTilemapBuffer;
 				
 				//Redraw the tilemap buffer if necessary
