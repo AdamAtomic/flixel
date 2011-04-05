@@ -288,7 +288,7 @@ package org.flixel
 				bounds = new FlxRect();
 			bounds.make(X,Y,Width,Height);
 			if(UpdateWorld)
-				FlxU.worldBounds.copyFrom(bounds);
+				FlxG.worldBounds.copyFrom(bounds);
 			update();
 		}
 		

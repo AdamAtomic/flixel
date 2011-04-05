@@ -43,6 +43,11 @@ package org.flixel
 		 */
 		public function destroy():void {}
 		
+		public function preUpdate():void
+		{
+			_ACTIVECOUNT++;
+		}
+		
 		/**
 		 * Override this function to update your class's position and appearance.
 		 * This is where most of your game rules and behavioral code will go.
@@ -50,8 +55,10 @@ package org.flixel
 		 */
 		public function update():void
 		{
-			_ACTIVECOUNT++;
+			
 		}
+		
+		public function postUpdate():void {}
 		
 		/**
 		 * Override this function to control how the object is drawn.

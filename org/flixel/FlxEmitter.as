@@ -60,6 +60,8 @@ package org.flixel
 		 * Set lifespan to 'zero' for particles to live forever.
 		 */
 		public var lifespan:Number;
+		public var bounce:Number;
+		public var particleClass:Class;
 		/**
 		 * Internal helper for deciding how many particles to launch.
 		 */
@@ -88,32 +90,25 @@ package org.flixel
 		public function FlxEmitter(X:Number=0, Y:Number=0, Size:Number=0)
 		{
 			super(Size);
-			
+			x = X;
+			y = Y;
 			width = 0;
 			height = 0;
 			minParticleSpeed = new FlxPoint(-100,-100);
 			maxParticleSpeed = new FlxPoint(100,100);
 			minRotation = -360;
 			maxRotation = 360;
-			gravity = 400;
+			gravity = 0;
+			particleClass = null;
 			particleDrag = new FlxPoint();
 			frequency = 0.1;
 			lifespan = 3;
+			bounce = 0;
 			_quantity = 0;
 			_counter = 0;
 			_explode = true;
 			on = false;
 			_point = new FlxPoint();
-			
-			initEmitter(X, Y, Size);
-		}
-		
-		public function initEmitter(X:Number=0, Y:Number=0, Size:uint=0):FlxEmitter
-		{
-			x = X;
-			y = Y;
-			maxSize = Size;
-			return this;
 		}
 		
 		override public function destroy():void
@@ -121,6 +116,7 @@ package org.flixel
 			minParticleSpeed = null;
 			maxParticleSpeed = null;
 			particleDrag = null;
+			particleClass = null;
 			_point = null;
 			super.destroy();
 		}
@@ -133,60 +129,63 @@ package org.flixel
 		 * @param	BakedRotations	How many frames of baked rotation to use (boosts performance).  Set to zero to not use baked rotations.
 		 * @param	Multiple		Whether the image in the Graphics param is a single particle or a bunch of particles (if it's a bunch, they need to be square!).
 		 * @param	Collide			Whether the particles should be flagged as not 'dead' (non-colliding particles are higher performance).  0 means no collisions, 0-1 controls scale of particle's bounding box.
-		 * @param	Bounce			Whether the particles should bounce after colliding with things.  0 means no bounce, 1 means full reflection.
 		 * 
 		 * @return	This FlxEmitter instance (nice for chaining stuff together, if you're into that).
 		 */
-		public function makeParticles(Graphics:Class, Quantity:uint=50, BakedRotations:uint=16, Multiple:Boolean=false, Collide:Number=0.5, Bounce:Number=0.35):FlxEmitter
+		public function makeParticles(Graphics:Class, Quantity:uint=50, BakedRotations:uint=16, Multiple:Boolean=false, Collide:Number=0.8):FlxEmitter
 		{
 			maxSize = Quantity;
-
-			var r:uint;
-			var s:FlxSprite;
+			
 			var tf:uint = 1;
-			var sw:Number;
-			var sh:Number;
 			if(Multiple)
-			{
-				s = new FlxSprite();
+			{ 
+				var s:FlxSprite = new FlxSprite();
 				s.loadGraphic(Graphics,true);
 				tf = s.frames;
+				s.destroy();
 			}
+
+			var r:uint;
+			var sw:Number;
+			var sh:Number;
+			var p:FlxParticle;
 			var i:uint = 0;
 			while(i < Quantity)
 			{
-				s = new FlxParticle(Bounce) as FlxSprite;
+				if(particleClass == null)
+					p = new FlxParticle();
+				else
+					p = new particleClass();
 				if(Multiple)
 				{
 					r = FlxG.random()*tf;
 					if(BakedRotations > 0)
-						s.loadRotatedGraphic(Graphics,BakedRotations,r);
+						p.loadRotatedGraphic(Graphics,BakedRotations,r);
 					else
 					{
-						s.loadGraphic(Graphics,true);
-						s.frame = r;
+						p.loadGraphic(Graphics,true);
+						p.frame = r;
 					}
 				}
 				else
 				{
 					if(BakedRotations > 0)
-						s.loadRotatedGraphic(Graphics,BakedRotations);
+						p.loadRotatedGraphic(Graphics,BakedRotations);
 					else
-						s.loadGraphic(Graphics);
+						p.loadGraphic(Graphics);
 				}
 				if(Collide > 0)
 				{
-					sw = s.width;
-					sh = s.height;
-					s.width *= Collide;
-					s.height *= Collide;
-					s.offset.make(((sw-s.width)>>1),((sh-s.height)>>1));
-					s.solid = true;
+					sw = p.width;
+					sh = p.height;
+					p.width *= Collide;
+					p.height *= Collide;
+					p.offset.make(((sw-p.width)>>1),((sh-p.height)>>1));
 				}
 				else
-					s.solid = false;
-				s.exists = false;
-				add(s);
+					p.allowCollisions = FlxObject.NONE;
+				p.exists = false;
+				add(p);
 				i++;
 			}
 			return this;
@@ -309,24 +308,29 @@ package org.flixel
 		{
 			var p:FlxParticle = recycle(FlxParticle) as FlxParticle;
 			p.lifespan = lifespan;
+			p.elasticity = bounce;
 			p.reset(x - (p.width>>1) + FlxG.random()*width, y - (p.height>>1) + FlxG.random()*height);
 			p.visible = true;
-			
-			p.velocity.x = minParticleSpeed.x;
+
 			if(minParticleSpeed.x != maxParticleSpeed.x)
-				p.velocity.x += FlxG.random()*(maxParticleSpeed.x-minParticleSpeed.x);
-			p.velocity.y = minParticleSpeed.y;
+				p.velocity.x = minParticleSpeed.x + FlxG.random()*(maxParticleSpeed.x-minParticleSpeed.x);
+			else
+				p.velocity.x = minParticleSpeed.x;
 			if(minParticleSpeed.y != maxParticleSpeed.y)
-				p.velocity.y += FlxG.random()*(maxParticleSpeed.y-minParticleSpeed.y);
+				p.velocity.y = minParticleSpeed.y + FlxG.random()*(maxParticleSpeed.y-minParticleSpeed.y);
+			else
+				p.velocity.y = minParticleSpeed.y;
 			p.acceleration.y = gravity;
 			
-			p.angularVelocity = minRotation;
 			if(minRotation != maxRotation)
-				p.angularVelocity += FlxG.random()*(maxRotation-minRotation);
+				p.angularVelocity = minRotation + FlxG.random()*(maxRotation-minRotation);
+			else
+				p.angularVelocity = minRotation;
 			if(p.angularVelocity != 0)
 				p.angle = FlxG.random()*360-180;
 			
-			p.drag.copyFrom(particleDrag);
+			p.drag.x = particleDrag.x;
+			p.drag.y = particleDrag.y;
 			p.onEmit();
 		}
 		

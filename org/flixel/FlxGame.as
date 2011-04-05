@@ -60,10 +60,11 @@ package org.flixel
 		
 		//basic update stuff
 		protected var _total:uint;
-		protected var _accumulator:Number;
+		protected var _accumulator:int;
 		protected var _lostFocus:Boolean;
-		internal var _step:Number;
+		internal var _step:uint;
 		internal var _flashFramerate:uint;
+		internal var _maxAccumulation:uint;
 		internal var _requestedState:FlxState;
 		internal var _requestedReset:Boolean;
 		
@@ -82,7 +83,7 @@ package org.flixel
 		internal var _replaying:Boolean;
 		internal var _recording:Boolean;
 		internal var _replayCancelKeys:Array;
-		internal var _replayTimer:Number;
+		internal var _replayTimer:int;
 		internal var _replayCallback:Function;
 
 		/**
@@ -106,14 +107,14 @@ package org.flixel
 			
 			//basic display and update setup stuff
 			FlxG.init(this,GameSizeX,GameSizeY,Zoom);
-			_step = 1/60;
+			FlxG.framerate = 60;
+			FlxG.flashFramerate = 30;
 			_total = 0;
 			_accumulator = 0;
 			_state = null;
 			useSoundHotKeys = true;
 			debugOnRelease = false;
 			_debuggerUp = false;
-			_flashFramerate = 30;
 			
 			//replay data
 			_replay = new FlxReplay();
@@ -193,7 +194,8 @@ package org.flixel
 				    		FlxG.volume = FlxG.volume + 0.1;
 				    		showSoundTray();
 							return;
-						default: break;
+						default:
+							break;
 					}
 				}
 			}
@@ -336,13 +338,13 @@ package org.flixel
 				}
 				else
 				{
-					_accumulator += ems/1000;
-					if(_accumulator > 4/_flashFramerate)
-						_accumulator = 4/_flashFramerate;
+					_accumulator += ems;
+					if(_accumulator > _maxAccumulation)
+						_accumulator = _maxAccumulation;
 					while(_accumulator >= _step)
 					{
 						step();
-						_accumulator -= _step;
+						_accumulator = _accumulator - _step; 
 					}
 				}
 			}
@@ -495,7 +497,7 @@ package org.flixel
 		{			
 			var mark:uint = getTimer();
 			
-			FlxG.elapsed = FlxG.timeScale*_step;
+			FlxG.elapsed = FlxG.timeScale*(_step/1000);
 			FlxG.updateSounds();
 			_state.update();
 			FlxG.updateCameras();

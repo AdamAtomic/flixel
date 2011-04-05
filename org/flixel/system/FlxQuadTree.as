@@ -15,10 +15,6 @@ package org.flixel.system
 	public class FlxQuadTree extends FlxRect
 	{
 		/**
-		 * Helps to eliminate false collisions and/or rendering glitches caused by rounding errors
-		 */
-		static protected const ROUNDING_ERROR:Number = 0.0000001;
-		/**
 		 * Flag for specifying that you want to add an object to the A list.
 		 */
 		static public const A_LIST:uint = 0;
@@ -28,7 +24,7 @@ package org.flixel.system
 		static public const B_LIST:uint = 1;
 		
 		/**
-		 * Controls the granularity of the quad tree.  Default is 3 (decent performance on large and small worlds).
+		 * Controls the granularity of the quad tree.  Default is 6 (decent performance on large and small worlds).
 		 */
 		static public var divisions:uint;
 		
@@ -72,7 +68,19 @@ package org.flixel.system
 		static protected var _or:Number;
 		static protected var _ob:Number;
 		static protected var _oa:uint;
-		static protected var _oc:Function;
+		static protected var _om:Boolean;
+		static protected var _op:Function;
+		static protected var _on:Function;
+		
+		static protected var _ohx:Number;
+		static protected var _ohy:Number;
+		static protected var _ohw:Number;
+		static protected var _ohh:Number;
+		
+		static protected var _cox:Number;
+		static protected var _coy:Number;
+		static protected var _cow:Number;
+		static protected var _coh:Number;
 		
 		/**
 		 * Instantiate a new Quad Tree node.
@@ -88,9 +96,6 @@ package org.flixel.system
 			super(X,Y,Width,Height);
 			_headA = _tailA = new FlxList();
 			_headB = _tailB = new FlxList();
-			
-			//DEBUG: draw a randomly colored rectangle indicating this quadrant (may induce seizures)
-			//org.flixel.FlxState.screen.stamp(new org.flixel.FlxSprite().makeGraphic(Width,Height,0xffffffff*Math.random()),X+org.flixel.FlxG.scroll.x,Y+org.flixel.FlxG.scroll.y);
 			
 			//Copy the parent's children (if there are any)
 			if(Parent != null)
@@ -172,7 +177,22 @@ package org.flixel.system
 			_sw = null;
 
 			_o = null;
-			_oc = null;
+			_op = null;
+			_on = null;
+		}
+		
+		public function load(ObjectOrGroup1:FlxBasic, ObjectOrGroup2:FlxBasic=null, NotifyCallback:Function=null, ProcessCallback:Function=null):void
+		{
+			add(ObjectOrGroup1, A_LIST);
+			if(ObjectOrGroup2 != null)
+			{
+				add(ObjectOrGroup2, B_LIST);
+				_om = true;
+			}
+			else
+				_om = false;
+			_on = NotifyCallback;
+			_op = ProcessCallback;
 		}
 		
 		/**
@@ -202,7 +222,7 @@ package org.flixel.system
 						else if(m is FlxObject)
 						{
 							_o = m as FlxObject;
-							if(_o.exists && _o.solid)
+							if(_o.exists && _o.allowCollisions)
 							{
 								_ol = _o.x;
 								_ot = _o.y;
@@ -217,7 +237,7 @@ package org.flixel.system
 			else
 			{
 				_o = ObjectOrGroup as FlxObject;
-				if(_o.exists && _o.solid)
+				if(_o.exists && _o.allowCollisions)
 				{
 					_ol = _o.x;
 					_ot = _o.y;
@@ -351,12 +371,11 @@ package org.flixel.system
 		 *
 		 * @return	Whether or not any overlaps were found.
 		 */
-		public function overlap(BothLists:Boolean=true,Callback:Function=null):Boolean
+		public function execute():Boolean
 		{
-			_oc = Callback;
 			var c:Boolean = false;
 			var itr:FlxList;
-			if(BothLists)
+			if(_om)
 			{
 				//An A-B list comparison
 				_oa = B_LIST;
@@ -366,7 +385,7 @@ package org.flixel.system
 					while(itr != null)
 					{
 						_o = itr.object;
-						if(_o.exists && _o.solid && overlapNode())
+						if(_o.exists && _o.allowCollisions && overlapNode())
 							c = true;
 						itr = itr.next;
 					}
@@ -378,7 +397,7 @@ package org.flixel.system
 					while(itr != null)
 					{
 						_o = itr.object;
-						if(_o.exists && _o.solid)
+						if(_o.exists && _o.allowCollisions)
 						{
 							if((_nw != null) && _nw.overlapNode())
 								c = true;
@@ -402,7 +421,7 @@ package org.flixel.system
 					while(itr != null)
 					{
 						_o = itr.object;
-						if(_o.exists && _o.solid && overlapNode(itr.next))
+						if(_o.exists && _o.allowCollisions && overlapNode(itr.next))
 							c = true;
 						itr = itr.next;
 					}
@@ -410,13 +429,13 @@ package org.flixel.system
 			}
 			
 			//Advance through the tree by calling overlap on each child
-			if((_nw != null) && _nw.overlap(BothLists,_oc))
+			if((_nw != null) && _nw.execute())
 				c = true;
-			if((_ne != null) && _ne.overlap(BothLists,_oc))
+			if((_ne != null) && _ne.execute())
 				c = true;
-			if((_se != null) && _se.overlap(BothLists,_oc))
+			if((_se != null) && _se.execute())
 				c = true;
-			if((_sw != null) && _sw.overlap(BothLists,_oc))
+			if((_sw != null) && _sw.execute())
 				c = true;
 			
 			return c;
@@ -448,14 +467,37 @@ package org.flixel.system
 			while(Iterator != null)
 			{
 				co = Iterator.object;
-				if( (_o === co) || !co.exists || !co.solid ||
-					(_o.x + _o.width  < co.x + ROUNDING_ERROR) ||
-					(_o.x + ROUNDING_ERROR > co.x + co.width) ||
-					(_o.y + _o.height < co.y + ROUNDING_ERROR) ||
-					(_o.y + ROUNDING_ERROR > co.y + co.height) )
-				{ }
-				else if((_oc == null) || _oc(_o,co))
-					c = true;
+				if((_o === co) || !co.exists || !co.allowCollisions)
+				{
+					Iterator = Iterator.next;
+					continue;
+				}
+				
+				//calculate bulk hull for _o
+				_ohx = (_o.x < _o.last.x)?_o.x:_o.last.x;
+				_ohy = (_o.y < _o.last.y)?_o.y:_o.last.y;
+				_ohw = _o.x - _o.last.x;
+				_ohw = _o.width + ((_ohw>0)?_ohw:-_ohw);
+				_ohh = _o.y - _o.last.y;
+				_ohh = _o.height + ((_ohh>0)?_ohh:-_ohh);
+				
+				//calculate bulk hull for co
+				_cox = (co.x < co.last.x)?co.x:co.last.x;
+				_coy = (co.y < co.last.y)?co.y:co.last.y;
+				_cow = co.x - co.last.x;
+				_cow = co.width + ((_cow>0)?_cow:-_cow);
+				_coh = co.y - co.last.y;
+				_coh = co.height + ((_coh>0)?_coh:-_coh);
+				
+				//check for intersection of the two hulls
+				if((_ohx + _ohw > _cox) && (_ohx < _cox + _cow) && (_ohy + _ohh > _coy) && (_ohy < _coy + _coh))
+				{
+					//Execute callback functions if they exist
+					if((_op == null) || _op(_o,co))
+						c = true;
+					if(c && (_on != null))
+						_on(_o,co);
+				}
 				Iterator = Iterator.next;
 			}
 			

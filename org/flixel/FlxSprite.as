@@ -19,28 +19,6 @@ package org.flixel
 		[Embed(source="data/default.png")] protected var ImgDefault:Class;
 		
 		/**
-		 * Helps to eliminate false collisions and/or rendering glitches caused by rounding errors
-		 */
-		static protected const ROUNDING_ERROR:Number = 0.0000001;
-		
-		/**
-		 * Useful for controlling flipped animations and checking player orientation.
-		 */
-		static public const LEFT:uint = 0;
-		/**
-		 * Useful for controlling flipped animations and checking player orientation.
-		 */
-		static public const RIGHT:uint = 1;
-		/**
-		 * Useful for checking player orientation.
-		 */
-		static public const UP:uint = 2;
-		/**
-		 * Useful for checking player orientation.
-		 */
-		static public const DOWN:uint = 3;
-		 
-		/**
 		 * WARNING: The origin of the sprite will default to its center.
 		 * If you change this, the visuals and the collisions will likely be
 		 * pretty out-of-sync if you do any rotation.
@@ -108,6 +86,7 @@ package org.flixel
 		protected var _bakedRotation:Number;
 		
 		//Various rendering helpers
+		protected var _flashPoint:Point;
 		protected var _flashRect:Rectangle;
 		protected var _flashRect2:Rectangle;
 		protected var _flashPointZero:Point;
@@ -134,6 +113,7 @@ package org.flixel
 			
 			health = 1;
 
+			_flashPoint = new Point();
 			_flashRect = new Rectangle();
 			_flashRect2 = new Rectangle();
 			_flashPointZero = new Point();
@@ -185,6 +165,7 @@ package org.flixel
 				_animations = null;
 			}
 			
+			_flashPoint = null;
 			_flashRect = null;
 			_flashRect2 = null;
 			_flashPointZero = null;
@@ -365,7 +346,6 @@ package org.flixel
 			frames = (_flashRect2.width / _flashRect.width) * (_flashRect2.height / _flashRect.height);
 			if(_ct != null) _framePixels.colorTransform(_flashRect,_ct);
 			_caf = 0;
-			refreshHulls();
 		}
 		
 		/**
@@ -545,7 +525,7 @@ package org.flixel
 		 */
 		protected function updateAnimation():void
 		{
-			if(_bakedRotation)
+			if(_bakedRotation > 0)
 			{
 				var oc:uint = _caf;
 				var ta:int = angle%360;
@@ -554,9 +534,8 @@ package org.flixel
 				_caf = ta/_bakedRotation;
 				if(oc != _caf)
 					dirty = true;
-				return;
 			}
-			if((_curAnim != null) && (_curAnim.delay > 0) && (_curAnim.looped || !finished))
+			else if((_curAnim != null) && (_curAnim.delay > 0) && (_curAnim.looped || !finished))
 			{
 				_frameTimer += FlxG.elapsed;
 				while(_frameTimer > _curAnim.delay)
@@ -573,24 +552,21 @@ package org.flixel
 					dirty = true;
 				}
 			}
+			
+			if(dirty)
+				calcFrame();
 		}
 		
-		/**
-		 * Main game loop update function.  Override this to create your own sprite logic!
-		 * Just don't forget to call super.update() or any of the helper functions.
-		 */
-		override public function update():void
+		override public function postUpdate():void
 		{
-			_ACTIVECOUNT++;
-			updateMotion();
+			super.postUpdate();
 			updateAnimation();
-			updateFlickering();
 		}
 		
 		/**
-		 * Internal function that performs the actual sprite rendering, called by render().
+		 * Called by game loop, updates then blits or renders current frame of animation to the screen
 		 */
-		protected function drawSprite():void
+		override public function draw():void
 		{
 			if(_flickerTimer != 0)
 			{
@@ -598,7 +574,8 @@ package org.flixel
 				if(_flicker)
 					return;
 			}
-			if(dirty)
+			
+			if(dirty)	//rarely 
 				calcFrame();
 			
 			if(cameras == null)
@@ -609,16 +586,16 @@ package org.flixel
 			while(i < l)
 			{
 				c = cameras[i++];
-				if(!onScreen(c))
+				if(!onScreen(c)) //preloads _point with getScreenXY results
 					continue;
-				_VISIBLECOUNT++;
-				getScreenXY(_point,c).copyToFlash(_flashPoint);
-				
-				//Simple render
 				if(((angle == 0) || (_bakedRotation > 0)) && (scale.x == 1) && (scale.y == 1) && (blend == null))
+				{	//Simple render
+					_flashPoint.x = _point.x;
+					_flashPoint.y = _point.y;
 					c.buffer.copyPixels(_framePixels,_flashRect,_flashPoint,null,null,true);
-				else //Advanced render
-				{
+				}
+				else
+				{	//Advanced render
 					_mtx.identity();
 					_mtx.translate(-origin.x,-origin.y);
 					_mtx.scale(scale.x,scale.y);
@@ -627,15 +604,8 @@ package org.flixel
 					_mtx.translate(_point.x+origin.x,_point.y+origin.y);
 					c.buffer.draw(_framePixels,_mtx,null,blend,null,antialiasing);
 				}
+				_VISIBLECOUNT++;
 			}
-		}
-		
-		/**
-		 * Called by game loop, updates then blits or renders current frame of animation to the screen
-		 */
-		override public function draw():void
-		{
-			drawSprite();
 		}
 		
 		/**
@@ -666,11 +636,13 @@ package org.flixel
 				Camera = FlxG.camera;
 			
 			//convert the passed in point to screen space
-			X = X - FlxU.floor(Camera.scroll.x);
-			Y = Y - FlxU.floor(Camera.scroll.y);
+			X = X - Camera.scroll.x;
+			Y = Y - Camera.scroll.y;
 			
 			//then compare
-			getScreenXY(_point,Camera);
+			//getScreenXY(_point,Camera);
+			_point.x = x - Camera.scroll.x*scrollFactor.x - offset.x; //copied from getScreenXY()
+			_point.y = y - Camera.scroll.y*scrollFactor.y - offset.y;
 			if(PerPixel)
 				return _framePixels.hitTest(new Point(0,0),0xFF,new Point(X-_point.x,Y-_point.y));
 			return (X > _point.x) && (X < _point.x+frameWidth) && (Y > _point.y) && (Y < _point.y+frameHeight);
@@ -799,8 +771,10 @@ package org.flixel
 				Point = new FlxPoint();
 			if(Camera == null)
 				Camera = FlxG.camera;
-			Point.x = FlxU.floor(x + ROUNDING_ERROR)-FlxU.floor(Camera.scroll.x*scrollFactor.x) - offset.x;
-			Point.y = FlxU.floor(y + ROUNDING_ERROR)-FlxU.floor(Camera.scroll.y*scrollFactor.y) - offset.y;
+			Point.x = x - Camera.scroll.x*scrollFactor.x - offset.x;
+			Point.y = y - Camera.scroll.y*scrollFactor.y - offset.y;
+			//Point.x = FlxU.floor(x + ROUNDING_ERROR)-FlxU.floor(Camera.scroll.x*scrollFactor.x) - offset.x;
+			//Point.y = FlxU.floor(y + ROUNDING_ERROR)-FlxU.floor(Camera.scroll.y*scrollFactor.y) - offset.y;
 			return Point;
 		}
 		
@@ -815,7 +789,11 @@ package org.flixel
 		{
 			if(Camera == null)
 				Camera = FlxG.camera;
-			getScreenXY(_point,Camera);
+			_point.x = x - Camera.scroll.x*scrollFactor.x - offset.x; //copied from getScreenXY()
+			_point.y = y - Camera.scroll.y*scrollFactor.y - offset.y;
+			//_point.x = FlxU.floor(x + ROUNDING_ERROR)-FlxU.floor(Camera.scroll.x*scrollFactor.x) - offset.x;
+			//_point.y = FlxU.floor(y + ROUNDING_ERROR)-FlxU.floor(Camera.scroll.y*scrollFactor.y) - offset.y;
+			//getScreenXY(_point,Camera);
 			if(((angle == 0) || (_bakedRotation > 0)) && (scale.x == 1) && (scale.y == 1))
 			{
 				return ((_point.x + frameWidth > 0) && (_point.x < Camera.width) && (_point.y + frameHeight > 0) && (_point.y < Camera.height));
@@ -825,9 +803,7 @@ package org.flixel
 				var hw:Number = width/2;
 				var hh:Number = height/2;
 				var radius:Number = Math.sqrt(hw*hw+hh*hh)*((scale.x >= scale.y)?scale.x:scale.y);
-				_point.x += hw;
-				_point.y += hh;
-				return ((_point.x + radius > 0) && (_point.x - radius < Camera.width) && (_point.y + radius > 0) && (_point.y - radius < Camera.height));
+				return ((_point.x + hw + radius > 0) && (_point.x + hw - radius < Camera.width) && (_point.y + hh + radius > 0) && (_point.y + hh - radius < Camera.height));
 			}
 		}
 		

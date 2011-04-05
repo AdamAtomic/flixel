@@ -51,7 +51,7 @@ package org.flixel
 			
 			_regen = true;
 			_shadow = 0;
-			solid = false;
+			allowCollisions = NONE;
 			calcFrame();
 		}
 		
@@ -269,8 +269,6 @@ package org.flixel
 			if((_framePixels == null) || (_framePixels.width != _pixels.width) || (_framePixels.height != _pixels.height))
 				_framePixels = new BitmapData(_pixels.width,_pixels.height,true,0);
 			_framePixels.copyPixels(_pixels,_flashRect,_flashPointZero);
-			if(solid)
-				refreshHulls();
 		}
 		
 		/**

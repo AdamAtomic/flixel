@@ -71,6 +71,17 @@ package org.flixel
 		 */
 		static public var height:uint;
 		/**
+		 * The dimensions of the game world, used by the quad tree for collisions and overlap checks.
+		 */
+		static public var worldBounds:FlxRect;
+		/**
+		 * How many times the quad tree should divide the world on each axis.
+		 * Generally, sparse collisions can have fewer divisons,
+		 * while denser collision activity usually profits from more.
+		 * Default value is 6.
+		 */
+		static public var worldDivisions:uint;
+		/**
 		 * Setting this to true will disable/skip stuff that isn't necessary for mobile platforms like Android. [BETA]
 		 */
 		static public var mobile:Boolean; 
@@ -139,6 +150,11 @@ package org.flixel
 		 */
 		static protected var _cache:Object;
 		
+		static public function getLibraryName():String
+		{
+			return FlxG.LIBRARY_NAME + " v" + FlxG.LIBRARY_MAJOR_VERSION + "." + FlxG.LIBRARY_MINOR_VERSION;
+		}
+		
 		/**
 		 * Log data to the debugger.
 		 * 
@@ -184,7 +200,7 @@ package org.flixel
 		 */
 		static public function get framerate():Number
 		{
-			return 1/_game._step;
+			return 1000/_game._step;
 		}
 		
 		/**
@@ -192,7 +208,7 @@ package org.flixel
 		 */
 		static public function set framerate(Framerate:Number):void
 		{
-			_game._step = 1/Framerate;
+			_game._step = 1000/Framerate;
 		}
 		
 		/**
@@ -216,6 +232,7 @@ package org.flixel
 			_game._flashFramerate = Framerate;
 			if(_game.root != null)
 				_game.stage.frameRate = _game._flashFramerate;
+			_game._maxAccumulation = 2000/Framerate - 1;
 		}
 		
 		/**
@@ -281,7 +298,7 @@ package org.flixel
 			else
 				FlxG.switchState(State);
 			_game._replayCancelKeys = CancelKeys;
-			_game._replayTimer = Timeout;
+			_game._replayTimer = Timeout*1000;
 			_game._replayCallback = Callback;
 			_game._replayRequested = true;
 		}
@@ -747,8 +764,8 @@ package org.flixel
 
 			FlxG.levels = new Array();
 			FlxG.scores = new Array();
-			FlxU.worldBounds = new FlxRect(0,0,FlxG.width,FlxG.height);
-			FlxQuadTree.divisions = 3;
+			FlxG.worldBounds = new FlxRect(0,0,FlxG.width,FlxG.height);
+			FlxG.worldDivisions = 6;
 		}
 		
 		static internal function reset():void

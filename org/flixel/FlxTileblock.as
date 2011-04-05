@@ -22,7 +22,7 @@ package org.flixel
 			super(X,Y);
 			makeGraphic(Width,Height,0,true);
 			active = false;
-			fixed = true;
+			immovable = true;
 		}
 		
 		/**

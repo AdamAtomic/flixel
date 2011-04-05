@@ -11,29 +11,35 @@ package org.flixel
 	 */
 	public class FlxObject extends FlxBasic
 	{
-		/**
-		 * Helps to eliminate false collisions and/or rendering glitches caused by rounding errors
-		 */
-		static protected const ROUNDING_ERROR:Number = 0.0000001;
+		static public const LEFT:uint	= 0x0001;
+		static public const RIGHT:uint	= 0x0010;
+		static public const UP:uint		= 0x0100;
+		static public const DOWN:uint	= 0x1000;
+		
+		static public const NONE:uint	= 0;
+		static public const CEILING:uint= UP;
+		static public const FLOOR:uint	= DOWN;
+		static public const WALL:uint	= LEFT | RIGHT;
+		static public const ANY:uint	= LEFT | RIGHT | UP | DOWN;
+		
+		static public const OVERLAP_BIAS:Number = 4;
 		
 		public var x:Number;
 		public var y:Number;
 		public var width:Number;
 		public var height:Number;
-		
-		/**
-		 * Whether or not the object collides.
-		 */
-		public var solid:Boolean;
+
 		/**
 		 * Whether an object will move/alter position after a collision.
 		 */
-		public var fixed:Boolean;
+		public var immovable:Boolean;
 		
 		/**
 		 * The basic speed of this object.
 		 */
 		public var velocity:FlxPoint;
+		public var mass:Number;
+		public var elasticity:Number;
 		/**
 		 * How fast the speed of this object is changing.
 		 * Useful for smooth movement and gravity.
@@ -105,52 +111,27 @@ package org.flixel
 		 */
 		protected var _rect:FlxRect;
 		/**
-		 * This is a pre-allocated Flash Point object, which is useful for certain Flash graphics API calls
-		 */
-		protected var _flashPoint:Point;
-		/**
 		 * Set this to false if you want to skip the automatic motion/movement stuff (see <code>updateMotion()</code>).
 		 * FlxObject and FlxSprite default to true.
 		 * FlxText, FlxTileblock, FlxTilemap and FlxSound default to false.
 		 */
 		public var moves:Boolean;
 		/**
-		 * These store a couple of useful numbers for speeding up collision resolution.
+		 * Bit field of flags (use with UP, DOWN, LEFT, RIGHT, etc) indicating surface contacts & collision qualities.
+		 * Use bitwise operators to check the values stored here, or use touching(), justStartedTouching(), etc.
+		 * You can even use them broadly as boolean values if you're feeling saucy!
 		 */
-		public var colHullX:FlxRect;
+		public var touching:uint;
+		public var wasTouching:uint;
 		/**
-		 * These store a couple of useful numbers for speeding up collision resolution.
+		 * Bit field of flags (use with UP, DOWN, LEFT, RIGHT, etc) indicating collision directions.
+		 * Use bitwise operators to check the values stored here.
+		 * Useful for things like one-way platforms (e.g. allowCollisions = UP;)
+		 * The accessor "solid" just flips this variable between NONE and ANY.
 		 */
-		public var colHullY:FlxRect;
-		/**
-		 * These store a couple of useful numbers for speeding up collision resolution.
-		 */
-		public var colVector:FlxPoint;
-		/**
-		 * An array of <code>FlxPoint</code> objects.  By default contains a single offset (0,0).
-		 */
-		public var colOffsets:Array;
-		/**
-		 * Flag that indicates whether or not you just hit the floor.
-		 * Primarily useful for platformers, this flag is reset during the <code>updateMotion()</code>.
-		 */
-		public var onFloor:Boolean;
-		/**
-		 * Flag for direction collision resolution.
-		 */
-		public var collideLeft:Boolean;
-		/**
-		 * Flag for direction collision resolution.
-		 */
-		public var collideRight:Boolean;
-		/**
-		 * Flag for direction collision resolution.
-		 */
-		public var collideTop:Boolean;
-		/**
-		 * Flag for direction collision resolution.
-		 */
-		public var collideBottom:Boolean;
+		public var allowCollisions:uint;
+		
+		public var last:FlxPoint;
 		
 		/**
 		 * Instantiates a <code>FlxObject</code>.
@@ -164,17 +145,18 @@ package org.flixel
 		{
 			x = X;
 			y = Y;
+			last = new FlxPoint(x,y);
 			width = Width;
 			height = Height;
-			
-			solid = true;
-			fixed = false;
+			mass = 1.0;
+			elasticity = 0.0;
+
+			immovable = false;
 			moves = true;
 			
-			collideLeft = true;
-			collideRight = true;
-			collideTop = true;
-			collideBottom = true;
+			touching = NONE;
+			wasTouching = NONE;
+			allowCollisions = ANY;
 			
 			velocity = new FlxPoint();
 			acceleration = new FlxPoint();
@@ -193,12 +175,6 @@ package org.flixel
 			
 			_point = new FlxPoint();
 			_rect = new FlxRect();
-			_flashPoint = new Point();
-			
-			colHullX = new FlxRect();
-			colHullY = new FlxRect();
-			colVector = new FlxPoint();
-			colOffsets = new Array(new FlxPoint());
 		}
 		
 		/**
@@ -215,11 +191,28 @@ package org.flixel
 			scrollFactor = null;
 			_point = null;
 			_rect = null;
-			_flashPoint = null;
-			colHullX = null;
-			colHullY = null;
-			colVector = null;
-			colOffsets = null;
+			last = null;
+		}
+		
+		override public function preUpdate():void
+		{
+			_ACTIVECOUNT++;
+			
+			if(_flickerTimer != 0)
+			{
+				if(_flickerTimer > 0)
+				{
+					_flickerTimer = _flickerTimer - FlxG.elapsed;
+					if(_flickerTimer <= 0)
+					{
+						_flickerTimer = 0;
+						_flicker = false;
+					}
+				}
+			}
+			
+			last.x = x;
+			last.y = y;
 		}
 		
 		/**
@@ -227,19 +220,16 @@ package org.flixel
 		 */
 		override public function update():void
 		{
-			_ACTIVECOUNT++;
-			updateMotion();
-			updateFlickering();
+			//
 		}
 		
-		/**
-		 * Called by <code>FlxObject.updateMotion()</code> and some constructors to
-		 * rebuild the basic collision data for this object.
-		 */
-		public function refreshHulls():void
+		override public function postUpdate():void
 		{
-			colHullX.make(x,y,width,height);
-			colHullY.copyFrom(colHullX);
+			if(moves)
+				updateMotion();
+			
+			wasTouching = touching;
+			touching = NONE;
 		}
 		
 		/**
@@ -248,12 +238,6 @@ package org.flixel
 		 */
 		protected function updateMotion():void
 		{
-			if(!moves)
-				return;
-			
-			if(solid)
-				refreshHulls();
-			onFloor = false;
 			var vc:Number;
 
 			vc = (FlxU.computeVelocity(angularVelocity,angularAcceleration,angularDrag,maxAngular) - angularVelocity)/2;
@@ -273,38 +257,6 @@ package org.flixel
 			
 			x += xd;
 			y += yd;
-			
-			//Update collision data with new movement results
-			if(!solid)
-				return;
-			colVector.make(xd,yd);
-			colHullX.width += ((colVector.x>0)?colVector.x:-colVector.x);
-			if(colVector.x < 0)
-				colHullX.x += colVector.x;
-			colHullY.x = x;
-			colHullY.height += ((colVector.y>0)?colVector.y:-colVector.y);
-			if(colVector.y < 0)
-				colHullY.y += colVector.y;
-		}
-		
-		/**
-		 * Just updates the retro-style flickering.
-		 * Considered update logic rather than rendering because it toggles visibility.
-		 */
-		protected function updateFlickering():void
-		{
-			if(flickering)
-			{
-				if(_flickerTimer > 0)
-				{
-					_flickerTimer = _flickerTimer - FlxG.elapsed;
-					if(_flickerTimer <= 0)
-					{
-						_flickerTimer = 0;
-						_flicker = false;
-					}
-				}
-			}
 		}
 		
 		/**
@@ -323,98 +275,13 @@ package org.flixel
 				Camera = FlxG.camera;
 			
 			//convert passed point into screen space
-			X = X - FlxU.floor(Camera.scroll.x);
-			Y = Y - FlxU.floor(Camera.scroll.y);
+			X = X - Camera.scroll.x;
+			Y = Y - Camera.scroll.y;
 			
 			//then compare
-			getScreenXY(_point,Camera);
+			_point.x = x - Camera.scroll.x*scrollFactor.x; //from getscreenxy
+			_point.y = y - Camera.scroll.y*scrollFactor.y;
 			return (X > _point.x) && (X < _point.x+width) && (Y > _point.y) && (Y < _point.y+height);
-		}
-		
-		/**
-		 * If you don't want to call <code>FlxU.collide()</code> you can use this instead.
-		 * Just calls <code>FlxU.collide(this,Object);</code>.  Will collide against itself
-		 * if Object==null.
-		 * 
-		 * @param	Object		The <code>FlxObject</code> you want to collide with.
-		 */
-		public function collide(Object:FlxObject=null):Boolean
-		{
-			return FlxU.collide(this,((Object==null)?this:Object));
-		}
-		
-		/**
-		 * <code>FlxU.collide()</code> (and thus <code>FlxObject.collide()</code>) call
-		 * this function each time two objects are compared to see if they collide.
-		 * It doesn't necessarily mean these objects WILL collide, however.
-		 * 
-		 * @param	Object	The <code>FlxObject</code> you're about to run into.
-		 */
-		public function preCollide(Object:FlxObject):void
-		{
-			//Most objects don't have to do anything here.
-		}
-		
-		/**
-		 * Called when this object's left side collides with another <code>FlxObject</code>'s right.
-		 * NOTE: by default this function just calls <code>hitSide()</code>.
-		 * 
-		 * @param	Contact		The <code>FlxObject</code> you just ran into.
-		 * @param	Velocity	The suggested new velocity for this object.
-		 */
-		public function hitLeft(Contact:FlxObject,Velocity:Number):void
-		{
-			hitSide(Contact,Velocity);
-		}
-		
-		/**
-		 * Called when this object's right side collides with another <code>FlxObject</code>'s left.
-		 * NOTE: by default this function just calls <code>hitSide()</code>.
-		 * 
-		 * @param	Contact		The <code>FlxObject</code> you just ran into.
-		 * @param	Velocity	The suggested new velocity for this object.
-		 */
-		public function hitRight(Contact:FlxObject,Velocity:Number):void
-		{
-			hitSide(Contact,Velocity);
-		}
-		
-		/**
-		 * Since most games have identical behavior for running into walls,
-		 * you can just override this function instead of overriding both hitLeft and hitRight. 
-		 * 
-		 * @param	Contact		The <code>FlxObject</code> you just ran into.
-		 * @param	Velocity	The suggested new velocity for this object.
-		 */
-		public function hitSide(Contact:FlxObject,Velocity:Number):void
-		{
-			if(!fixed || (Contact.fixed && ((velocity.y != 0) || (velocity.x != 0))))
-				velocity.x = Velocity;
-		}
-		
-		/**
-		 * Called when this object's top collides with the bottom of another <code>FlxObject</code>.
-		 * 
-		 * @param	Contact		The <code>FlxObject</code> you just ran into.
-		 * @param	Velocity	The suggested new velocity for this object.
-		 */
-		public function hitTop(Contact:FlxObject,Velocity:Number):void
-		{
-			if(!fixed || (Contact.fixed && ((velocity.y != 0) || (velocity.x != 0))))
-				velocity.y = Velocity;
-		}
-		
-		/**
-		 * Called when this object's bottom edge collides with the top of another <code>FlxObject</code>.
-		 * 
-		 * @param	Contact		The <code>FlxObject</code> you just ran into.
-		 * @param	Velocity	The suggested new velocity for this object.
-		 */
-		public function hitBottom(Contact:FlxObject,Velocity:Number):void
-		{
-			onFloor = true;
-			if(!fixed || (Contact.fixed && ((velocity.y != 0) || (velocity.x != 0))))
-				velocity.y = Velocity;
 		}
 		
 		/**
@@ -440,6 +307,19 @@ package org.flixel
 			return _flickerTimer != 0;
 		}
 		
+		public function get solid():Boolean
+		{
+			return (allowCollisions & ANY) as Boolean;
+		}
+		
+		public function set solid(Solid:Boolean):void
+		{
+			if(Solid)
+				allowCollisions = ANY;
+			else
+				allowCollisions = NONE;
+		}
+		
 		/**
 		 * Call this function to figure out the on-screen position of the object.
 		 * 
@@ -454,8 +334,10 @@ package org.flixel
 				Point = new FlxPoint();
 			if(Camera == null)
 				Camera = FlxG.camera;
-			Point.x = FlxU.floor(x + ROUNDING_ERROR)-FlxU.floor(Camera.scroll.x*scrollFactor.x);
-			Point.y = FlxU.floor(y + ROUNDING_ERROR)-FlxU.floor(Camera.scroll.y*scrollFactor.y);
+			Point.x = x - Camera.scroll.x*scrollFactor.x;
+			Point.y = y - Camera.scroll.y*scrollFactor.y;
+			//Point.x = FlxU.floor(x + ROUNDING_ERROR)-FlxU.floor(Camera.scroll.x*scrollFactor.x);
+			//Point.y = FlxU.floor(y + ROUNDING_ERROR)-FlxU.floor(Camera.scroll.y*scrollFactor.y);
 			return Point;
 		}
 		
@@ -470,7 +352,9 @@ package org.flixel
 		{
 			if(Camera == null)
 				Camera = FlxG.camera;
-			getScreenXY(_point,Camera);
+			//getScreenXY(_point,Camera);
+			_point.x = x - Camera.scroll.x*scrollFactor.x; //from getscreenxy
+			_point.y = y - Camera.scroll.y*scrollFactor.y;
 			return (_point.x + width > 0) && (_point.x < Camera.width) && (_point.y + height > 0) && (_point.y < Camera.height);
 		}
 		
@@ -491,14 +375,18 @@ package org.flixel
 		public function reset(X:Number,Y:Number):void
 		{
 			revive();
+			touching = NONE;
+			wasTouching = NONE;
 			x = X;
 			y = Y;
-			velocity.make();
-			refreshHulls();
+			last.x = x;
+			last.y = y;
+			velocity.x = 0;
+			velocity.y = 0;
 		}
 		
 		/**
-		 * Checks to see if some <code>FlxObject</code> object overlaps this <code>FlxObject</code> object.
+		 * Checks to see if some <code>FlxObject</code> overlaps this <code>FlxObject</code> object in world space.
 		 * 
 		 * @param	Object	The object being tested.
 		 * 
@@ -512,7 +400,7 @@ package org.flixel
 		/*
 		public function getBoundingColor():uint
 		{
-			if(solid)
+			if(allowCollisions as Boolean)
 			{
 				if(fixed)
 					return 0x7f00f225;
@@ -522,5 +410,176 @@ package org.flixel
 			else
 				return 0x7f0090e9;
 		}*/
+		
+		public function isTouching(Direction:uint):Boolean
+		{
+			return Boolean(touching & Direction);
+		}
+		
+		public function justTouched(Direction:uint):Boolean
+		{
+			return Boolean((touching & Direction) && (wasTouching & Direction));
+		}
+		
+		static public function separate(Object1:FlxObject, Object2:FlxObject):Boolean
+		{
+			var sx:Boolean = separateX(Object1,Object2);
+			var sy:Boolean = separateY(Object1,Object2);
+			return sx || sy;
+		}
+		
+		static public function separateX(Object1:FlxObject, Object2:FlxObject):Boolean
+		{
+			//can't separate two immovable objects
+			var obj1immovable:Boolean = Object1.immovable;
+			var obj2immovable:Boolean = Object2.immovable;
+			if(obj1immovable && obj2immovable)
+				return false;
+			
+			//If one of the objects is a tilemap, just pass it off.
+			if(Object1 is FlxTilemap)
+				return (Object1 as FlxTilemap).overlapsWithCallback(Object2,separateX);
+			if(Object2 is FlxTilemap)
+				return (Object2 as FlxTilemap).overlapsWithCallback(Object1,separateX);
+			
+			//First, get the two object deltas
+			var overlap:Number = 0;
+			var obj1delta:Number = Object1.x - Object1.last.x;
+			var obj2delta:Number = Object2.x - Object2.last.x;
+			if(obj1delta != obj2delta)
+			{
+				//Check if the X hulls actually overlap
+				var obj1deltaAbs:Number = (obj1delta > 0)?obj1delta:-obj1delta;
+				var obj2deltaAbs:Number = (obj2delta > 0)?obj2delta:-obj2delta;
+				var obj1rect:FlxRect = new FlxRect(Object1.x-((obj1delta > 0)?obj1delta:0),Object1.last.y,Object1.width+((obj1delta > 0)?obj1delta:-obj1delta),Object1.height);
+				var obj2rect:FlxRect = new FlxRect(Object2.x-((obj2delta > 0)?obj2delta:0),Object2.last.y,Object2.width+((obj2delta > 0)?obj2delta:-obj2delta),Object2.height);
+				if((obj1rect.x + obj1rect.width > obj2rect.x) && (obj1rect.x < obj2rect.x + obj2rect.width) && (obj1rect.y + obj1rect.height > obj2rect.y) && (obj1rect.y < obj2rect.y + obj2rect.height))
+				{
+					var maxOverlap:Number = obj1deltaAbs + obj2deltaAbs + OVERLAP_BIAS;
+					
+					//If they did overlap (and can), figure out by how much and flip the corresponding flags
+					if(obj1delta > obj2delta)
+					{
+						overlap = Object1.x + Object1.width - Object2.x;
+						if(overlap > maxOverlap)
+							overlap = 0;
+						else if((Object1.allowCollisions & RIGHT) && (Object2.allowCollisions & LEFT))
+						{
+							Object1.touching |= RIGHT;
+							Object2.touching |= LEFT;
+						}
+					}
+					else if(obj1delta < obj2delta)
+					{
+						overlap = Object1.x - Object2.width - Object2.x;
+						if(-overlap > maxOverlap)
+							overlap = 0;
+						else if((Object1.allowCollisions & LEFT) && (Object2.allowCollisions & RIGHT))
+						{
+							Object1.touching |= LEFT;
+							Object2.touching |= RIGHT;
+						}
+					}
+				}
+			}
+			
+			//Then adjust their positions and velocities accordingly (if there was any overlap)
+			if(overlap != 0)
+			{
+				if(!obj1immovable && !obj2immovable)
+					overlap *= 0.5;
+				var object1velocityX:Number = Object1.velocity.x;
+				if(!obj1immovable)
+				{
+					Object1.x -= overlap;
+					Object1.velocity.x = (Object2.mass/Object1.mass)*Object2.velocity.x - Object1.velocity.x*Object1.elasticity;
+				}
+				if(!obj2immovable)
+				{
+					Object2.x += overlap;
+					Object2.velocity.x = (Object1.mass/Object2.mass)*object1velocityX - Object2.velocity.x*Object2.elasticity;
+				}
+				return true;
+			}
+			else
+				return false;
+		}
+		
+		static public function separateY(Object1:FlxObject, Object2:FlxObject):Boolean
+		{
+			//can't separate two immovable objects
+			var obj1immovable:Boolean = Object1.immovable;
+			var obj2immovable:Boolean = Object2.immovable;
+			if(obj1immovable && obj2immovable)
+				return false;
+			
+			//If one of the objects is a tilemap, just pass it off.
+			if(Object1 is FlxTilemap)
+				return (Object1 as FlxTilemap).overlapsWithCallback(Object2,separateY);
+			if(Object2 is FlxTilemap)
+				return (Object2 as FlxTilemap).overlapsWithCallback(Object1,separateY);
+
+			//First, get the two object deltas
+			var overlap:Number = 0;
+			var obj1delta:Number = Object1.y - Object1.last.y;
+			var obj2delta:Number = Object2.y - Object2.last.y;
+			if(obj1delta != obj2delta)
+			{
+				//Check if the Y hulls actually overlap
+				var obj1deltaAbs:Number = (obj1delta > 0)?obj1delta:-obj1delta;
+				var obj2deltaAbs:Number = (obj2delta > 0)?obj2delta:-obj2delta;
+				var obj1rect:FlxRect = new FlxRect(Object1.x,Object1.y-((obj1delta > 0)?obj1delta:0),Object1.width,Object1.height+obj1deltaAbs);
+				var obj2rect:FlxRect = new FlxRect(Object2.x,Object2.y-((obj2delta > 0)?obj2delta:0),Object2.width,Object2.height+obj2deltaAbs);
+				if((obj1rect.x + obj1rect.width > obj2rect.x) && (obj1rect.x < obj2rect.x + obj2rect.width) && (obj1rect.y + obj1rect.height > obj2rect.y) && (obj1rect.y < obj2rect.y + obj2rect.height))
+				{
+					var maxOverlap:Number = obj1deltaAbs + obj2deltaAbs + OVERLAP_BIAS;
+					
+					//If they did overlap (and can), figure out by how much and flip the corresponding flags
+					if(obj1delta > obj2delta)
+					{
+						overlap = Object1.y + Object1.height - Object2.y;
+						if(overlap > maxOverlap)
+							overlap = 0;
+						else if((Object1.allowCollisions & DOWN) && (Object2.allowCollisions & UP))
+						{
+							Object1.touching |= DOWN;
+							Object2.touching |= UP;
+						}
+					}
+					else if(obj1delta < obj2delta)
+					{
+						overlap = Object1.y - Object2.height - Object2.y;
+						if(-overlap > maxOverlap)
+							overlap = 0;
+						else if((Object1.allowCollisions & UP) && (Object2.allowCollisions & DOWN))
+						{
+							Object1.touching |= UP;
+							Object2.touching |= DOWN;
+						}
+					}
+				}
+			}
+			
+			//Then adjust their positions and velocities accordingly (if there was any overlap)
+			if(overlap != 0)
+			{
+				if(!obj1immovable && !obj2immovable)
+					overlap *= 0.5;
+				var object1velocityY:Number = Object1.velocity.y;
+				if(!obj1immovable)
+				{
+					Object1.y -= overlap;
+					Object1.velocity.y = (Object2.mass/Object1.mass)*Object2.velocity.y - Object1.velocity.y*Object1.elasticity;
+				}
+				if(!obj2immovable)
+				{
+					Object2.y += overlap;
+					Object2.velocity.y = (Object1.mass/Object2.mass)*object1velocityY - Object2.velocity.y*Object2.elasticity;
+				}
+				return true;
+			}
+			else
+				return false;
+		}
 	}
 }

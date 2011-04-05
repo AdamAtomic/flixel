@@ -85,12 +85,10 @@ package org.flixel
 				label.width = width;
 		}
 		
-		/**
-		 * Called by the game loop automatically, handles mouseover and click detection.
-		 */
-		override public function update():void
+		override public function preUpdate():void
 		{
-			//Super basic update/stage event stuff.
+			super.preUpdate();
+			
 			if(!_initialized)
 			{
 				if(FlxG.stage != null)
@@ -99,8 +97,13 @@ package org.flixel
 					_initialized = true;
 				}
 			}
-			super.update();
-			
+		}
+		
+		/**
+		 * Called by the game loop automatically, handles mouseover and click detection.
+		 */
+		override public function update():void
+		{
 			updateButton(); //Basic button logic
 
 			//Default button appearance is to simply update

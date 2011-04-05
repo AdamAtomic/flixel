@@ -63,6 +63,11 @@ package org.flixel
 			_sortIndex = null;
 		}
 		
+		override public function preUpdate():void
+		{
+			//just don't increment active count really
+		}
+		
 		/**
 		 * Automatically goes through and calls update on everything you added,
 		 * override this function to handle custom input and perform collisions.
@@ -75,7 +80,11 @@ package org.flixel
 			{
 				b = members[i++] as FlxBasic;
 				if((b != null) && b.exists && b.active)
+				{
+					b.preUpdate();
 					b.update();
+					b.postUpdate();
+				}
 			}
 		}
 		

@@ -6,23 +6,8 @@ package org.flixel
 	import flash.utils.getQualifiedClassName;
 	import flash.utils.getTimer;
 	
-	import org.flixel.system.FlxQuadTree;
-	
 	public class FlxU
 	{
-		/**
-		 * Helps to eliminate false collisions and/or rendering glitches caused by rounding errors
-		 */
-		static protected const ROUNDING_ERROR:Number = 0.0000001;
-		/**
-		 * The dimensions of the game world, used for the quad tree for collisions and overlap checks.
-		 */
-		static public var worldBounds:FlxRect;
-		/**
-		 * The last quad tree you generated will be stored here for reference or whatever.
-		 */
-		static public var quadTree:FlxQuadTree;
-		
 		/**
 		 * Opens a web page in a new tab or window.
 		 * 
@@ -458,68 +443,13 @@ package org.flixel
 		}
 		
 		/**
-		 * Call this function to see if one <code>FlxObject</code> overlaps another.
-		 * Can be called with one object and one group, or two groups, or two objects,
-		 * whatever floats your boat!  It will put everything into a quad tree and then
-		 * check for overlaps.  For maximum performance try bundling a lot of objects
-		 * together using a <code>FlxGroup</code> (even bundling groups together!)
-		 * NOTE: does NOT take objects' scrollfactor into account.
-		 * 
-		 * @param	ObjectOrGroup1	The first object or group you want to check.
-		 * @param	ObjectOrGroup2	The second object or group you want to check.  If it is the same as the first, flixel knows to just do a comparison within that group.
-		 * @param	Callback		A function with two <code>FlxObject</code> parameters - e.g. <code>myOverlapFunction(Object1:FlxObject,Object2:FlxObject);</code>  If no function is provided, <code>FlxQuadTree</code> will call <code>kill()</code> on both objects.
-		 */
-		static public function overlap(ObjectOrGroup1:FlxBasic,ObjectOrGroup2:FlxBasic,Callback:Function=null):Boolean
-		{
-			if( (ObjectOrGroup1 == null) || !ObjectOrGroup1.exists ||
-				(ObjectOrGroup2 == null) || !ObjectOrGroup2.exists )
-				return false;
-			if(quadTree != null)
-				quadTree.destroy();
-			quadTree = new FlxQuadTree(worldBounds.x,worldBounds.y,worldBounds.width,worldBounds.height);
-			quadTree.add(ObjectOrGroup1,FlxQuadTree.A_LIST);
-			if(ObjectOrGroup1 === ObjectOrGroup2)
-				return quadTree.overlap(false,Callback);
-			quadTree.add(ObjectOrGroup2,FlxQuadTree.B_LIST);
-			return quadTree.overlap(true,Callback);
-		}
-		
-		/**
-		 * Call this function to see if one <code>FlxObject</code> collides with another.
-		 * Can be called with one object and one group, or two groups, or two objects,
-		 * whatever floats your boat!  It will put everything into a quad tree and then
-		 * check for collisions.  For maximum performance try bundling a lot of objects
-		 * together using a <code>FlxGroup</code> (even bundling groups together!)
-		 * NOTE: does NOT take objects' scrollfactor into account.
-		 * 
-		 * @param	ObjectOrGroup1		The first object or group you want to check.
-		 * @param	ObjectOrGroup2		The second object or group you want to check.  If it is the same as the first, flixel knows to just do a comparison within that group.
-		 */
-		static public function collide(ObjectOrGroup1:FlxBasic,ObjectOrGroup2:FlxBasic):Boolean
-		{
-			if( (ObjectOrGroup1 == null) || !ObjectOrGroup1.exists ||
-				(ObjectOrGroup2 == null) || !ObjectOrGroup2.exists )
-				return false;
-			if(quadTree != null)
-				quadTree.destroy();
-			quadTree = new FlxQuadTree(worldBounds.x,worldBounds.y,worldBounds.width,worldBounds.height);
-			quadTree.add(ObjectOrGroup1,FlxQuadTree.A_LIST);
-			var match:Boolean = ObjectOrGroup1 === ObjectOrGroup2;
-			if(!match)
-				quadTree.add(ObjectOrGroup2,FlxQuadTree.B_LIST);
-			var cx:Boolean = quadTree.overlap(!match,solveXCollision);
-			var cy:Boolean = quadTree.overlap(!match,solveYCollision);
-			return cx || cy;
-		}
-		
-		/**
 		 * This quad tree callback function can be used externally as well.
 		 * Takes two objects and separates them along their X axis (if possible/reasonable).
 		 * 
 		 * @param	Object1		The first object or group you want to check.
 		 * @param	Object2		The second object or group you want to check.
 		 */
-		static public function solveXCollision(Object1:FlxObject, Object2:FlxObject):Boolean
+		/*static public function solveXCollision(Object1:FlxObject, Object2:FlxObject):Boolean
 		{
 			//Avoid messed up collisions ahead of time
 			var o1:Number = Object1.colVector.x;
@@ -706,7 +636,7 @@ package org.flixel
 			}
 
 			return hit;
-		}
+		}*/
 		
 		/**
 		 * This quad tree callback function can be used externally as well.
@@ -715,7 +645,7 @@ package org.flixel
 		 * @param	Object1		The first object or group you want to check.
 		 * @param	Object2		The second object or group you want to check.
 		 */
-		static public function solveYCollision(Object1:FlxObject, Object2:FlxObject):Boolean
+		/*static public function solveYCollision(Object1:FlxObject, Object2:FlxObject):Boolean
 		{
 			//Avoid messed up collisions ahead of time
 			var o1:Number = Object1.colVector.y;
@@ -922,6 +852,6 @@ package org.flixel
 			}
 			
 			return hit;
-		}
+		}*/
 	}
 }

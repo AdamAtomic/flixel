@@ -3,48 +3,53 @@ package org.flixel
 	
 	public class FlxParticle extends FlxSprite
 	{
-		public var bounce:Number;
 		public var lifespan:Number;
 		
-		public function FlxParticle(Bounce:Number=0,Lifespan:Number=0)
+		public function FlxParticle()
 		{
 			super();
-			bounce = Bounce;
-			lifespan = Lifespan;
+			lifespan = 0;
 		}
 		
 		override public function update():void
 		{
-			super.update();
+			//lifespan behavior
 			if(lifespan <= 0)
 				return;
 			lifespan -= FlxG.elapsed;
 			if(lifespan <= 0)
 				kill();
-		}
-		
-		override public function hitSide(Contact:FlxObject,Velocity:Number):void
-		{
-			velocity.x = -velocity.x * bounce;
-			if(angularVelocity != 0)
-				angularVelocity = -angularVelocity * bounce;
-		}
-		
-		override public function hitBottom(Contact:FlxObject,Velocity:Number):void
-		{
-			onFloor = true;
-			if(((velocity.y > 0)?velocity.y:-velocity.y) > bounce*100)
+			
+			//simpler bounce/spin behavior for now
+			if(touching)
 			{
-				velocity.y = -velocity.y * bounce;
 				if(angularVelocity != 0)
-					angularVelocity *= -bounce;
+					angularVelocity = -angularVelocity * elasticity;
 			}
-			else
+			if(acceleration.y > 0) //special behavior for particles with gravity
 			{
-				angularVelocity = 0;
-				super.hitBottom(Contact,Velocity);
+				if(touching & FLOOR)
+				{
+					drag.x = 200;
+					
+					if(!(wasTouching & FLOOR))
+					{
+						if(velocity.y < -elasticity*100)
+						{
+							if(angularVelocity != 0)
+								angularVelocity *= -elasticity;
+						}
+						else
+						{
+							velocity.y = 0;
+							angularVelocity = 0;
+						}
+					}
+				}
+				else
+					drag.x = 0;
 			}
-			velocity.x *= bounce;
+			return;
 		}
 	}
 }

@@ -44,7 +44,7 @@ package org.flixel.system
 			txt.selectable = false;
 			txt.multiline = false;
 			txt.defaultTextFormat = new TextFormat("Courier",12,0xffffff);
-			var str:String = FlxG.LIBRARY_NAME + " v" + FlxG.LIBRARY_MAJOR_VERSION + "." + FlxG.LIBRARY_MINOR_VERSION;
+			var str:String = FlxG.getLibraryName();
 			if(FlxG.debug)
 				str += " [debug]";
 			else
