@@ -1,6 +1,3 @@
-Text for param in org.flixel:FlxObject/collide is not valid.
-org.xml.sax.SAXParseException: The element type "FlxObject" must be terminated by the matching end-tag "</FlxObject>".
-
-Text for description in org.flixel.system:FlxList/FlxList is not valid.
-org.xml.sax.SAXParseException: The element type "code" must be terminated by the matching end-tag "</code>".
+Text for description in org.flixel:FlxObject/touching is not valid.
+org.xml.sax.SAXParseException: The entity name must immediately follow the '&' in the entity reference.
 

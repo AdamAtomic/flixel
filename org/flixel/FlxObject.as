@@ -117,7 +117,7 @@ package org.flixel
 		 */
 		public var moves:Boolean;
 		/**
-		 * Bit field of flags (use with UP, DOWN, LEFT, RIGHT, etc) indicating surface contacts & collision qualities.
+		 * Bit field of flags (use with UP, DOWN, LEFT, RIGHT, etc) indicating surface contacts and collision qualities.
 		 * Use bitwise operators to check the values stored here, or use touching(), justStartedTouching(), etc.
 		 * You can even use them broadly as boolean values if you're feeling saucy!
 		 */
