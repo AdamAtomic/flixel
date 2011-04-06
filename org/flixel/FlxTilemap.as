@@ -205,9 +205,10 @@ package org.flixel
 			if(auto > OFF)
 				l++;
 			_tileObjects = new Array(l);
+			var ac:uint;
 			while(i < l)
 			{
-				_tileObjects[i] = new FlxTile(_tileWidth,_tileHeight,(i>=collideIndex)?ANY:NONE);
+				_tileObjects[i] = new FlxTile(_tileWidth,_tileHeight,(i >= collideIndex)?allowCollisions:NONE);
 				i++;
 			}
 			
@@ -305,18 +306,21 @@ package org.flixel
 						if(FlxG.visualDebug)
 						{
 							t = _tileObjects[_data[cri]];
-							if(t.allowCollisions <= NONE)
-								debugTile = _debugTileNotSolid; //blue
-							else if(t.allowCollisions != ANY)
-								debugTile = _debugTilePartial; //pink
-							else
-								debugTile = _debugTileSolid; //green
-							Buffer.pixels.copyPixels(debugTile,_debugRect,_flashPoint,null,null,true);
+							if(t != null)
+							{
+								if(t.allowCollisions <= NONE)
+									debugTile = _debugTileNotSolid; //blue
+								else if(t.allowCollisions != ANY)
+									debugTile = _debugTilePartial; //pink
+								else
+									debugTile = _debugTileSolid; //green
+								Buffer.pixels.copyPixels(debugTile,_debugRect,_flashPoint,null,null,true);
+							}
 						}
 					}
-					cri++;
 					_flashPoint.x += _tileWidth;
 					c++;
+					cri++;
 				}
 				ri += widthInTiles;
 				_flashPoint.y += _tileHeight;
@@ -355,7 +359,7 @@ package org.flixel
 					b.dirty = false;
 				}
 				_flashPoint.x = x - c.scroll.x*scrollFactor.x + b.x; //from getscreenxy
-				_flashPoint.y = c.scroll.y*scrollFactor.y + b.y;
+				_flashPoint.y = y - c.scroll.y*scrollFactor.y + b.y;
 				b.draw(c,_flashPoint);
 				_VISIBLECOUNT++;
 			}
