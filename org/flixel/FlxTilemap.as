@@ -65,8 +65,6 @@ package org.flixel
 		 */
 		public var totalTiles:uint;
 		
-		public var cameras:Array;
-		
 		/**
 		 * Rendering helper.
 		 */
@@ -81,6 +79,13 @@ package org.flixel
 		protected var _tileHeight:uint;
 		protected var _callbacks:Array;
 		protected var _tileObjects:Array;
+		
+		protected var _debugTileNotSolid:BitmapData;
+		protected var _debugTilePartial:BitmapData;
+		protected var _debugTileSolid:BitmapData;
+		protected var _debugRect:Rectangle;
+		
+		protected var _lastVisualDebug:Boolean;
 		
 		/**
 		 * The tilemap constructor just initializes some basic variables.
@@ -107,6 +112,11 @@ package org.flixel
 			_callbacks = new Array();
 			immovable = true;
 			cameras = null;
+			_debugTileNotSolid = null;
+			_debugTilePartial = null;
+			_debugTileSolid = null;
+			_debugRect = null;
+			_lastVisualDebug = FlxG.visualDebug;
 		}
 		
 		override public function destroy():void
@@ -127,6 +137,10 @@ package org.flixel
 			_data = null;
 			_rects = null;
 			_callbacks = null;
+			_debugTileNotSolid = null;
+			_debugTilePartial = null;
+			_debugTileSolid = null;
+			_debugRect = null;
 
 			super.destroy();
 		}
@@ -192,7 +206,16 @@ package org.flixel
 				l++;
 			_tileObjects = new Array(l);
 			while(i < l)
-				_tileObjects[i++] = new FlxTile(_tileWidth,_tileHeight);
+			{
+				_tileObjects[i] = new FlxTile(_tileWidth,_tileHeight,(i>=collideIndex)?ANY:NONE);
+				i++;
+			}
+			
+			//create debug tiles for rendering bounding boxes on demand
+			_debugTileNotSolid = makeDebugTile(0x7f0090e9); //blue
+			_debugTilePartial = makeDebugTile(0x7ff01eff); //pink
+			_debugTileSolid = makeDebugTile(0x7f00f225); //green
+			_debugRect = new Rectangle(0,0,_tileWidth,_tileHeight);
 			
 			//Then go through and create the actual map
 			width = widthInTiles*_tileWidth;
@@ -203,6 +226,36 @@ package org.flixel
 				updateTile(i++);
 			
 			return this;
+		}
+		
+		protected function makeDebugTile(Color:uint):BitmapData
+		{
+			var debugTile:BitmapData
+			debugTile = new BitmapData(_tileWidth,_tileHeight,true,0);
+
+			_gfx.clear();
+			_gfx.moveTo(0,0);
+			var c:uint = Color;
+			var a:Number = Number((c >> 24) & 0xFF) / 255;
+			if(a <= 0)
+				a = 1;
+			_gfx.lineStyle(1,c,a);
+			_gfx.lineTo(_tileWidth-1,0);
+			_gfx.lineTo(_tileWidth-1,_tileHeight-1);
+			_gfx.lineTo(0,_tileHeight-1);
+			_gfx.lineTo(0,0);
+			
+			debugTile.draw(_gfxSprite);
+			return debugTile;
+		}
+		
+		override public function update():void
+		{
+			if(_lastVisualDebug != FlxG.visualDebug)
+			{
+				_lastVisualDebug = FlxG.visualDebug;
+				setDirty();
+			}
 		}
 
 		/**
@@ -236,6 +289,8 @@ package org.flixel
 			var r:uint = 0;
 			var c:uint;
 			var cri:uint;
+			var t:FlxTile;
+			var debugTile:BitmapData;
 			while(r < sr)
 			{
 				cri = ri;
@@ -243,9 +298,23 @@ package org.flixel
 				_flashPoint.x = 0;
 				while(c < sc)
 				{
-					_flashRect = _rects[cri++] as Rectangle;
+					_flashRect = _rects[cri] as Rectangle;
 					if(_flashRect != null)
+					{
 						Buffer.pixels.copyPixels(_tiles,_flashRect,_flashPoint,null,null,true);
+						if(FlxG.visualDebug)
+						{
+							t = _tileObjects[_data[cri]];
+							if(t.allowCollisions <= NONE)
+								debugTile = _debugTileNotSolid; //blue
+							else if(t.allowCollisions != ANY)
+								debugTile = _debugTilePartial; //pink
+							else
+								debugTile = _debugTileSolid; //green
+							Buffer.pixels.copyPixels(debugTile,_debugRect,_flashPoint,null,null,true);
+						}
+					}
+					cri++;
 					_flashPoint.x += _tileWidth;
 					c++;
 				}
@@ -262,8 +331,6 @@ package org.flixel
 		 */
 		override public function draw():void
 		{
-			_VISIBLECOUNT++;
-			
 			if(cameras == null)
 				cameras = FlxG.cameras;
 			var c:FlxCamera;
@@ -275,12 +342,11 @@ package org.flixel
 				c = cameras[i];
 				if(_buffers[i] == null)
 					_buffers[i] = new FlxTilemapBuffer(_tileWidth,_tileHeight,widthInTiles,heightInTiles,c);
-				b = _buffers[i] as FlxTilemapBuffer;
+				b = _buffers[i++] as FlxTilemapBuffer;
 				if(!b.dirty)
 				{
-					getScreenXY(_point,c);
-					_point.x += b.x;
-					_point.y += b.y;
+					_point.x = x - c.scroll.x*scrollFactor.x + b.x; //from getscreenxy
+					_point.y = y - c.scroll.y*scrollFactor.y + b.y;
 					b.dirty = (_point.x > 0) || (_point.y > 0) || (_point.x + b.width < c.width) || (_point.y + b.height < c.height);
 				}
 				if(b.dirty)
@@ -288,11 +354,10 @@ package org.flixel
 					drawTilemap(b,c);
 					b.dirty = false;
 				}
-				getScreenXY(_point,c);
-				_flashPoint.x = _point.x + b.x;
-				_flashPoint.y = _point.y + b.y;
+				_flashPoint.x = x - c.scroll.x*scrollFactor.x + b.x; //from getscreenxy
+				_flashPoint.y = c.scroll.y*scrollFactor.y + b.y;
 				b.draw(c,_flashPoint);
-				i++;
+				_VISIBLECOUNT++;
 			}
 		}
 		

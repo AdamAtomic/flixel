@@ -6,10 +6,11 @@ package org.flixel.system
 	{
 		public var callback:Function;
 		
-		public function FlxTile(Width:Number=0, Height:Number=0)
+		public function FlxTile(Width:Number, Height:Number, AllowCollisions:uint)
 		{
 			super(0, 0, Width, Height);
 			callback = null;
+			allowCollisions = AllowCollisions;
 			immovable = true;
 		}
 		

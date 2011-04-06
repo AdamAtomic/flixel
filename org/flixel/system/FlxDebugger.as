@@ -13,6 +13,7 @@ package org.flixel.system
 	import org.flixel.system.debug.Log;
 	import org.flixel.system.debug.Perf;
 	import org.flixel.system.debug.VCR;
+	import org.flixel.system.debug.Vis;
 	import org.flixel.system.debug.Watch;
 	
 	public class FlxDebugger extends Sprite
@@ -21,6 +22,7 @@ package org.flixel.system
 		public var log:Log;
 		public var watch:Watch;
 		public var vcr:VCR;
+		public var vis:Vis;
 		
 		public var hasMouse:Boolean;
 		
@@ -65,9 +67,14 @@ package org.flixel.system
 			addChild(perf);
 			
 			vcr = new VCR();
-			vcr.x = (Width - vcr.width)/2;
+			vcr.x = (Width - vcr.width/2)/2;
 			vcr.y = 2;
 			addChild(vcr);
+			
+			vis = new Vis();
+			vis.x = Width-vis.width - 4;
+			vis.y = 2;
+			addChild(vis);
 			
 			setLayout(FlxG.DEBUGGER_STANDARD);
 			
@@ -94,6 +101,12 @@ package org.flixel.system
 			removeChild(vcr);
 			vcr.destroy();
 			vcr = null;
+			removeChild(vis);
+			vis.destroy();
+			vis = null;
+			
+			removeEventListener(MouseEvent.MOUSE_OVER,onMouseOver);
+			removeEventListener(MouseEvent.MOUSE_OUT,onMouseOut);
 		}
 		
 		public function setLayout(Layout:uint):void

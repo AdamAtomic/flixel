@@ -82,6 +82,11 @@ package org.flixel
 		 */
 		static public var worldDivisions:uint;
 		/**
+		 * Whether to show visual debug displays or not.
+		 * Default = false.
+		 */
+		static public var visualDebug:Boolean;
+		/**
 		 * Setting this to true will disable/skip stuff that isn't necessary for mobile platforms like Android. [BETA]
 		 */
 		static public var mobile:Boolean; 
@@ -290,7 +295,7 @@ package org.flixel
 		 * @param	Timeout		Optional parameter: set a time limit for the replay.  CancelKeys will override this if pressed.
 		 * @param	Callback	Optional parameter: if set, called when the replay finishes.  Running to the end, CancelKeys, and Timeout will all trigger Callback(), but only once, and CancelKeys and Timeout will NOT call FlxG.stopReplay() if Callback is set!
 		 */
-		static public function loadReplay(Data:String,State:FlxState=null,CancelKeys:Array=null,Timeout:Number=NaN,Callback:Function=null):void
+		static public function loadReplay(Data:String,State:FlxState=null,CancelKeys:Array=null,Timeout:Number=0,Callback:Function=null):void
 		{
 			_game._replay.load(Data);
 			if(State == null)
@@ -766,6 +771,7 @@ package org.flixel
 			FlxG.scores = new Array();
 			FlxG.worldBounds = new FlxRect(0,0,FlxG.width,FlxG.height);
 			FlxG.worldDivisions = 6;
+			FlxG.visualDebug = false;
 		}
 		
 		static internal function reset():void

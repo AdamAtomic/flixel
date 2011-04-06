@@ -158,24 +158,20 @@ package org.flixel
 		 */
 		protected function onKeyUp(event:KeyboardEvent):void
 		{
+			if(_debuggerUp && _debugger.watch.editing)
+				return;
 			if(!FlxG.mobile)
 			{
-				if(_debugger != null)
+				if((_debugger != null) && ((event.keyCode == 192) || (event.keyCode == 220)))
 				{
-					if(_debugger.watch.editing)
-						return;
-					
-					if((event.keyCode == 192) || (event.keyCode == 220))
-					{
-						_debugger.visible = !_debugger.visible;
-						_debuggerUp = _debugger.visible;
-						if(_debugger.visible)
-							flash.ui.Mouse.show();
-						else
-							flash.ui.Mouse.hide();
-						//_console.toggle();
-						return;
-					}
+					_debugger.visible = !_debugger.visible;
+					_debuggerUp = _debugger.visible;
+					if(_debugger.visible)
+						flash.ui.Mouse.show();
+					else
+						flash.ui.Mouse.hide();
+					//_console.toggle();
+					return;
 				}
 				if(useSoundHotKeys)
 				{
@@ -353,16 +349,17 @@ package org.flixel
 						_accumulator = _accumulator - _step; 
 					}
 				}
-			}
-			FlxBasic._VISIBLECOUNT = 0;
-			draw();
-			
-			if(_debuggerUp)
-			{
-				_debugger.perf.flash(ems);
-				_debugger.perf.visibleObjects(FlxBasic._VISIBLECOUNT);
-				_debugger.perf.update();
-				_debugger.watch.update();
+				
+				FlxBasic._VISIBLECOUNT = 0;
+				draw();
+				
+				if(_debuggerUp)
+				{
+					_debugger.perf.flash(ems);
+					_debugger.perf.visibleObjects(FlxBasic._VISIBLECOUNT);
+					_debugger.perf.update();
+					_debugger.watch.update();
+				}
 			}
 		}
 
@@ -429,16 +426,19 @@ package org.flixel
 			if(_replaying)
 			{
 				_replay.playNextFrame();
-				_replayTimer -= _step;
-				if(_replayTimer <= 0)
+				if(_replayTimer > 0)
 				{
-					if(_replayCallback != null)
+					_replayTimer -= _step;
+					if(_replayTimer <= 0)
 					{
-						_replayCallback();
-						_replayCallback = null;
+						if(_replayCallback != null)
+						{
+							_replayCallback();
+							_replayCallback = null;
+						}
+						else
+							FlxG.stopReplay();
 					}
-					else
-						FlxG.stopReplay();
 				}
 				if(_replaying && _replay.finished)
 				{
@@ -449,11 +449,15 @@ package org.flixel
 						_replayCallback = null;
 					}
 				}
+				_debugger.vcr.updateRuntime(_step);
 			}
 			else
 				FlxG.updateInput();
 			if(_recording)
+			{
 				_replay.recordFrame();
+				_debugger.vcr.updateRuntime(_step);
+			}
 			update();
 			FlxG.mouse.wheel = 0;
 			if(_debuggerUp)

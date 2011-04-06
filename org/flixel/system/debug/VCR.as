@@ -1,19 +1,22 @@
 package org.flixel.system.debug
 {
 	import flash.display.Bitmap;
+	import flash.display.BitmapData;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.events.MouseEvent;
 	import flash.net.FileFilter;
 	import flash.net.FileReference;
+	import flash.text.TextField;
+	import flash.text.TextFormat;
 	import flash.utils.ByteArray;
 	
 	import org.flixel.FlxG;
 	import org.flixel.FlxU;
+	import org.flixel.system.FlxReplay;
 	import org.flixel.system.replay.FrameRecord;
 	import org.flixel.system.replay.MouseRecord;
-	import org.flixel.system.FlxReplay;
 	
 	public class VCR extends Sprite
 	{
@@ -56,6 +59,9 @@ package org.flixel.system.debug
 		protected var _pressingStep:Boolean;
 		
 		protected var _file:FileReference;
+		
+		protected var _runtimeDisplay:TextField;
+		protected var _runtime:uint;
 		
 		public function VCR()
 		{
@@ -101,6 +107,18 @@ package org.flixel.system.debug
 			_step.x = _pause.x + _pause.width + spacing;
 			addChild(_step);
 			
+			_runtimeDisplay = new TextField();
+			_runtimeDisplay.width = width;
+			_runtimeDisplay.x = width;
+			_runtimeDisplay.y = -2;
+			_runtimeDisplay.multiline = false;
+			_runtimeDisplay.wordWrap = false;
+			_runtimeDisplay.selectable = false;
+			_runtimeDisplay.defaultTextFormat = new TextFormat("Courier",12,0xffffff,null,null,null,null,null,"center");
+			_runtimeDisplay.visible = false;
+			addChild(_runtimeDisplay);
+			_runtime = 0;
+			
 			stepRequested = false;
 			_file = null;
 
@@ -133,6 +151,10 @@ package org.flixel.system.debug
 			_play = null;
 			removeChild(_step);
 			_step = null;
+			
+			stage.removeEventListener(MouseEvent.MOUSE_MOVE,onMouseMove);
+			stage.removeEventListener(MouseEvent.MOUSE_DOWN,onMouseDown);
+			stage.removeEventListener(MouseEvent.MOUSE_UP,onMouseUp);
 		}
 		
 		public function recording():void
@@ -154,6 +176,14 @@ package org.flixel.system.debug
 			_recordOff.visible = false;
 			_recordOn.visible = false;
 			_stop.visible = true;
+		}
+		
+		public function updateRuntime(Time:uint):void
+		{
+			_runtime += Time;
+			_runtimeDisplay.text = FlxU.formatTime(_runtime/1000,true);
+			if(!_runtimeDisplay.visible)
+				_runtimeDisplay.visible = true;
 		}
 		
 		//***ACTUAL BUTTON BEHAVIORS***//
@@ -210,6 +240,8 @@ package org.flixel.system.debug
 		
 		public function onRecord(StandardMode:Boolean=false):void
 		{
+			if(_play.visible)
+				onPlay();
 			FlxG.recordReplay(StandardMode);
 		}
 		
@@ -358,7 +390,7 @@ package org.flixel.system.debug
 		protected function checkOver():Boolean
 		{
 			_overOpen = _overRecord = _overRestart = _overPause = _overStep = false;
-			if((mouseX < 0) || (mouseX > width) || (mouseY < 0) || (mouseY > height))
+			if((mouseX < 0) || (mouseX > width) || (mouseY < 0) || (mouseY > 15))
 				return false;
 			if((mouseX >= _recordOff.x) && (mouseX <= _recordOff.x + _recordOff.width))
 				_overRecord = true;

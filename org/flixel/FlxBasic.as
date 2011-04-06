@@ -1,9 +1,15 @@
 package org.flixel
 {
+	import flash.display.Graphics;
+	import flash.display.Sprite;
+	
 	public class FlxBasic
 	{
 		static internal var _ACTIVECOUNT:uint;
 		static internal var _VISIBLECOUNT:uint;
+		
+		static protected var _gfxSprite:Sprite;
+		static protected var _gfx:Graphics;
 
 		/**
 		 * IDs seem like they could be pretty useful, huh?
@@ -35,6 +41,12 @@ package org.flixel
 			active = true;
 			visible = true;
 			alive = true;
+			
+			if(_gfxSprite == null)
+			{
+				_gfxSprite = new Sprite();
+				_gfx = _gfxSprite.graphics;
+			}
 		}
 
 		/**
@@ -53,10 +65,7 @@ package org.flixel
 		 * This is where most of your game rules and behavioral code will go.
 		 * Don't forget to call super.update()!
 		 */
-		public function update():void
-		{
-			
-		}
+		public function update():void {}
 		
 		public function postUpdate():void {}
 		
@@ -69,6 +78,8 @@ package org.flixel
 		{
 			_VISIBLECOUNT++;
 		}
+		
+		public function drawDebug(Camera:FlxCamera=null):void {}
 		
 		public function kill():void
 		{

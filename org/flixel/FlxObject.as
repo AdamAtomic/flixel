@@ -1,5 +1,7 @@
 package org.flixel
 {
+	import flash.display.Graphics;
+	import flash.display.Sprite;
 	import flash.geom.Point;
 	
 	import org.flixel.FlxBasic;
@@ -133,6 +135,8 @@ package org.flixel
 		
 		public var last:FlxPoint;
 		
+		public var cameras:Array;
+		
 		/**
 		 * Instantiates a <code>FlxObject</code>.
 		 * 
@@ -257,6 +261,55 @@ package org.flixel
 			
 			x += xd;
 			y += yd;
+		}
+		
+		override public function draw():void
+		{
+			if(cameras == null)
+				cameras = FlxG.cameras;
+			var c:FlxCamera;
+			var i:uint = 0;
+			var l:uint = cameras.length;
+			while(i < l)
+			{
+				c = cameras[i++];
+				if(!onScreen(c)) //preloads _point with getScreenXY results
+					continue;
+				_VISIBLECOUNT++;
+				if(FlxG.visualDebug)
+					drawDebug(c);
+			}
+		}
+		
+		/**
+		 * Called per camera by draw() to draw relevant debug information to the game world.
+		 */
+		override public function drawDebug(Camera:FlxCamera=null):void
+		{
+			if(Camera == null)
+				Camera = FlxG.camera;
+
+			//get bounding box coordinates
+			var bx:int = x - Camera.scroll.x*scrollFactor.x; //from getscreenxy
+			var by:int = y - Camera.scroll.y*scrollFactor.y;
+			var bw:int = (width != int(width))?width:width-1;
+			var bh:int = (height != int(height))?height:height-1;
+
+			//fill static graphics object with square shape
+			_gfx.clear();
+			_gfx.moveTo(bx,by);
+			var c:uint = getBoundingColor();
+			var a:Number = Number((c >> 24) & 0xFF) / 255;
+			if(a <= 0)
+				a = 1;
+			_gfx.lineStyle(1,c,a);
+			_gfx.lineTo(bx+bw,by);
+			_gfx.lineTo(bx+bw,by+bh);
+			_gfx.lineTo(bx,by+bh);
+			_gfx.lineTo(bx,by);
+			
+			//draw graphics shape to camera buffer
+			Camera.buffer.draw(_gfxSprite);
 		}
 		
 		/**
@@ -396,20 +449,21 @@ package org.flixel
 		{
 			return (Object.x + Object.width > x) && (Object.x < x + width) && (Object.y + Object.height > y) && (Object.y < y + height);
 		}
-		
-		/*
+
 		public function getBoundingColor():uint
 		{
-			if(allowCollisions as Boolean)
+			if(allowCollisions)
 			{
-				if(fixed)
-					return 0x7f00f225;
+				if(allowCollisions != ANY)
+					return 0x7ff01eff; //partial collisions: pink
+				if(immovable)
+					return 0x7f00f225; //immovable: green
 				else
-					return 0x7fff0012;
+					return 0x7fff0012; //active/movable: red
 			}
 			else
-				return 0x7f0090e9;
-		}*/
+				return 0x7f0090e9; //not solid: blue
+		}
 		
 		public function isTouching(Direction:uint):Boolean
 		{

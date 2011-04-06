@@ -49,6 +49,8 @@ package org.flixel.system.debug
 			object = null;
 			oldValue = null;
 			nameDisplay = null;
+			valueDisplay.removeEventListener(MouseEvent.CLICK,onClick);
+			valueDisplay.removeEventListener(KeyboardEvent.KEY_UP,onKeyUp);
 			valueDisplay = null;
 		}
 		

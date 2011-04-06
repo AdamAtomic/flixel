@@ -2,8 +2,6 @@ package org.flixel
 {
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
-	import flash.display.Graphics;
-	import flash.display.Sprite;
 	import flash.geom.ColorTransform;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
@@ -72,8 +70,6 @@ package org.flixel
 		 */
 		public var dirty:Boolean;
 		
-		public var cameras:Array;
-		
 		//Animation helpers
 		protected var _animations:Array;
 		protected var _flipped:uint;
@@ -96,8 +92,6 @@ package org.flixel
 		protected var _color:uint;
 		protected var _ct:ColorTransform;
 		protected var _mtx:Matrix;
-		static protected var _gfxSprite:Sprite;
-		static protected var _gfx:Graphics;
 		
 		/**
 		 * Creates a white 8x8 square <code>FlxSprite</code> at the specified position.
@@ -138,11 +132,6 @@ package org.flixel
 
 			_mtx = new Matrix();
 			_callback = null;
-			if(_gfxSprite == null)
-			{
-				_gfxSprite = new Sprite();
-				_gfx = _gfxSprite.graphics;
-			}
 			
 			if(SimpleGraphic == null)
 				SimpleGraphic = ImgDefault;
@@ -586,8 +575,10 @@ package org.flixel
 			while(i < l)
 			{
 				c = cameras[i++];
-				if(!onScreen(c)) //preloads _point with getScreenXY results
+				if(!onScreen(c))
 					continue;
+				_point.x = x - c.scroll.x*scrollFactor.x - offset.x; //copied from getScreenXY()
+				_point.y = y - c.scroll.y*scrollFactor.y - offset.y;
 				if(((angle == 0) || (_bakedRotation > 0)) && (scale.x == 1) && (scale.y == 1) && (blend == null))
 				{	//Simple render
 					_flashPoint.x = _point.x;
@@ -605,6 +596,8 @@ package org.flixel
 					c.buffer.draw(_framePixels,_mtx,null,blend,null,antialiasing);
 				}
 				_VISIBLECOUNT++;
+				if(FlxG.visualDebug)
+					drawDebug(c);
 			}
 		}
 		
@@ -803,7 +796,9 @@ package org.flixel
 				var hw:Number = width/2;
 				var hh:Number = height/2;
 				var radius:Number = Math.sqrt(hw*hw+hh*hh)*((scale.x >= scale.y)?scale.x:scale.y);
-				return ((_point.x + hw + radius > 0) && (_point.x + hw - radius < Camera.width) && (_point.y + hh + radius > 0) && (_point.y + hh - radius < Camera.height));
+				_point.x += hw;
+				_point.y += hh;
+				return ((_point.x + radius > 0) && (_point.x - radius < Camera.width) && (_point.y + radius > 0) && (_point.y - radius < Camera.height));
 			}
 		}
 		

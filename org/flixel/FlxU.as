@@ -324,14 +324,21 @@ package org.flixel
 			return Results;
 		}
 		
-		static public function formatTime(Seconds:Number):String
+		static public function formatTime(Seconds:Number,ShowMilliseconds:Boolean=false):String
 		{
-			var ts:String = uint(Seconds/60) + ":";
-			var dts:uint = uint(Seconds)%60;
+			var ts:String = int(Seconds/60) + ":";
+			var dts:int = int(Seconds)%60;
 			if(dts < 10)
-				ts += "0"+dts;
-			else
+				ts += "0";
+			ts += dts;
+			if(ShowMilliseconds)
+			{
+				ts += ".";
+				dts = (Seconds-int(Seconds))*100;
+				if(dts < 10)
+					ts += "0";
 				ts += dts;
+			}
 			return ts;
 		}
 		
