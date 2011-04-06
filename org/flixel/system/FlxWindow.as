@@ -36,7 +36,7 @@ package org.flixel.system
 		protected var _resizing:Boolean;
 		protected var _resizable:Boolean;
 		
-		public function FlxWindow(Title:String,Width:Number,Height:Number,Resizable:Boolean=true,Bounds:Rectangle=null,BGColor:uint=0xdfBABCBF,TopColor:uint=0xff4E5359)
+		public function FlxWindow(Title:String,Width:Number,Height:Number,Resizable:Boolean=true,Bounds:Rectangle=null,BGColor:uint=0x7f7f7f7f, TopColor:uint=0x7f000000)
 		{
 			super();
 			_width = Width;

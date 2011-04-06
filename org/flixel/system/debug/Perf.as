@@ -27,7 +27,7 @@ package org.flixel.system.debug
 		protected var _visibleObject:Array;
 		protected var _visibleObjectMarker:uint;
 		
-		public function Perf(Title:String, Width:Number, Height:Number, Resizable:Boolean=true, Bounds:Rectangle=null, BGColor:uint=0xdfBABCBF, TopColor:uint=0xff4E5359)
+		public function Perf(Title:String, Width:Number, Height:Number, Resizable:Boolean=true, Bounds:Rectangle=null, BGColor:uint=0x7f7f7f7f, TopColor:uint=0x7f000000)
 		{
 			super(Title, Width, Height, Resizable, Bounds, BGColor, TopColor);
 			resize(90,66);
@@ -42,7 +42,7 @@ package org.flixel.system.debug
 			_text.multiline = true;
 			_text.wordWrap = true;
 			_text.selectable = true;
-			_text.defaultTextFormat = new TextFormat("Courier",12,0);
+			_text.defaultTextFormat = new TextFormat("Courier",12,0xffffff);
 			addChild(_text);
 			
 			_flixelUpdate = new Array(32);

@@ -160,16 +160,22 @@ package org.flixel
 		{
 			if(!FlxG.mobile)
 			{
-				if((_debugger != null) && ((event.keyCode == 192) || (event.keyCode == 220)))
+				if(_debugger != null)
 				{
-					_debugger.visible = !_debugger.visible;
-					_debuggerUp = _debugger.visible;
-					if(_debugger.visible)
-						flash.ui.Mouse.show();
-					else
-						flash.ui.Mouse.hide();
-					//_console.toggle();
-					return;
+					if(_debugger.watch.editing)
+						return;
+					
+					if((event.keyCode == 192) || (event.keyCode == 220))
+					{
+						_debugger.visible = !_debugger.visible;
+						_debuggerUp = _debugger.visible;
+						if(_debugger.visible)
+							flash.ui.Mouse.show();
+						else
+							flash.ui.Mouse.hide();
+						//_console.toggle();
+						return;
+					}
 				}
 				if(useSoundHotKeys)
 				{

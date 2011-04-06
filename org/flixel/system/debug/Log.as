@@ -8,12 +8,12 @@ package org.flixel.system.debug
 	
 	public class Log extends FlxWindow
 	{
-		static protected const MAX_LOG_LINES:uint = 1024;
+		static protected const MAX_LOG_LINES:uint = 200;
 		
 		protected var _text:TextField;
 		protected var _lines:Array;
 		
-		public function Log(Title:String, Width:Number, Height:Number, Resizable:Boolean=true, Bounds:Rectangle=null, BGColor:uint=0xdfBABCBF, TopColor:uint=0xff4E5359)
+		public function Log(Title:String, Width:Number, Height:Number, Resizable:Boolean=true, Bounds:Rectangle=null, BGColor:uint=0x7f7f7f7f, TopColor:uint=0x7f000000)
 		{
 			super(Title, Width, Height, Resizable, Bounds, BGColor, TopColor);
 			
@@ -23,12 +23,10 @@ package org.flixel.system.debug
 			_text.multiline = true;
 			_text.wordWrap = true;
 			_text.selectable = true;
-			_text.defaultTextFormat = new TextFormat("Courier",12,0);
+			_text.defaultTextFormat = new TextFormat("Courier",12,0xffffff);
 			addChild(_text);
 			
 			_lines = new Array();
-			
-			_text.text = "You can use FlxG.log() to print log messages."
 		}
 		
 		override public function destroy():void

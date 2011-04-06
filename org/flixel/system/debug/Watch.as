@@ -1,5 +1,6 @@
 package org.flixel.system.debug
 {
+	import flash.display.Sprite;
 	import flash.geom.Rectangle;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
@@ -10,32 +11,31 @@ package org.flixel.system.debug
 	public class Watch extends FlxWindow
 	{
 		static protected const MAX_LOG_LINES:uint = 1024;
+		static protected const LINE_HEIGHT:uint = 15;
 		
-		protected var _names:TextField;
-		protected var _values:TextField;
+		public var editing:Boolean;
+		
+		protected var _names:Sprite;
+		protected var _values:Sprite;
 		protected var _watching:Array;
 		
-		public function Watch(Title:String, Width:Number, Height:Number, Resizable:Boolean=true, Bounds:Rectangle=null, BGColor:uint=0xdfBABCBF, TopColor:uint=0xff4E5359)
+		public function Watch(Title:String, Width:Number, Height:Number, Resizable:Boolean=true, Bounds:Rectangle=null, BGColor:uint=0x7f7f7f7f, TopColor:uint=0x7f000000)
 		{
 			super(Title, Width, Height, Resizable, Bounds, BGColor, TopColor);
 			
-			_names = new TextField();
+			_names = new Sprite();
 			_names.x = 2;
 			_names.y = 15;
-			_names.multiline = true;
-			_names.selectable = true;
-			_names.defaultTextFormat = new TextFormat("Courier",12,0);
 			addChild(_names);
-			
-			_values = new TextField();
+
+			_values = new Sprite();
 			_values.x = 2;
 			_values.y = 15;
-			_values.multiline = true;
-			_values.selectable = true;
-			_values.defaultTextFormat = new TextFormat("Courier",12,0);
 			addChild(_values);
 			
 			_watching = new Array();
+			
+			editing = false;
 			
 			removeAll();
 		}
@@ -46,113 +46,104 @@ package org.flixel.system.debug
 			_names = null;
 			removeChild(_values);
 			_values = null;
+			var i:int = 0;
+			var l:uint = _watching.length;
+			while(i < l)
+				(_watching[i++] as WatchEntry).destroy();
 			_watching = null;
 			super.destroy();
 		}
 		
-		public function add(AnyObject:Object,VariableName:String,DisplayName:String):void
+		public function add(AnyObject:Object,VariableName:String,DisplayName:String=null):void
 		{
 			//Don't add repeats
-			var o:Object;
+			var w:WatchEntry;
 			var i:int = 0;
 			var l:uint = _watching.length;
 			while(i < l)
 			{
-				o = _watching[i++];
-				if((o.object == AnyObject) && (o.field == VariableName))
+				w = _watching[i++] as WatchEntry;
+				if((w.object == AnyObject) && (w.field == VariableName))
 					return;
 			}
+			
 			//Good, no repeats, add away!
-			_watching.push({object:AnyObject,field:VariableName,custom:DisplayName});
-			updateNames();
+			w = new WatchEntry(_watching.length*LINE_HEIGHT,_width/2,_width/2-10,AnyObject,VariableName,DisplayName);
+			_names.addChild(w.nameDisplay);
+			_values.addChild(w.valueDisplay);
+			_watching.push(w);
 		}
 		
 		public function remove(AnyObject:Object,VariableName:String=null):void
 		{
-			var o:Object;
+			//splice out the requested object
+			var w:WatchEntry;
 			var i:int = _watching.length-1;
 			while(i >= 0)
 			{
-				o = _watching[i];
-				if((o.object == AnyObject) && ((VariableName == null) || (o.field == VariableName)))
+				w = _watching[i];
+				if((w.object == AnyObject) && ((VariableName == null) || (w.field == VariableName)))
 				{
 					_watching.splice(i,1);
-					o = null;
+					_names.removeChild(w.nameDisplay);
+					_values.removeChild(w.valueDisplay);
+					w.destroy();
 				}
 				i--;
+			}
+			w = null;
+			
+			//reset the display heights of the remaining objects
+			i = 0;
+			var l:uint = _watching.length;
+			while(i < l)
+			{
+				(_watching[i] as WatchEntry).setY(i*LINE_HEIGHT);
+				i++;
 			}
 		}
 		
 		public function removeAll():void
 		{
-			var o:Object;
+			var w:WatchEntry;
 			var i:int = 0;
 			var l:uint = _watching.length;
 			while(i < l)
 			{
-				 o = _watching.pop();
-				 o = null;
-				 i++
+				w = _watching.pop();
+				_names.removeChild(w.nameDisplay);
+				_values.removeChild(w.valueDisplay);
+				w.destroy();
+				i++
 			}
 			_watching.length = 0;
-			
-			_names.text = "You can use\nFlxG.watch() to\nwatch public\nvariables.";
-			_values.text = "";
 		}
 
 		public function update():void
 		{
-			var l:uint = _watching.length;
-			if(l <= 0)
-				return;
-
-			var o:Object;
-			var i:uint = 0;	
-			var str:String = "";
-			while(i < l)
-			{
-				o = _watching[i++];
-				str += o.object[o.field].toString() + "\n";
-			}
-			_values.text = str;
-		}
-		
-		protected function updateNames():void
-		{
-			var l:uint = _watching.length;
-			if(l <= 0)
-				return;
-			
-			var o:Object;
+			editing = false;
 			var i:uint = 0;
-			var str:String = "";
+			var l:uint = _watching.length;
 			while(i < l)
 			{
-				o = _watching[i++];
-				if(o.custom != null)
-					str += o.custom + "\n";
-				else
-				{
-					if(_width > 300)
-						str += FlxU.getClassName(o.object,(_width < 500)) + ".";
-					str += o.field + "\n";
-				}
+				if(!(_watching[i++] as WatchEntry).updateValue())
+					editing = true;
 			}
-			_names.text = str;
 		}
 		
 		override protected function updateSize():void
 		{
+			if(_height < _watching.length*LINE_HEIGHT + 17)
+				_height = _watching.length*LINE_HEIGHT + 17;
+
 			super.updateSize();
-			
-			_names.width = _width/2;
-			_names.height = _height-15;
-			
-			_values.width = _width/2-10;
+
 			_values.x = _width/2 + 2;
-			_values.height = _names.height;
-			
-			updateNames();
+
+			var i:int = 0;
+			var l:uint = _watching.length;
+			while(i < l)
+				(_watching[i++] as WatchEntry).updateWidth(_width/2,_width/2-10);
 		}
 	}
 }
