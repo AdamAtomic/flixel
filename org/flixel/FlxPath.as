@@ -146,14 +146,18 @@ package org.flixel
 				gfx.endFill();
 
 				//then find the next node in the path
+				var linealpha:Number = 0.3;
 				if(i < l-1)
 					n = nodes[i+1];
 				else
+				{
 					n = nodes[0];
+					linealpha = 0.15;
+				}
 				
 				//then draw a line to the next node
 				gfx.moveTo(_point.x,_point.y);
-				gfx.lineStyle(1,0xffffff,0.3);
+				gfx.lineStyle(1,0xffffff,linealpha);
 				gfx.lineTo(int(n.x - Camera.scroll.x*scrollFactor.x),int(n.y - Camera.scroll.y*scrollFactor.y));
 
 				i++;

@@ -352,6 +352,12 @@ package org.flixel
 		
 		public function followPath(Path:FlxPath,Speed:Number=100,Mode:uint=PATH_FORWARD,AutoRotate:Boolean=false):void
 		{
+			if(Path.nodes.length <= 0)
+			{
+				FlxG.log("WARNING: Paths need at least one node in them to be followed.");
+				return;
+			}
+			
 			path = Path;
 			pathSpeed = FlxU.abs(Speed);
 			_pathMode = Mode;
@@ -362,8 +368,6 @@ package org.flixel
 			if((_pathMode == PATH_BACKWARD) || (_pathMode == PATH_LOOP_BACKWARD))
 			{
 				_pathNodeIndex = path.nodes.length-1;
-				if(_pathNodeIndex < 0)
-					_pathNodeIndex = 0;
 				_pathInc = -1;
 			}
 			else
@@ -389,7 +393,6 @@ package org.flixel
 		
 		protected function advancePath():void
 		{
-			trace("ap");
 			_pathNodeIndex += _pathInc;
 			switch(_pathMode)
 			{
@@ -473,6 +476,15 @@ package org.flixel
 					angularAcceleration = 0;
 					angle = a;
 				}
+			}
+			else
+			{
+				velocity.x = 0;
+				velocity.y = 0;
+				acceleration.x = 0;
+				acceleration.y = 0;
+				drag.x = 0;
+				drag.y = 0;
 			}
 		}
 		

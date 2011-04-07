@@ -48,7 +48,7 @@ package org.flixel
 		static public const PINK:uint = 0xfff01eff;
 
 		/**
-		 * Internal tracker for game object (so we can pause and unpause)
+		 * Internal tracker for game object.
 		 */
 		static internal var _game:FlxGame;
 		/**

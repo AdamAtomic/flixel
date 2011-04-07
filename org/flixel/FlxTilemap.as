@@ -382,6 +382,317 @@ package org.flixel
 				(_buffers[i] as FlxTilemapBuffer).dirty = Dirty;
 		}
 		
+		public function findPath(Start:FlxPoint,End:FlxPoint,Simplify:Boolean=true):FlxPath
+		{
+			//figure out what tile we are starting and ending on.
+			var startIndex:uint = uint((Start.y-y)/_tileHeight) * widthInTiles + uint((Start.x-x)/_tileWidth);
+			var endIndex:uint = uint((End.y-y)/_tileHeight) * widthInTiles + uint((End.x-x)/_tileWidth);
+
+			//check that the start and end are clear.
+			if( (_data[startIndex] as uint >= collideIndex) ||
+				(_data[endIndex] as uint >= collideIndex) )
+				return null;
+			
+			//figure out how far each of the tiles is from the starting tile
+			var distances:Array = computePathDistance(startIndex,endIndex);
+			if(distances == null)
+				return null;
+
+			//then count backward to find the shortest path.
+			var p:FlxPoint;
+			var points:Array = new Array();
+			walkPath(distances,endIndex,points);
+			
+			//reset the start and end points to be exact
+			p = points[points.length-1] as FlxPoint;
+			p.x = Start.x;
+			p.y = Start.y;
+			p = points[0] as FlxPoint;
+			p.x = End.x;
+			p.y = End.y;
+
+			//some simple path cleanup options
+			if(Simplify)
+				simplifyPath(points);
+			
+			//TODO: if extra optimization was specified, shoot progressively longer rays between points
+			
+			//finally load the remaining points into a new path object and return it
+			var path:FlxPath = new FlxPath();
+			var i:int = points.length - 1;
+			while(i >= 0)
+			{
+				p = points[i--] as FlxPoint;
+				if(p != null)
+					path.addPoint(p,true);
+			}
+			return path;
+		}
+		
+		protected function simplifyPath(Points:Array):void
+		{
+			var i:uint = 1;
+			var l:uint = Points.length-1;
+			var pd:Number;
+			var nd:Number;
+			var last:FlxPoint = Points[0];
+			var p:FlxPoint;
+			while(i < l)
+			{
+				p = Points[i];
+				pd = (p.x - last.x)/(p.y - last.y);
+				nd = (p.x - Points[i+1].x)/(p.y - Points[i+1].y);
+				if((last.x == Points[i+1].x) || (last.y == Points[i+1].y) || (pd == nd))
+					Points[i] = null;
+				else
+					last = p;
+				i++;
+			}
+		}
+		
+		protected function computePathDistance(StartIndex:uint, EndIndex:uint):Array
+		{
+			var mapSize:uint = widthInTiles*heightInTiles;
+			var distances:Array = new Array(mapSize);
+			var i:int = 0;
+			while(i < mapSize)
+				distances[i++] = -1;
+			var distance:uint = 0;
+			var neighbors:Array = [StartIndex];
+			var current:Array;
+			var c:uint;
+			var l:Boolean;
+			var r:Boolean;
+			var u:Boolean;
+			var d:Boolean;
+			var cl:uint;
+			var foundEnd:Boolean = false;
+			while(neighbors.length > 0)
+			{
+				current = neighbors;
+				neighbors = new Array();
+				
+				i = 0;
+				cl = current.length;
+				while(i < cl)
+				{
+					c = current[i++];
+					if(c == EndIndex)
+					{
+						foundEnd = true;
+						neighbors.length = 0;
+						break;
+					}
+					
+					//basic map bounds
+					l = c%widthInTiles > 0;
+					r = c%widthInTiles < widthInTiles-1;
+					u = c/widthInTiles > 0;
+					d = c/widthInTiles < heightInTiles-1;
+					
+					var index:uint;
+					if(u)
+					{
+						index = c - widthInTiles;
+						if((distances[index] < 0) && (_data[index] as uint < collideIndex))
+						{
+							distances[index] = distance;
+							neighbors.push(index);
+						}
+					}
+					if(r)
+					{
+						index = c + 1;
+						if((distances[index] < 0) && (_data[index] as uint < collideIndex))
+						{
+							distances[index] = distance;
+							neighbors.push(index);
+						}
+					}
+					if(d)
+					{
+						index = c + widthInTiles;
+						if((distances[index] < 0) && (_data[index] as uint < collideIndex))
+						{
+							distances[index] = distance;
+							neighbors.push(index);
+						}
+					}
+					if(l)
+					{
+						index = c - 1;
+						if((distances[index] < 0) && (_data[index] as uint < collideIndex))
+						{
+							distances[index] = distance;
+							neighbors.push(index);
+						}
+					}
+					if(u && r)
+					{
+						index = c - widthInTiles + 1;
+						if((distances[index] < 0) && (_data[index] as uint < collideIndex))
+						{
+							distances[index] = distance;
+							neighbors.push(index);
+						}
+					}
+					if(r && d)
+					{
+						index = c + widthInTiles + 1;
+						if((distances[index] < 0) && (_data[index] as uint < collideIndex))
+						{
+							distances[index] = distance;
+							neighbors.push(index);
+						}
+					}
+					if(l && d)
+					{
+						index = c + widthInTiles - 1;
+						if((distances[index] < 0) && (_data[index] as uint < collideIndex))
+						{
+							distances[index] = distance;
+							neighbors.push(index);
+						}
+					}
+					if(u && l)
+					{
+						index = c - widthInTiles - 1;
+						if((distances[index] < 0) && (_data[index] as uint < collideIndex))
+						{
+							distances[index] = distance;
+							neighbors.push(index);
+						}
+					}
+				}
+				distance++;
+			}
+			if(!foundEnd)
+				distances = null;
+			return distances;
+		}
+		
+		protected function walkPath(Data:Array,Start:uint,Points:Array):void
+		{
+			Points.push(new FlxPoint(x + uint(Start%widthInTiles)*_tileWidth + _tileWidth*0.5, y + uint(Start/widthInTiles)*_tileHeight + _tileHeight*0.5));
+			if(Data[Start] == 0)
+				return;
+			
+			//basic map bounds
+			var l:Boolean = Start%widthInTiles > 0;
+			var r:Boolean = Start%widthInTiles < widthInTiles-1;
+			var u:Boolean = Start/widthInTiles > 0;
+			var d:Boolean = Start/widthInTiles < heightInTiles-1;
+			
+			var current:uint = Data[Start];
+			var i:uint;
+			if(u)
+			{
+				i = Start - widthInTiles;
+				if((Data[i] >= 0) && (Data[i] < current))
+					return walkPath(Data,i,Points);
+			}
+			if(r)
+			{
+				i = Start + 1;
+				if((Data[i] >= 0) && (Data[i] < current))
+					return walkPath(Data,i,Points);
+			}
+			if(d)
+			{
+				i = Start + widthInTiles;
+				if((Data[i] >= 0) && (Data[i] < current))
+					return walkPath(Data,i,Points);
+			}
+			if(l)
+			{
+				i = Start - 1;
+				if((Data[i] >= 0) && (Data[i] < current))
+					return walkPath(Data,i,Points);
+			}
+			if(u && r)
+			{
+				i = Start - widthInTiles + 1;
+				if((Data[i] >= 0) && (Data[i] < current))
+					return walkPath(Data,i,Points);
+			}
+			if(r && d)
+			{
+				i = Start + widthInTiles + 1;
+				if((Data[i] >= 0) && (Data[i] < current))
+					return walkPath(Data,i,Points);
+			}
+			if(l && d)
+			{
+				i = Start + widthInTiles - 1;
+				if((Data[i] >= 0) && (Data[i] < current))
+					return walkPath(Data,i,Points);
+			}
+			if(u && l)
+			{
+				i = Start - widthInTiles - 1;
+				if((Data[i] >= 0) && (Data[i] < current))
+					return walkPath(Data,i,Points);
+			}
+		}
+		
+		//currently this does not employ any fancy heuristics
+		protected function fillPath(Data:Array,Start:uint,End:uint):Boolean
+		{
+			if(Start == End)
+				return true;
+
+			//basic map bounds
+			var l:Boolean = Start%widthInTiles > 0;
+			var r:Boolean = Start%widthInTiles < widthInTiles-1;
+			var u:Boolean = Start/widthInTiles > 0;
+			var d:Boolean = Start/widthInTiles < heightInTiles-1;
+			
+			//corner checks and neighbor indices
+			var checks:Array = new Array(	u,
+											u&&r,
+											r,
+											r&&d,
+											d,
+											l&&d,
+											l,
+											u&&l );
+			var neighbors:Array = new Array(Start - widthInTiles,
+											Start - widthInTiles + 1,
+											Start + 1,
+											Start + widthInTiles + 1,
+											Start + widthInTiles,
+											Start + widthInTiles - 1,
+											Start - 1,
+											Start - widthInTiles - 1);
+			
+			//figure out how far away our neighbors are
+			var count:uint = Data[Start] + 1;
+			
+			//flag every neighbor with the appropriate distance
+			var n:uint;
+			var i:uint = 0;
+			while(i < 8)
+			{
+				n = neighbors[i];
+				if(checks[i] && (Data[n] < 0) && (_data[n] as uint < collideIndex))
+					Data[n] = count;
+				i++;
+			}
+			
+			//then call fillPath on any neighbors that were marked
+			i = 0;
+			var success:Boolean = false;
+			while(i < 8)
+			{
+				n = neighbors[i];
+				if(checks[i] && (Data[n] >= count) && fillPath(Data,n,End))
+					success = true;
+				i++;
+			}
+			
+			return success;
+		}
+		
 		/**
 		 * Checks for overlaps between the provided object and any tiles above the collision index.
 		 * 
