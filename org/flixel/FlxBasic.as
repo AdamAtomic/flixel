@@ -1,15 +1,9 @@
 package org.flixel
-{
-	import flash.display.Graphics;
-	import flash.display.Sprite;
-	
+{	
 	public class FlxBasic
 	{
 		static internal var _ACTIVECOUNT:uint;
 		static internal var _VISIBLECOUNT:uint;
-		
-		static protected var _gfxSprite:Sprite;
-		static protected var _gfx:Graphics;
 
 		/**
 		 * IDs seem like they could be pretty useful, huh?
@@ -41,12 +35,6 @@ package org.flixel
 			active = true;
 			visible = true;
 			alive = true;
-			
-			if(_gfxSprite == null)
-			{
-				_gfxSprite = new Sprite();
-				_gfx = _gfxSprite.graphics;
-			}
 		}
 
 		/**

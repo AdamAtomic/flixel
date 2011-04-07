@@ -1,6 +1,8 @@
 package org.flixel
 {
 	import flash.display.BitmapData;
+	import flash.display.Graphics;
+	import flash.display.Sprite;
 	import flash.display.Stage;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
@@ -39,6 +41,11 @@ package org.flixel
 		static public const DEBUGGER_TOP:uint = 3;
 		static public const DEBUGGER_LEFT:uint = 4;
 		static public const DEBUGGER_RIGHT:uint = 5;
+		
+		static public const RED:uint = 0xffff0012;
+		static public const GREEN:uint = 0xff00f225;
+		static public const BLUE:uint = 0xff0090e9;
+		static public const PINK:uint = 0xfff01eff;
 
 		/**
 		 * Internal tracker for game object (so we can pause and unpause)
@@ -154,6 +161,9 @@ package org.flixel
 		 * Internal storage system to prevent graphics from being used repeatedly in memory.
 		 */
 		static protected var _cache:Object;
+		
+		static public var flashGfxSprite:Sprite;
+		static public var flashGfx:Graphics;
 		
 		static public function getLibraryName():String
 		{
@@ -758,6 +768,13 @@ package org.flixel
 			FlxG.sounds = new FlxGroup();
 			
 			FlxG.clearBitmapCache();
+			
+			if(flashGfxSprite == null)
+			{
+				flashGfxSprite = new Sprite();
+				flashGfx = flashGfxSprite.graphics;
+			}
+			FlxPath.debugDrawTracker = false;
 
 			FlxCamera.defaultZoom = Zoom;
 			FlxG._cameraRect = new Rectangle();

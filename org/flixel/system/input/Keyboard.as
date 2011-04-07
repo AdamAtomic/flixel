@@ -1,5 +1,7 @@
 package org.flixel.system.input
 {
+	import flash.events.KeyboardEvent;
+	
 	public class Keyboard extends Input
 	{
 		public var ESCAPE:Boolean;
@@ -156,6 +158,34 @@ package org.flixel.system.input
 			addKey("LEFT",37);
 			addKey("RIGHT",39);
 			addKey("TAB",9);
+		}
+		
+		/**
+		 * Event handler so FlxGame can toggle keys.
+		 * 
+		 * @param	event	A <code>KeyboardEvent</code> object.
+		 */
+		public function handleKeyDown(event:KeyboardEvent):void
+		{
+			var o:Object = _map[event.keyCode];
+			if(o == null) return;
+			if(o.current > 0) o.current = 1;
+			else o.current = 2;
+			this[o.name] = true;
+		}
+		
+		/**
+		 * Event handler so FlxGame can toggle keys.
+		 * 
+		 * @param	event	A <code>KeyboardEvent</code> object.
+		 */
+		public function handleKeyUp(event:KeyboardEvent):void
+		{
+			var o:Object = _map[event.keyCode];
+			if(o == null) return;
+			if(o.current > 0) o.current = -1;
+			else o.current = 0;
+			this[o.name] = false;
 		}
 	}
 }

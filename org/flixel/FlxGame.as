@@ -392,6 +392,8 @@ package org.flixel
 			{
 				_requestedReset = false;
 				_requestedState = new _iState();
+				_replayTimer = 0;
+				_replayCancelKeys = null;
 				FlxG.reset();
 			}
 			
@@ -523,6 +525,7 @@ package org.flixel
 		{
 			var mark:uint = getTimer();
 			FlxG.lockCameras();
+			FlxPath.debugDrawTracker = !FlxPath.debugDrawTracker;
 			_state.draw();
 			FlxG.unlockCameras();
 			if(_debuggerUp)

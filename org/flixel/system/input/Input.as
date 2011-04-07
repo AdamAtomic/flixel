@@ -1,7 +1,5 @@
 package org.flixel.system.input
-{
-	import flash.events.KeyboardEvent;
-	
+{	
 	public class Input
 	{
 		/**
@@ -84,34 +82,6 @@ package org.flixel.system.input
 		 * @return	Whether the key is just released.
 		 */
 		public function justReleased(Key:String):Boolean { return _map[_lookup[Key]].current == -1; }
-		
-		/**
-		 * Event handler so FlxGame can toggle keys.
-		 * 
-		 * @param	event	A <code>KeyboardEvent</code> object.
-		 */
-		public function handleKeyDown(event:KeyboardEvent):void
-		{
-			var o:Object = _map[event.keyCode];
-			if(o == null) return;
-			if(o.current > 0) o.current = 1;
-			else o.current = 2;
-			this[o.name] = true;
-		}
-		
-		/**
-		 * Event handler so FlxGame can toggle keys.
-		 * 
-		 * @param	event	A <code>KeyboardEvent</code> object.
-		 */
-		public function handleKeyUp(event:KeyboardEvent):void
-		{
-			var o:Object = _map[event.keyCode];
-			if(o == null) return;
-			if(o.current > 0) o.current = -1;
-			else o.current = 0;
-			this[o.name] = false;
-		}
 		
 		/**
 		 * If any keys are not "released" (0),

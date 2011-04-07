@@ -164,7 +164,7 @@ package org.flixel
 		 * @param	Point1		The X coordinate of the point.
 		 * @param	Point2		The Y coordinate of the point.
 		 * 
-		 * @return	The angle in degrees, between -90 and 270.
+		 * @return	The angle in degrees, between -180 and 180.
 		 */
 		static public function getAngle(Point1:FlxPoint, Point2:FlxPoint):Number
 		{
@@ -178,7 +178,12 @@ package org.flixel
 				angle = c1 - c1 * ((x - ay) / (x + ay));
 			else
 				angle = c2 - c1 * ((x + ay) / (ay - x));
-			return ((y < 0)?-angle:angle)*57.2957796 + 90;
+			angle = ((y < 0)?-angle:angle)*57.2957796;
+			if(angle > 90)
+				angle = angle - 270;
+			else
+				angle += 90;
+			return angle;
 		};
 		
 		/**

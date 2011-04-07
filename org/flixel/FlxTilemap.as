@@ -2,6 +2,7 @@ package org.flixel
 {
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.display.Graphics;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -213,9 +214,9 @@ package org.flixel
 			}
 			
 			//create debug tiles for rendering bounding boxes on demand
-			_debugTileNotSolid = makeDebugTile(0x7f0090e9); //blue
-			_debugTilePartial = makeDebugTile(0x7ff01eff); //pink
-			_debugTileSolid = makeDebugTile(0x7f00f225); //green
+			_debugTileNotSolid = makeDebugTile(FlxG.BLUE);
+			_debugTilePartial = makeDebugTile(FlxG.PINK);
+			_debugTileSolid = makeDebugTile(FlxG.GREEN);
 			_debugRect = new Rectangle(0,0,_tileWidth,_tileHeight);
 			
 			//Then go through and create the actual map
@@ -234,19 +235,16 @@ package org.flixel
 			var debugTile:BitmapData
 			debugTile = new BitmapData(_tileWidth,_tileHeight,true,0);
 
-			_gfx.clear();
-			_gfx.moveTo(0,0);
-			var c:uint = Color;
-			var a:Number = Number((c >> 24) & 0xFF) / 255;
-			if(a <= 0)
-				a = 1;
-			_gfx.lineStyle(1,c,a);
-			_gfx.lineTo(_tileWidth-1,0);
-			_gfx.lineTo(_tileWidth-1,_tileHeight-1);
-			_gfx.lineTo(0,_tileHeight-1);
-			_gfx.lineTo(0,0);
+			var gfx:Graphics = FlxG.flashGfx;
+			gfx.clear();
+			gfx.moveTo(0,0);
+			gfx.lineStyle(1,Color,0.5);
+			gfx.lineTo(_tileWidth-1,0);
+			gfx.lineTo(_tileWidth-1,_tileHeight-1);
+			gfx.lineTo(0,_tileHeight-1);
+			gfx.lineTo(0,0);
 			
-			debugTile.draw(_gfxSprite);
+			debugTile.draw(FlxG.flashGfxSprite);
 			return debugTile;
 		}
 		

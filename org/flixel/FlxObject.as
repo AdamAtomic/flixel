@@ -26,6 +26,12 @@ package org.flixel
 		
 		static public const OVERLAP_BIAS:Number = 4;
 		
+		static public const PATH_FORWARD:uint = 0;
+		static public const PATH_BACKWARD:uint = 1;
+		static public const PATH_LOOP_FORWARD:uint = 2;
+		static public const PATH_LOOP_BACKWARD:uint = 3;
+		static public const PATH_YOYO:uint = 4;
+		
 		public var x:Number;
 		public var y:Number;
 		public var width:Number;
@@ -137,6 +143,15 @@ package org.flixel
 		
 		public var cameras:Array;
 		
+		//PATH FOLLOWING VARIABLES
+		public var path:FlxPath;
+		public var pathSpeed:Number;
+		protected var _pathNodeIndex:int;
+		protected var _pathMode:uint;
+		protected var _pathInc:int;
+		protected var _pathCheck:FlxPoint;
+		protected var _pathRotate:Boolean;
+		
 		/**
 		 * Instantiates a <code>FlxObject</code>.
 		 * 
@@ -179,6 +194,9 @@ package org.flixel
 			
 			_point = new FlxPoint();
 			_rect = new FlxRect();
+			
+			path = null;
+			_pathCheck = null;
 		}
 		
 		/**
@@ -196,6 +214,10 @@ package org.flixel
 			_point = null;
 			_rect = null;
 			last = null;
+			if(path != null)
+				path.destroy();
+			path = null;
+			_pathCheck = null;
 		}
 		
 		override public function preUpdate():void
@@ -230,7 +252,11 @@ package org.flixel
 		override public function postUpdate():void
 		{
 			if(moves)
+			{
+				if((path != null) && (pathSpeed != 0) && (path.nodes[_pathNodeIndex] != null))
+					updatePathMotion();
 				updateMotion();
+			}
 			
 			wasTouching = touching;
 			touching = NONE;
@@ -296,20 +322,158 @@ package org.flixel
 			var bh:int = (height != int(height))?height:height-1;
 
 			//fill static graphics object with square shape
-			_gfx.clear();
-			_gfx.moveTo(bx,by);
-			var c:uint = getBoundingColor();
-			var a:Number = Number((c >> 24) & 0xFF) / 255;
-			if(a <= 0)
-				a = 1;
-			_gfx.lineStyle(1,c,a);
-			_gfx.lineTo(bx+bw,by);
-			_gfx.lineTo(bx+bw,by+bh);
-			_gfx.lineTo(bx,by+bh);
-			_gfx.lineTo(bx,by);
+			var gfx:Graphics = FlxG.flashGfx;
+			gfx.clear();
+			gfx.moveTo(bx,by);
+			var c:uint;
+			if(allowCollisions)
+			{
+				if(allowCollisions != ANY)
+					c = FlxG.PINK;
+				if(immovable)
+					c = FlxG.GREEN;
+				else
+					c = FlxG.RED;
+			}
+			else
+				c = FlxG.BLUE;
+			gfx.lineStyle(1,c,0.5);
+			gfx.lineTo(bx+bw,by);
+			gfx.lineTo(bx+bw,by+bh);
+			gfx.lineTo(bx,by+bh);
+			gfx.lineTo(bx,by);
 			
 			//draw graphics shape to camera buffer
-			Camera.buffer.draw(_gfxSprite);
+			Camera.buffer.draw(FlxG.flashGfxSprite);
+			
+			if((path != null) && (pathSpeed != 0))
+				path.drawDebug(Camera);
+		}
+		
+		public function followPath(Path:FlxPath,Speed:Number=100,Mode:uint=PATH_FORWARD,AutoRotate:Boolean=false):void
+		{
+			path = Path;
+			pathSpeed = FlxU.abs(Speed);
+			_pathMode = Mode;
+			_pathRotate = AutoRotate;
+			_pathCheck = new FlxPoint();
+			
+			//get starting node
+			if((_pathMode == PATH_BACKWARD) || (_pathMode == PATH_LOOP_BACKWARD))
+			{
+				_pathNodeIndex = path.nodes.length-1;
+				if(_pathNodeIndex < 0)
+					_pathNodeIndex = 0;
+				_pathInc = -1;
+			}
+			else
+			{
+				_pathNodeIndex = 0;
+				_pathInc = 1;
+			}
+			getMidpoint(_point);
+			var node:FlxPoint = path.nodes[_pathNodeIndex];
+			_pathCheck.x = node.x - _point.x;
+			_pathCheck.y = node.y - _point.y;
+		}
+		
+		public function stopFollowingPath(DestroyPath:Boolean=false):void
+		{
+			pathSpeed = 0;
+			if(DestroyPath)
+			{
+				path.destroy();
+				path = null;
+			}
+		}
+		
+		protected function advancePath():void
+		{
+			trace("ap");
+			_pathNodeIndex += _pathInc;
+			switch(_pathMode)
+			{
+				case PATH_FORWARD:
+					if(_pathNodeIndex >= path.nodes.length)
+					{
+						_pathNodeIndex = path.nodes.length-1;
+						pathSpeed = 0;
+					}
+					break;
+				case PATH_BACKWARD:
+					if(_pathNodeIndex < 0)
+					{
+						_pathNodeIndex = 0;
+						pathSpeed = 0;
+					}
+					break;
+				case PATH_LOOP_FORWARD:
+					if(_pathNodeIndex >= path.nodes.length)
+						_pathNodeIndex = 0;
+					break;
+				case PATH_LOOP_BACKWARD:
+					if(_pathNodeIndex < 0)
+					{
+						_pathNodeIndex = path.nodes.length-1;
+						if(_pathNodeIndex < 0)
+							_pathNodeIndex = 0;
+					}
+				case PATH_YOYO:
+					if(_pathInc > 0)
+					{
+						if(_pathNodeIndex >= path.nodes.length)
+						{
+							_pathNodeIndex = path.nodes.length-2;
+							if(_pathNodeIndex < 0)
+								_pathNodeIndex = 0;
+							_pathInc = -_pathInc;
+						}
+					}
+					else if(_pathNodeIndex < 0)
+					{
+						_pathNodeIndex = 1;
+						if(_pathNodeIndex >= path.nodes.length)
+							_pathNodeIndex = path.nodes.length-1;
+						if(_pathNodeIndex < 0)
+							_pathNodeIndex = 0;
+						_pathInc = -_pathInc;
+					}
+					break;
+			}
+			getMidpoint(_point);
+			var node:FlxPoint = path.nodes[_pathNodeIndex];
+			_pathCheck.x = node.x - _point.x;
+			_pathCheck.y = node.y - _point.y;
+		}
+		
+		public function updatePathMotion():void
+		{
+			//first check if we need to be pointing at the next node yet
+			getMidpoint(_point);
+			var dx:Number = path.nodes[_pathNodeIndex].x - _point.x;
+			var dy:Number = path.nodes[_pathNodeIndex].y - _point.y;
+			if( ((_pathCheck.x <= 0) && (dx >= 0)) || ((_pathCheck.x >= 0) && (dx <= 0)) ||
+				((_pathCheck.y <= 0) && (dy >= 0)) || ((_pathCheck.y >= 0) && (dy <= 0)) )
+				advancePath();
+			
+			//then just move toward the current node at the requested speed
+			if(pathSpeed != 0)
+			{
+				var a:Number = FlxU.getAngle(getMidpoint(_point),path.nodes[_pathNodeIndex]);
+				FlxU.rotatePoint(0,pathSpeed,0,0,a,_point);
+				velocity.x = _point.x;
+				velocity.y = _point.y;
+				acceleration.x = 0;
+				acceleration.y = 0;
+				drag.x = 0;
+				drag.y = 0;
+				if(_pathRotate)
+				{
+					angularVelocity = 0;
+					angularAcceleration = 0;
+					angle = a;
+				}
+			}
 		}
 		
 		/**
@@ -448,21 +612,6 @@ package org.flixel
 		public function overlaps(Object:FlxObject):Boolean
 		{
 			return (Object.x + Object.width > x) && (Object.x < x + width) && (Object.y + Object.height > y) && (Object.y < y + height);
-		}
-
-		public function getBoundingColor():uint
-		{
-			if(allowCollisions)
-			{
-				if(allowCollisions != ANY)
-					return 0x7ff01eff; //partial collisions: pink
-				if(immovable)
-					return 0x7f00f225; //immovable: green
-				else
-					return 0x7fff0012; //active/movable: red
-			}
-			else
-				return 0x7f0090e9; //not solid: blue
 		}
 		
 		public function isTouching(Direction:uint):Boolean

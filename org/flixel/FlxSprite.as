@@ -2,6 +2,7 @@ package org.flixel
 {
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.display.Graphics;
 	import flash.geom.ColorTransform;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
@@ -164,7 +165,6 @@ package org.flixel
 			_curAnim = null;
 			_mtx = null;
 			_callback = null;
-			_gfxSprite == null;
 			_framePixels = null;
 		}
 		
@@ -482,16 +482,17 @@ package org.flixel
 		public function drawLine(StartX:Number,StartY:Number,EndX:Number,EndY:Number,Color:uint,Thickness:uint=1):void
 		{
 			//Draw line
-			_gfx.clear();
-			_gfx.moveTo(StartX,StartY);
+			var gfx:Graphics = FlxG.flashGfx;
+			gfx.clear();
+			gfx.moveTo(StartX,StartY);
 			var a:Number = Number((Color >> 24) & 0xFF) / 255;
 			if(a <= 0)
 				a = 1;
-			_gfx.lineStyle(Thickness,Color,a);
-			_gfx.lineTo(EndX,EndY);
+			gfx.lineStyle(Thickness,Color,a);
+			gfx.lineTo(EndX,EndY);
 			
 			//Cache line to bitmap
-			_pixels.draw(_gfxSprite);
+			_pixels.draw(FlxG.flashGfxSprite);
 			dirty = true;
 		}
 		
