@@ -1,11 +1,17 @@
 package org.flixel
 {
 	import flash.display.BitmapData;
+	import flash.display.Graphics;
+	import flash.display.Sprite;
 	import flash.display.Stage;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	
-	import org.flixel.data.*;
+	import org.flixel.system.FlxDebugger;
+	import org.flixel.system.FlxQuadTree;
+	import org.flixel.system.FlxSound;
+	import org.flixel.system.input.*;
 	
 	/**
 	 * This is a global helper class full of useful functions for audio,
@@ -27,34 +33,38 @@ package org.flixel
 		 * Assign a minor version to your library.
 		 * Appears after the decimal in the console.
 		 */
-		static public var LIBRARY_MINOR_VERSION:uint = 43;
+		static public var LIBRARY_MINOR_VERSION:uint = 50;
+		
+		static public const DEBUGGER_STANDARD:uint = 0;
+		static public const DEBUGGER_MICRO:uint = 1;
+		static public const DEBUGGER_BIG:uint = 2;
+		static public const DEBUGGER_TOP:uint = 3;
+		static public const DEBUGGER_LEFT:uint = 4;
+		static public const DEBUGGER_RIGHT:uint = 5;
+		
+		static public const RED:uint = 0xffff0012;
+		static public const GREEN:uint = 0xff00f225;
+		static public const BLUE:uint = 0xff0090e9;
+		static public const PINK:uint = 0xfff01eff;
 
 		/**
-		 * Internal tracker for game object (so we can pause & unpause)
+		 * Internal tracker for game object.
 		 */
-		static protected var _game:FlxGame;
+		static internal var _game:FlxGame;
 		/**
-		 * Internal tracker for game pause state.
+		 * Handy shared variable for implementing your own pause behavior.
 		 */
-		static protected var _pause:Boolean;
+		static public var paused:Boolean;
 		/**
 		 * Whether you are running in Debug or Release mode.
 		 * Set automatically by <code>FlxFactory</code> during startup.
 		 */
 		static public var debug:Boolean;
-		/**
-		 * Set <code>showBounds</code> to true to display the bounding boxes of the in-game objects.
-		 */
-		static public var showBounds:Boolean;
 		
 		/**
 		 * Represents the amount of time in seconds that passed since last frame.
 		 */
 		static public var elapsed:Number;
-		/**
-		 * Essentially locks the framerate to a minimum value - any slower and you'll get slowdown instead of frameskip; default is 1/30th of a second.
-		 */
-		static public var maxElapsed:Number;
 		/**
 		 * How fast or slow time should pass in the game; default is 1.0.
 		 */
@@ -68,9 +78,29 @@ package org.flixel
 		 */
 		static public var height:uint;
 		/**
+		 * The dimensions of the game world, used by the quad tree for collisions and overlap checks.
+		 */
+		static public var worldBounds:FlxRect;
+		/**
+		 * How many times the quad tree should divide the world on each axis.
+		 * Generally, sparse collisions can have fewer divisons,
+		 * while denser collision activity usually profits from more.
+		 * Default value is 6.
+		 */
+		static public var worldDivisions:uint;
+		/**
+		 * Whether to show visual debug displays or not.
+		 * Default = false.
+		 */
+		static public var visualDebug:Boolean;
+		/**
 		 * Setting this to true will disable/skip stuff that isn't necessary for mobile platforms like Android. [BETA]
 		 */
 		static public var mobile:Boolean; 
+		/**
+		 * The global random number generator seed (for deterministic behavior in recordings and saves).
+		 */
+		static public var globalSeed:Number;
 		/**
 		 * <code>FlxG.levels</code> and <code>FlxG.scores</code> are generic
 		 * global variables that can be used for various cross-state stuff.
@@ -89,15 +119,11 @@ package org.flixel
 		/**
 		 * A reference to a <code>FlxMouse</code> object.  Important for input!
 		 */
-		static public var mouse:FlxMouse;
+		static public var mouse:Mouse;
 		/**
 		 * A reference to a <code>FlxKeyboard</code> object.  Important for input!
 		 */
-		static public var keys:FlxKeyboard;
-		/**
-		 * An array of <code>FlxGamepad</code> objects.  Important for input!
-		 */
-		static public var gamepads:Array;
+		static public var keys:Keyboard;
 		
 		/**
 		 * A handy container for a background music object.
@@ -106,152 +132,238 @@ package org.flixel
 		/**
 		 * A list of all the sounds being played in the game.
 		 */
-		static public var sounds:Array;
+		static public var sounds:FlxGroup;
 		/**
-		 * Internal flag for whether or not the game is muted.
+		 * Whether or not the game sounds are muted.
 		 */
-		static protected var _mute:Boolean;
+		static public var mute:Boolean;
 		/**
 		 * Internal volume level, used for global sound control.
 		 */
 		static protected var _volume:Number;
-		
+
 		/**
-		 * Tells the camera to follow this <code>FlxCore</code> object around.
+		 * An array of <code>FlxCamera</code> objects that are used to draw stuff.
+		 * By default flixel creates one camera the size of the screen.
 		 */
-		static public var followTarget:FlxObject;
+		static public var cameras:Array;
 		/**
-		 * Used to force the camera to look ahead of the <code>followTarget</code>.
+		 * By default this just refers to the first entry in the cameras array
+		 * declared above, but you can do what you like with it.
 		 */
-		static public var followLead:Point;
+		static public var camera:FlxCamera;
 		/**
-		 * Used to smoothly track the camera as it follows.
+		 * Internal helper variable for clearing the cameras each frame.
 		 */
-		static public var followLerp:Number;
-		/**
-		 * Stores the top and left edges of the camera area.
-		 */
-		static public var followMin:Point;
-		/**
-		 * Stores the bottom and right edges of the camera area.
-		 */
-		static public var followMax:Point;
-		/**
-		 * Internal, used to assist camera and scrolling.
-		 */
-		static protected var _scrollTarget:Point;
-		
-		/**
-		 * Stores the basic parallax scrolling values.
-		 */
-		static public var scroll:Point;
-		/**
-		 * Reference to the active graphics buffer.
-		 * Can also be referenced via <code>FlxState.screen</code>.
-		 */
-		static public var buffer:BitmapData;
+		static protected var _cameraRect:Rectangle;
+
 		/**
 		 * Internal storage system to prevent graphics from being used repeatedly in memory.
 		 */
 		static protected var _cache:Object;
 		
-		/**
-		 * Access to the Kongregate high scores and achievements API.
-		 */
-		static public var kong:FlxKong;
+		static public var flashGfxSprite:Sprite;
+		static public var flashGfx:Graphics;
+		
+		static public function getLibraryName():String
+		{
+			return FlxG.LIBRARY_NAME + " v" + FlxG.LIBRARY_MAJOR_VERSION + "." + FlxG.LIBRARY_MINOR_VERSION;
+		}
 		
 		/**
-		 * The support panel (twitter, reddit, stumbleupon, paypal, etc) visor thing
-		 */
-		static public var panel:FlxPanel;
-		/**
-		 * A special effect that shakes the screen.  Usage: FlxG.quake.start();
-		 */
-		static public var quake:FlxQuake;
-		/**
-		 * A special effect that flashes a color on the screen.  Usage: FlxG.flash.start();
-		 */
-		static public var flash:FlxFlash;
-		/**
-		 * A special effect that fades a color onto the screen.  Usage: FlxG.fade.start();
-		 */
-		static public var fade:FlxFade;
-		
-		/**
-		 * Log data to the developer console.
+		 * Log data to the debugger.
 		 * 
 		 * @param	Data		Anything you want to log to the console.
 		 */
 		static public function log(Data:Object):void
 		{
-			if((_game != null) && (_game._console != null))
-				_game._console.log((Data == null)?"ERROR: null object":Data.toString());
+			if((_game != null) && (_game._debugger != null))
+				_game._debugger.log.add((Data == null)?"ERROR: null object":Data.toString());
 		}
 		
 		/**
-		 * Set <code>pause</code> to true to pause the game, all sounds, and display the pause popup.
+		 * Add a variable to the watch list in the debugger.
+		 * This lets you see the value of the variable all the time.
+		 * 
+		 * @param	AnyObject		A reference to any object in your game, e.g. Player or Robot or this.
+		 * @param	VariableName	The name of the variable you want to watch, in quotes, as a string: e.g. "speed" or "health".
+		 * @param	DisplayName		Optional, display your own string instead of the class name + variable name: e.g. "enemy count".
 		 */
-		static public function get pause():Boolean
+		static public function watch(AnyObject:Object,VariableName:String,DisplayName:String=null):void
 		{
-			return _pause;
+			if((_game != null) && (_game._debugger != null))
+				_game._debugger.watch.add(AnyObject,VariableName,DisplayName);
+		}
+		
+		/**
+		 * Remove a variable from the watch list in the debugger.
+		 * Don't pass a Variable Name to remove all watched variables for the specified object.
+		 * 
+		 * @param	AnyObject		A reference to any object in your game, e.g. Player or Robot or this.
+		 * @param	VariableName	The name of the variable you want to watch, in quotes, as a string: e.g. "speed" or "health".
+		 */
+		static public function unwatch(AnyObject:Object,VariableName:String=null):void
+		{
+			if((_game != null) && (_game._debugger != null))
+				_game._debugger.watch.remove(AnyObject,VariableName);
+		}
+		
+		/**
+		 * How many times you want your game to update each second.
+		 * More updates usually means better collisions and smoother motion.
+		 * NOTE: This is NOT the same thing as the Flash Player framerate!
+		 */
+		static public function get framerate():Number
+		{
+			return 1000/_game._step;
 		}
 		
 		/**
 		 * @private
 		 */
-		static public function set pause(Pause:Boolean):void
+		static public function set framerate(Framerate:Number):void
 		{
-			var op:Boolean = _pause;
-			_pause = Pause;
-			if(_pause != op)
+			_game._step = 1000/Framerate;
+		}
+		
+		/**
+		 * How many times you want your game to update each second.
+		 * More updates usually means better collisions and smoother motion.
+		 * NOTE: This is NOT the same thing as the Flash Player framerate!
+		 */
+		static public function get flashFramerate():Number
+		{
+			if(_game.root != null)
+				return _game.stage.frameRate;
+			else
+				return 0;
+		}
+		
+		/**
+		 * @private
+		 */
+		static public function set flashFramerate(Framerate:Number):void
+		{
+			_game._flashFramerate = Framerate;
+			if(_game.root != null)
+				_game.stage.frameRate = _game._flashFramerate;
+			_game._maxAccumulation = 2000/Framerate - 1;
+		}
+		
+		/**
+		 * Generates a random number.  Deterministic, meaning safe
+		 * to use if you want to record replays in random environments.
+		 * 
+		 * @return	A <code>Number</code> between 0 and 1.
+		 */
+		static public function random():Number
+		{
+			return globalSeed = FlxU.srand(globalSeed);
+		}
+		
+		/**
+		 * Shuffles the entries in an array into a new random order.
+		 * 
+		 * @param	A				A Flash <code>Array</code> object containing...stuff.
+		 * @param	HowManyTimes	How many swaps to perform during the shuffle operation.  Good rule of thumb is 2-4 times as many objects are in the list.
+		 * 
+		 * @return	The same Flash <code>Array</code> object that you passed in in the first place.
+		 */
+		static public function shuffle(Objects:Array,HowManyTimes:uint):Array
+		{
+			var i1:uint;
+			var i2:uint;
+			var o:Object;
+			for(var i:uint = 0; i < HowManyTimes; i++)
 			{
-				if(_pause)
-				{
-					_game.pauseGame();
-					pauseSounds();
-				}
-				else
-				{
-					_game.unpauseGame();
-					playSounds();
-				}
+				i1 = FlxG.random()*Objects.length;
+				i2 = FlxG.random()*Objects.length;
+				o = Objects[i2];
+				Objects[i2] = Objects[i1];
+				Objects[i1] = o;
 			}
+			return Objects;
+		}
+		
+		static public function getRandom(Objects:Array):Object
+		{
+			if(Objects != null)
+			{
+				var l:uint = Objects.length;
+				if(l > 0)
+					return Objects[uint(FlxG.random()*l)];
+			}
+			return null;
 		}
 		
 		/**
-		 * The game and SWF framerate; default is 60.
+		 * Load replay data from a string and play it back.
+		 * 
+		 * @param	Data		The replay that you want to load.
+		 * @param	State		Optional parameter: if you recorded a state-specific demo or cutscene, pass a new instance of that state here.
+		 * @param	CancelKeys	Optional parameter: an array of string names of keys (see FlxKeyboard) that can be pressed to cancel the playback, e.g. ["ESCAPE","ENTER"].  Also accepts 2 custom key names: "ANY" and "MOUSE" (fairly self-explanatory I hope!).
+		 * @param	Timeout		Optional parameter: set a time limit for the replay.  CancelKeys will override this if pressed.
+		 * @param	Callback	Optional parameter: if set, called when the replay finishes.  Running to the end, CancelKeys, and Timeout will all trigger Callback(), but only once, and CancelKeys and Timeout will NOT call FlxG.stopReplay() if Callback is set!
 		 */
-		static public function get framerate():uint
+		static public function loadReplay(Data:String,State:FlxState=null,CancelKeys:Array=null,Timeout:Number=0,Callback:Function=null):void
 		{
-			return _game._framerate;
+			_game._replay.load(Data);
+			if(State == null)
+				FlxG.resetGame();
+			else
+				FlxG.switchState(State);
+			_game._replayCancelKeys = CancelKeys;
+			_game._replayTimer = Timeout*1000;
+			_game._replayCallback = Callback;
+			_game._replayRequested = true;
+		}
+		
+		static public function reloadReplay(StandardMode:Boolean=true):void
+		{
+			if(StandardMode)
+				FlxG.resetGame();
+			else
+				FlxG.resetState();
+			if(_game._replay.frameCount > 0)
+				_game._replayRequested = true;
+		}
+		
+		static public function stopReplay():void
+		{
+			_game._replaying = false;
+			if(_game._debugger != null)
+				_game._debugger.vcr.stopped();
+			resetInput();
+		}
+		
+		static public function recordReplay(StandardMode:Boolean=true):void
+		{
+			if(StandardMode)
+				FlxG.resetGame();
+			else
+				FlxG.resetState();
+			_game._recordingRequested = true;
+		}
+		
+		static public function stopRecording():String
+		{
+			_game._recording = false;
+			if(_game._debugger != null)
+				_game._debugger.vcr.stopped();
+			return _game._replay.save();
+		}
+		
+		static public function resetState():void
+		{
+			_game._requestedState = new (FlxU.getClass(FlxU.getClassName(_game._state,false)))();
 		}
 		
 		/**
-		 * @private
+		 * Like hitting the reset button on a game console, this will re-launch the game as if it just started.
 		 */
-		static public function set framerate(Framerate:uint):void
+		static public function resetGame():void
 		{
-			_game._framerate = Framerate;
-			if(!_game._paused && (_game.stage != null))
-				_game.stage.frameRate = Framerate;
-		}
-		
-		/**
-		 * The game and SWF framerate while paused; default is 10.
-		 */
-		static public function get frameratePaused():uint
-		{
-			return _game._frameratePaused;
-		}
-		
-		/**
-		 * @private
-		 */
-		static public function set frameratePaused(Framerate:uint):void
-		{
-			_game._frameratePaused = Framerate;
-			if(_game._paused && (_game.stage != null))
-				_game.stage.frameRate = Framerate;
+			_game._requestedReset = true;
 		}
 		
 		/**
@@ -261,10 +373,6 @@ package org.flixel
 		{
 			keys.reset();
 			mouse.reset();
-			var i:uint = 0;
-			var l:uint = gamepads.length;
-			while(i < l)
-				gamepads[i++].reset();
 		}
 		
 		/**
@@ -296,17 +404,7 @@ package org.flixel
 		 */
 		static public function play(EmbeddedSound:Class,Volume:Number=1.0,Looped:Boolean=false):FlxSound
 		{
-			var i:uint = 0;
-			var sl:uint = sounds.length;
-			while(i < sl)
-			{
-				if(!(sounds[i] as FlxSound).active)
-					break;
-				i++;
-			}
-			if(sounds[i] == null)
-				sounds[i] = new FlxSound();
-			var s:FlxSound = sounds[i];
+			var s:FlxSound = sounds.recycle(FlxSound) as FlxSound;
 			s.loadEmbedded(EmbeddedSound,Looped);
 			s.volume = Volume;
 			s.play();
@@ -324,53 +422,11 @@ package org.flixel
 		 */
 		static public function stream(URL:String,Volume:Number=1.0,Looped:Boolean=false):FlxSound
 		{
-			var i:uint = 0;
-			var sl:uint = sounds.length;
-			while(i < sl)
-			{
-				if(!(sounds[i] as FlxSound).active)
-					break;
-				i++;
-			}
-			if(sounds[i] == null)
-				sounds[i] = new FlxSound();
-			var s:FlxSound = sounds[i];
+			var s:FlxSound = sounds.recycle(FlxSound) as FlxSound;
 			s.loadStream(URL,Looped);
 			s.volume = Volume;
 			s.play();
 			return s;
-		}
-		
-		/**
-		 * Set <code>mute</code> to true to turn off the sound.
-		 * 
-		 * @default false
-		 */
-		static public function get mute():Boolean
-		{
-			return _mute;
-		}
-		
-		/**
-		 * @private
-		 */
-		static public function set mute(Mute:Boolean):void
-		{
-			_mute = Mute;
-			changeSounds();
-		}
-		
-		/**
-		 * Get a number that represents the mute state that we can multiply into a sound transform.
-		 * 
-		 * @return		An unsigned integer - 0 if muted, 1 if not muted.
-		 */
-		static public function getMuteValue():uint
-		{
-			if(_mute)
-				return 0;
-			else
-				return 1;
 		}
 		
 		/**
@@ -390,7 +446,6 @@ package org.flixel
 				_volume = 0;
 			else if(_volume > 1)
 				_volume = 1;
-			changeSounds();
 		}
 
 		/**
@@ -400,36 +455,19 @@ package org.flixel
 		 */
 		static internal function destroySounds(ForceDestroy:Boolean=false):void
 		{
-			if(sounds == null)
-				return;
 			if((music != null) && (ForceDestroy || !music.survive))
+			{
 				music.destroy();
+				music = null;
+			}
 			var i:uint = 0;
 			var s:FlxSound;
-			var sl:uint = sounds.length;
-			while(i < sl)
+			var l:uint = sounds.members.length;
+			while(i < l)
 			{
-				s = sounds[i++] as FlxSound;
+				s = sounds.members[i++] as FlxSound;
 				if((s != null) && (ForceDestroy || !s.survive))
 					s.destroy();
-			}
-		}
-
-		/**
-		 * An internal function that adjust the volume levels and the music channel after a change.
-		 */
-		static protected function changeSounds():void
-		{
-			if((music != null) && music.active)
-				music.updateTransform();
-			var i:uint = 0;
-			var s:FlxSound;
-			var sl:uint = sounds.length;
-			while(i < sl)
-			{
-				s = sounds[i++] as FlxSound;
-				if((s != null) && s.active)
-					s.updateTransform();
 			}
 		}
 		
@@ -440,49 +478,42 @@ package org.flixel
 		{
 			if((music != null) && music.active)
 				music.update();
-			var i:uint = 0;
-			var s:FlxSound;
-			var sl:uint = sounds.length;
-			while(i < sl)
-			{
-				s = sounds[i++] as FlxSound;
-				if((s != null) && s.active)
-					s.update();
-			}
+			if((sounds != null) && sounds.active)
+				sounds.update();
 		}
 		
 		/**
-		 * Internal helper, pauses all game sounds.
+		 * Pause all sounds currently playing.
 		 */
-		static protected function pauseSounds():void
+		static public function pauseSounds():void
 		{
-			if((music != null) && music.active)
+			if((music != null) && music.exists && music.active)
 				music.pause();
 			var i:uint = 0;
 			var s:FlxSound;
-			var sl:uint = sounds.length;
-			while(i < sl)
+			var l:uint = sounds.members.length;
+			while(i < l)
 			{
-				s = sounds[i++] as FlxSound;
-				if((s != null) && s.active)
+				s = sounds.members[i++] as FlxSound;
+				if((s != null) && s.exists && s.active)
 					s.pause();
 			}
 		}
 		
 		/**
-		 * Internal helper, pauses all game sounds.
+		 * Resume playing existing sounds.
 		 */
-		static protected function playSounds():void
+		static public function playSounds():void
 		{
-			if((music != null) && music.active)
+			if((music != null) && music.exists)
 				music.play();
 			var i:uint = 0;
 			var s:FlxSound;
-			var sl:uint = sounds.length;
-			while(i < sl)
+			var l:uint = sounds.members.length;
+			while(i < l)
 			{
-				s = sounds[i++] as FlxSound;
-				if((s != null) && s.active)
+				s = sounds.members[i++] as FlxSound;
+				if((s != null) && s.exists)
 					s.play();
 			}
 		}
@@ -543,7 +574,7 @@ package org.flixel
 			var key:String = Key;
 			if(key == null)
 			{
-				key = String(Graphic);
+				key = String(Graphic)+(Reverse?"_REVERSE_":"");
 				if(Unique && (_cache[key] != undefined) && (_cache[key] != null))
 				{
 					//Generate a unique key
@@ -575,56 +606,10 @@ package org.flixel
 			}
 			return pixels;
 		}
-
-		/**
-		 * Tells the camera subsystem what <code>FlxCore</code> object to follow.
-		 * 
-		 * @param	Target		The object to follow.
-		 * @param	Lerp		How much lag the camera should have (can help smooth out the camera movement).
-		 */
-		static public function follow(Target:FlxObject, Lerp:Number=1):void
-		{
-			followTarget = Target;
-			followLerp = Lerp;
-			_scrollTarget.x = (width>>1)-followTarget.x-(followTarget.width>>1);
-			_scrollTarget.y = (height>>1)-followTarget.y-(followTarget.height>>1);
-			scroll.x = _scrollTarget.x;
-			scroll.y = _scrollTarget.y;
-			doFollow();
-		}
 		
-		/**
-		 * Specify an additional camera component - the velocity-based "lead",
-		 * or amount the camera should track in front of a sprite.
-		 * 
-		 * @param	LeadX		Percentage of X velocity to add to the camera's motion.
-		 * @param	LeadY		Percentage of Y velocity to add to the camera's motion.
-		 */
-		static public function followAdjust(LeadX:Number = 0, LeadY:Number = 0):void
+		static public function clearBitmapCache():void
 		{
-			followLead = new Point(LeadX,LeadY);
-		}
-		
-		/**
-		 * Specify the boundaries of the level or where the camera is allowed to move.
-		 * 
-		 * @param	MinX				The smallest X value of your level (usually 0).
-		 * @param	MinY				The smallest Y value of your level (usually 0).
-		 * @param	MaxX				The largest X value of your level (usually the level width).
-		 * @param	MaxY				The largest Y value of your level (usually the level height).
-		 * @param	UpdateWorldBounds	Whether the quad tree's dimensions should be updated to match.
-		 */
-		static public function followBounds(MinX:int=0, MinY:int=0, MaxX:int=0, MaxY:int=0, UpdateWorldBounds:Boolean=true):void
-		{
-			followMin = new Point(-MinX,-MinY);
-			followMax = new Point(-MaxX+width,-MaxY+height);
-			if(followMax.x > followMin.x)
-				followMax.x = followMin.x;
-			if(followMax.y > followMin.y)
-				followMax.y = followMin.y;
-			if(UpdateWorldBounds)
-				FlxU.setWorldBounds(MinX,MinY,MaxX-MinX,MaxY-MinY);
-			doFollow();
+			_cache = new Object();
 		}
 		
 		/**
@@ -634,13 +619,13 @@ package org.flixel
 		 */
 		static public function get stage():Stage
 		{
-			if((_game._state != null)  && (_game._state.parent != null))
-				return _game._state.parent.stage;
+			if(_game.root != null)
+				return _game.stage;
 			return null;
 		}
 		
 		/**
-		 * Safely access the current game state.
+		 * Access the current game state from anywhere.
 		 */
 		static public function get state():FlxState
 		{
@@ -648,109 +633,225 @@ package org.flixel
 		}
 		
 		/**
-		 * @private
+		 * Switch from the current game state to the one specified here.
 		 */
-		static public function set state(State:FlxState):void
+		static public function switchState(State:FlxState):void
 		{
-			_game.switchState(State);
+			_game._requestedState = State;
 		}
 		
 		/**
-		 * Stops and resets the camera.
+		 * Change the way the debugger's windows are laid out.
+		 * 
+		 * @param	Layout		Check aux/FlxDebugger for helpful constants like FlxDebugger.LEFT, etc.
 		 */
-		static public function unfollow():void
+		static public function setDebuggerLayout(Layout:uint):void
 		{
-			followTarget = null;
-			followLead = null;
-			followLerp = 1;
-			followMin = null;
-			followMax = null;
-			if(scroll == null)
-				scroll = new Point();
+			if(_game._debugger != null)
+				_game._debugger.setLayout(Layout);
+		}
+		
+		/**
+		 * Just resets the debugger windows to whatever the sizes and positions of the selected layout are.
+		 */
+		static public function resetDebuggerLayout():void
+		{
+			if(_game._debugger != null)
+				_game._debugger.resetLayout();
+		}
+		
+		static public function addCamera(NewCamera:FlxCamera):FlxCamera
+		{
+			FlxG._game.addChildAt(NewCamera._flashBitmap,FlxG._game.getChildIndex(FlxG._game._mouse));
+			FlxG.cameras.push(NewCamera);
+			return NewCamera;
+		}
+		
+		static public function resetCameras(NewCamera:FlxCamera=null):void
+		{
+			var c:FlxCamera;
+			var i:uint = 0;
+			var l:uint = cameras.length;
+			while(i < l)
+			{
+				c = cameras[i++] as FlxCamera;
+				FlxG._game.removeChild(c._flashBitmap);
+				c.destroy();
+			}
+			cameras.length = 0;
+			
+			if(NewCamera == null)
+				NewCamera = new FlxCamera(0,0,FlxG.width,FlxG.height)
+			camera = FlxG.addCamera(NewCamera);
+		}
+		
+		/**
+		 * All screens are filled with this color and gradually return to normal.
+		 * 
+		 * @param	Color		The color you want to use.
+		 * @param	Duration	How long it takes for the flash to fade.
+		 * @param	OnComplete	A function you want to run when the flash finishes.
+		 * @param	Force		Force the effect to reset.
+		 */
+		static public function flash(Color:uint=0xffffffff, Duration:Number=1, OnComplete:Function=null, Force:Boolean=false):void
+		{
+			var c:FlxCamera;
+			var i:uint = 0;
+			var l:uint = cameras.length;
+			while(i < l)
+				(cameras[i++] as FlxCamera).flash(Color,Duration,OnComplete,Force);
+		}
+		
+		/**
+		 * The screen is gradually filled with this color.
+		 * 
+		 * @param	Color		The color you want to use.
+		 * @param	Duration	How long it takes for the fade to finish.
+		 * @param	OnComplete	A function you want to run when the fade finishes.
+		 * @param	Force		Force the effect to reset.
+		 */
+		static public function fade(Color:uint=0xffffffff, Duration:Number=1, OnComplete:Function=null, Force:Boolean=false):void
+		{
+			var c:FlxCamera;
+			var i:uint = 0;
+			var l:uint = cameras.length;
+			while(i < l)
+				(cameras[i++] as FlxCamera).fade(Color,Duration,OnComplete,Force);
+		}
+		
+		/**
+		 * A simple screen-shake effect.
+		 * 
+		 * @param	Intensity	Percentage of screen size representing the maximum distance that the screen can move while shaking.
+		 * @param	Duration	The length in seconds that the shaking effect should last.
+		 * @param	OnComplete	A function you want to run when the shake effect finishes.
+		 * @param	Force		Force the effect to reset (default = true, unlike flash() and fade()!).
+		 * @param	Direction	Whether to shake on both axes, just up and down, or just side to side (use class constants SHAKE_BOTH_AXES, SHAKE_VERTICAL_ONLY, or SHAKE_HORIZONTAL_ONLY).
+		 */
+		static public function shake(Intensity:Number=0.05, Duration:Number=0.5, OnComplete:Function=null, Force:Boolean=true, Direction:uint=FlxCamera.SHAKE_BOTH_AXES):void
+		{
+			var c:FlxCamera;
+			var i:uint = 0;
+			var l:uint = cameras.length;
+			while(i < l)
+				(cameras[i++] as FlxCamera).shake(Intensity,Duration,OnComplete,Force,Direction);
+		}
+		
+		static public function get bgColor():uint
+		{
+			if(FlxG.camera == null)
+				return 0xff000000;
 			else
-				scroll.x = scroll.y = 0;
-			if(_scrollTarget == null)
-				_scrollTarget = new Point();
-			else
-				_scrollTarget.x = _scrollTarget.y = 0;
+				return FlxG.camera.bgColor;
+		}
+		
+		static public function set bgColor(Color:uint):void
+		{
+			var c:FlxCamera;
+			var i:uint = 0;
+			var l:uint = cameras.length;
+			while(i < l)
+				(cameras[i++] as FlxCamera).bgColor = Color;
 		}
 
 		/**
 		 * Called by <code>FlxGame</code> to set up <code>FlxG</code> during <code>FlxGame</code>'s constructor.
 		 */
-		static internal function setGameData(Game:FlxGame,Width:uint,Height:uint,Zoom:uint):void
+		static internal function init(Game:FlxGame,Width:uint,Height:uint,Zoom:Number):void
 		{
-			_game = Game;
-			_cache = new Object();
-			width = Width;
-			height = Height;
-			_mute = false;
-			_volume = 0.5;
-			sounds = new Array();
-			mouse = new FlxMouse();
-			keys = new FlxKeyboard();
-			gamepads = new Array(4);
-			gamepads[0] = new FlxGamepad();
-			gamepads[1] = new FlxGamepad();
-			gamepads[2] = new FlxGamepad();
-			gamepads[3] = new FlxGamepad();
-			scroll = null;
-			_scrollTarget = null;
-			unfollow();
+			FlxG._game = Game;
+			FlxG.width = Width;
+			FlxG.height = Height;
+			
+			FlxG.mute = false;
+			FlxG._volume = 0.5;
+			FlxG.sounds = new FlxGroup();
+			
+			FlxG.clearBitmapCache();
+			
+			if(flashGfxSprite == null)
+			{
+				flashGfxSprite = new Sprite();
+				flashGfx = flashGfxSprite.graphics;
+			}
+			FlxPath.debugDrawTracker = false;
+
+			FlxCamera.defaultZoom = Zoom;
+			FlxG._cameraRect = new Rectangle();
+			FlxG.cameras = new Array();
+			
+			FlxG.mouse = new Mouse(FlxG._game._mouse);
+			FlxG.keys = new Keyboard();
+			FlxG.mobile = false;
+
 			FlxG.levels = new Array();
 			FlxG.scores = new Array();
-			level = 0;
-			score = 0;
-			kong = null;
-			pause = false;
-			timeScale = 1.0;
-			framerate = 60;
-			frameratePaused = 10;
-			maxElapsed = 0.0333333;
-			FlxG.elapsed = 0;
-			showBounds = false;
-			
-			mobile = false;
-			
-			panel = new FlxPanel();
-			quake = new FlxQuake(Zoom);
-			flash = new FlxFlash();
-			fade = new FlxFade();
-
-			FlxU.setWorldBounds(0,0,FlxG.width,FlxG.height);
+			FlxG.worldBounds = new FlxRect(0,0,FlxG.width,FlxG.height);
+			FlxG.worldDivisions = 6;
+			FlxG.visualDebug = false;
 		}
-
-		/**
-		 * Internal function that updates the camera and parallax scrolling.
-		 */
-		static internal function doFollow():void
+		
+		static internal function reset():void
 		{
-			if(followTarget != null)
+			FlxG.clearBitmapCache();
+			FlxG.resetInput();
+			FlxG.destroySounds(true);
+			FlxG.levels.length = 0;
+			FlxG.scores.length = 0;
+			FlxG.level = 0;
+			FlxG.score = 0;
+			FlxG.paused = false;
+			FlxG.timeScale = 1.0;
+			FlxG.elapsed = 0;
+			FlxG.globalSeed = Math.random();
+		}
+		
+		static internal function lockCameras():void
+		{
+			var c:FlxCamera;
+			var b:FlxRect;
+			var i:uint = 0;
+			var l:uint = cameras.length;
+			while(i < l)
 			{
-				_scrollTarget.x = (width>>1)-followTarget.x-(followTarget.width>>1);
-				_scrollTarget.y = (height>>1)-followTarget.y-(followTarget.height>>1);
-				if((followLead != null) && (followTarget is FlxSprite))
+				c = cameras[i++] as FlxCamera;
+				if((c == null) || !c.exists || !c.visible)
+					continue;
+				c.buffer.lock();
+				c.fill();
+			}
+		}
+		
+		static internal function unlockCameras():void
+		{
+			var c:FlxCamera;
+			var i:uint = 0;
+			var l:uint = cameras.length;
+			while(i < l)
+			{
+				c = cameras[i++] as FlxCamera;
+				if((c == null) || !c.exists || !c.visible)
+					continue;
+				c.drawFX();
+				c.buffer.unlock();
+			}
+		}
+		
+		static internal function updateCameras():void
+		{
+			var c:FlxCamera;
+			var i:uint = 0;
+			var l:uint = cameras.length;
+			while(i < l)
+			{
+				c = cameras[i++] as FlxCamera;
+				if((c != null) && c.exists)
 				{
-					_scrollTarget.x -= (followTarget as FlxSprite).velocity.x*followLead.x;
-					_scrollTarget.y -= (followTarget as FlxSprite).velocity.y*followLead.y;
-				}
-				scroll.x += (_scrollTarget.x-scroll.x)*followLerp*FlxG.elapsed;
-				scroll.y += (_scrollTarget.y-scroll.y)*followLerp*FlxG.elapsed;
-				
-				if(followMin != null)
-				{
-					if(scroll.x > followMin.x)
-						scroll.x = followMin.x;
-					if(scroll.y > followMin.y)
-						scroll.y = followMin.y;
-				}
-				
-				if(followMax != null)
-				{
-					if(scroll.x < followMax.x)
-						scroll.x = followMax.x;
-					if(scroll.y < followMax.y)
-						scroll.y = followMax.y;
+					if(c.active)
+						c.update();
+					c._flashBitmap.x = c.x;
+					c._flashBitmap.y = c.y;
+					c._flashBitmap.visible = c.exists && c.visible;
 				}
 			}
 		}
@@ -760,12 +861,9 @@ package org.flixel
 		 */
 		static internal function updateInput():void
 		{
-			keys.update();
-			mouse.update(state.mouseX,state.mouseY,scroll.x,scroll.y);
-			var i:uint = 0;
-			var l:uint = gamepads.length;
-			while(i < l)
-				gamepads[i++].update();
+			FlxG.keys.update();
+			if(!_game._debuggerUp || !_game._debugger.hasMouse)
+				FlxG.mouse.update(FlxG._game.mouseX,FlxG._game.mouseY);
 		}
 	}
 }

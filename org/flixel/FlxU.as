@@ -9,15 +9,6 @@ package org.flixel
 	public class FlxU
 	{
 		/**
-		 * Helps to eliminate false collisions and/or rendering glitches caused by rounding errors
-		 */
-		static internal var roundingError:Number = 0.0000001;
-		/**
-		 * The last quad tree you generated will be stored here for reference or whatever.
-		 */
-		static public var quadTree:FlxQuadTree;
-		
-		/**
 		 * Opens a web page in a new tab or window.
 		 * 
 		 * @param	URL		The address of the web page.
@@ -27,63 +18,49 @@ package org.flixel
 			navigateToURL(new URLRequest(URL), "_blank");
 		}
 		
-		static public function abs(N:Number):Number
+		static public function abs(Value:Number):Number
 		{
-			return (N>0)?N:-N;
+			return (Value>0)?Value:-Value;
 		}
 		
-		static public function floor(N:Number):Number
+		static public function floor(Value:Number):Number
 		{
-			var n:Number = int(N);
-			return (N>0)?(n):((n!=N)?(n-1):(n));
+			var n:Number = int(Value);
+			return (Value>0)?(n):((n!=Value)?(n-1):(n));
 		}
 		
-		static public function ceil(N:Number):Number
+		static public function ceil(Value:Number):Number
 		{
-			var n:Number = int(N);
-			return (N>0)?((n!=N)?(n+1):(n)):(n);
+			var n:Number = int(Value);
+			return (Value>0)?((n!=Value)?(n+1):(n)):(n);
 		}
 		
-		static public function min(N1:Number,N2:Number):Number
+		static public function min(Number1:Number,Number2:Number):Number
 		{
-			return (N1 <= N2)?N1:N2;
+			return (Number1 <= Number2)?Number1:Number2;
 		}
 		
-		static public function max(N1:Number,N2:Number):Number
+		static public function max(Number1:Number,Number2:Number):Number
 		{
-			return (N1 >= N2)?N1:N2;
+			return (Number1 >= Number2)?Number1:Number2;
+		}
+		
+		static public function bound(Value:Number,Min:Number,Max:Number):Number
+		{
+			var lb:Number = (Value<Min)?Min:Value;
+			return (lb>Max)?Max:lb;
 		}
 		
 		/**
-		 * Generates a random number.  NOTE: To create a series of predictable
-		 * random numbers, add the random number you generate each time
-		 * to the <code>Seed</code> value before calling <code>random()</code> again.
+		 * Generates a random number based on the seed provided.
 		 * 
-		 * @param	Seed	A user-provided value used to calculate a predictable random number.
+		 * @param	Seed	A number between 0 and 1, used to generate a predictable random number (very optional).
 		 * 
 		 * @return	A <code>Number</code> between 0 and 1.
 		 */
-		static public function random(Seed:Number=NaN):Number
+		static public function srand(Seed:Number):Number
 		{
-			if(isNaN(Seed))
-				return Math.random();
-			else
-			{
-				//Make sure the seed value is OK
-				if(Seed == 0)
-					Seed = Number.MIN_VALUE;
-				if(Seed >= 1)
-				{
-					if((Seed%1) == 0)
-						Seed /= Math.PI;
-					Seed %= 1;
-				}
-				else if(Seed < 0)
-					Seed = (Seed % 1) + 1;
-				
-				//Then do an LCG thing and return a predictable random number
-				return ((69621 * int(Seed * 0x7FFFFFFF)) % 0x7FFFFFFF) / 0x7FFFFFFF;
-			}
+			return ((69621 * int(Seed * 0x7FFFFFFF)) % 0x7FFFFFFF) / 0x7FFFFFFF;
 		}
 		
 		/**
@@ -173,34 +150,56 @@ package org.flixel
 			}
 
 			var dx:Number = X-PivotX;
-			var dy:Number = PivotY-Y;
-			if(P == null) P = new FlxPoint();
+			var dy:Number = PivotY+Y; //Y axis is inverted in flash, normally this would be a subtract operation
+			if(P == null)
+				P = new FlxPoint();
 			P.x = PivotX + cos*dx - sin*dy;
 			P.y = PivotY - sin*dx - cos*dy;
 			return P;
 		};
 		
 		/**
-		 * Calculates the angle between a point and the origin (0,0).
+		 * Calculates the angle between two points.  0 degrees points straight up.
 		 * 
-		 * @param	X		The X coordinate of the point.
-		 * @param	Y		The Y coordinate of the point.
+		 * @param	Point1		The X coordinate of the point.
+		 * @param	Point2		The Y coordinate of the point.
 		 * 
-		 * @return	The angle in degrees.
+		 * @return	The angle in degrees, between -180 and 180.
 		 */
-		static public function getAngle(X:Number, Y:Number):Number
+		static public function getAngle(Point1:FlxPoint, Point2:FlxPoint):Number
 		{
-			
-			var c1:Number = 3.14159265 / 4;
+			var x:Number = Point2.x - Point1.x;
+			var y:Number = Point2.y - Point1.y;
+			var c1:Number = 3.14159265 * 0.25;
 			var c2:Number = 3 * c1;
-			var ay:Number = (Y < 0)?-Y:Y;
+			var ay:Number = (y < 0)?-y:y;
 			var angle:Number = 0;
-			if (X >= 0)
-				angle = c1 - c1 * ((X - ay) / (X + ay));
+			if (x >= 0)
+				angle = c1 - c1 * ((x - ay) / (x + ay));
 			else
-				angle = c2 - c1 * ((X + ay) / (ay - X));
-			return ((Y < 0)?-angle:angle)*57.2957796;
+				angle = c2 - c1 * ((x + ay) / (ay - x));
+			angle = ((y < 0)?-angle:angle)*57.2957796;
+			if(angle > 90)
+				angle = angle - 270;
+			else
+				angle += 90;
+			return angle;
 		};
+		
+		/**
+		 * Calculate the distance between two points.
+		 * 
+		 * @param Point1	A <code>FlxPoint</code> object referring to the first location.
+		 * @param Point2	A <code>FlxPoint</code> object referring to the second location.
+		 * 
+		 * @return	The distance between the two points as a floating point <code>Number</code> object.
+		 */
+		static public function getDistance(Point1:FlxPoint,Point2:FlxPoint):Number
+		{
+			var dx:Number = Point1.x - Point2.x;
+			var dy:Number = Point1.y - Point2.y;
+			return Math.sqrt(dx * dx + dy * dy);
+		}
 		
 		/**
 		 * Generate a Flash <code>uint</code> color from RGBA components.
@@ -212,7 +211,7 @@ package org.flixel
 		 * 
 		 * @return  The color as a <code>uint</code>.
 		 */
-		static public function getColor(Red:uint, Green:uint, Blue:uint, Alpha:Number=1.0):uint
+		static public function makeColor(Red:uint, Green:uint, Blue:uint, Alpha:Number=1.0):uint
 		{
 			return (((Alpha>1)?Alpha:(Alpha * 255)) & 0xFF) << 24 | (Red & 0xFF) << 16 | (Green & 0xFF) << 8 | (Blue & 0xFF);
 		}
@@ -227,7 +226,7 @@ package org.flixel
 		 * 
 		 * @return	The color as a <code>uint</code>.
 		 */
-		static public function getColorHSB(Hue:Number,Saturation:Number,Brightness:Number,Alpha:Number=1.0):uint
+		static public function makeColorFromHSB(Hue:Number,Saturation:Number,Brightness:Number,Alpha:Number=1.0):uint
 		{
 			var red:Number;
 			var green:Number;
@@ -330,6 +329,67 @@ package org.flixel
 			return Results;
 		}
 		
+		static public function formatTime(Seconds:Number,ShowMilliseconds:Boolean=false):String
+		{
+			var ts:String = int(Seconds/60) + ":";
+			var dts:int = int(Seconds)%60;
+			if(dts < 10)
+				ts += "0";
+			ts += dts;
+			if(ShowMilliseconds)
+			{
+				ts += ".";
+				dts = (Seconds-int(Seconds))*100;
+				if(dts < 10)
+					ts += "0";
+				ts += dts;
+			}
+			return ts;
+		}
+		
+		static public function formatArray(A:Array):String
+		{
+			if((A == null) || (A.length <= 0))
+				return null;
+			var s:String = A[0].toString();
+			for(var i:uint = 1; i < A.length; i++)
+				s += ", " + A[i].toString();
+			return s;
+		}
+		
+		static public function formatMoney(Amount:Number,ShowDecimal:Boolean=true):String
+		{
+			var h:int;
+			var a:int = Amount;
+			var s:String = "";
+			var comma:String = "";
+			var zeroes:String = "";
+			while(a > 0)
+			{
+				if((s.length > 0) && comma.length <= 0)
+					comma = ",";
+				zeroes = "";
+				h = a - int(a/1000)*1000;
+				a /= 1000;
+				if(a > 0)
+				{
+					if(h < 100)
+						zeroes += "0";
+					if(h < 10)
+						zeroes += "0";
+				}
+				s = zeroes + h + comma + s;
+			}
+			if(ShowDecimal)
+			{
+				a = int(Amount*100)-(int(Amount)*100);
+				s += "." + a;
+				if(a < 10)
+					s += "0";
+			}
+			return s;
+		}
+		
 		/**
 		 * Get the <code>String</code> name of any <code>Object</code>.
 		 * 
@@ -393,84 +453,6 @@ package org.flixel
 			}
 			return Velocity;
 		}
-
-		/**
-		 * Call this function to specify a more efficient boundary for your game world.
-		 * This boundary is used by <code>overlap()</code> and <code>collide()</code>, so it
-		 * can't hurt to have it be the right size!  Flixel will invent a size for you, but
-		 * it's pretty huge - 256x the size of the screen, whatever that may be.
-		 * Leave width and height empty if you want to just update the game world's position.
-		 * 
-		 * @param	X			The X-coordinate of the left side of the game world.
-		 * @param	Y			The Y-coordinate of the top of the game world.
-		 * @param	Width		Desired width of the game world.
-		 * @param	Height		Desired height of the game world.
-		 * @param	Divisions	Pass a non-zero value to set <code>quadTreeDivisions</code>.  Default value is 3.
-		 */
-		static public function setWorldBounds(X:Number=0, Y:Number=0, Width:Number=0, Height:Number=0, Divisions:uint=3):void
-		{
-			if(FlxQuadTree.bounds == null)
-				FlxQuadTree.bounds = new FlxRect();
-			FlxQuadTree.bounds.x = X;
-			FlxQuadTree.bounds.y = Y;
-			if(Width > 0)
-				FlxQuadTree.bounds.width = Width;
-			if(Height > 0)
-				FlxQuadTree.bounds.height = Height;
-			if(Divisions > 0)
-				FlxQuadTree.divisions = Divisions;
-		}
-		
-		/**
-		 * Call this function to see if one <code>FlxObject</code> overlaps another.
-		 * Can be called with one object and one group, or two groups, or two objects,
-		 * whatever floats your boat!  It will put everything into a quad tree and then
-		 * check for overlaps.  For maximum performance try bundling a lot of objects
-		 * together using a <code>FlxGroup</code> (even bundling groups together!)
-		 * NOTE: does NOT take objects' scrollfactor into account.
-		 * 
-		 * @param	Object1		The first object or group you want to check.
-		 * @param	Object2		The second object or group you want to check.  If it is the same as the first, flixel knows to just do a comparison within that group.
-		 * @param	Callback	A function with two <code>FlxObject</code> parameters - e.g. <code>myOverlapFunction(Object1:FlxObject,Object2:FlxObject);</code>  If no function is provided, <code>FlxQuadTree</code> will call <code>kill()</code> on both objects.
-		 */
-		static public function overlap(Object1:FlxObject,Object2:FlxObject,Callback:Function=null):Boolean
-		{
-			if( (Object1 == null) || !Object1.exists ||
-				(Object2 == null) || !Object2.exists )
-				return false;
-			quadTree = new FlxQuadTree(FlxQuadTree.bounds.x,FlxQuadTree.bounds.y,FlxQuadTree.bounds.width,FlxQuadTree.bounds.height);
-			quadTree.add(Object1,FlxQuadTree.A_LIST);
-			if(Object1 === Object2)
-				return quadTree.overlap(false,Callback);
-			quadTree.add(Object2,FlxQuadTree.B_LIST);
-			return quadTree.overlap(true,Callback);
-		}
-		
-		/**
-		 * Call this function to see if one <code>FlxObject</code> collides with another.
-		 * Can be called with one object and one group, or two groups, or two objects,
-		 * whatever floats your boat!  It will put everything into a quad tree and then
-		 * check for collisions.  For maximum performance try bundling a lot of objects
-		 * together using a <code>FlxGroup</code> (even bundling groups together!)
-		 * NOTE: does NOT take objects' scrollfactor into account.
-		 * 
-		 * @param	Object1		The first object or group you want to check.
-		 * @param	Object2		The second object or group you want to check.  If it is the same as the first, flixel knows to just do a comparison within that group.
-		 */
-		static public function collide(Object1:FlxObject,Object2:FlxObject):Boolean
-		{
-			if( (Object1 == null) || !Object1.exists ||
-				(Object2 == null) || !Object2.exists )
-				return false;
-			quadTree = new FlxQuadTree(FlxQuadTree.bounds.x,FlxQuadTree.bounds.y,FlxQuadTree.bounds.width,FlxQuadTree.bounds.height);
-			quadTree.add(Object1,FlxQuadTree.A_LIST);
-			var match:Boolean = Object1 === Object2;
-			if(!match)
-				quadTree.add(Object2,FlxQuadTree.B_LIST);
-			var cx:Boolean = quadTree.overlap(!match,solveXCollision);
-			var cy:Boolean = quadTree.overlap(!match,solveYCollision);
-			return cx || cy;			
-		}
 		
 		/**
 		 * This quad tree callback function can be used externally as well.
@@ -479,7 +461,7 @@ package org.flixel
 		 * @param	Object1		The first object or group you want to check.
 		 * @param	Object2		The second object or group you want to check.
 		 */
-		static public function solveXCollision(Object1:FlxObject, Object2:FlxObject):Boolean
+		/*static public function solveXCollision(Object1:FlxObject, Object2:FlxObject):Boolean
 		{
 			//Avoid messed up collisions ahead of time
 			var o1:Number = Object1.colVector.x;
@@ -550,10 +532,10 @@ package org.flixel
 					obj2Hull.y += oy2;
 					
 					//See if it's a actually a valid collision
-					if( (obj1Hull.x + obj1Hull.width  < obj2Hull.x + roundingError) ||
-						(obj1Hull.x + roundingError > obj2Hull.x + obj2Hull.width) ||
-						(obj1Hull.y + obj1Hull.height < obj2Hull.y + roundingError) ||
-						(obj1Hull.y + roundingError > obj2Hull.y + obj2Hull.height) )
+					if( (obj1Hull.x + obj1Hull.width  < obj2Hull.x + ROUNDING_ERROR) ||
+						(obj1Hull.x + ROUNDING_ERROR > obj2Hull.x + obj2Hull.width) ||
+						(obj1Hull.y + obj1Hull.height < obj2Hull.y + ROUNDING_ERROR) ||
+						(obj1Hull.y + ROUNDING_ERROR > obj2Hull.y + obj2Hull.height) )
 					{
 						obj2Hull.x = obj2Hull.x - ox2;
 						obj2Hull.y = obj2Hull.y - oy2;
@@ -611,30 +593,14 @@ package org.flixel
 					sv1 = Object2.velocity.x;
 					sv2 = Object1.velocity.x;
 					if(!f1 && f2)
-					{
-						if(Object1._group)
-							Object1.reset(Object1.x - overlap,Object1.y);
-						else
-							Object1.x = Object1.x - overlap;
-					}
+						Object1.x = Object1.x - overlap;
 					else if(f1 && !f2)
-					{
-						if(Object2._group)
-							Object2.reset(Object2.x + overlap,Object2.y);
-						else
-							Object2.x += overlap;
-					}
+						Object2.x += overlap;
 					else if(!f1 && !f2)
 					{
 						overlap /= 2;
-						if(Object1._group)
-							Object1.reset(Object1.x - overlap,Object1.y);
-						else
-							Object1.x = Object1.x - overlap;
-						if(Object2._group)
-							Object2.reset(Object2.x + overlap,Object2.y);
-						else
-							Object2.x += overlap;
+						Object1.x = Object1.x - overlap;
+						Object2.x += overlap;
 						sv1 *= 0.5;
 						sv2 *= 0.5;
 					}
@@ -682,7 +648,7 @@ package org.flixel
 			}
 
 			return hit;
-		}
+		}*/
 		
 		/**
 		 * This quad tree callback function can be used externally as well.
@@ -691,7 +657,7 @@ package org.flixel
 		 * @param	Object1		The first object or group you want to check.
 		 * @param	Object2		The second object or group you want to check.
 		 */
-		static public function solveYCollision(Object1:FlxObject, Object2:FlxObject):Boolean
+		/*static public function solveYCollision(Object1:FlxObject, Object2:FlxObject):Boolean
 		{
 			//Avoid messed up collisions ahead of time
 			var o1:Number = Object1.colVector.y;
@@ -762,10 +728,10 @@ package org.flixel
 					obj2Hull.y += oy2;
 					
 					//See if it's a actually a valid collision
-					if( (obj1Hull.x + obj1Hull.width  < obj2Hull.x + roundingError) ||
-						(obj1Hull.x + roundingError > obj2Hull.x + obj2Hull.width) ||
-						(obj1Hull.y + obj1Hull.height < obj2Hull.y + roundingError) ||
-						(obj1Hull.y + roundingError > obj2Hull.y + obj2Hull.height) )
+					if( (obj1Hull.x + obj1Hull.width  < obj2Hull.x + ROUNDING_ERROR) ||
+						(obj1Hull.x + ROUNDING_ERROR > obj2Hull.x + obj2Hull.width) ||
+						(obj1Hull.y + obj1Hull.height < obj2Hull.y + ROUNDING_ERROR) ||
+						(obj1Hull.y + ROUNDING_ERROR > obj2Hull.y + obj2Hull.height) )
 					{
 						obj2Hull.x = obj2Hull.x - ox2;
 						obj2Hull.y = obj2Hull.y - oy2;
@@ -823,30 +789,14 @@ package org.flixel
 					sv1 = Object2.velocity.y;
 					sv2 = Object1.velocity.y;
 					if(!f1 && f2)
-					{
-						if(Object1._group)
-							Object1.reset(Object1.x, Object1.y - overlap);
-						else
-							Object1.y = Object1.y - overlap;
-					}
+						Object1.y = Object1.y - overlap;
 					else if(f1 && !f2)
-					{
-						if(Object2._group)
-							Object2.reset(Object2.x, Object2.y + overlap);
-						else
-							Object2.y += overlap;
-					}
+						Object2.y += overlap;
 					else if(!f1 && !f2)
 					{
 						overlap /= 2;
-						if(Object1._group)
-							Object1.reset(Object1.x, Object1.y - overlap);
-						else
-							Object1.y = Object1.y - overlap;
-						if(Object2._group)
-							Object2.reset(Object2.x, Object2.y + overlap);
-						else
-							Object2.y += overlap;
+						Object1.y = Object1.y - overlap;
+						Object2.y += overlap;
 						sv1 *= 0.5;
 						sv2 *= 0.5;
 					}
@@ -914,6 +864,6 @@ package org.flixel
 			}
 			
 			return hit;
-		}
+		}*/
 	}
 }

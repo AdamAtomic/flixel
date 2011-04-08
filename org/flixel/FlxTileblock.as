@@ -20,8 +20,9 @@ package org.flixel
 		public function FlxTileblock(X:int,Y:int,Width:uint,Height:uint)
 		{
 			super(X,Y);
-			createGraphic(Width,Height,0,true);		
-			fixed = true;
+			makeGraphic(Width,Height,0,true);
+			active = false;
+			immovable = true;
 		}
 		
 		/**
@@ -54,7 +55,7 @@ package org.flixel
 				regen = true;
 			}
 			if(regen)
-				createGraphic(width,height,0,true);
+				makeGraphic(width,height,0,true);
 			else
 				this.fill(0);
 			
@@ -71,10 +72,11 @@ package org.flixel
 				c = 0;
 				while(c < widthInTiles)
 				{
-					if(FlxU.random()*total > Empties)
+					if(FlxG.random()*total > Empties)
 					{
 						s.randomFrame();
-						draw(s,ox,oy);
+						s.drawFrame();
+						stamp(s,ox,oy);
 					}
 					ox += sw;
 					c++;
@@ -83,26 +85,6 @@ package org.flixel
 				r++;
 			}
 			
-			return this;
-		}
-		
-		/**
-		 * NOTE: MOST OF THE TIME YOU SHOULD BE USING LOADTILES(), NOT LOADGRAPHIC()!
-		 * <code>LoadTiles()</code> has a lot more functionality, can load non-square tiles, etc.
-		 * Load an image from an embedded graphic file and use it to auto-fill this block with tiles.
-		 * 
-		 * @param	Graphic		The image you want to use.
-		 * @param	Animated	Ignored.
-		 * @param	Reverse		Ignored.
-		 * @param	Width		Ignored.
-		 * @param	Height		Ignored.
-		 * @param	Unique		Ignored.
-		 * 
-		 * @return	This FlxSprite instance (nice for chaining stuff together, if you're into that).
-		 */
-		override public function loadGraphic(Graphic:Class,Animated:Boolean=false,Reverse:Boolean=false,Width:uint=0,Height:uint=0,Unique:Boolean=false):FlxSprite
-		{
-			loadTiles(Graphic);
 			return this;
 		}
 	}

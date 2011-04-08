@@ -29,7 +29,7 @@ package org.flixel
 		public function FlxText(X:Number, Y:Number, Width:uint, Text:String=null, EmbeddedFont:Boolean=true)
 		{
 			super(X,Y);
-			createGraphic(Width,1,0);
+			makeGraphic(Width,1,0);
 			
 			if(Text == null)
 				Text = "";
@@ -51,8 +51,14 @@ package org.flixel
 			
 			_regen = true;
 			_shadow = 0;
-			solid = false;
+			allowCollisions = NONE;
 			calcFrame();
+		}
+		
+		override public function destroy():void
+		{
+			_tf = null;
+			super.destroy();
 		}
 		
 		/**
@@ -221,7 +227,6 @@ package org.flixel
 					height += _tf.getLineMetrics(i++).height;
 				height += 4; //account for 2px gutter on top and bottom
 				_pixels = new BitmapData(width,height,true,0);
-				_bbb = new BitmapData(width,height,true,0);
 				frameHeight = height;
 				_tf.height = height*1.2;
 				_flashRect.x = 0;
@@ -264,10 +269,6 @@ package org.flixel
 			if((_framePixels == null) || (_framePixels.width != _pixels.width) || (_framePixels.height != _pixels.height))
 				_framePixels = new BitmapData(_pixels.width,_pixels.height,true,0);
 			_framePixels.copyPixels(_pixels,_flashRect,_flashPointZero);
-			if(FlxG.showBounds)
-				drawBounds();
-			if(solid)
-				refreshHulls();
 		}
 		
 		/**

@@ -2,7 +2,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
 //  ADOBE SYSTEMS INCORPORATED
-//  Copyright 2005-2007 Adobe Systems Incorporated
+//  Copyright 2005-2008 Adobe Systems Incorporated
 //  All Rights Reserved.
 //
 //  NOTICE: Adobe permits you to use, modify, and distribute this file
@@ -15,6 +15,7 @@
 	width: 100%;
 }
 .titleTableTitle {
+	white-space: nowrap;
 	padding-left: 15px;
 	padding-right: 5px;
 	font-size: 13px;
@@ -27,7 +28,7 @@
 	background-image: url(images/titleTableTop.jpg);
 	background-repeat: repeat-x;
 	padding-right: 10px;
-	width: 50%;
+	width: 220;
 }
 .searchForm {
 	margin-top: 0px;
@@ -55,7 +56,7 @@
 	padding-right: 5px;
 }
 .titleTableSubNav {
-	white-space: nowrap;
+	//white-space: nowrap;
 	font-size: 12px;
 }
 .titleTableRow3 {
@@ -119,9 +120,9 @@
 	display: none;
 }
 	
-* html {
+/** html {
 	overflow-y:scroll;
-}
+}*/
 
 img {
 	border:0;
@@ -505,15 +506,11 @@ h5 {
     color: #999999;
 }
 .flashonly {
-    display:none;
     color: #000000;
 }
 .flexonly {
+    display:none;
     color: #000000;
-}
-.flashOnlyX {
-	display:none;
-	color: #00CCFF;
 }
 .hide {
 	display:none;
@@ -562,4 +559,20 @@ html>body .listing pre
 .pageTop
 {
 	height:10px;
+}
+
+.hideInheritedSkinState {
+	display: none;
+}
+
+.showInheritedSkinState {
+	display: inline;
+}
+
+.hideInheritedSkinPart {
+	display: none;
+}
+
+.showInheritedSkinPart {
+	display: inline;
 }

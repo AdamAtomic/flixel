@@ -1,6 +1,5 @@
 package org.flixel
 {
-	import org.flixel.data.FlxParticle;
 
 	/**
 	 * <code>FlxEmitter</code> is a lightweight particle emitter.
@@ -15,6 +14,11 @@ package org.flixel
 	 */
 	public class FlxEmitter extends FlxGroup
 	{
+		public var x:Number;
+		public var y:Number;
+		public var width:Number;
+		public var height:Number;
+		
 		/**
 		 * The minimum possible velocity of a particle.
 		 * The default value is (-100,-100).
@@ -48,21 +52,20 @@ package org.flixel
 		 */
 		public var on:Boolean;
 		/**
-		 * This variable has different effects depending on what kind of emission it is.
-		 * During an explosion, delay controls the lifespan of the particles.
-		 * During normal emission, delay controls the time between particle launches.
-		 * NOTE: In older builds, polarity (negative numbers) was used to define emitter behavior.
-		 * THIS IS NO LONGER THE CASE!  FlxEmitter.start() controls that now!
+		 * How often a particle is emitted (if emitter is started with Explode == false).
 		 */
-		public var delay:Number;
+		public var frequency:Number;
 		/**
-		 * The number of particles to launch at a time.
+		 * How long each particle lives once it is emitted.
+		 * Set lifespan to 'zero' for particles to live forever.
 		 */
-		public var quantity:uint;
+		public var lifespan:Number;
+		public var bounce:Number;
+		public var particleClass:Class;
 		/**
-		 * Checks whether you already fired a particle this frame.
+		 * Internal helper for deciding how many particles to launch.
 		 */
-		public var justEmitted:Boolean;
+		protected var _quantity:uint;
 		/**
 		 * The style of particle emission (all at once, or one at a time).
 		 */
@@ -72,13 +75,10 @@ package org.flixel
 		 */
 		protected var _timer:Number;
 		/**
-		 * Internal marker for where we are in <code>_sprites</code>.
-		 */
-		protected var _particle:uint;
-		/**
 		 * Internal counter for figuring out how many particles to launch.
 		 */
 		protected var _counter:uint;
+		protected var _point:FlxPoint;
 		
 		/**
 		 * Creates a new <code>FlxEmitter</code> object at a specific position.
@@ -87,96 +87,105 @@ package org.flixel
 		 * @param	X			The X position of the emitter.
 		 * @param	Y			The Y position of the emitter.
 		 */
-		public function FlxEmitter(X:Number=0, Y:Number=0)
+		public function FlxEmitter(X:Number=0, Y:Number=0, Size:Number=0)
 		{
-			super();
-			
+			super(Size);
 			x = X;
 			y = Y;
 			width = 0;
 			height = 0;
-			
 			minParticleSpeed = new FlxPoint(-100,-100);
 			maxParticleSpeed = new FlxPoint(100,100);
 			minRotation = -360;
 			maxRotation = 360;
-			gravity = 400;
+			gravity = 0;
+			particleClass = null;
 			particleDrag = new FlxPoint();
-			delay = 0;
-			quantity = 0;
+			frequency = 0.1;
+			lifespan = 3;
+			bounce = 0;
+			_quantity = 0;
 			_counter = 0;
 			_explode = true;
-			exists = false;
 			on = false;
-			justEmitted = false;
+			_point = new FlxPoint();
+		}
+		
+		override public function destroy():void
+		{
+			minParticleSpeed = null;
+			maxParticleSpeed = null;
+			particleDrag = null;
+			particleClass = null;
+			_point = null;
+			super.destroy();
 		}
 		
 		/**
-		 * This function generates a new array of sprites to attach to the emitter.
+		 * This function generates a new array of particle sprites to attach to the emitter.
 		 * 
 		 * @param	Graphics		If you opted to not pre-configure an array of FlxSprite objects, you can simply pass in a particle image or sprite sheet.
 		 * @param	Quantity		The number of particles to generate when using the "create from image" option.
 		 * @param	BakedRotations	How many frames of baked rotation to use (boosts performance).  Set to zero to not use baked rotations.
 		 * @param	Multiple		Whether the image in the Graphics param is a single particle or a bunch of particles (if it's a bunch, they need to be square!).
 		 * @param	Collide			Whether the particles should be flagged as not 'dead' (non-colliding particles are higher performance).  0 means no collisions, 0-1 controls scale of particle's bounding box.
-		 * @param	Bounce			Whether the particles should bounce after colliding with things.  0 means no bounce, 1 means full reflection.
 		 * 
 		 * @return	This FlxEmitter instance (nice for chaining stuff together, if you're into that).
 		 */
-		public function createSprites(Graphics:Class, Quantity:uint=50, BakedRotations:uint=16, Multiple:Boolean=true, Collide:Number=0, Bounce:Number=0):FlxEmitter
+		public function makeParticles(Graphics:Class, Quantity:uint=50, BakedRotations:uint=16, Multiple:Boolean=false, Collide:Number=0.8):FlxEmitter
 		{
-			members = new Array();
-			var r:uint;
-			var s:FlxSprite;
+			maxSize = Quantity;
+			
 			var tf:uint = 1;
-			var sw:Number;
-			var sh:Number;
 			if(Multiple)
-			{
-				s = new FlxSprite();
+			{ 
+				var s:FlxSprite = new FlxSprite();
 				s.loadGraphic(Graphics,true);
 				tf = s.frames;
+				s.destroy();
 			}
+
+			var r:uint;
+			var sw:Number;
+			var sh:Number;
+			var p:FlxParticle;
 			var i:uint = 0;
 			while(i < Quantity)
 			{
-				if((Collide > 0) && (Bounce > 0))
-					s = new FlxParticle(Bounce) as FlxSprite;
+				if(particleClass == null)
+					p = new FlxParticle();
 				else
-					s = new FlxSprite();
+					p = new particleClass();
 				if(Multiple)
 				{
-					r = FlxU.random()*tf;
+					r = FlxG.random()*tf;
 					if(BakedRotations > 0)
-						s.loadRotatedGraphic(Graphics,BakedRotations,r);
+						p.loadRotatedGraphic(Graphics,BakedRotations,r);
 					else
 					{
-						s.loadGraphic(Graphics,true);
-						s.frame = r;
+						p.loadGraphic(Graphics,true);
+						p.frame = r;
 					}
 				}
 				else
 				{
 					if(BakedRotations > 0)
-						s.loadRotatedGraphic(Graphics,BakedRotations);
+						p.loadRotatedGraphic(Graphics,BakedRotations);
 					else
-						s.loadGraphic(Graphics);
+						p.loadGraphic(Graphics);
 				}
 				if(Collide > 0)
 				{
-					sw = s.width;
-					sh = s.height;
-					s.width *= Collide;
-					s.height *= Collide;
-					s.offset.x = (sw-s.width)/2;
-					s.offset.y = (sh-s.height)/2;
-					s.solid = true;
+					sw = p.width;
+					sh = p.height;
+					p.width *= Collide;
+					p.height *= Collide;
+					p.offset.make(((sw-p.width)>>1),((sh-p.height)>>1));
 				}
 				else
-					s.solid = false;
-				s.exists = false;
-				s.scrollFactor = scrollFactor;
-				add(s);
+					p.allowCollisions = FlxObject.NONE;
+				p.exists = false;
+				add(p);
 				i++;
 			}
 			return this;
@@ -231,111 +240,65 @@ package org.flixel
 		}
 		
 		/**
-		 * Internal function that actually performs the emitter update (called by update()).
+		 * Called automatically by the game loop, decides when to launch particles and when to "die".
 		 */
-		protected function updateEmitter():void
+		override public function update():void
 		{
-			if(_explode)
+			if(on)
 			{
-				_timer += FlxG.elapsed;
-				if((delay > 0) && (_timer > delay))
-				{
-					kill();
-					return;
-				}
-				if(on)
+				if(_explode)
 				{
 					on = false;
-					var i:uint = _particle;
-					var l:uint = members.length;
-					if(quantity > 0)
-						l = quantity;
-					l += _particle;
+					var i:uint = 0;
+					var l:uint = _quantity;
+					if((l <= 0) || (l > members.length))
+						l = members.length;
 					while(i < l)
 					{
 						emitParticle();
 						i++;
 					}
+					_quantity = 0;
 				}
-				return;
+				else
+				{
+					_timer += FlxG.elapsed;
+					while((frequency > 0) && (_timer > frequency) && on)
+					{
+						_timer -= frequency;
+						emitParticle();
+						if((_quantity > 0) && (++_counter >= _quantity))
+						{
+							on = false;
+							_quantity = 0;
+						}
+					}
+				}
 			}
-			if(!on)
-				return;
-			_timer += FlxG.elapsed;
-			while((_timer > delay) && ((quantity <= 0) || (_counter < quantity)))
-			{
-				_timer -= delay;
-				emitParticle();
-			}
-		}
-		
-		/**
-		 * Internal function that actually goes through and updates all the group members.
-		 * Overridden here to remove the position update code normally used by a FlxGroup.
-		 */
-		override protected function updateMembers():void
-		{
-			var o:FlxObject;
-			var i:uint = 0;
-			var l:uint = members.length;
-			while(i < l)
-			{
-				o = members[i++] as FlxObject;
-				if((o != null) && o.exists && o.active)
-					o.update();
-			}
-		}
-		
-		/**
-		 * Called automatically by the game loop, decides when to launch particles and when to "die".
-		 */
-		override public function update():void
-		{
-			justEmitted = false;
 			super.update();
-			updateEmitter();
 		}
 		
 		/**
 		 * Call this function to start emitting particles.
 		 * 
 		 * @param	Explode		Whether the particles should all burst out at once.
-		 * @param	Delay		You can set the delay (or lifespan) here if you want.
-		 * @param	Quantity	How many particles to launch.  Default value is 0, or "all the particles".
+		 * @param	Lifespan	How long each particle lives once emitted. 0 = forever.
+		 * @param	Frequency	Ignored if Explode is set to true. Frequency is how often to emit a particle. 0 = never emit, 0.1 = 1 particle every 0.1 seconds, 5 = 1 particle every 5 seconds.
+		 * @param	Quantity	How many particles to launch. 0 = "all of the particles".
 		 */
-		public function start(Explode:Boolean=true,Delay:Number=0,Quantity:uint=0):void
+		public function start(Explode:Boolean=true,Lifespan:Number=0,Frequency:Number=0.1,Quantity:uint=0):void
 		{
-			if(members.length <= 0)
-			{
-				FlxG.log("WARNING: there are no sprites loaded in your emitter.\nAdd some to FlxEmitter.members or use FlxEmitter.createSprites().");
-				return;
-			}
-			_explode = Explode;
-			if(!_explode)
-				_counter = 0;
-			if(!exists)
-				_particle = 0;
-			exists = true;
+			revive();
 			visible = true;
-			active = true;
-			dead = false;
 			on = true;
+			
+			_explode = Explode;
+			lifespan = Lifespan;
+			frequency = Frequency;
+			_quantity += Quantity;
+			
+			_counter = 0;
 			_timer = 0;
-			if(quantity == 0)
-				quantity = Quantity;
-			else if(Quantity != 0)
-				quantity = Quantity;
-			if(Delay != 0)
-				delay = Delay;
-			if(delay < 0)
-				delay = -delay;
-			if(delay == 0)
-			{
-				if(Explode)
-					delay = 3;	//default value for particle explosions
-				else
-					delay = 0.1;//default value for particle streams
-			}
 		}
 		
 		/**
@@ -343,42 +306,32 @@ package org.flixel
 		 */
 		public function emitParticle():void
 		{
-			_counter++;
-			var s:FlxSprite = members[_particle] as FlxSprite;
-			s.visible = true;
-			s.exists = true;
-			s.active = true;
-			s.x = x - (s.width>>1) + FlxU.random()*width;
-			s.y = y - (s.height>>1) + FlxU.random()*height;
-			s.velocity.x = minParticleSpeed.x;
-			if(minParticleSpeed.x != maxParticleSpeed.x) s.velocity.x += FlxU.random()*(maxParticleSpeed.x-minParticleSpeed.x);
-			s.velocity.y = minParticleSpeed.y;
-			if(minParticleSpeed.y != maxParticleSpeed.y) s.velocity.y += FlxU.random()*(maxParticleSpeed.y-minParticleSpeed.y);
-			s.acceleration.y = gravity;
-			s.angularVelocity = minRotation;
-			if(minRotation != maxRotation) s.angularVelocity += FlxU.random()*(maxRotation-minRotation);
-			if(s.angularVelocity != 0) s.angle = FlxU.random()*360-180;
-			s.drag.x = particleDrag.x;
-			s.drag.y = particleDrag.y;
-			_particle++;
-			if(_particle >= members.length)
-				_particle = 0;
-			s.onEmit();
-			justEmitted = true;
-		}
-		
-		/**
-		 * Call this function to stop the emitter without killing it.
-		 * 
-		 * @param	Delay	How long to wait before killing all the particles.  Set to 'zero' to never kill them.
-		 */
-		public function stop(Delay:Number=3):void
-		{
-			_explode = true;
-			delay = Delay;
-			if(delay < 0)
-				delay = -Delay;
-			on = false;
+			var p:FlxParticle = recycle(FlxParticle) as FlxParticle;
+			p.lifespan = lifespan;
+			p.elasticity = bounce;
+			p.reset(x - (p.width>>1) + FlxG.random()*width, y - (p.height>>1) + FlxG.random()*height);
+			p.visible = true;
+
+			if(minParticleSpeed.x != maxParticleSpeed.x)
+				p.velocity.x = minParticleSpeed.x + FlxG.random()*(maxParticleSpeed.x-minParticleSpeed.x);
+			else
+				p.velocity.x = minParticleSpeed.x;
+			if(minParticleSpeed.y != maxParticleSpeed.y)
+				p.velocity.y = minParticleSpeed.y + FlxG.random()*(maxParticleSpeed.y-minParticleSpeed.y);
+			else
+				p.velocity.y = minParticleSpeed.y;
+			p.acceleration.y = gravity;
+			
+			if(minRotation != maxRotation)
+				p.angularVelocity = minRotation + FlxG.random()*(maxRotation-minRotation);
+			else
+				p.angularVelocity = minRotation;
+			if(p.angularVelocity != 0)
+				p.angle = FlxG.random()*360-180;
+			
+			p.drag.x = particleDrag.x;
+			p.drag.y = particleDrag.y;
+			p.onEmit();
 		}
 		
 		/**
@@ -388,8 +341,9 @@ package org.flixel
 		 */
 		public function at(Object:FlxObject):void
 		{
-			x = Object.x + Object.origin.x;
-			y = Object.y + Object.origin.y;
+			Object.getMidpoint(_point);
+			x = _point.x - (width>>1);
+			y = _point.y - (height>>1);
 		}
 		
 		/**
@@ -397,8 +351,8 @@ package org.flixel
 		 */
 		override public function kill():void
 		{
-			super.kill();
 			on = false;
+			super.kill();
 		}
 	}
 }

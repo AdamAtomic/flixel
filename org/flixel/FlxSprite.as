@@ -3,36 +3,26 @@ package org.flixel
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.Graphics;
-	import flash.display.Sprite;
 	import flash.geom.ColorTransform;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
-	import org.flixel.data.FlxAnim;
+	import org.flixel.system.FlxAnim;
 	
 	/**
 	* The main "game object" class, handles basic physics and animation.
 	*/
 	public class FlxSprite extends FlxObject
 	{
+		[Embed(source="data/default.png")] protected var ImgDefault:Class;
+		
 		/**
-		 * Useful for controlling flipped animations and checking player orientation.
+		 * WARNING: The origin of the sprite will default to its center.
+		 * If you change this, the visuals and the collisions will likely be
+		 * pretty out-of-sync if you do any rotation.
 		 */
-		static public const LEFT:uint = 0;
-		/**
-		 * Useful for controlling flipped animations and checking player orientation.
-		 */
-		static public const RIGHT:uint = 1;
-		/**
-		 * Useful for checking player orientation.
-		 */
-		static public const UP:uint = 2;
-		/**
-		 * Useful for checking player orientation.
-		 */
-		static public const DOWN:uint = 3;
-		 
+		public var origin:FlxPoint;
 		/**
 		* If you changed the size of your sprite object to shrink the bounding box,
 		* you might need to offset the new bounding box from the top-left corner of the sprite.
@@ -75,6 +65,11 @@ package org.flixel
 		 * The total number of frames in this image (assumes each row is full).
 		 */
 		public var frames:uint;
+		/**
+		 * Set this flag to true to force the sprite to update during the draw() call.
+		 * NOTE: Rarely if ever necessary, most sprite operations will flip this flag automatically.
+		 */
+		public var dirty:Boolean;
 		
 		//Animation helpers
 		protected var _animations:Array;
@@ -88,6 +83,7 @@ package org.flixel
 		protected var _bakedRotation:Number;
 		
 		//Various rendering helpers
+		protected var _flashPoint:Point;
 		protected var _flashRect:Rectangle;
 		protected var _flashRect2:Rectangle;
 		protected var _flashPointZero:Point;
@@ -97,10 +93,6 @@ package org.flixel
 		protected var _color:uint;
 		protected var _ct:ColorTransform;
 		protected var _mtx:Matrix;
-		protected var _bbb:BitmapData;
-		protected var _boundsVisible:Boolean;
-		static protected var _gfxSprite:Sprite;
-		static protected var _gfx:Graphics;
 		
 		/**
 		 * Creates a white 8x8 square <code>FlxSprite</code> at the specified position.
@@ -112,20 +104,23 @@ package org.flixel
 		 */
 		public function FlxSprite(X:Number=0,Y:Number=0,SimpleGraphic:Class=null)
 		{
-			super();
-			x = X;
-			y = Y;
+			super(X,Y);
+			
+			health = 1;
 
+			_flashPoint = new Point();
 			_flashRect = new Rectangle();
 			_flashRect2 = new Rectangle();
 			_flashPointZero = new Point();
 			offset = new FlxPoint();
+			origin = new FlxPoint();
 			
 			scale = new FlxPoint(1,1);
 			_alpha = 1;
 			_color = 0x00ffffff;
 			blend = null;
 			antialiasing = false;
+			cameras = null;
 			
 			finished = false;
 			_facing = RIGHT;
@@ -138,16 +133,39 @@ package org.flixel
 
 			_mtx = new Matrix();
 			_callback = null;
-			if(_gfxSprite == null)
-			{
-				_gfxSprite = new Sprite();
-				_gfx = _gfxSprite.graphics;
-			}
 			
 			if(SimpleGraphic == null)
-				createGraphic(8,8);
-			else
-				loadGraphic(SimpleGraphic);
+				SimpleGraphic = ImgDefault;
+			loadGraphic(SimpleGraphic);
+		}
+		
+		override public function destroy():void
+		{
+			if(_animations != null)
+			{
+				var a:FlxAnim;
+				var i:uint = 0;
+				var l:uint = _animations.length;
+				while(i < l)
+				{
+					a = _animations[i++];
+					if(a != null)
+						a.destroy();
+				}
+				_animations = null;
+			}
+			
+			_flashPoint = null;
+			_flashRect = null;
+			_flashRect2 = null;
+			_flashPointZero = null;
+			offset = null;
+			origin = null;
+			scale = null;
+			_curAnim = null;
+			_mtx = null;
+			_callback = null;
+			_framePixels = null;
 		}
 		
 		/**
@@ -196,7 +214,7 @@ package org.flixel
 		 * Create a pre-rotated sprite sheet from a simple sprite.
 		 * This can make a huge difference in graphical performance!
 		 * 
-		 * @param	Graphic			The image you want to rotate & stamp.
+		 * @param	Graphic			The image you want to rotate and stamp.
 		 * @param	Frames			The number of frames you want to use (more == smoother rotations).
 		 * @param	Offset			Use this to select a specific frame to draw from the graphic.
 		 * @param	AntiAliasing	Whether to use high quality rotations when creating the graphic.
@@ -244,7 +262,7 @@ package org.flixel
 			height = frameHeight = _pixels.height;
 			_bakedRotation = 360/Rotations;
 			
-			//Generate a new sheet if necessary, then fix up the width & height
+			//Generate a new sheet if necessary, then fix up the width and height
 			if(!skipGen)
 			{
 				var r:uint = 0;
@@ -287,7 +305,7 @@ package org.flixel
 		 * 
 		 * @return	This FlxSprite instance (nice for chaining stuff together, if you're into that).
 		 */
-		public function createGraphic(Width:uint,Height:uint,Color:uint=0xffffffff,Unique:Boolean=false,Key:String=null):FlxSprite
+		public function makeGraphic(Width:uint,Height:uint,Color:uint=0xffffffff,Unique:Boolean=false,Key:String=null):FlxSprite
 		{
 			_bakedRotation = 0;
 			_pixels = FlxG.createBitmap(Width,Height,Color,Unique,Key);
@@ -295,6 +313,28 @@ package org.flixel
 			height = frameHeight = _pixels.height;
 			resetHelpers();
 			return this;
+		}
+		
+		/**
+		 * Resets some important variables for sprite optimization and rendering.
+		 */
+		protected function resetHelpers():void
+		{
+			_flashRect.x = 0;
+			_flashRect.y = 0;
+			_flashRect.width = frameWidth;
+			_flashRect.height = frameHeight;
+			_flashRect2.x = 0;
+			_flashRect2.y = 0;
+			_flashRect2.width = _pixels.width;
+			_flashRect2.height = _pixels.height;
+			if((_framePixels == null) || (_framePixels.width != width) || (_framePixels.height != height))
+				_framePixels = new BitmapData(width,height);
+			origin.make(frameWidth*0.5,frameHeight*0.5);
+			_framePixels.copyPixels(_pixels,_flashRect,_flashPointZero);
+			frames = (_flashRect2.width / _flashRect.width) * (_flashRect2.height / _flashRect.height);
+			if(_ct != null) _framePixels.colorTransform(_flashRect,_ct);
+			_caf = 0;
 		}
 		
 		/**
@@ -318,57 +358,6 @@ package org.flixel
 		}
 		
 		/**
-		 * Resets some important variables for sprite optimization and rendering.
-		 */
-		protected function resetHelpers():void
-		{
-			_boundsVisible = false;
-			_flashRect.x = 0;
-			_flashRect.y = 0;
-			_flashRect.width = frameWidth;
-			_flashRect.height = frameHeight;
-			_flashRect2.x = 0;
-			_flashRect2.y = 0;
-			_flashRect2.width = _pixels.width;
-			_flashRect2.height = _pixels.height;
-			if((_framePixels == null) || (_framePixels.width != width) || (_framePixels.height != height))
-				_framePixels = new BitmapData(width,height);
-			if((_bbb == null) || (_bbb.width != width) || (_bbb.height != height))
-				_bbb = new BitmapData(width,height);
-			origin.x = frameWidth*0.5;
-			origin.y = frameHeight*0.5;
-			_framePixels.copyPixels(_pixels,_flashRect,_flashPointZero);
-			frames = (_flashRect2.width / _flashRect.width) * (_flashRect2.height / _flashRect.height);
-			if(_ct != null) _framePixels.colorTransform(_flashRect,_ct);
-			if(FlxG.showBounds)
-				drawBounds();
-			_caf = 0;
-			refreshHulls();
-		}
-		
-		/**
-		 * @private
-		 */
-		override public function set solid(Solid:Boolean):void
-		{
-			var os:Boolean = _solid;
-			_solid = Solid;
-			if((os != _solid) && FlxG.showBounds)
-				calcFrame();
-		}
-		
-		/**
-		 * @private
-		 */
-		override public function set fixed(Fixed:Boolean):void
-		{
-			var of:Boolean = _fixed;
-			_fixed = Fixed;
-			if((of != _fixed) && FlxG.showBounds)
-				calcFrame();
-		}
-		
-		/**
 		 * Set <code>facing</code> using <code>FlxSprite.LEFT</code>,<code>RIGHT</code>,
 		 * <code>UP</code>, and <code>DOWN</code> to take advantage of
 		 * flipped sprites and/or just track player orientation more easily.
@@ -383,9 +372,9 @@ package org.flixel
 		 */
 		public function set facing(Direction:uint):void
 		{
-			var c:Boolean = _facing != Direction;
+			if(_facing != Direction)
+				dirty = true;
 			_facing = Direction;
-			if(c) calcFrame();
 		}
 		
 		/**
@@ -401,13 +390,18 @@ package org.flixel
 		 */
 		public function set alpha(Alpha:Number):void
 		{
-			if(Alpha > 1) Alpha = 1;
-			if(Alpha < 0) Alpha = 0;
-			if(Alpha == _alpha) return;
+			if(Alpha > 1)
+				Alpha = 1;
+			if(Alpha < 0)
+				Alpha = 0;
+			if(Alpha == _alpha)
+				return;
 			_alpha = Alpha;
-			if((_alpha != 1) || (_color != 0x00ffffff)) _ct = new ColorTransform((_color>>16)*0.00392,(_color>>8&0xff)*0.00392,(_color&0xff)*0.00392,_alpha);
-			else _ct = null;
-			calcFrame();
+			if((_alpha != 1) || (_color != 0x00ffffff))
+				_ct = new ColorTransform((_color>>16)*0.00392,(_color>>8&0xff)*0.00392,(_color&0xff)*0.00392,_alpha);
+			else
+				_ct = null;
+			dirty = true;
 		}
 		
 		/**
@@ -426,11 +420,14 @@ package org.flixel
 		public function set color(Color:uint):void
 		{
 			Color &= 0x00ffffff;
-			if(_color == Color) return;
+			if(_color == Color)
+				return;
 			_color = Color;
-			if((_alpha != 1) || (_color != 0x00ffffff)) _ct = new ColorTransform((_color>>16)*0.00392,(_color>>8&0xff)*0.00392,(_color&0xff)*0.00392,_alpha);
-			else _ct = null;
-			calcFrame();
+			if((_alpha != 1) || (_color != 0x00ffffff))
+				_ct = new ColorTransform((_color>>16)*0.00392,(_color>>8&0xff)*0.00392,(_color&0xff)*0.00392,_alpha);
+			else
+				_ct = null;
+			dirty = true;
 		}
 		
 
@@ -442,7 +439,7 @@ package org.flixel
 		 * @param	X			The X coordinate of the brush's top left corner on this sprite.
 		 * @param	Y			They Y coordinate of the brush's top left corner on this sprite.
 		 */
-		public function draw(Brush:FlxSprite,X:int=0,Y:int=0):void
+		public function stamp(Brush:FlxSprite,X:int=0,Y:int=0):void
 		{
 			var b:BitmapData = Brush._framePixels;
 			
@@ -485,14 +482,18 @@ package org.flixel
 		public function drawLine(StartX:Number,StartY:Number,EndX:Number,EndY:Number,Color:uint,Thickness:uint=1):void
 		{
 			//Draw line
-			_gfx.clear();
-			_gfx.moveTo(StartX,StartY);
-			_gfx.lineStyle(Thickness,Color);
-			_gfx.lineTo(EndX,EndY);
+			var gfx:Graphics = FlxG.flashGfx;
+			gfx.clear();
+			gfx.moveTo(StartX,StartY);
+			var a:Number = Number((Color >> 24) & 0xFF) / 255;
+			if(a <= 0)
+				a = 1;
+			gfx.lineStyle(Thickness,Color,a);
+			gfx.lineTo(EndX,EndY);
 			
 			//Cache line to bitmap
-			_pixels.draw(_gfxSprite);
-			calcFrame();
+			_pixels.draw(FlxG.flashGfxSprite);
+			dirty = true;
 		}
 		
 		/**
@@ -504,7 +505,7 @@ package org.flixel
 		{
 			_pixels.fillRect(_flashRect2,Color);
 			if(_pixels != _framePixels)
-				calcFrame();
+				dirty = true;
 		}
 		
 		/**
@@ -514,7 +515,7 @@ package org.flixel
 		 */
 		protected function updateAnimation():void
 		{
-			if(_bakedRotation)
+			if(_bakedRotation > 0)
 			{
 				var oc:uint = _caf;
 				var ta:int = angle%360;
@@ -522,10 +523,9 @@ package org.flixel
 					ta += 360;
 				_caf = ta/_bakedRotation;
 				if(oc != _caf)
-					calcFrame();
-				return;
+					dirty = true;
 			}
-			if((_curAnim != null) && (_curAnim.delay > 0) && (_curAnim.looped || !finished))
+			else if((_curAnim != null) && (_curAnim.delay > 0) && (_curAnim.looped || !finished))
 			{
 				_frameTimer += FlxG.elapsed;
 				while(_frameTimer > _curAnim.delay)
@@ -539,78 +539,107 @@ package org.flixel
 					else
 						_curFrame++;
 					_caf = _curAnim.frames[_curFrame];
-					calcFrame();
+					dirty = true;
 				}
 			}
-		}
-		
-		/**
-		 * Main game loop update function.  Override this to create your own sprite logic!
-		 * Just don't forget to call super.update() or any of the helper functions.
-		 */
-		override public function update():void
-		{
-			updateMotion();
-			updateAnimation();
-			updateFlickering();
-		}
-		
-		/**
-		 * Internal function that performs the actual sprite rendering, called by render().
-		 */
-		protected function renderSprite():void
-		{
-			if(FlxG.showBounds != _boundsVisible)
+			
+			if(dirty)
 				calcFrame();
-			
-			getScreenXY(_point);
-			_flashPoint.x = _point.x;
-			_flashPoint.y = _point.y;
-			
-			//Simple render
-			if(((angle == 0) || (_bakedRotation > 0)) && (scale.x == 1) && (scale.y == 1) && (blend == null))
-			{
-				FlxG.buffer.copyPixels(_framePixels,_flashRect,_flashPoint,null,null,true);
-				return;
-			}
-			
-			//Advanced render
-			_mtx.identity();
-			_mtx.translate(-origin.x,-origin.y);
-			_mtx.scale(scale.x,scale.y);
-			if(angle != 0)
-				_mtx.rotate(angle * 0.017453293);
-			_mtx.translate(_point.x+origin.x,_point.y+origin.y);
-			FlxG.buffer.draw(_framePixels,_mtx,null,blend,null,antialiasing);
+		}
+		
+		override public function postUpdate():void
+		{
+			super.postUpdate();
+			updateAnimation();
 		}
 		
 		/**
 		 * Called by game loop, updates then blits or renders current frame of animation to the screen
 		 */
-		override public function render():void
+		override public function draw():void
 		{
-			renderSprite();
+			if(_flickerTimer != 0)
+			{
+				_flicker = !_flicker;
+				if(_flicker)
+					return;
+			}
+			
+			if(dirty)	//rarely 
+				calcFrame();
+			
+			if(cameras == null)
+				cameras = FlxG.cameras;
+			var c:FlxCamera;
+			var i:uint = 0;
+			var l:uint = cameras.length;
+			while(i < l)
+			{
+				c = cameras[i++];
+				if(!onScreen(c))
+					continue;
+				_point.x = x - c.scroll.x*scrollFactor.x - offset.x; //copied from getScreenXY()
+				_point.y = y - c.scroll.y*scrollFactor.y - offset.y;
+				if(((angle == 0) || (_bakedRotation > 0)) && (scale.x == 1) && (scale.y == 1) && (blend == null))
+				{	//Simple render
+					_flashPoint.x = _point.x;
+					_flashPoint.y = _point.y;
+					c.buffer.copyPixels(_framePixels,_flashRect,_flashPoint,null,null,true);
+				}
+				else
+				{	//Advanced render
+					_mtx.identity();
+					_mtx.translate(-origin.x,-origin.y);
+					_mtx.scale(scale.x,scale.y);
+					if((angle != 0) && (_bakedRotation <= 0))
+						_mtx.rotate(angle * 0.017453293);
+					_mtx.translate(_point.x+origin.x,_point.y+origin.y);
+					c.buffer.draw(_framePixels,_mtx,null,blend,null,antialiasing);
+				}
+				_VISIBLECOUNT++;
+				if(FlxG.visualDebug)
+					drawDebug(c);
+			}
 		}
 		
 		/**
-		 * Checks to see if a point in 2D space overlaps this FlxCore object.
+		 * Request (or force) that the sprite update the frame before rendering.
+		 * Useful if you are doing procedural generation or other weirdness!
+		 * 
+		 * @param	Force	Force the frame to redraw, even if its not flagged as necessary.
+		 */
+		public function drawFrame(Force:Boolean=false):void
+		{
+			if(Force || dirty)
+				calcFrame();
+		}
+		
+		/**
+		 * Checks to see if a point in 2D world space overlaps this FlxCore object.
 		 * 
 		 * @param	X			The X coordinate of the point.
 		 * @param	Y			The Y coordinate of the point.
+		 * @param	Camera		Specify which game camera you want.  If null getScreenXY() will just grab the first global camera.
 		 * @param	PerPixel	Whether or not to use per pixel collision checking.
 		 * 
 		 * @return	Whether or not the point overlaps this object.
 		 */
-		override public function overlapsPoint(X:Number,Y:Number,PerPixel:Boolean = false):Boolean
+		override public function overlapsPoint(X:Number,Y:Number,Camera:FlxCamera=null,PerPixel:Boolean = false):Boolean
 		{
-			X = X + FlxU.floor(FlxG.scroll.x);
-			Y = Y + FlxU.floor(FlxG.scroll.y);
-			getScreenXY(_point);
+			if(Camera == null)
+				Camera = FlxG.camera;
+			
+			//convert the passed in point to screen space
+			X = X - Camera.scroll.x;
+			Y = Y - Camera.scroll.y;
+			
+			//then compare
+			//getScreenXY(_point,Camera);
+			_point.x = x - Camera.scroll.x*scrollFactor.x - offset.x; //copied from getScreenXY()
+			_point.y = y - Camera.scroll.y*scrollFactor.y - offset.y;
 			if(PerPixel)
 				return _framePixels.hitTest(new Point(0,0),0xFF,new Point(X-_point.x,Y-_point.y));
-			else if((X <= _point.x) || (X >= _point.x+frameWidth) || (Y <= _point.y) || (Y >= _point.y+frameHeight))
-				return false;
-			return true;
+			return (X > _point.x) && (X < _point.x+frameWidth) && (Y > _point.y) && (Y < _point.y+frameHeight);
 		}
 		
 		/**
@@ -666,7 +695,7 @@ package org.flixel
 					else
 						finished = false;
 					_caf = _curAnim.frames[_curFrame];
-					calcFrame();
+					dirty = true;
 					return;
 				}
 				i++;
@@ -680,8 +709,8 @@ package org.flixel
 		public function randomFrame():void
 		{
 			_curAnim = null;
-			_caf = int(FlxU.random()*(_pixels.width/frameWidth));
-			calcFrame();
+			_caf = int(FlxG.random()*(_pixels.width/frameWidth));
+			dirty = true;
 		}
 		
 		/**
@@ -701,22 +730,77 @@ package org.flixel
 		{
 			_curAnim = null;
 			_caf = Frame;
-			calcFrame();
+			dirty = true;
+		}
+		
+		public function corner():void
+		{
+			origin.x = origin.y = 0;
+		}
+		
+		/**
+		 * Reduces the "health" variable of this sprite by the amount specified in Damage.
+		 * Calls kill() if health drops to or below zero.
+		 * 
+		 * @param	Damage		How much health to take away (use a negative number to give a health bonus).
+		 */
+		public function hurt(Damage:Number):void
+		{
+			health = health - Damage;
+			if(health <= 0)
+				kill();
 		}
 		
 		/**
 		 * Call this function to figure out the on-screen position of the object.
 		 * 
+		 * @param	Camera		Specify which game camera you want.  If null getScreenXY() will just grab the first global camera.
 		 * @param	P	Takes a <code>Point</code> object and assigns the post-scrolled X and Y values of this object to it.
 		 * 
 		 * @return	The <code>Point</code> you passed in, or a new <code>Point</code> if you didn't pass one, containing the screen X and Y position of this object.
 		 */
-		override public function getScreenXY(Point:FlxPoint=null):FlxPoint
+		override public function getScreenXY(Point:FlxPoint=null,Camera:FlxCamera=null):FlxPoint
 		{
-			if(Point == null) Point = new FlxPoint();
-			Point.x = FlxU.floor(x + FlxU.roundingError)+FlxU.floor(FlxG.scroll.x*scrollFactor.x) - offset.x;
-			Point.y = FlxU.floor(y + FlxU.roundingError)+FlxU.floor(FlxG.scroll.y*scrollFactor.y) - offset.y;
+			if(Point == null)
+				Point = new FlxPoint();
+			if(Camera == null)
+				Camera = FlxG.camera;
+			Point.x = x - Camera.scroll.x*scrollFactor.x - offset.x;
+			Point.y = y - Camera.scroll.y*scrollFactor.y - offset.y;
+			//Point.x = FlxU.floor(x + ROUNDING_ERROR)-FlxU.floor(Camera.scroll.x*scrollFactor.x) - offset.x;
+			//Point.y = FlxU.floor(y + ROUNDING_ERROR)-FlxU.floor(Camera.scroll.y*scrollFactor.y) - offset.y;
 			return Point;
+		}
+		
+		/**
+		 * Check and see if this object is currently on screen.
+		 * 
+		 * @param	Camera		Specify which game camera you want.  If null getScreenXY() will just grab the first global camera.
+		 * 
+		 * @return	Whether the object is on screen or not.
+		 */
+		override public function onScreen(Camera:FlxCamera=null):Boolean
+		{
+			if(Camera == null)
+				Camera = FlxG.camera;
+			_point.x = x - Camera.scroll.x*scrollFactor.x - offset.x; //copied from getScreenXY()
+			_point.y = y - Camera.scroll.y*scrollFactor.y - offset.y;
+			//_point.x = FlxU.floor(x + ROUNDING_ERROR)-FlxU.floor(Camera.scroll.x*scrollFactor.x) - offset.x;
+			//_point.y = FlxU.floor(y + ROUNDING_ERROR)-FlxU.floor(Camera.scroll.y*scrollFactor.y) - offset.y;
+			//getScreenXY(_point,Camera);
+			if(((angle == 0) || (_bakedRotation > 0)) && (scale.x == 1) && (scale.y == 1))
+			{
+				return ((_point.x + frameWidth > 0) && (_point.x < Camera.width) && (_point.y + frameHeight > 0) && (_point.y < Camera.height));
+			}
+			else
+			{
+				var hw:Number = width/2;
+				var hh:Number = height/2;
+				var radius:Number = Math.sqrt(hw*hw+hh*hh)*((scale.x >= scale.y)?scale.x:scale.y);
+				_point.x += hw;
+				_point.y += hh;
+				return ((_point.x + radius > 0) && (_point.x - radius < Camera.width) && (_point.y + radius > 0) && (_point.y - radius < Camera.height));
+			}
 		}
 		
 		/**
@@ -724,7 +808,6 @@ package org.flixel
 		 */
 		protected function calcFrame():void
 		{
-			_boundsVisible = false;
 			var rx:uint = _caf*frameWidth;
 			var ry:uint = 0;
 
@@ -746,45 +829,8 @@ package org.flixel
 			_framePixels.copyPixels(_pixels,_flashRect,_flashPointZero);
 			_flashRect.x = _flashRect.y = 0;
 			if(_ct != null) _framePixels.colorTransform(_flashRect,_ct);
-			if(FlxG.showBounds)
-				drawBounds();
 			if(_callback != null) _callback(_curAnim.name,_curFrame,_caf);
-		}
-		
-		protected function drawBounds():void
-		{
-			_boundsVisible = true;
-			if((_bbb == null) || (_bbb.width != width) || (_bbb.height != height))
-				_bbb = new BitmapData(width,height);
-			var bbbc:uint = getBoundingColor();
-			_bbb.fillRect(_flashRect,0);
-			var ofrw:uint = _flashRect.width;
-			var ofrh:uint = _flashRect.height;
-			_flashRect.width = int(width);
-			_flashRect.height = int(height);
-			_bbb.fillRect(_flashRect,bbbc);
-			_flashRect.width = _flashRect.width - 2;
-			_flashRect.height = _flashRect.height - 2;
-			_flashRect.x = 1;
-			_flashRect.y = 1;
-			_bbb.fillRect(_flashRect,0);
-			_flashRect.width = ofrw;
-			_flashRect.height = ofrh;
-			_flashRect.x = _flashRect.y = 0;
-			_flashPoint.x = int(offset.x);
-			_flashPoint.y = int(offset.y);
-			_framePixels.copyPixels(_bbb,_flashRect,_flashPoint,null,null,true);
-		}
-		
-		/**
-		 * Internal function, currently only used to quickly update FlxState.screen for post-processing.
-		 * Potentially super-unsafe, since it doesn't call <code>resetHelpers()</code>!
-		 * 
-		 * @param	Pixels		The <code>BitmapData</code> object you want to point at.
-		 */
-		internal function unsafeBind(Pixels:BitmapData):void
-		{
-			_pixels = _framePixels = Pixels;
+			dirty = false;
 		}
 	}
 }

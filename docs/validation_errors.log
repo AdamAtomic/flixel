@@ -1,0 +1,3 @@
+Text for description in org.flixel:FlxObject/touching is not valid.
+org.xml.sax.SAXParseException: The entity name must immediately follow the '&' in the entity reference.
+
