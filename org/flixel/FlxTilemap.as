@@ -752,6 +752,8 @@ package org.flixel
 							b = (Object.x + Object.width > t.x) && (Object.x < t.x + t.width) && (Object.y + Object.height > t.y) && (Object.y < t.y + t.height);
 						if(b)
 						{
+							if(t.callback != null)
+								t.callback(Object);
 							results = true;
 						}
 					}

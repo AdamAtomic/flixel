@@ -676,9 +676,9 @@ package org.flixel
 					if(obj1delta > obj2delta)
 					{
 						overlap = Object1.x + Object1.width - Object2.x;
-						if(overlap > maxOverlap)
+						if((overlap > maxOverlap) || !(Object1.allowCollisions & RIGHT) || !(Object2.allowCollisions & LEFT))
 							overlap = 0;
-						else if((Object1.allowCollisions & RIGHT) && (Object2.allowCollisions & LEFT))
+						else
 						{
 							Object1.touching |= RIGHT;
 							Object2.touching |= LEFT;
@@ -687,9 +687,9 @@ package org.flixel
 					else if(obj1delta < obj2delta)
 					{
 						overlap = Object1.x - Object2.width - Object2.x;
-						if(-overlap > maxOverlap)
+						if((-overlap > maxOverlap) || !(Object1.allowCollisions & LEFT) || !(Object2.allowCollisions & RIGHT))
 							overlap = 0;
-						else if((Object1.allowCollisions & LEFT) && (Object2.allowCollisions & RIGHT))
+						else
 						{
 							Object1.touching |= LEFT;
 							Object2.touching |= RIGHT;
@@ -753,9 +753,9 @@ package org.flixel
 					if(obj1delta > obj2delta)
 					{
 						overlap = Object1.y + Object1.height - Object2.y;
-						if(overlap > maxOverlap)
+						if((overlap > maxOverlap) || !(Object1.allowCollisions & DOWN) || !(Object2.allowCollisions & UP))
 							overlap = 0;
-						else if((Object1.allowCollisions & DOWN) && (Object2.allowCollisions & UP))
+						else
 						{
 							Object1.touching |= DOWN;
 							Object2.touching |= UP;
@@ -764,9 +764,9 @@ package org.flixel
 					else if(obj1delta < obj2delta)
 					{
 						overlap = Object1.y - Object2.height - Object2.y;
-						if(-overlap > maxOverlap)
+						if((-overlap > maxOverlap) || !(Object1.allowCollisions & UP) || !(Object2.allowCollisions & DOWN))
 							overlap = 0;
-						else if((Object1.allowCollisions & UP) && (Object2.allowCollisions & DOWN))
+						else
 						{
 							Object1.touching |= UP;
 							Object2.touching |= DOWN;
