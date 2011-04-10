@@ -125,7 +125,7 @@ package org.flixel
 			
 			//then get ready to create the game object for real
 			_iState = InitialState;
-			_requestedState null;
+			_requestedState = null;
 			_requestedReset = true;
 			_created = false;
 			addEventListener(Event.ENTER_FRAME, create);
