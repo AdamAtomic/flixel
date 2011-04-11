@@ -41,10 +41,6 @@ package org.flixel.system.input
 		 */
 		protected var _last:int;
 		/**
-		 * Helper for mouse visibility.
-		 */
-		protected var _out:Boolean;
-		/**
 		 * A display container for the mouse cursor.
 		 * This container is a child of FlxGame and sits at the right "height".
 		 */
@@ -75,7 +71,6 @@ package org.flixel.system.input
 			_current = 0;
 			_last = 0;
 			_cursor = null;
-			_out = false;
 			_point = new FlxPoint();
 			_screenPosition = new FlxPoint();
 		}
@@ -98,7 +93,6 @@ package org.flixel.system.input
 		 */
 		public function show(Graphic:Class=null,Scale:Number=1,XOffset:int=0,YOffset:int=0):void
 		{
-			_out = true;
 			_cursorContainer.visible = true;
 			if(Graphic != null)
 				load(Graphic,Scale,XOffset,YOffset);
@@ -112,7 +106,6 @@ package org.flixel.system.input
 		public function hide():void
 		{
 			_cursorContainer.visible = false;
-			_out = false;
 		}
 		
 		public function get visible():Boolean
@@ -264,27 +257,6 @@ package org.flixel.system.input
 		{
 			if(_current > 0) _current = -1;
 			else _current = 0;
-		}
-		
-		/**
-		 * Event handler so FlxGame can update the mouse.
-		 * 
-		 * @param	event	A <code>MouseEvent</code> object.
-		 */
-		public function handleMouseOut(event:MouseEvent):void
-		{
-			_out = _cursorContainer.visible;
-			_cursorContainer.visible = false;
-		}
-		
-		/**
-		 * Event handler so FlxGame can update the mouse.
-		 * 
-		 * @param	event	A <code>MouseEvent</code> object.
-		 */
-		public function handleMouseOver(event:MouseEvent):void
-		{
-			_cursorContainer.visible = _out;
 		}
 		
 		/**

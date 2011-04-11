@@ -17,7 +17,6 @@ package org.flixel.system
 	import flash.utils.getTimer;
 	
 	import org.flixel.FlxG;
-	import org.flixel.FlxU;
 	
 
 	/**
@@ -255,7 +254,7 @@ package org.flixel.system
 		protected function update(Percent:Number):void
 		{
 			_bmpBar.scaleX = Percent*(_width-8);
-			_text.text = "FLX v"+FlxG.LIBRARY_MAJOR_VERSION+"."+FlxG.LIBRARY_MINOR_VERSION+" "+FlxU.floor(Percent*100)+"%";
+			_text.text = "FLX v"+FlxG.LIBRARY_MAJOR_VERSION+"."+FlxG.LIBRARY_MINOR_VERSION+" "+Math.floor(Percent*100)+"%";
 			_text.setTextFormat(_text.defaultTextFormat);
 			if(Percent < 0.1)
 			{
