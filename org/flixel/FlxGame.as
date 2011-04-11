@@ -48,7 +48,7 @@ package org.flixel
 		 * Initialize and allow the flixel debugger overlay even in release mode.
 		 * @default false
 		 */
-		public var debugOnRelease:Boolean;
+		public var forceDebugger:Boolean;
 
 		//basic display stuff
 		internal var _state:FlxState;
@@ -113,7 +113,7 @@ package org.flixel
 			_total = 0;
 			_state = null;
 			useSoundHotKeys = true;
-			debugOnRelease = false;
+			forceDebugger = false;
 			_debuggerUp = false;
 			
 			//replay data
@@ -561,7 +561,7 @@ package org.flixel
 			if(!FlxG.mobile)
 			{
 				//Debugger overlay
-				if(FlxG.debug || debugOnRelease)
+				if(FlxG.debug || forceDebugger)
 				{
 					_debugger = new FlxDebugger(FlxG.width*FlxCamera.defaultZoom,FlxG.height*FlxCamera.defaultZoom);
 					addChild(_debugger);
@@ -571,8 +571,6 @@ package org.flixel
 				createSoundTray();
 				
 				//Focus gained/lost monitoring
-				stage.addEventListener(MouseEvent.MOUSE_OUT, FlxG.mouse.handleMouseOut);
-				stage.addEventListener(MouseEvent.MOUSE_OVER, FlxG.mouse.handleMouseOver);
 				stage.addEventListener(Event.DEACTIVATE, onFocusLost);
 				stage.addEventListener(Event.ACTIVATE, onFocus);
 				createFocusScreen();
