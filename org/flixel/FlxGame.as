@@ -109,8 +109,8 @@ package org.flixel
 			FlxG.init(this,GameSizeX,GameSizeY,Zoom);
 			FlxG.framerate = 60;
 			FlxG.flashFramerate = 30;
+			_accumulator = _step;
 			_total = 0;
-			_accumulator = 0;
 			_state = null;
 			useSoundHotKeys = true;
 			debugOnRelease = false;

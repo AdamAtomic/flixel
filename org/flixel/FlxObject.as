@@ -346,7 +346,7 @@ package org.flixel
 			//draw graphics shape to camera buffer
 			Camera.buffer.draw(FlxG.flashGfxSprite);
 			
-			if((path != null) && (pathSpeed != 0))
+			if(path != null)
 				path.drawDebug(Camera);
 		}
 		
