@@ -18,6 +18,8 @@ package org.flixel
 		{
 			if(Nodes == null)
 				nodes = new Array();
+			else
+				nodes = Nodes;
 			_debugDrawSwitches = new Array();
 			_point = new FlxPoint();
 			scrollFactor = new FlxPoint();

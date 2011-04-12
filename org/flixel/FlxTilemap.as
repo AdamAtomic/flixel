@@ -415,8 +415,6 @@ package org.flixel
 			if(Simplify)
 				simplifyPath(points);
 			
-			//TODO: if extra optimization was specified, shoot progressively longer rays between points
-			
 			//finally load the remaining points into a new path object and return it
 			var path:FlxPath = new FlxPath();
 			var i:int = points.length - 1;
@@ -448,15 +446,42 @@ package org.flixel
 					last = p;
 				i++;
 			}
+			
+			i = 1;
+			l = Points.length;
+			var source:FlxPoint = Points[0];
+			var lastIndex:int = -1;
+			while(i < l)
+			{
+				p = Points[i++];
+				if(p == null)
+					continue;
+				if(ray(source,p,_point))	
+				{
+					if(lastIndex >= 0)
+						Points[lastIndex] = null;
+				}
+				else
+					source = Points[lastIndex];
+				lastIndex = i-1;
+			}
 		}
 		
 		protected function computePathDistance(StartIndex:uint, EndIndex:uint):Array
 		{
+			//Create a distance-based representation of the tilemap.
+			//All walls are flagged as -2, all open areas as -1.
 			var mapSize:uint = widthInTiles*heightInTiles;
 			var distances:Array = new Array(mapSize);
 			var i:int = 0;
 			while(i < mapSize)
-				distances[i++] = -1;
+			{
+				if((_tileObjects[_data[i]] as FlxTile).allowCollisions)
+					distances[i] = -2;
+				else
+					distances[i] = -1;
+				i++;
+			}
 			var distance:uint = 0;
 			var neighbors:Array = [StartIndex];
 			var current:Array;
@@ -494,7 +519,7 @@ package org.flixel
 					if(u)
 					{
 						index = c - widthInTiles;
-						if((distances[index] < 0) && (_data[index] as uint < collideIndex))
+						if(distances[index] == -1)
 						{
 							distances[index] = distance;
 							neighbors.push(index);
@@ -503,7 +528,7 @@ package org.flixel
 					if(r)
 					{
 						index = c + 1;
-						if((distances[index] < 0) && (_data[index] as uint < collideIndex))
+						if(distances[index] == -1)
 						{
 							distances[index] = distance;
 							neighbors.push(index);
@@ -512,7 +537,7 @@ package org.flixel
 					if(d)
 					{
 						index = c + widthInTiles;
-						if((distances[index] < 0) && (_data[index] as uint < collideIndex))
+						if(distances[index] == -1)
 						{
 							distances[index] = distance;
 							neighbors.push(index);
@@ -521,7 +546,7 @@ package org.flixel
 					if(l)
 					{
 						index = c - 1;
-						if((distances[index] < 0) && (_data[index] as uint < collideIndex))
+						if(distances[index] == -1)
 						{
 							distances[index] = distance;
 							neighbors.push(index);
@@ -530,7 +555,7 @@ package org.flixel
 					if(u && r)
 					{
 						index = c - widthInTiles + 1;
-						if((distances[index] < 0) && (_data[index] as uint < collideIndex))
+						if((distances[index] == -1) && (distances[c-widthInTiles] >= -1) && (distances[c+1] >= -1))
 						{
 							distances[index] = distance;
 							neighbors.push(index);
@@ -539,7 +564,7 @@ package org.flixel
 					if(r && d)
 					{
 						index = c + widthInTiles + 1;
-						if((distances[index] < 0) && (_data[index] as uint < collideIndex))
+						if((distances[index] == -1) && (distances[c+widthInTiles] >= -1) && (distances[c+1] >= -1))
 						{
 							distances[index] = distance;
 							neighbors.push(index);
@@ -548,7 +573,7 @@ package org.flixel
 					if(l && d)
 					{
 						index = c + widthInTiles - 1;
-						if((distances[index] < 0) && (_data[index] as uint < collideIndex))
+						if((distances[index] == -1) && (distances[c+widthInTiles] >= -1) && (distances[c-1] >= -1))
 						{
 							distances[index] = distance;
 							neighbors.push(index);
@@ -557,7 +582,7 @@ package org.flixel
 					if(u && l)
 					{
 						index = c - widthInTiles - 1;
-						if((distances[index] < 0) && (_data[index] as uint < collideIndex))
+						if((distances[index] == -1) && (distances[c-widthInTiles] >= -1) && (distances[c-1] >= -1))
 						{
 							distances[index] = distance;
 							neighbors.push(index);
@@ -920,30 +945,28 @@ package org.flixel
 		
 		/**
 		 * Shoots a ray from the start point to the end point.
-		 * If/when it passes through a tile, it stores and returns that point.
+		 * If/when it passes through a tile, it stores that point and returns false.
 		 * 
-		 * @param	StartX		The X component of the ray's start.
-		 * @param	StartY		The Y component of the ray's start.
-		 * @param	EndX		The X component of the ray's end.
-		 * @param	EndY		The Y component of the ray's end.
+		 * @param	Start		The world coordinates of the start of the ray.
+		 * @param	End			The world coordinates of the end of the ray.
 		 * @param	Result		A <code>Point</code> object containing the first wall impact.
 		 * @param	Resolution	Defaults to 1, meaning check every tile or so.  Higher means more checks!
-		 * @return	Whether or not there was a collision between the ray and a colliding tile.
+		 * @return	Returns true if the ray made it from Start to End without hitting anything.  Returns false and fills Result if a tile was hit.
 		 */
-		public function ray(StartX:Number, StartY:Number, EndX:Number, EndY:Number, Result:FlxPoint, Resolution:Number=1):Boolean
+		public function ray(Start:FlxPoint, End:FlxPoint, Result:FlxPoint=null, Resolution:Number=1):Boolean
 		{
 			var step:Number = _tileWidth;
 			if(_tileHeight < _tileWidth)
 				step = _tileHeight;
 			step /= Resolution;
-			var dx:Number = EndX - StartX;
-			var dy:Number = EndY - StartY;
+			var dx:Number = End.x - Start.x;
+			var dy:Number = End.y - Start.y;
 			var distance:Number = Math.sqrt(dx*dx + dy*dy);
 			var steps:uint = Math.ceil(distance/step);
 			var stepX:Number = dx/steps;
 			var stepY:Number = dy/steps;
-			var curX:Number = StartX - stepX;
-			var curY:Number = StartY - stepY;
+			var curX:Number = Start.x - stepX - x;
+			var curY:Number = Start.y - stepY - y;
 			var tx:uint;
 			var ty:uint;
 			var i:uint = 0;
@@ -983,7 +1006,7 @@ package org.flixel
 							Result = new FlxPoint();
 						Result.x = rx;
 						Result.y = ry;
-						return true;
+						return false;
 					}
 					
 					//Else, figure out if it crosses the Y boundary
@@ -998,13 +1021,13 @@ package org.flixel
 							Result = new FlxPoint();
 						Result.x = rx;
 						Result.y = ry;
-						return true;
+						return false;
 					}
-					return false;
+					return true;
 				}
 				i++;
 			}
-			return false;
+			return true;
 		}
 		
 		/**
