@@ -294,7 +294,7 @@ package org.flixel
 		 */
 		protected function onFocus(E:Event=null):void
 		{
-			if(!_debuggerUp || !_debugger.visible)
+			if(!_debuggerUp)
 				flash.ui.Mouse.hide();
 			FlxG.resetInput();
 			_lostFocus = _focus.visible = false;
