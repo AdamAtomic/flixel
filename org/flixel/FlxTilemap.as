@@ -324,6 +324,13 @@ package org.flixel
 		 */
 		override public function draw():void
 		{
+			if(_flickerTimer != 0)
+			{
+				_flicker = !_flicker;
+				if(_flicker)
+					return;
+			}
+			
 			if(cameras == null)
 				cameras = FlxG.cameras;
 			var c:FlxCamera;
