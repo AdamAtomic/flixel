@@ -92,10 +92,11 @@ package org.flixel
 		 * @param	GameSizeX		The width of your game in pixels (e.g. 320).
 		 * @param	GameSizeY		The height of your game in pixels (e.g. 240).
 		 * @param	InitialState	The class name of the state you want to create and switch to first (e.g. MenuState).
-		 * @param	FrameRate		How frequently the game should update (default is 60 times per second).
+		 * @param	GameFramerate	How frequently the game should update (default is 60 times per second).
+		 * @param	FlashFramerate	Sets the actual display framerate for Flash player (default is 30 times per second).
 		 * @param	Zoom			The default level of zoom for the game's cameras (e.g. 2 = all pixels are now drawn at 2x).  Default = 1.
 		 */
-		public function FlxGame(GameSizeX:uint,GameSizeY:uint,InitialState:Class,Zoom:Number=1)
+		public function FlxGame(GameSizeX:uint,GameSizeY:uint,InitialState:Class,Zoom:Number=1,GameFramerate:uint=60,FlashFramerate:uint=30)
 		{
 			//super high priority init stuff (focus, mouse, etc)
 			flash.ui.Mouse.hide();
@@ -107,8 +108,8 @@ package org.flixel
 			
 			//basic display and update setup stuff
 			FlxG.init(this,GameSizeX,GameSizeY,Zoom);
-			FlxG.framerate = 60;
-			FlxG.flashFramerate = 30;
+			FlxG.framerate = GameFramerate;
+			FlxG.flashFramerate = FlashFramerate;
 			_accumulator = _step;
 			_total = 0;
 			_state = null;
@@ -294,7 +295,7 @@ package org.flixel
 		 */
 		protected function onFocus(E:Event=null):void
 		{
-			if(!_debuggerUp || !_debugger.visible)
+			if(!_debuggerUp)
 				flash.ui.Mouse.hide();
 			FlxG.resetInput();
 			_lostFocus = _focus.visible = false;
