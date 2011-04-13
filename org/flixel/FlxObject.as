@@ -316,8 +316,8 @@ package org.flixel
 				Camera = FlxG.camera;
 
 			//get bounding box coordinates
-			var bx:int = x - Camera.scroll.x*scrollFactor.x; //from getscreenxy
-			var by:int = y - Camera.scroll.y*scrollFactor.y;
+			var bx:int = x - int(Camera.scroll.x*scrollFactor.x) + 0.0000001; //copied from getScreenXY()
+			var by:int = y - int(Camera.scroll.y*scrollFactor.y) + 0.0000001;
 			var bw:int = (width != int(width))?width:width-1;
 			var bh:int = (height != int(height))?height:height-1;
 
@@ -508,8 +508,8 @@ package org.flixel
 			Y = Y - Camera.scroll.y;
 			
 			//then compare
-			_point.x = x - Camera.scroll.x*scrollFactor.x; //from getscreenxy
-			_point.y = y - Camera.scroll.y*scrollFactor.y;
+			_point.x = x - int(Camera.scroll.x*scrollFactor.x) + 0.0000001; //copied from getScreenXY()
+			_point.y = y - int(Camera.scroll.y*scrollFactor.y) + 0.0000001;
 			return (X > _point.x) && (X < _point.x+width) && (Y > _point.y) && (Y < _point.y+height);
 		}
 		
@@ -563,10 +563,8 @@ package org.flixel
 				Point = new FlxPoint();
 			if(Camera == null)
 				Camera = FlxG.camera;
-			Point.x = x - Camera.scroll.x*scrollFactor.x;
-			Point.y = y - Camera.scroll.y*scrollFactor.y;
-			//Point.x = FlxU.floor(x + ROUNDING_ERROR)-FlxU.floor(Camera.scroll.x*scrollFactor.x);
-			//Point.y = FlxU.floor(y + ROUNDING_ERROR)-FlxU.floor(Camera.scroll.y*scrollFactor.y);
+			_point.x = x - int(Camera.scroll.x*scrollFactor.x) + 0.0000001; //copied from getScreenXY()
+			_point.y = y - int(Camera.scroll.y*scrollFactor.y) + 0.0000001;
 			return Point;
 		}
 		
@@ -581,9 +579,8 @@ package org.flixel
 		{
 			if(Camera == null)
 				Camera = FlxG.camera;
-			//getScreenXY(_point,Camera);
-			_point.x = x - Camera.scroll.x*scrollFactor.x; //from getscreenxy
-			_point.y = y - Camera.scroll.y*scrollFactor.y;
+			_point.x = x - int(Camera.scroll.x*scrollFactor.x) + 0.0000001; //copied from getScreenXY()
+			_point.y = y - int(Camera.scroll.y*scrollFactor.y) + 0.0000001;
 			return (_point.x + width > 0) && (_point.x < Camera.width) && (_point.y + height > 0) && (_point.y < Camera.height);
 		}
 		
@@ -783,7 +780,7 @@ package org.flixel
 				var object1velocityY:Number = Object1.velocity.y;
 				if(!obj1immovable)
 				{
-					Object1.y -= overlap;
+					Object1.y = Object1.y - overlap;
 					Object1.velocity.y = (Object2.mass/Object1.mass)*Object2.velocity.y - Object1.velocity.y*Object1.elasticity;
 				}
 				if(!obj2immovable)

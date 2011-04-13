@@ -125,8 +125,8 @@ package org.flixel
 				p = nodes[i] as FlxPoint;
 				
 				//find the screen position of the node on this camera
-				_point.x = int(p.x - Camera.scroll.x*scrollFactor.x);
-				_point.y = int(p.y - Camera.scroll.y*scrollFactor.y);
+				_point.x = int(p.x - int(Camera.scroll.x*scrollFactor.x) + 0.0000001); //copied from getScreenXY()
+				_point.y = int(p.y - int(Camera.scroll.y*scrollFactor.y) + 0.0000001);
 				
 				//decide what color this node should be
 				var nodeSize:uint = 2;
@@ -160,7 +160,7 @@ package org.flixel
 				//then draw a line to the next node
 				gfx.moveTo(_point.x,_point.y);
 				gfx.lineStyle(1,0xffffff,linealpha);
-				gfx.lineTo(int(n.x - Camera.scroll.x*scrollFactor.x),int(n.y - Camera.scroll.y*scrollFactor.y));
+				gfx.lineTo(int(n.x - int(Camera.scroll.x*scrollFactor.x) + 0.0000001),int(n.y - int(Camera.scroll.y*scrollFactor.y) + 0.0000001));
 
 				i++;
 			}
