@@ -316,8 +316,10 @@ package org.flixel
 				Camera = FlxG.camera;
 
 			//get bounding box coordinates
-			var bx:int = x - int(Camera.scroll.x*scrollFactor.x) + 0.0000001; //copied from getScreenXY()
-			var by:int = y - int(Camera.scroll.y*scrollFactor.y) + 0.0000001;
+			var bx:int = x - int(Camera.scroll.x*scrollFactor.x); //copied from getScreenXY()
+			var by:int = y - int(Camera.scroll.y*scrollFactor.y);
+			bx += (bx > 0)?0.0000001:-0.0000001;
+			by += (by > 0)?0.0000001:-0.0000001;
 			var bw:int = (width != int(width))?width:width-1;
 			var bh:int = (height != int(height))?height:height-1;
 
@@ -508,8 +510,10 @@ package org.flixel
 			Y = Y - Camera.scroll.y;
 			
 			//then compare
-			_point.x = x - int(Camera.scroll.x*scrollFactor.x) + 0.0000001; //copied from getScreenXY()
-			_point.y = y - int(Camera.scroll.y*scrollFactor.y) + 0.0000001;
+			_point.x = x - int(Camera.scroll.x*scrollFactor.x); //copied from getScreenXY()
+			_point.y = y - int(Camera.scroll.y*scrollFactor.y);
+			_point.x += (_point.x > 0)?0.0000001:-0.0000001;
+			_point.y += (_point.y > 0)?0.0000001:-0.0000001;
 			return (X > _point.x) && (X < _point.x+width) && (Y > _point.y) && (Y < _point.y+height);
 		}
 		
@@ -563,8 +567,10 @@ package org.flixel
 				Point = new FlxPoint();
 			if(Camera == null)
 				Camera = FlxG.camera;
-			_point.x = x - int(Camera.scroll.x*scrollFactor.x) + 0.0000001; //copied from getScreenXY()
-			_point.y = y - int(Camera.scroll.y*scrollFactor.y) + 0.0000001;
+			_point.x = x - int(Camera.scroll.x*scrollFactor.x); //copied from getScreenXY()
+			_point.y = y - int(Camera.scroll.y*scrollFactor.y);
+			_point.x += (_point.x > 0)?0.0000001:-0.0000001;
+			_point.y += (_point.y > 0)?0.0000001:-0.0000001;
 			return Point;
 		}
 		
@@ -579,8 +585,10 @@ package org.flixel
 		{
 			if(Camera == null)
 				Camera = FlxG.camera;
-			_point.x = x - int(Camera.scroll.x*scrollFactor.x) + 0.0000001; //copied from getScreenXY()
-			_point.y = y - int(Camera.scroll.y*scrollFactor.y) + 0.0000001;
+			_point.x = x - int(Camera.scroll.x*scrollFactor.x); //copied from getScreenXY()
+			_point.y = y - int(Camera.scroll.y*scrollFactor.y);
+			_point.x += (_point.x > 0)?0.0000001:-0.0000001;
+			_point.y += (_point.y > 0)?0.0000001:-0.0000001;
 			return (_point.x + width > 0) && (_point.x < Camera.width) && (_point.y + height > 0) && (_point.y < Camera.height);
 		}
 		

@@ -345,8 +345,10 @@ package org.flixel
 				b = _buffers[i++] as FlxTilemapBuffer;
 				if(!b.dirty)
 				{
-					_point.x = x - int(c.scroll.x*scrollFactor.x) + b.x + 0.0000001; //copied from getScreenXY()
-					_point.y = y - int(c.scroll.y*scrollFactor.y) + b.y + 0.0000001;
+					_point.x = x - int(c.scroll.x*scrollFactor.x) + b.x; //copied from getScreenXY()
+					_point.y = y - int(c.scroll.y*scrollFactor.y) + b.y;
+					_point.x += (_point.x > 0)?0.0000001:-0.0000001;
+					_point.y += (_point.y > 0)?0.0000001:-0.0000001;
 					b.dirty = (_point.x > 0) || (_point.y > 0) || (_point.x + b.width < c.width) || (_point.y + b.height < c.height);
 				}
 				if(b.dirty)
@@ -354,8 +356,10 @@ package org.flixel
 					drawTilemap(b,c);
 					b.dirty = false;
 				}
-				_flashPoint.x = x - int(c.scroll.x*scrollFactor.x) + b.x + 0.0000001; //copied from getScreenXY()
-				_flashPoint.y = y - int(c.scroll.y*scrollFactor.y) + b.y + 0.0000001;
+				_flashPoint.x = x - int(c.scroll.x*scrollFactor.x) + b.x; //copied from getScreenXY()
+				_flashPoint.y = y - int(c.scroll.y*scrollFactor.y) + b.y;
+				_flashPoint.x += (_flashPoint.x > 0)?0.0000001:-0.0000001;
+				_flashPoint.y += (_flashPoint.y > 0)?0.0000001:-0.0000001;
 				b.draw(c,_flashPoint);
 				_VISIBLECOUNT++;
 			}
@@ -752,8 +756,10 @@ package org.flixel
 				Camera = FlxG.camera;
 			X = X + Camera.scroll.x;
 			Y = Y + Camera.scroll.y;
-			_point.x = x - int(Camera.scroll.x*scrollFactor.x) + 0.0000001; //copied from getScreenXY()
-			_point.y = y - int(Camera.scroll.y*scrollFactor.y) + 0.0000001;
+			_point.x = x - int(Camera.scroll.x*scrollFactor.x);//copied from getScreenXY()
+			_point.y = y - int(Camera.scroll.y*scrollFactor.y);
+			_point.x += (_point.x > 0)?0.0000001:-0.0000001;
+			_point.y += (_point.y > 0)?0.0000001:-0.0000001;
 			return Boolean((_tileObjects[_data[uint(uint((Y-_point.y)/_tileHeight)*widthInTiles + (X-_point.x)/_tileWidth)]] as FlxTile).allowCollisions);
 		}
 		
@@ -1188,7 +1194,8 @@ package org.flixel
 		 */
 		protected function updateTile(Index:uint):void
 		{
-			if(!(_tileObjects[_data[Index]] as FlxTile).visible)
+			var t:FlxTile = _tileObjects[_data[Index]] as FlxTile;
+			if((t == null) || !t.visible)
 			{
 				_rects[Index] = null;
 				return;
