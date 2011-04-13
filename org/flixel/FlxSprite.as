@@ -578,8 +578,10 @@ package org.flixel
 				c = cameras[i++];
 				if(!onScreen(c))
 					continue;
-				_point.x = x - int(c.scroll.x*scrollFactor.x) - offset.x + 0.0000001; //copied from getScreenXY()
-				_point.y = y - int(c.scroll.y*scrollFactor.y) - offset.y + 0.0000001;
+				_point.x = x - int(c.scroll.x*scrollFactor.x) - offset.x; //copied from getScreenXY()
+				_point.y = y - int(c.scroll.y*scrollFactor.y) - offset.y;
+				_point.x += (_point.x > 0)?0.0000001:-0.0000001;
+				_point.y += (_point.y > 0)?0.0000001:-0.0000001;
 				if(((angle == 0) || (_bakedRotation > 0)) && (scale.x == 1) && (scale.y == 1) && (blend == null))
 				{	//Simple render
 					_flashPoint.x = _point.x;
@@ -634,8 +636,10 @@ package org.flixel
 			Y = Y - Camera.scroll.y;
 			
 			//then compare
-			_point.x = x - int(Camera.scroll.x*scrollFactor.x) - offset.x + 0.0000001; //copied from getScreenXY()
-			_point.y = y - int(Camera.scroll.y*scrollFactor.y) - offset.y + 0.0000001;
+			_point.x = x - int(Camera.scroll.x*scrollFactor.x) - offset.x; //copied from getScreenXY()
+			_point.y = y - int(Camera.scroll.y*scrollFactor.y) - offset.y;
+			_point.x += (_point.x > 0)?0.0000001:-0.0000001;
+			_point.y += (_point.y > 0)?0.0000001:-0.0000001;
 			if(PerPixel)
 				return _framePixels.hitTest(new Point(0,0),0xFF,new Point(X-_point.x,Y-_point.y));
 			return (X > _point.x) && (X < _point.x+frameWidth) && (Y > _point.y) && (Y < _point.y+frameHeight);
@@ -764,8 +768,10 @@ package org.flixel
 				Point = new FlxPoint();
 			if(Camera == null)
 				Camera = FlxG.camera;
-			_point.x = x - int(Camera.scroll.x*scrollFactor.x) - offset.x + 0.0000001; //copied from getScreenXY()
-			_point.y = y - int(Camera.scroll.y*scrollFactor.y) - offset.y + 0.0000001;
+			_point.x = x - int(Camera.scroll.x*scrollFactor.x) - offset.x; //copied from getScreenXY()
+			_point.y = y - int(Camera.scroll.y*scrollFactor.y) - offset.y;
+			_point.x += (_point.x > 0)?0.0000001:-0.0000001;
+			_point.y += (_point.y > 0)?0.0000001:-0.0000001;
 			return Point;
 		}
 		
@@ -780,8 +786,10 @@ package org.flixel
 		{
 			if(Camera == null)
 				Camera = FlxG.camera;
-			_point.x = x - int(Camera.scroll.x*scrollFactor.x) - offset.x + 0.0000001; //copied from getScreenXY()
-			_point.y = y - int(Camera.scroll.y*scrollFactor.y) - offset.y + 0.0000001;
+			_point.x = x - int(Camera.scroll.x*scrollFactor.x) - offset.x; //copied from getScreenXY()
+			_point.y = y - int(Camera.scroll.y*scrollFactor.y) - offset.y;
+			_point.x += (_point.x > 0)?0.0000001:-0.0000001;
+			_point.y += (_point.y > 0)?0.0000001:-0.0000001;
 			if(((angle == 0) || (_bakedRotation > 0)) && (scale.x == 1) && (scale.y == 1))
 			{
 				return ((_point.x + frameWidth > 0) && (_point.x < Camera.width) && (_point.y + frameHeight > 0) && (_point.y < Camera.height));
