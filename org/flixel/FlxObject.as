@@ -581,10 +581,10 @@ package org.flixel
 				Point = new FlxPoint();
 			if(Camera == null)
 				Camera = FlxG.camera;
-			_point.x = x - int(Camera.scroll.x*scrollFactor.x); //copied from getScreenXY()
-			_point.y = y - int(Camera.scroll.y*scrollFactor.y);
-			_point.x += (_point.x > 0)?0.0000001:-0.0000001;
-			_point.y += (_point.y > 0)?0.0000001:-0.0000001;
+			Point.x = x - int(Camera.scroll.x*scrollFactor.x); //copied from getScreenXY()
+			Point.y = y - int(Camera.scroll.y*scrollFactor.y);
+			Point.x += (Point.x > 0)?0.0000001:-0.0000001;
+			Point.y += (Point.y > 0)?0.0000001:-0.0000001;
 			return Point;
 		}
 		
