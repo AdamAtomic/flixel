@@ -26,11 +26,13 @@ package org.flixel
 		
 		static public const OVERLAP_BIAS:Number = 4;
 		
-		static public const PATH_FORWARD:uint = 0;
-		static public const PATH_BACKWARD:uint = 1;
-		static public const PATH_LOOP_FORWARD:uint = 2;
-		static public const PATH_LOOP_BACKWARD:uint = 3;
-		static public const PATH_YOYO:uint = 4;
+		static public const PATH_FORWARD:uint			= 0x000000;
+		static public const PATH_BACKWARD:uint			= 0x000001;
+		static public const PATH_LOOP_FORWARD:uint		= 0x000010;
+		static public const PATH_LOOP_BACKWARD:uint		= 0x000100;
+		static public const PATH_YOYO:uint				= 0x001000;
+		static public const PATH_HORIZONTAL_ONLY:uint	= 0x010000;
+		static public const PATH_VERTICAL_ONLY:uint		= 0x100000;
 		
 		public var x:Number;
 		public var y:Number;
@@ -396,55 +398,60 @@ package org.flixel
 		protected function advancePath():void
 		{
 			_pathNodeIndex += _pathInc;
-			switch(_pathMode)
+			
+			if((_pathMode & PATH_BACKWARD) > 0)
 			{
-				case PATH_FORWARD:
+				if(_pathNodeIndex < 0)
+				{
+					_pathNodeIndex = 0;
+					pathSpeed = 0;
+				}
+			}
+			else if((_pathMode & PATH_LOOP_FORWARD) > 0)
+			{
+				if(_pathNodeIndex >= path.nodes.length)
+					_pathNodeIndex = 0;
+			}
+			else if((_pathMode & PATH_LOOP_BACKWARD) > 0)
+			{
+				if(_pathNodeIndex < 0)
+				{
+					_pathNodeIndex = path.nodes.length-1;
+					if(_pathNodeIndex < 0)
+						_pathNodeIndex = 0;
+				}
+			}
+			else if((_pathMode & PATH_YOYO) > 0)
+			{
+				if(_pathInc > 0)
+				{
 					if(_pathNodeIndex >= path.nodes.length)
 					{
-						_pathNodeIndex = path.nodes.length-1;
-						pathSpeed = 0;
-					}
-					break;
-				case PATH_BACKWARD:
-					if(_pathNodeIndex < 0)
-					{
-						_pathNodeIndex = 0;
-						pathSpeed = 0;
-					}
-					break;
-				case PATH_LOOP_FORWARD:
-					if(_pathNodeIndex >= path.nodes.length)
-						_pathNodeIndex = 0;
-					break;
-				case PATH_LOOP_BACKWARD:
-					if(_pathNodeIndex < 0)
-					{
-						_pathNodeIndex = path.nodes.length-1;
-						if(_pathNodeIndex < 0)
-							_pathNodeIndex = 0;
-					}
-				case PATH_YOYO:
-					if(_pathInc > 0)
-					{
-						if(_pathNodeIndex >= path.nodes.length)
-						{
-							_pathNodeIndex = path.nodes.length-2;
-							if(_pathNodeIndex < 0)
-								_pathNodeIndex = 0;
-							_pathInc = -_pathInc;
-						}
-					}
-					else if(_pathNodeIndex < 0)
-					{
-						_pathNodeIndex = 1;
-						if(_pathNodeIndex >= path.nodes.length)
-							_pathNodeIndex = path.nodes.length-1;
+						_pathNodeIndex = path.nodes.length-2;
 						if(_pathNodeIndex < 0)
 							_pathNodeIndex = 0;
 						_pathInc = -_pathInc;
 					}
-					break;
+				}
+				else if(_pathNodeIndex < 0)
+				{
+					_pathNodeIndex = 1;
+					if(_pathNodeIndex >= path.nodes.length)
+						_pathNodeIndex = path.nodes.length-1;
+					if(_pathNodeIndex < 0)
+						_pathNodeIndex = 0;
+					_pathInc = -_pathInc;
+				}
 			}
+			else
+			{
+				if(_pathNodeIndex >= path.nodes.length)
+				{
+					_pathNodeIndex = path.nodes.length-1;
+					pathSpeed = 0;
+				}
+			}
+
 			getMidpoint(_point);
 			var node:FlxPoint = path.nodes[_pathNodeIndex];
 			_pathCheck.x = node.x - _point.x;
@@ -457,36 +464,43 @@ package org.flixel
 			getMidpoint(_point);
 			var dx:Number = path.nodes[_pathNodeIndex].x - _point.x;
 			var dy:Number = path.nodes[_pathNodeIndex].y - _point.y;
-			if( ((_pathCheck.x <= 0) && (dx >= 0)) || ((_pathCheck.x >= 0) && (dx <= 0)) ||
-				((_pathCheck.y <= 0) && (dy >= 0)) || ((_pathCheck.y >= 0) && (dy <= 0)) )
-				advancePath();
+			
+			if((_pathMode & PATH_HORIZONTAL_ONLY) > 0)
+			{
+				if( ((_pathCheck.x <= 0) && (dx >= 0)) || ((_pathCheck.x >= 0) && (dx <= 0)) )
+					advancePath();
+			}
+			else if((_pathMode & PATH_VERTICAL_ONLY) > 0)
+			{
+				if( ((_pathCheck.y <= 0) && (dy >= 0)) || ((_pathCheck.y >= 0) && (dy <= 0)) )
+					advancePath();
+			}
+			else
+			{
+				if( ((_pathCheck.x <= 0) && (dx >= 0)) || ((_pathCheck.x >= 0) && (dx <= 0)) &&
+					((_pathCheck.y <= 0) && (dy >= 0)) || ((_pathCheck.y >= 0) && (dy <= 0)) )
+					advancePath();
+			}
 			
 			//then just move toward the current node at the requested speed
 			if(pathSpeed != 0)
 			{
-				var a:Number = FlxU.getAngle(getMidpoint(_point),path.nodes[_pathNodeIndex]);
-				FlxU.rotatePoint(0,pathSpeed,0,0,a,_point);
-				velocity.x = _point.x;
-				velocity.y = _point.y;
-				acceleration.x = 0;
-				acceleration.y = 0;
-				drag.x = 0;
-				drag.y = 0;
-				if(_pathRotate)
+				//set velocity based on path mode
+				if((_pathMode & PATH_HORIZONTAL_ONLY) > 0)
+					velocity.x = (_point.x < (path.nodes[_pathNodeIndex] as FlxPoint).x)?pathSpeed:-pathSpeed;
+				else if((_pathMode & PATH_VERTICAL_ONLY) > 0)
+					velocity.y = (_point.y < (path.nodes[_pathNodeIndex] as FlxPoint).y)?pathSpeed:-pathSpeed;
+				else
 				{
-					angularVelocity = 0;
-					angularAcceleration = 0;
-					angle = a;
+					var pathAngle:Number = FlxU.getAngle(getMidpoint(_point),path.nodes[_pathNodeIndex])
+					FlxU.rotatePoint(0,pathSpeed,0,0,pathAngle,velocity);				
+					if(_pathRotate) //then set object rotation if necessary
+					{
+						angularVelocity = 0;
+						angularAcceleration = 0;
+						angle = pathAngle;
+					}
 				}
-			}
-			else
-			{
-				velocity.x = 0;
-				velocity.y = 0;
-				acceleration.x = 0;
-				acceleration.y = 0;
-				drag.x = 0;
-				drag.y = 0;
 			}
 		}
 		
@@ -633,12 +647,12 @@ package org.flixel
 		
 		public function isTouching(Direction:uint):Boolean
 		{
-			return Boolean(touching & Direction);
+			return (touching & Direction) > NONE;
 		}
 		
 		public function justTouched(Direction:uint):Boolean
 		{
-			return Boolean((touching & Direction) && (wasTouching & Direction));
+			return ((touching & Direction) && (wasTouching & Direction)) > NONE;
 		}
 		
 		static public function separate(Object1:FlxObject, Object2:FlxObject):Boolean
