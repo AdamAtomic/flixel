@@ -600,7 +600,7 @@ package org.flixel
 				}
 				_VISIBLECOUNT++;
 				if(FlxG.visualDebug)
-					drawDebug(c);
+					drawDebug(c, offset);
 			}
 		}
 		

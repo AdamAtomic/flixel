@@ -67,7 +67,7 @@ package org.flixel
 			_VISIBLECOUNT++;
 		}
 		
-		public function drawDebug(Camera:FlxCamera=null):void {}
+		public function drawDebug(Camera:FlxCamera=null, offset:FlxPoint=null):void {}
 		
 		public function kill():void
 		{

@@ -312,7 +312,7 @@ package org.flixel
 		/**
 		 * Called per camera by draw() to draw relevant debug information to the game world.
 		 */
-		override public function drawDebug(Camera:FlxCamera=null):void
+		override public function drawDebug(Camera:FlxCamera=null, offset:FlxPoint=null):void
 		{
 			if(Camera == null)
 				Camera = FlxG.camera;
@@ -322,6 +322,11 @@ package org.flixel
 			var by:int = y - int(Camera.scroll.y*scrollFactor.y);
 			bx += (bx > 0)?0.0000001:-0.0000001;
 			by += (by > 0)?0.0000001:-0.0000001;
+			if(offset)
+			{
+				bx -= offset.x;
+				by -= offset.y;
+			}
 			var bw:int = (width != int(width))?width:width-1;
 			var bh:int = (height != int(height))?height:height-1;
 
