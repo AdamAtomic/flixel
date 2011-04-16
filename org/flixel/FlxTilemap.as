@@ -256,11 +256,10 @@ package org.flixel
 			Buffer.fill();
 
 			//Copy tile images into the tile buffer
-			getScreenXY(_point,Camera);
-			_flashPoint.x = _point.x;
-			_flashPoint.y = _point.y;
-			var tx:int = Math.floor(-_flashPoint.x/_tileWidth);
-			var ty:int = Math.floor(-_flashPoint.y/_tileHeight);
+			_point.x = int(Camera.scroll.x*scrollFactor.x) - x; //modified from getScreenXY()
+			_point.y = int(Camera.scroll.y*scrollFactor.y) - y;
+			var tx:int = (_point.x + ((_point.x > 0)?0.0000001:-0.0000001))/_tileWidth;
+			var ty:int = (_point.y + ((_point.y > 0)?0.0000001:-0.0000001))/_tileHeight;
 			var sr:uint = Buffer.screenRows;
 			var sc:uint = Buffer.screenCols;
 			
