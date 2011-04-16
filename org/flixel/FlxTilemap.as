@@ -384,7 +384,7 @@ package org.flixel
 				(_buffers[i] as FlxTilemapBuffer).dirty = Dirty;
 		}
 		
-		public function findPath(Start:FlxPoint,End:FlxPoint,Simplify:Boolean=true):FlxPath
+		public function findPath(Start:FlxPoint,End:FlxPoint,Simplify:Boolean=true,RaySimplify:Boolean=false):FlxPath
 		{
 			//figure out what tile we are starting and ending on.
 			var startIndex:uint = uint((Start.y-y)/_tileHeight) * widthInTiles + uint((Start.x-x)/_tileWidth);
@@ -416,6 +416,8 @@ package org.flixel
 			//some simple path cleanup options
 			if(Simplify)
 				simplifyPath(points);
+			if(RaySimplify)
+				raySimplifyPath(points);
 			
 			//finally load the remaining points into a new path object and return it
 			var path:FlxPath = new FlxPath();
@@ -448,11 +450,15 @@ package org.flixel
 					last = p;
 				i++;
 			}
-			
-			i = 1;
-			l = Points.length;
+		}
+		
+		protected function raySimplifyPath(Points:Array):void
+		{			
+			var i:uint = 1;
+			var l:uint = Points.length;
 			var source:FlxPoint = Points[0];
 			var lastIndex:int = -1;
+			var p:FlxPoint;
 			while(i < l)
 			{
 				p = Points[i++];
