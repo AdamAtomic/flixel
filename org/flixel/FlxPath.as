@@ -22,7 +22,7 @@ package org.flixel
 				nodes = Nodes;
 			_debugDrawSwitches = new Array();
 			_point = new FlxPoint();
-			scrollFactor = new FlxPoint();
+			scrollFactor = new FlxPoint(1.0,1.0);
 		}
 		
 		public function destroy():void

@@ -190,7 +190,7 @@ package org.flixel
 			angularDrag = 0;
 			maxAngular = 10000;
 			
-			scrollFactor = new FlxPoint(1,1);
+			scrollFactor = new FlxPoint(1.0,1.0);
 			_flicker = false;
 			_flickerTimer = 0;
 			
@@ -477,7 +477,7 @@ package org.flixel
 			}
 			else
 			{
-				if( ((_pathCheck.x <= 0) && (dx >= 0)) || ((_pathCheck.x >= 0) && (dx <= 0)) &&
+				if( ((_pathCheck.x <= 0) && (dx >= 0)) || ((_pathCheck.x >= 0) && (dx <= 0)) ||
 					((_pathCheck.y <= 0) && (dy >= 0)) || ((_pathCheck.y >= 0) && (dy <= 0)) )
 					advancePath();
 			}

@@ -115,7 +115,7 @@ package org.flixel
 			offset = new FlxPoint();
 			origin = new FlxPoint();
 			
-			scale = new FlxPoint(1,1);
+			scale = new FlxPoint(1.0,1.0);
 			_alpha = 1;
 			_color = 0x00ffffff;
 			blend = null;
