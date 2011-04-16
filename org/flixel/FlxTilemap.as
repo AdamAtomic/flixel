@@ -256,11 +256,10 @@ package org.flixel
 			Buffer.fill();
 			
 			//Copy tile images into the tile buffer
-			getScreenXY(_point,Camera);
-			_flashPoint.x = _point.x;
-			_flashPoint.y = _point.y;
-			var tx:int = Math.floor(-_flashPoint.x/_tileWidth);
-			var ty:int = Math.floor(-_flashPoint.y/_tileHeight);
+			_point.x = int(Camera.scroll.x*scrollFactor.x) - x; //modified from getScreenXY()
+			_point.y = int(Camera.scroll.y*scrollFactor.y) - y;
+			var tx:int = (_point.x + ((_point.x > 0)?0.0000001:-0.0000001))/_tileWidth;
+			var ty:int = (_point.y + ((_point.y > 0)?0.0000001:-0.0000001))/_tileHeight;
 			var sr:uint = Buffer.screenRows;
 			var sc:uint = Buffer.screenCols;
 			
@@ -384,7 +383,7 @@ package org.flixel
 				(_buffers[i] as FlxTilemapBuffer).dirty = Dirty;
 		}
 		
-		public function findPath(Start:FlxPoint,End:FlxPoint,Simplify:Boolean=true):FlxPath
+		public function findPath(Start:FlxPoint,End:FlxPoint,Simplify:Boolean=true,RaySimplify:Boolean=false):FlxPath
 		{
 			//figure out what tile we are starting and ending on.
 			var startIndex:uint = uint((Start.y-y)/_tileHeight) * widthInTiles + uint((Start.x-x)/_tileWidth);
@@ -416,6 +415,8 @@ package org.flixel
 			//some simple path cleanup options
 			if(Simplify)
 				simplifyPath(points);
+			if(RaySimplify)
+				raySimplifyPath(points);
 			
 			//finally load the remaining points into a new path object and return it
 			var path:FlxPath = new FlxPath();
@@ -448,11 +449,15 @@ package org.flixel
 					last = p;
 				i++;
 			}
-			
-			i = 1;
-			l = Points.length;
+		}
+		
+		protected function raySimplifyPath(Points:Array):void
+		{			
+			var i:uint = 1;
+			var l:uint = Points.length;
 			var source:FlxPoint = Points[0];
 			var lastIndex:int = -1;
+			var p:FlxPoint;
 			while(i < l)
 			{
 				p = Points[i++];
