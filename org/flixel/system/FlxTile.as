@@ -15,6 +15,7 @@ package org.flixel.system
 		{
 			super(0, 0, Width, Height);
 			immovable = true;
+			moves = false;
 			callback = null;
 			filter = null;
 			

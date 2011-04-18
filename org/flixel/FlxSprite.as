@@ -703,6 +703,7 @@ package org.flixel
 				}
 				i++;
 			}
+			FlxG.log("WARNING: No animation called \""+AnimName+"\"");
 		}
 
 		/**

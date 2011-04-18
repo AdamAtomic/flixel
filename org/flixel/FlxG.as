@@ -437,7 +437,10 @@ package org.flixel
 		 * 
 		 * @default 0.5
 		 */
-		 static public function get volume():Number { return _volume; }
+		 static public function get volume():Number
+		 {
+			 return _volume;
+		 }
 		 
 		/**
 		 * @private

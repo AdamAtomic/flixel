@@ -840,11 +840,15 @@ package org.flixel
 				{
 					Object1.y = Object1.y - overlap;
 					Object1.velocity.y = (Object2.mass/Object1.mass)*Object2.velocity.y - Object1.velocity.y*Object1.elasticity;
+					if(Object2.immovable && Object2.moves && (obj1delta > obj2delta))
+						Object1.x += Object2.x - Object2.last.x;
 				}
 				if(!obj2immovable)
 				{
 					Object2.y += overlap;
 					Object2.velocity.y = (Object1.mass/Object2.mass)*object1velocityY - Object2.velocity.y*Object2.elasticity;
+					if(Object1.immovable && Object1.moves && (obj1delta < obj2delta))
+						Object2.x += Object1.x - Object1.last.x;
 				}
 				return true;
 			}
