@@ -146,8 +146,6 @@ package org.flixel
 			}
 
 			var r:uint;
-			var sw:Number;
-			var sh:Number;
 			var p:FlxParticle;
 			var i:uint = 0;
 			while(i < Quantity)
@@ -176,11 +174,9 @@ package org.flixel
 				}
 				if(Collide > 0)
 				{
-					sw = p.width;
-					sh = p.height;
 					p.width *= Collide;
 					p.height *= Collide;
-					p.offset.make(((sw-p.width)>>1),((sh-p.height)>>1));
+					p.centerOffsets();
 				}
 				else
 					p.allowCollisions = FlxObject.NONE;

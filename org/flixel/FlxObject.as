@@ -148,6 +148,7 @@ package org.flixel
 		//PATH FOLLOWING VARIABLES
 		public var path:FlxPath;
 		public var pathSpeed:Number;
+		public var pathAngle:Number;
 		protected var _pathNodeIndex:int;
 		protected var _pathMode:uint;
 		protected var _pathInc:int;
@@ -198,6 +199,8 @@ package org.flixel
 			_rect = new FlxRect();
 			
 			path = null;
+			pathSpeed = 0;
+			pathAngle = 0;
 			_pathCheck = null;
 		}
 		
@@ -397,6 +400,7 @@ package org.flixel
 		
 		protected function advancePath():void
 		{
+			var oldNode:FlxPoint = path.nodes[_pathNodeIndex];
 			_pathNodeIndex += _pathInc;
 			
 			if((_pathMode & PATH_BACKWARD) > 0)
@@ -454,8 +458,16 @@ package org.flixel
 
 			getMidpoint(_point);
 			var node:FlxPoint = path.nodes[_pathNodeIndex];
-			_pathCheck.x = node.x - _point.x;
-			_pathCheck.y = node.y - _point.y;
+			if(oldNode != null)
+			{
+				_pathCheck.x = node.x - oldNode.x;
+				_pathCheck.y = node.y - oldNode.y;
+			}
+			else
+			{
+				_pathCheck.x = node.x - _point.x;
+				_pathCheck.y = node.y - _point.y;
+			}
 		}
 		
 		public function updatePathMotion():void
@@ -477,8 +489,8 @@ package org.flixel
 			}
 			else
 			{
-				if( ((_pathCheck.x <= 0) && (dx >= 0)) || ((_pathCheck.x >= 0) && (dx <= 0)) ||
-					((_pathCheck.y <= 0) && (dy >= 0)) || ((_pathCheck.y >= 0) && (dy <= 0)) )
+				if( (((_pathCheck.x <= 0) && (dx >= 0)) || ((_pathCheck.x >= 0) && (dx <= 0))) &&
+					(((_pathCheck.y <= 0) && (dy >= 0)) || ((_pathCheck.y >= 0) && (dy <= 0))) )
 					advancePath();
 			}
 			
@@ -487,13 +499,19 @@ package org.flixel
 			{
 				//set velocity based on path mode
 				if((_pathMode & PATH_HORIZONTAL_ONLY) > 0)
+				{
+					pathAngle = 90;
 					velocity.x = (_point.x < (path.nodes[_pathNodeIndex] as FlxPoint).x)?pathSpeed:-pathSpeed;
+				}
 				else if((_pathMode & PATH_VERTICAL_ONLY) > 0)
+				{
+					pathAngle = -90;
 					velocity.y = (_point.y < (path.nodes[_pathNodeIndex] as FlxPoint).y)?pathSpeed:-pathSpeed;
+				}
 				else
 				{
-					var pathAngle:Number = FlxU.getAngle(getMidpoint(_point),path.nodes[_pathNodeIndex])
-					FlxU.rotatePoint(0,pathSpeed,0,0,pathAngle,velocity);				
+					pathAngle = FlxU.getAngle(_point,path.nodes[_pathNodeIndex]);
+					FlxU.rotatePoint(0,pathSpeed,0,0,pathAngle,velocity);
 					if(_pathRotate) //then set object rotation if necessary
 					{
 						angularVelocity = 0;
@@ -502,6 +520,8 @@ package org.flixel
 					}
 				}
 			}
+			
+			
 		}
 		
 		/**
@@ -610,7 +630,9 @@ package org.flixel
 		{
 			if(Point == null)
 				Point = new FlxPoint();
-			return Point.make(x + (width>>1),y + (height>>1));
+			Point.x = x + width*0.5;
+			Point.y = y + height*0.5;
+			return Point;
 		}
 		
 		/**
