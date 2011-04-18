@@ -351,9 +351,6 @@ package org.flixel
 			
 			//draw graphics shape to camera buffer
 			Camera.buffer.draw(FlxG.flashGfxSprite);
-			
-			if(path != null)
-				path.drawDebug(Camera);
 		}
 		
 		public function followPath(Path:FlxPath,Speed:Number=100,Mode:uint=PATH_FORWARD,AutoRotate:Boolean=false):void

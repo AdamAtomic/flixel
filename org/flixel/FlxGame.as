@@ -520,6 +520,7 @@ package org.flixel
 			FlxG.elapsed = FlxG.timeScale*(_step/1000);
 			FlxG.updateSounds();
 			_state.update();
+			FlxG.updatePlugins();
 			FlxG.updateCameras();
 			
 			if(_debuggerUp)
@@ -535,6 +536,7 @@ package org.flixel
 			FlxG.lockCameras();
 			FlxPath.debugDrawTracker = !FlxPath.debugDrawTracker;
 			_state.draw();
+			FlxG.drawPlugins();
 			FlxG.unlockCameras();
 			if(_debuggerUp)
 				_debugger.perf.flixelDraw(getTimer()-mark);

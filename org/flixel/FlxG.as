@@ -8,6 +8,7 @@ package org.flixel
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
+	import org.flixel.plugin.DebugPathDisplay;
 	import org.flixel.system.FlxDebugger;
 	import org.flixel.system.FlxQuadTree;
 	import org.flixel.system.FlxSound;
@@ -164,6 +165,8 @@ package org.flixel
 		
 		static public var flashGfxSprite:Sprite;
 		static public var flashGfx:Graphics;
+		
+		static public var plugins:Array;
 		
 		static public function getLibraryName():String
 		{
@@ -798,6 +801,40 @@ package org.flixel
 			return overlap(ObjectOrGroup1,ObjectOrGroup2,NotifyCallback,FlxObject.separate);
 		}
 		
+		static public function addPlugin(Plugin:FlxBasic):void
+		{
+			plugins.push(Plugin);
+		}
+		
+		static public function getPlugin(ClassName:Class):FlxBasic
+		{
+			var i:uint = 0;
+			var l:uint = plugins.length;
+			while(i < l)
+			{
+				if(plugins[i] is ClassName)
+					return plugins[i];
+				i++;
+			}
+			return null;
+		}
+		
+		static public function updatePlugins():void
+		{
+			var i:uint = 0;
+			var l:uint = plugins.length;
+			while(i < l)
+				(plugins[i++] as FlxBasic).update();
+		}
+		
+		static public function drawPlugins():void
+		{
+			var i:uint = 0;
+			var l:uint = plugins.length;
+			while(i < l)
+				(plugins[i++] as FlxBasic).draw();
+		}
+		
 		/**
 		 * Called by <code>FlxGame</code> to set up <code>FlxG</code> during <code>FlxGame</code>'s constructor.
 		 */
@@ -823,6 +860,9 @@ package org.flixel
 			FlxCamera.defaultZoom = Zoom;
 			FlxG._cameraRect = new Rectangle();
 			FlxG.cameras = new Array();
+			
+			plugins = new Array();
+			addPlugin(new DebugPathDisplay());
 			
 			FlxG.mouse = new Mouse(FlxG._game._mouse);
 			FlxG.keys = new Keyboard();
