@@ -830,7 +830,7 @@ package org.flixel
 
 			FlxG.levels = new Array();
 			FlxG.scores = new Array();
-			FlxG.worldBounds = new FlxRect(0,0,FlxG.width,FlxG.height);
+			FlxG.worldBounds = new FlxRect(-10,-10,FlxG.width+20,FlxG.height+20);
 			FlxG.worldDivisions = 6;
 			FlxG.visualDebug = false;
 		}

@@ -747,8 +747,8 @@ package org.flixel
 			offset.y = (frameHeight-height)*0.5;
 			if(AdjustPosition)
 			{
-				x -= offset.x;
-				y -= offset.y;
+				x += offset.x;
+				y += offset.y;
 			}
 		}
 		

@@ -950,6 +950,13 @@ package org.flixel
 			Camera.setBounds(x+Border*_tileWidth,y+Border*_tileHeight,width-Border*_tileWidth*2,height-Border*_tileHeight*2,UpdateWorld);
 		}
 		
+		public function getBounds(Bounds:FlxRect=null):FlxRect
+		{
+			if(Bounds == null)
+				Bounds = new FlxRect();
+			return Bounds.make(x+_tileWidth,y+_tileHeight,width-_tileWidth*2,height-_tileHeight*2);
+		}
+		
 		/**
 		 * Shoots a ray from the start point to the end point.
 		 * If/when it passes through a tile, it stores that point and returns false.

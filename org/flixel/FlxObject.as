@@ -321,10 +321,10 @@ package org.flixel
 				Camera = FlxG.camera;
 
 			//get bounding box coordinates
-			var bx:int = x - int(Camera.scroll.x*scrollFactor.x); //copied from getScreenXY()
-			var by:int = y - int(Camera.scroll.y*scrollFactor.y);
-			bx += (bx > 0)?0.0000001:-0.0000001;
-			by += (by > 0)?0.0000001:-0.0000001;
+			var bx:Number = x - int(Camera.scroll.x*scrollFactor.x); //copied from getScreenXY()
+			var by:Number = y - int(Camera.scroll.y*scrollFactor.y);
+			bx += int((bx > 0)?0.0000001:-0.0000001);
+			by += int((by > 0)?0.0000001:-0.0000001);
 			var bw:int = (width != int(width))?width:width-1;
 			var bh:int = (height != int(height))?height:height-1;
 
@@ -398,9 +398,14 @@ package org.flixel
 			}
 		}
 		
-		protected function advancePath():void
+		protected function advancePath():FlxPoint
 		{
 			var oldNode:FlxPoint = path.nodes[_pathNodeIndex];
+			if(oldNode != null)
+			{
+				x = oldNode.x - width*0.5;
+				y = oldNode.y - height*0.5;
+			}
 			_pathNodeIndex += _pathInc;
 			
 			if((_pathMode & PATH_BACKWARD) > 0)
@@ -468,49 +473,62 @@ package org.flixel
 				_pathCheck.x = node.x - _point.x;
 				_pathCheck.y = node.y - _point.y;
 			}
+			return node;
 		}
 		
 		public function updatePathMotion():void
 		{
 			//first check if we need to be pointing at the next node yet
-			getMidpoint(_point);
-			var dx:Number = path.nodes[_pathNodeIndex].x - _point.x;
-			var dy:Number = path.nodes[_pathNodeIndex].y - _point.y;
+			_point.x = x + width*0.5;
+			_point.y = y + height*0.5;
+			var node:FlxPoint = path.nodes[_pathNodeIndex];
+			var dx:Number = node.x - _point.x;
+			var dy:Number = node.y - _point.y;
 			
 			if((_pathMode & PATH_HORIZONTAL_ONLY) > 0)
 			{
 				if( ((_pathCheck.x <= 0) && (dx >= 0)) || ((_pathCheck.x >= 0) && (dx <= 0)) )
-					advancePath();
+					node = advancePath();
 			}
 			else if((_pathMode & PATH_VERTICAL_ONLY) > 0)
 			{
 				if( ((_pathCheck.y <= 0) && (dy >= 0)) || ((_pathCheck.y >= 0) && (dy <= 0)) )
-					advancePath();
+					node = advancePath();
 			}
 			else
 			{
 				if( (((_pathCheck.x <= 0) && (dx >= 0)) || ((_pathCheck.x >= 0) && (dx <= 0))) &&
 					(((_pathCheck.y <= 0) && (dy >= 0)) || ((_pathCheck.y >= 0) && (dy <= 0))) )
-					advancePath();
+					node = advancePath();
 			}
 			
 			//then just move toward the current node at the requested speed
 			if(pathSpeed != 0)
 			{
 				//set velocity based on path mode
-				if((_pathMode & PATH_HORIZONTAL_ONLY) > 0)
+				_point.x = x + width*0.5;
+				_point.y = y + height*0.5;
+				if( ((_pathMode & PATH_HORIZONTAL_ONLY) > 0) || (_point.y == node.y))
 				{
-					pathAngle = 90;
-					velocity.x = (_point.x < (path.nodes[_pathNodeIndex] as FlxPoint).x)?pathSpeed:-pathSpeed;
+					velocity.x = (_point.x < node.x)?pathSpeed:-pathSpeed;
+					velocity.y = 0;
+					if(velocity.x < 0)
+						pathAngle = -90;
+					else
+						pathAngle = 90;
 				}
-				else if((_pathMode & PATH_VERTICAL_ONLY) > 0)
+				else if( ((_pathMode & PATH_VERTICAL_ONLY) > 0) || (_point.x == node.x))
 				{
-					pathAngle = -90;
-					velocity.y = (_point.y < (path.nodes[_pathNodeIndex] as FlxPoint).y)?pathSpeed:-pathSpeed;
+					velocity.x = 0;
+					velocity.y = (_point.y < node.y)?pathSpeed:-pathSpeed;
+					if(velocity.y < 0)
+						pathAngle = 0;
+					else
+						pathAngle = 180;
 				}
 				else
 				{
-					pathAngle = FlxU.getAngle(_point,path.nodes[_pathNodeIndex]);
+					pathAngle = FlxU.getAngle(_point,node);
 					FlxU.rotatePoint(0,pathSpeed,0,0,pathAngle,velocity);
 					if(_pathRotate) //then set object rotation if necessary
 					{
