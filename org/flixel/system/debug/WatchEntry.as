@@ -18,6 +18,9 @@ package org.flixel.system.debug
 		public var editing:Boolean;
 		public var oldValue:Object;
 		
+		protected var _whiteText:TextFormat;
+		protected var _blackText:TextFormat;
+		
 		public function WatchEntry(Y:Number,NameWidth:Number,ValueWidth:Number,Obj:Object,Field:String,Custom:String=null)
 		{
 			editing = false;
@@ -26,20 +29,26 @@ package org.flixel.system.debug
 			field = Field;
 			custom = Custom;
 			
+			_whiteText = new TextFormat("Courier",12,0xffffff);
+			_blackText = new TextFormat("Courier",12,0);
+			
 			nameDisplay = new TextField();
 			nameDisplay.y = Y;
 			nameDisplay.multiline = false;
 			nameDisplay.selectable = true;
-			nameDisplay.defaultTextFormat = new TextFormat("Courier",12,0xffffff);
+			nameDisplay.defaultTextFormat = _whiteText;
 			
 			valueDisplay = new TextField();
 			valueDisplay.y = Y;
+			valueDisplay.height = 15;
 			valueDisplay.multiline = false;
 			valueDisplay.selectable = true;
 			valueDisplay.doubleClickEnabled = true;
-			valueDisplay.addEventListener(MouseEvent.CLICK,onClick);
 			valueDisplay.addEventListener(KeyboardEvent.KEY_UP,onKeyUp);
-			valueDisplay.defaultTextFormat = new TextFormat("Courier",12,0xffffff);
+			valueDisplay.addEventListener(MouseEvent.MOUSE_UP,onMouseUp);
+			valueDisplay.background = false;
+			valueDisplay.backgroundColor = 0xffffff;
+			valueDisplay.defaultTextFormat = _whiteText;
 			
 			updateWidth(NameWidth,ValueWidth);
 		}
@@ -49,7 +58,7 @@ package org.flixel.system.debug
 			object = null;
 			oldValue = null;
 			nameDisplay = null;
-			valueDisplay.removeEventListener(MouseEvent.CLICK,onClick);
+			valueDisplay.removeEventListener(MouseEvent.MOUSE_UP,onMouseUp);
 			valueDisplay.removeEventListener(KeyboardEvent.KEY_UP,onKeyUp);
 			valueDisplay = null;
 		}
@@ -83,11 +92,14 @@ package org.flixel.system.debug
 			return true;
 		}
 		
-		public function onClick(E:MouseEvent):void
+		public function onMouseUp(E:MouseEvent):void
 		{
 			editing = true;
 			oldValue = object[field];
 			valueDisplay.type = TextFieldType.INPUT;
+			valueDisplay.setTextFormat(_blackText);
+			valueDisplay.background = true;
+			
 		}
 		
 		public function onKeyUp(E:KeyboardEvent):void
@@ -96,12 +108,31 @@ package org.flixel.system.debug
 			if((k == 13) || (k == 9) || (k == 27)) //enter or tab or escape
 			{
 				if(k == 27)
-					valueDisplay.text = oldValue.toString();
+					cancel();
 				else
-					object[field] = valueDisplay.text;
-				valueDisplay.type = TextFieldType.DYNAMIC;
-				editing = false;
+					submit();
 			}
+		}
+		
+		public function cancel():void
+		{
+			valueDisplay.text = oldValue.toString();
+			doneEditing();
+		}
+		
+		public function submit():void
+		{
+			object[field] = valueDisplay.text;
+			doneEditing();
+		}
+		
+		protected function doneEditing():void
+		{
+			valueDisplay.type = TextFieldType.DYNAMIC;
+			valueDisplay.setTextFormat(_whiteText);
+			valueDisplay.defaultTextFormat = _whiteText;
+			valueDisplay.background = false;
+			editing = false;
 		}
 	}
 }

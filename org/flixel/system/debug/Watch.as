@@ -131,6 +131,20 @@ package org.flixel.system.debug
 			}
 		}
 		
+		public function submit():void
+		{
+			var i:uint = 0;
+			var l:uint = _watching.length;
+			var w:WatchEntry;
+			while(i < l)
+			{
+				w = _watching[i++] as WatchEntry;
+				if(w.editing)
+					w.submit();
+			}
+			editing = false;
+		}
+		
 		override protected function updateSize():void
 		{
 			if(_height < _watching.length*LINE_HEIGHT + 17)

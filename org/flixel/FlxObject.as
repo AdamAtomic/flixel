@@ -244,6 +244,9 @@ package org.flixel
 			
 			last.x = x;
 			last.y = y;
+			
+			if((path != null) && (pathSpeed != 0) && (path.nodes[_pathNodeIndex] != null))
+				updatePathMotion();
 		}
 		
 		/**
@@ -257,11 +260,7 @@ package org.flixel
 		override public function postUpdate():void
 		{
 			if(moves)
-			{
-				if((path != null) && (pathSpeed != 0) && (path.nodes[_pathNodeIndex] != null))
-					updatePathMotion();
 				updateMotion();
-			}
 			
 			wasTouching = touching;
 			touching = NONE;
