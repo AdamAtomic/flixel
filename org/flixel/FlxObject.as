@@ -323,8 +323,8 @@ package org.flixel
 			//get bounding box coordinates
 			var bx:Number = x - int(Camera.scroll.x*scrollFactor.x); //copied from getScreenXY()
 			var by:Number = y - int(Camera.scroll.y*scrollFactor.y);
-			bx += int((bx > 0)?0.0000001:-0.0000001);
-			by += int((by > 0)?0.0000001:-0.0000001);
+			bx = int(bx + ((bx > 0)?0.0000001:-0.0000001));
+			by = int(by + ((by > 0)?0.0000001:-0.0000001));
 			var bw:int = (width != int(width))?width:width-1;
 			var bh:int = (height != int(height))?height:height-1;
 

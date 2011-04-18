@@ -159,17 +159,20 @@ package org.flixel
 				else
 				{
 					var t:Number;
-					t = target.x - deadzone.x;
+					var targetX:Number = target.x + ((target.x > 0)?0.0000001:-0.0000001);
+					var targetY:Number = target.y + ((target.y > 0)?0.0000001:-0.0000001);
+					
+					t = targetX - deadzone.x;
 					if(scroll.x > t)
 						scroll.x = t;
-					t = target.x + target.width - deadzone.x - deadzone.width;
+					t = targetX + target.width - deadzone.x - deadzone.width;
 					if(scroll.x < t)
 						scroll.x = t;
 					
-					t = target.y - deadzone.y;
+					t = targetY - deadzone.y;
 					if(scroll.y > t)
 						scroll.y = t;
-					t = target.y + target.height - deadzone.y - deadzone.height;
+					t = targetY + target.height - deadzone.y - deadzone.height;
 					if(scroll.y < t)
 						scroll.y = t;
 				}
@@ -270,7 +273,9 @@ package org.flixel
 		 */
 		public function focusOn(Point:FlxPoint):void
 		{
-			scroll.make(Point.x - (width>>1),Point.y - (height>>1));
+			Point.x += (Point.x > 0)?0.0000001:-0.0000001;
+			Point.y += (Point.y > 0)?0.0000001:-0.0000001;
+			scroll.make(Point.x - width*0.5,Point.y - height*0.5);
 		}
 		
 		/**
