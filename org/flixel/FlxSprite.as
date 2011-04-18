@@ -703,6 +703,7 @@ package org.flixel
 				}
 				i++;
 			}
+			FlxG.log("WARNING: No animation called \""+AnimName+"\"");
 		}
 
 		/**
@@ -736,9 +737,20 @@ package org.flixel
 			dirty = true;
 		}
 		
-		public function corner():void
+		public function setOriginToCorner():void
 		{
 			origin.x = origin.y = 0;
+		}
+		
+		public function centerOffsets(AdjustPosition:Boolean=false):void
+		{
+			offset.x = (frameWidth-width)*0.5;
+			offset.y = (frameHeight-height)*0.5;
+			if(AdjustPosition)
+			{
+				x += offset.x;
+				y += offset.y;
+			}
 		}
 		
 		/**

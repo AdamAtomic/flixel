@@ -212,6 +212,8 @@ package org.flixel
 		 */
 		protected function onKeyDown(event:KeyboardEvent):void
 		{
+			if(_debuggerUp && _debugger.watch.editing)
+				return;
 			if(_replaying && (_replayCancelKeys != null) && (_debugger == null) && (event.keyCode != 192) && (event.keyCode != 220))
 			{
 				var cancel:Boolean = false;
@@ -243,8 +245,13 @@ package org.flixel
 		 */
 		protected function onMouseDown(event:MouseEvent):void
 		{
-			if(_debuggerUp && _debugger.hasMouse)
-				return;
+			if(_debuggerUp)
+			{
+				if(_debugger.hasMouse)
+					return;
+				if(_debugger.watch.editing)
+					_debugger.watch.submit();
+			}
 			if(_replaying && (_replayCancelKeys != null))
 			{
 				var m:String;
@@ -513,6 +520,7 @@ package org.flixel
 			FlxG.elapsed = FlxG.timeScale*(_step/1000);
 			FlxG.updateSounds();
 			_state.update();
+			FlxG.updatePlugins();
 			FlxG.updateCameras();
 			
 			if(_debuggerUp)
@@ -528,6 +536,7 @@ package org.flixel
 			FlxG.lockCameras();
 			FlxPath.debugDrawTracker = !FlxPath.debugDrawTracker;
 			_state.draw();
+			FlxG.drawPlugins();
 			FlxG.unlockCameras();
 			if(_debuggerUp)
 				_debugger.perf.flixelDraw(getTimer()-mark);

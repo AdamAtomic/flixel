@@ -2,11 +2,14 @@ package org.flixel
 {
 	import flash.display.Graphics;
 	
+	import org.flixel.plugin.DebugPathDisplay;
+	
 	public class FlxPath
 	{
 		static public var debugDrawTracker:Boolean;
 		
 		public var nodes:Array;
+		public var color:uint;
 		
 		//NOTE: doesn't actually affect anything, just used for debug visuals
 		public var scrollFactor:FlxPoint;
@@ -23,10 +26,19 @@ package org.flixel
 			_debugDrawSwitches = new Array();
 			_point = new FlxPoint();
 			scrollFactor = new FlxPoint(1.0,1.0);
+			color = 0xffffff;
+			
+			var plugin:DebugPathDisplay = FlxG.getPlugin(DebugPathDisplay) as DebugPathDisplay;
+			if(plugin != null)
+				plugin.add(this);
 		}
 		
 		public function destroy():void
 		{
+			var plugin:DebugPathDisplay = FlxG.getPlugin(DebugPathDisplay) as DebugPathDisplay;
+			if(plugin != null)
+				plugin.remove(this);
+			
 			scrollFactor = null;
 			_debugDrawSwitches = null;
 			_point = null;
@@ -137,17 +149,17 @@ package org.flixel
 				var nodeSize:uint = 2;
 				if((i == 0) || (i == l-1))
 					nodeSize *= 2;
-				var color:uint = 0xffffff;
+				var nodeColor:uint = color;
 				if(l > 1)
 				{
 					if(i == 0)
-						color = FlxG.GREEN;
+						nodeColor = FlxG.GREEN;
 					else if(i == l-1)
-						color = FlxG.RED;
+						nodeColor = FlxG.RED;
 				}
 				
 				//draw a box for the node
-				gfx.beginFill(color,0.5);
+				gfx.beginFill(nodeColor,0.5);
 				gfx.lineStyle();
 				gfx.drawRect(_point.x-nodeSize*0.5,_point.y-nodeSize*0.5,nodeSize,nodeSize);
 				gfx.endFill();
@@ -164,7 +176,7 @@ package org.flixel
 				
 				//then draw a line to the next node
 				gfx.moveTo(_point.x,_point.y);
-				gfx.lineStyle(1,0xffffff,linealpha);
+				gfx.lineStyle(1,color,linealpha);
 				_point.x = n.x - int(Camera.scroll.x*scrollFactor.x); //copied from getScreenXY()
 				_point.y = n.y - int(Camera.scroll.y*scrollFactor.y);
 				_point.x = int(_point.x + ((_point.x > 0)?0.0000001:-0.0000001));

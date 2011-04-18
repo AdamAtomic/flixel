@@ -148,6 +148,7 @@ package org.flixel
 		//PATH FOLLOWING VARIABLES
 		public var path:FlxPath;
 		public var pathSpeed:Number;
+		public var pathAngle:Number;
 		protected var _pathNodeIndex:int;
 		protected var _pathMode:uint;
 		protected var _pathInc:int;
@@ -198,6 +199,8 @@ package org.flixel
 			_rect = new FlxRect();
 			
 			path = null;
+			pathSpeed = 0;
+			pathAngle = 0;
 			_pathCheck = null;
 		}
 		
@@ -241,6 +244,9 @@ package org.flixel
 			
 			last.x = x;
 			last.y = y;
+			
+			if((path != null) && (pathSpeed != 0) && (path.nodes[_pathNodeIndex] != null))
+				updatePathMotion();
 		}
 		
 		/**
@@ -254,11 +260,7 @@ package org.flixel
 		override public function postUpdate():void
 		{
 			if(moves)
-			{
-				if((path != null) && (pathSpeed != 0) && (path.nodes[_pathNodeIndex] != null))
-					updatePathMotion();
 				updateMotion();
-			}
 			
 			wasTouching = touching;
 			touching = NONE;
@@ -318,10 +320,10 @@ package org.flixel
 				Camera = FlxG.camera;
 
 			//get bounding box coordinates
-			var bx:int = x - int(Camera.scroll.x*scrollFactor.x); //copied from getScreenXY()
-			var by:int = y - int(Camera.scroll.y*scrollFactor.y);
-			bx += (bx > 0)?0.0000001:-0.0000001;
-			by += (by > 0)?0.0000001:-0.0000001;
+			var bx:Number = x - int(Camera.scroll.x*scrollFactor.x); //copied from getScreenXY()
+			var by:Number = y - int(Camera.scroll.y*scrollFactor.y);
+			bx = int(bx + ((bx > 0)?0.0000001:-0.0000001));
+			by = int(by + ((by > 0)?0.0000001:-0.0000001));
 			var bw:int = (width != int(width))?width:width-1;
 			var bh:int = (height != int(height))?height:height-1;
 
@@ -349,9 +351,6 @@ package org.flixel
 			
 			//draw graphics shape to camera buffer
 			Camera.buffer.draw(FlxG.flashGfxSprite);
-			
-			if(path != null)
-				path.drawDebug(Camera);
 		}
 		
 		public function followPath(Path:FlxPath,Speed:Number=100,Mode:uint=PATH_FORWARD,AutoRotate:Boolean=false):void
@@ -395,8 +394,14 @@ package org.flixel
 			}
 		}
 		
-		protected function advancePath():void
+		protected function advancePath():FlxPoint
 		{
+			var oldNode:FlxPoint = path.nodes[_pathNodeIndex];
+			if(oldNode != null)
+			{
+				x = oldNode.x - width*0.5;
+				y = oldNode.y - height*0.5;
+			}
 			_pathNodeIndex += _pathInc;
 			
 			if((_pathMode & PATH_BACKWARD) > 0)
@@ -454,46 +459,73 @@ package org.flixel
 
 			getMidpoint(_point);
 			var node:FlxPoint = path.nodes[_pathNodeIndex];
-			_pathCheck.x = node.x - _point.x;
-			_pathCheck.y = node.y - _point.y;
+			if(oldNode != null)
+			{
+				_pathCheck.x = node.x - oldNode.x;
+				_pathCheck.y = node.y - oldNode.y;
+			}
+			else
+			{
+				_pathCheck.x = node.x - _point.x;
+				_pathCheck.y = node.y - _point.y;
+			}
+			return node;
 		}
 		
 		public function updatePathMotion():void
 		{
 			//first check if we need to be pointing at the next node yet
-			getMidpoint(_point);
-			var dx:Number = path.nodes[_pathNodeIndex].x - _point.x;
-			var dy:Number = path.nodes[_pathNodeIndex].y - _point.y;
+			_point.x = x + width*0.5;
+			_point.y = y + height*0.5;
+			var node:FlxPoint = path.nodes[_pathNodeIndex];
+			var dx:Number = node.x - _point.x;
+			var dy:Number = node.y - _point.y;
 			
 			if((_pathMode & PATH_HORIZONTAL_ONLY) > 0)
 			{
 				if( ((_pathCheck.x <= 0) && (dx >= 0)) || ((_pathCheck.x >= 0) && (dx <= 0)) )
-					advancePath();
+					node = advancePath();
 			}
 			else if((_pathMode & PATH_VERTICAL_ONLY) > 0)
 			{
 				if( ((_pathCheck.y <= 0) && (dy >= 0)) || ((_pathCheck.y >= 0) && (dy <= 0)) )
-					advancePath();
+					node = advancePath();
 			}
 			else
 			{
-				if( ((_pathCheck.x <= 0) && (dx >= 0)) || ((_pathCheck.x >= 0) && (dx <= 0)) ||
-					((_pathCheck.y <= 0) && (dy >= 0)) || ((_pathCheck.y >= 0) && (dy <= 0)) )
-					advancePath();
+				if( (((_pathCheck.x <= 0) && (dx >= 0)) || ((_pathCheck.x >= 0) && (dx <= 0))) &&
+					(((_pathCheck.y <= 0) && (dy >= 0)) || ((_pathCheck.y >= 0) && (dy <= 0))) )
+					node = advancePath();
 			}
 			
 			//then just move toward the current node at the requested speed
 			if(pathSpeed != 0)
 			{
 				//set velocity based on path mode
-				if((_pathMode & PATH_HORIZONTAL_ONLY) > 0)
-					velocity.x = (_point.x < (path.nodes[_pathNodeIndex] as FlxPoint).x)?pathSpeed:-pathSpeed;
-				else if((_pathMode & PATH_VERTICAL_ONLY) > 0)
-					velocity.y = (_point.y < (path.nodes[_pathNodeIndex] as FlxPoint).y)?pathSpeed:-pathSpeed;
+				_point.x = x + width*0.5;
+				_point.y = y + height*0.5;
+				if( ((_pathMode & PATH_HORIZONTAL_ONLY) > 0) || (_point.y == node.y))
+				{
+					velocity.x = (_point.x < node.x)?pathSpeed:-pathSpeed;
+					velocity.y = 0;
+					if(velocity.x < 0)
+						pathAngle = -90;
+					else
+						pathAngle = 90;
+				}
+				else if( ((_pathMode & PATH_VERTICAL_ONLY) > 0) || (_point.x == node.x))
+				{
+					velocity.x = 0;
+					velocity.y = (_point.y < node.y)?pathSpeed:-pathSpeed;
+					if(velocity.y < 0)
+						pathAngle = 0;
+					else
+						pathAngle = 180;
+				}
 				else
 				{
-					var pathAngle:Number = FlxU.getAngle(getMidpoint(_point),path.nodes[_pathNodeIndex])
-					FlxU.rotatePoint(0,pathSpeed,0,0,pathAngle,velocity);				
+					pathAngle = FlxU.getAngle(_point,node);
+					FlxU.rotatePoint(0,pathSpeed,0,0,pathAngle,velocity);
 					if(_pathRotate) //then set object rotation if necessary
 					{
 						angularVelocity = 0;
@@ -502,6 +534,8 @@ package org.flixel
 					}
 				}
 			}
+			
+			
 		}
 		
 		/**
@@ -610,7 +644,9 @@ package org.flixel
 		{
 			if(Point == null)
 				Point = new FlxPoint();
-			return Point.make(x + (width>>1),y + (height>>1));
+			Point.x = x + width*0.5;
+			Point.y = y + height*0.5;
+			return Point;
 		}
 		
 		/**
@@ -804,11 +840,15 @@ package org.flixel
 				{
 					Object1.y = Object1.y - overlap;
 					Object1.velocity.y = (Object2.mass/Object1.mass)*Object2.velocity.y - Object1.velocity.y*Object1.elasticity;
+					if(Object2.immovable && Object2.moves && (obj1delta > obj2delta))
+						Object1.x += Object2.x - Object2.last.x;
 				}
 				if(!obj2immovable)
 				{
 					Object2.y += overlap;
 					Object2.velocity.y = (Object1.mass/Object2.mass)*object1velocityY - Object2.velocity.y*Object2.elasticity;
+					if(Object1.immovable && Object1.moves && (obj1delta < obj2delta))
+						Object2.x += Object1.x - Object1.last.x;
 				}
 				return true;
 			}

@@ -303,9 +303,26 @@ package org.flixel
 				if(b != null)
 				{
 					if(Recurse && (b is FlxGroup))
-						(b as FlxGroup).setAll(VariableName,Value);
+						(b as FlxGroup).setAll(VariableName,Value,Recurse);
 					else
 						b[VariableName] = Value;
+				}
+			}
+		}
+		
+		public function callAll(FunctionName:String,Recurse:Boolean=true):void
+		{
+			var b:FlxBasic;
+			var i:uint = 0;
+			while(i < length)
+			{
+				b = members[i++] as FlxBasic;
+				if(b != null)
+				{
+					if(Recurse && (b is FlxGroup))
+						(b as FlxGroup).callAll(FunctionName,Recurse);
+					else
+						b[FunctionName]();
 				}
 			}
 		}
