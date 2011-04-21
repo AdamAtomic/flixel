@@ -10,9 +10,8 @@ package org.flixel
 		
 		public var nodes:Array;
 		public var color:uint;
-		
-		//NOTE: doesn't actually affect anything, just used for debug visuals
-		public var scrollFactor:FlxPoint;
+
+		public var debugScrollFactor:FlxPoint;
 		
 		protected var _debugDrawSwitches:Array;
 		protected var _point:FlxPoint;
@@ -25,7 +24,7 @@ package org.flixel
 				nodes = Nodes;
 			_debugDrawSwitches = new Array();
 			_point = new FlxPoint();
-			scrollFactor = new FlxPoint(1.0,1.0);
+			debugScrollFactor = new FlxPoint(1.0,1.0);
 			color = 0xffffff;
 			
 			var plugin:DebugPathDisplay = FlxG.getPlugin(DebugPathDisplay) as DebugPathDisplay;
@@ -39,7 +38,7 @@ package org.flixel
 			if(plugin != null)
 				plugin.remove(this);
 			
-			scrollFactor = null;
+			debugScrollFactor = null;
 			_debugDrawSwitches = null;
 			_point = null;
 			nodes = null;
@@ -140,8 +139,8 @@ package org.flixel
 				p = nodes[i] as FlxPoint;
 				
 				//find the screen position of the node on this camera
-				_point.x = p.x - int(Camera.scroll.x*scrollFactor.x); //copied from getScreenXY()
-				_point.y = p.y - int(Camera.scroll.y*scrollFactor.y);
+				_point.x = p.x - int(Camera.scroll.x*debugScrollFactor.x); //copied from getScreenXY()
+				_point.y = p.y - int(Camera.scroll.y*debugScrollFactor.y);
 				_point.x = int(_point.x + ((_point.x > 0)?0.0000001:-0.0000001));
 				_point.y = int(_point.y + ((_point.y > 0)?0.0000001:-0.0000001));
 				
@@ -177,8 +176,8 @@ package org.flixel
 				//then draw a line to the next node
 				gfx.moveTo(_point.x,_point.y);
 				gfx.lineStyle(1,color,linealpha);
-				_point.x = n.x - int(Camera.scroll.x*scrollFactor.x); //copied from getScreenXY()
-				_point.y = n.y - int(Camera.scroll.y*scrollFactor.y);
+				_point.x = n.x - int(Camera.scroll.x*debugScrollFactor.x); //copied from getScreenXY()
+				_point.y = n.y - int(Camera.scroll.y*debugScrollFactor.y);
 				_point.x = int(_point.x + ((_point.x > 0)?0.0000001:-0.0000001));
 				_point.y = int(_point.y + ((_point.y > 0)?0.0000001:-0.0000001));
 				gfx.lineTo(_point.x,_point.y);

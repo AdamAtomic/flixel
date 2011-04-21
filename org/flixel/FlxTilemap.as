@@ -668,17 +668,24 @@ package org.flixel
 		}
 		
 		/**
-		 * Checks for overlaps between the provided object and any tiles above the collision index.
+		 * Checks to see if some <code>FlxObject</code> overlaps this <code>FlxObject</code> object in world space.
+		 * WARNING: Currently tilemaps do NOT support screen space overlap checks!
 		 * 
-		 * @param	Rect		The <code>FlxRect</code> you want to check against.
+		 * @param	Object			The object being tested.
+		 * @param	InScreenSpace	Whether to take scroll factors into account when checking for overlap.
+		 * @param	Camera			Specify which game camera you want.  If null getScreenXY() will just grab the first global camera.
+		 * 
+		 * @return	Whether or not the two objects overlap.
 		 */
-		override public function overlaps(Object:FlxObject):Boolean
+		override public function overlaps(Object:FlxObject,InScreenSpace:Boolean=false,Camera:FlxCamera=null):Boolean
 		{
 			return overlapsWithCallback(Object);
 		}
 		
 		public function overlapsWithCallback(Object:FlxObject,Callback:Function=null):Boolean
 		{
+			//TODO: support screenspace overlap checks
+			
 			var results:Boolean = false;
 			
 			//Figure out what tiles we need to check against
@@ -746,26 +753,25 @@ package org.flixel
 		}
 		
 		/**
-		 * Checks to see if a point in 2D space overlaps a solid tile.
+		 * Checks to see if a point in 2D world space overlaps this <code>FlxObject</code> object.
 		 * 
-		 * @param	X			The X coordinate of the point.
-		 * @param	Y			The Y coordinate of the point.
-		 * @param	Camera		Specify which game camera you want.  If null getScreenXY() will just grab the first global camera.
-		 * @param	PerPixel	Not available in <code>FlxTilemap</code>, ignored.
+		 * @param	Point			The point in world space you want to check.
+		 * @param	InScreenSpace	Whether to take scroll factors into account when checking for overlap.
+		 * @param	Camera			Specify which game camera you want.  If null getScreenXY() will just grab the first global camera.
 		 * 
 		 * @return	Whether or not the point overlaps this object.
 		 */
-		override public function overlapsPoint(X:Number,Y:Number,Camera:FlxCamera=null,PerPixel:Boolean = false):Boolean
+		override public function overlapsPoint(Point:FlxPoint,InScreenSpace:Boolean=false,Camera:FlxCamera=null):Boolean
 		{
+			if(!InScreenSpace)
+				return (_tileObjects[_data[uint(uint((Point.y-y)/_tileHeight)*widthInTiles + (Point.x-x)/_tileWidth)]] as FlxTile).allowCollisions > 0;
+			
 			if(Camera == null)
 				Camera = FlxG.camera;
-			X = X + Camera.scroll.x;
-			Y = Y + Camera.scroll.y;
-			_point.x = x - int(Camera.scroll.x*scrollFactor.x);//copied from getScreenXY()
-			_point.y = y - int(Camera.scroll.y*scrollFactor.y);
-			_point.x += (_point.x > 0)?0.0000001:-0.0000001;
-			_point.y += (_point.y > 0)?0.0000001:-0.0000001;
-			return Boolean((_tileObjects[_data[uint(uint((Y-_point.y)/_tileHeight)*widthInTiles + (X-_point.x)/_tileWidth)]] as FlxTile).allowCollisions);
+			Point.x = Point.x - Camera.scroll.x;
+			Point.y = Point.y - Camera.scroll.y;
+			getScreenXY(_point,Camera);
+			return (_tileObjects[_data[uint(uint((Point.y-_point.y)/_tileHeight)*widthInTiles + (Point.x-_point.x)/_tileWidth)]] as FlxTile).allowCollisions > 0;
 		}
 		
 		/**

@@ -15,6 +15,7 @@ package org.flixel.plugin
 		
 		override public function destroy():void
 		{
+			clear();
 			_paths = null;
 		}
 		
@@ -36,10 +37,14 @@ package org.flixel.plugin
 			if(Camera == null)
 				Camera = FlxG.camera;
 			
-			var i:uint = 0;
-			var l:uint = _paths.length;
-			while(i < l)
-				(_paths[i++] as FlxPath).drawDebug(Camera);
+			var i:int = _paths.length-1;
+			var path:FlxPath;
+			while(i >= 0)
+			{
+				path = _paths[i--] as FlxPath;
+				if(path != null)
+					path.drawDebug(Camera);
+			}
 		}
 		
 		public function add(Path:FlxPath):void
@@ -52,6 +57,19 @@ package org.flixel.plugin
 			var index:int = _paths.indexOf(Path);
 			if(index >= 0)
 				_paths.splice(index,1);
+		}
+		
+		public function clear():void
+		{
+			var i:int = _paths.length-1;
+			var path:FlxPath;
+			while(i >= 0)
+			{
+				path = _paths[i--] as FlxPath;
+				if(path != null)
+					path.destroy();
+			}
+			_paths.length = 0;
 		}
 	}
 }

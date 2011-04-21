@@ -157,7 +157,7 @@ package org.flixel
 				{
 					c = cameras[i++] as FlxCamera;
 					FlxG.mouse.getWorldPosition(c,_point);
-					if(overlapsPoint(_point.x,_point.y,c))
+					if(overlapsPoint(_point,true,c))
 					{
 						offAll = false;
 						if(FlxG.mouse.justPressed())

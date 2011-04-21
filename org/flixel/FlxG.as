@@ -9,6 +9,7 @@ package org.flixel
 	import flash.geom.Rectangle;
 	
 	import org.flixel.plugin.DebugPathDisplay;
+	import org.flixel.plugin.TimerManager;
 	import org.flixel.system.FlxDebugger;
 	import org.flixel.system.FlxQuadTree;
 	import org.flixel.system.input.*;
@@ -870,6 +871,7 @@ package org.flixel
 			
 			plugins = new Array();
 			addPlugin(new DebugPathDisplay());
+			addPlugin(new TimerManager());
 			
 			FlxG.mouse = new Mouse(FlxG._game._mouse);
 			FlxG.keys = new Keyboard();
