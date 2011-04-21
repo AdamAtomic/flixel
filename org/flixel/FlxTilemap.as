@@ -65,7 +65,6 @@ package org.flixel
 		protected var _rects:Array;
 		protected var _tileWidth:uint;
 		protected var _tileHeight:uint;
-		protected var _callbacks:Array;
 		protected var _tileObjects:Array;
 		
 		protected var _debugTileNotSolid:BitmapData;
@@ -95,7 +94,6 @@ package org.flixel
 			_rects = null;
 			_tiles = null;
 			_tileObjects = null;
-			_callbacks = new Array();
 			immovable = true;
 			cameras = null;
 			_debugTileNotSolid = null;
@@ -123,7 +121,6 @@ package org.flixel
 			_buffers = null;
 			_data = null;
 			_rects = null;
-			_callbacks = null;
 			_debugTileNotSolid = null;
 			_debugTilePartial = null;
 			_debugTileSolid = null;
@@ -260,8 +257,8 @@ package org.flixel
 			_point.y = int(Camera.scroll.y*scrollFactor.y) - y;
 			var tx:int = (_point.x + ((_point.x > 0)?0.0000001:-0.0000001))/_tileWidth;
 			var ty:int = (_point.y + ((_point.y > 0)?0.0000001:-0.0000001))/_tileHeight;
-			var sr:uint = Buffer.screenRows;
-			var sc:uint = Buffer.screenCols;
+			var sr:uint = Buffer.rows;
+			var sc:uint = Buffer.columns;
 			
 			//Bound the upper left corner
 			if(tx < 0)

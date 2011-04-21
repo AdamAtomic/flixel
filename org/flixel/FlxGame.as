@@ -18,6 +18,7 @@ package org.flixel
 	
 	import org.flixel.system.FlxDebugger;
 	import org.flixel.system.FlxReplay;
+	import org.flixel.plugin.TimerManager;
 
 	/**
 	 * FlxGame is the heart of all flixel games, and contains a bunch of basic game loops and things.
@@ -380,6 +381,9 @@ package org.flixel
 			FlxG.destroySounds();
 			if(_debugger != null)
 				_debugger.watch.removeAll();
+			var timerManager:TimerManager = FlxG.getPlugin(TimerManager) as TimerManager;
+			if(timerManager != null)
+				timerManager.clear();
 			
 			//Destroy the old state (if there is an old state)
 			if(_state != null)

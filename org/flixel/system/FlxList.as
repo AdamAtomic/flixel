@@ -3,7 +3,7 @@ package org.flixel.system
 	import org.flixel.FlxObject;
 	
 	/**
-	 * The world's smallest linked list class.
+	 * A miniature linked list class.
 	 * Useful for optimizing time-critical or highly repetitive tasks!
 	 * See <code>FlxQuadTree</code> for how to use it, IF YOU DARE.
 	 */
@@ -27,6 +27,9 @@ package org.flixel.system
 			next = null;
 		}
 		
+		/**
+		 * Clean up memory.
+		 */
 		public function destroy():void
 		{
 			object = null;
