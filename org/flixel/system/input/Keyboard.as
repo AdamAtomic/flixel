@@ -37,6 +37,11 @@ package org.flixel.system.input
 		public var NUMPADEIGHT:Boolean;
 		public var NUMPADNINE:Boolean;
 		public var NUMPADZERO:Boolean;
+		public var PAGEUP:Boolean;
+		public var PAGEDOWN:Boolean;
+		public var HOME:Boolean;
+		public var END:Boolean;
+		public var INSERT:Boolean;
 		public var MINUS:Boolean;
 		public var NUMPADMINUS:Boolean;
 		public var PLUS:Boolean;
@@ -123,6 +128,11 @@ package org.flixel.system.input
 			addKey("NUMPADSEVEN",i++);
 			addKey("NUMPADEIGHT",i++);
 			addKey("NUMPADNINE",i++);
+			addKey("PAGEUP", 33);
+			addKey("PAGEDOWN", 34);
+			addKey("HOME", 36);
+			addKey("END", 35);
+			addKey("INSERT", 45);
 			
 			//FUNCTION KEYS
 			i = 1;
