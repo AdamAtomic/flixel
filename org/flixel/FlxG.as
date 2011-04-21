@@ -555,13 +555,15 @@ package org.flixel
 			if(key == null)
 			{
 				key = Width+"x"+Height+":"+Color;
-				if(Unique && (_cache[key] != undefined) && (_cache[key] != null))
+				if(Unique && checkBitmapCache(key))
 				{
 					//Generate a unique key
 					var inc:uint = 0;
 					var ukey:String;
-					do { ukey = key + inc++;
-					} while((_cache[ukey] != undefined) && (_cache[ukey] != null));
+					do
+					{
+						ukey = key + inc++;
+					} while(checkBitmapCache(ukey));
 					key = ukey;
 				}
 			}
@@ -585,13 +587,15 @@ package org.flixel
 			if(key == null)
 			{
 				key = String(Graphic)+(Reverse?"_REVERSE_":"");
-				if(Unique && (_cache[key] != undefined) && (_cache[key] != null))
+				if(Unique && checkBitmapCache(key))
 				{
 					//Generate a unique key
 					var inc:uint = 0;
 					var ukey:String;
-					do { ukey = key + inc++;
-					} while((_cache[ukey] != undefined) && (_cache[ukey] != null));
+					do
+					{
+						ukey = key + inc++;
+					} while(checkBitmapCache(ukey));
 					key = ukey;
 				}
 			}

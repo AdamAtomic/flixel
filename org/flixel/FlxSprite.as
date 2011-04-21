@@ -533,7 +533,8 @@ package org.flixel
 					_frameTimer = _frameTimer - _curAnim.delay;
 					if(_curFrame == _curAnim.frames.length-1)
 					{
-						if(_curAnim.looped) _curFrame = 0;
+						if(_curAnim.looped)
+							_curFrame = 0;
 						finished = true;
 					}
 					else
@@ -615,11 +616,6 @@ package org.flixel
 			if(Force || dirty)
 				calcFrame();
 		}
-		
-		/**
-		 * Triggered whenever this sprite is launched by a <code>FlxEmitter</code>.
-		 */
-		virtual public function onEmit():void { }
 		
 		/**
 		 * Adds a new animation to the sprite.
@@ -812,8 +808,10 @@ package org.flixel
 			_flashRect.y = ry;
 			framePixels.copyPixels(_pixels,_flashRect,_flashPointZero);
 			_flashRect.x = _flashRect.y = 0;
-			if(_ct != null) framePixels.colorTransform(_flashRect,_ct);
-			if(_callback != null) _callback(_curAnim.name,_curFrame,_caf);
+			if(_ct != null)
+				framePixels.colorTransform(_flashRect,_ct);
+			if(_callback != null)
+				_callback(((_curAnim != null)?(_curAnim.name):null),_curFrame,_caf);
 			dirty = false;
 		}
 	}
