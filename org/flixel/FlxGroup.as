@@ -503,7 +503,7 @@ package org.flixel
 			while(i < length)
 			{
 				b = members[i++] as FlxBasic;
-				if(b != null)
+				if((b != null) && b.exists)
 					b.kill();
 			}
 			super.kill();
