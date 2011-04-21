@@ -11,7 +11,6 @@ package org.flixel
 	import org.flixel.plugin.DebugPathDisplay;
 	import org.flixel.system.FlxDebugger;
 	import org.flixel.system.FlxQuadTree;
-	import org.flixel.system.FlxSound;
 	import org.flixel.system.input.*;
 	
 	/**
@@ -167,6 +166,8 @@ package org.flixel
 		static public var flashGfx:Graphics;
 		
 		static public var plugins:Array;
+		
+		static public var volumeHandler:Function;
 		
 		static public function getLibraryName():String
 		{
@@ -452,6 +453,8 @@ package org.flixel
 				_volume = 0;
 			else if(_volume > 1)
 				_volume = 1;
+			if(volumeHandler != null)
+				volumeHandler(_volume);
 		}
 
 		/**
@@ -850,6 +853,7 @@ package org.flixel
 			FlxG.mute = false;
 			FlxG._volume = 0.5;
 			FlxG.sounds = new FlxGroup();
+			FlxG.volumeHandler = null;
 			
 			FlxG.clearBitmapCache();
 			
