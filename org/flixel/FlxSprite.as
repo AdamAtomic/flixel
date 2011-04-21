@@ -88,7 +88,7 @@ package org.flixel
 		protected var _flashRect2:Rectangle;
 		protected var _flashPointZero:Point;
 		protected var _pixels:BitmapData;
-		protected var _framePixels:BitmapData;
+		public var framePixels:BitmapData;
 		protected var _alpha:Number;
 		protected var _color:uint;
 		protected var _ct:ColorTransform;
@@ -165,7 +165,7 @@ package org.flixel
 			_curAnim = null;
 			_mtx = null;
 			_callback = null;
-			_framePixels = null;
+			framePixels = null;
 		}
 		
 		/**
@@ -328,12 +328,12 @@ package org.flixel
 			_flashRect2.y = 0;
 			_flashRect2.width = _pixels.width;
 			_flashRect2.height = _pixels.height;
-			if((_framePixels == null) || (_framePixels.width != width) || (_framePixels.height != height))
-				_framePixels = new BitmapData(width,height);
+			if((framePixels == null) || (framePixels.width != width) || (framePixels.height != height))
+				framePixels = new BitmapData(width,height);
 			origin.make(frameWidth*0.5,frameHeight*0.5);
-			_framePixels.copyPixels(_pixels,_flashRect,_flashPointZero);
+			framePixels.copyPixels(_pixels,_flashRect,_flashPointZero);
 			frames = (_flashRect2.width / _flashRect.width) * (_flashRect2.height / _flashRect.height);
-			if(_ct != null) _framePixels.colorTransform(_flashRect,_ct);
+			if(_ct != null) framePixels.colorTransform(_flashRect,_ct);
 			_caf = 0;
 		}
 		
@@ -441,7 +441,7 @@ package org.flixel
 		 */
 		public function stamp(Brush:FlxSprite,X:int=0,Y:int=0):void
 		{
-			var b:BitmapData = Brush._framePixels;
+			var b:BitmapData = Brush.framePixels;
 			
 			//Simple draw
 			if(((Brush.angle == 0) || (Brush._bakedRotation > 0)) && (Brush.scale.x == 1) && (Brush.scale.y == 1) && (Brush.blend == null))
@@ -504,7 +504,7 @@ package org.flixel
 		public function fill(Color:uint):void
 		{
 			_pixels.fillRect(_flashRect2,Color);
-			if(_pixels != _framePixels)
+			if(_pixels != framePixels)
 				dirty = true;
 		}
 		
@@ -586,7 +586,7 @@ package org.flixel
 				{	//Simple render
 					_flashPoint.x = _point.x;
 					_flashPoint.y = _point.y;
-					c.buffer.copyPixels(_framePixels,_flashRect,_flashPoint,null,null,true);
+					c.buffer.copyPixels(framePixels,_flashRect,_flashPoint,null,null,true);
 				}
 				else
 				{	//Advanced render
@@ -596,7 +596,7 @@ package org.flixel
 					if((angle != 0) && (_bakedRotation <= 0))
 						_mtx.rotate(angle * 0.017453293);
 					_mtx.translate(_point.x+origin.x,_point.y+origin.y);
-					c.buffer.draw(_framePixels,_mtx,null,blend,null,antialiasing);
+					c.buffer.draw(framePixels,_mtx,null,blend,null,antialiasing);
 				}
 				_VISIBLECOUNT++;
 				if(FlxG.visualDebug)
@@ -641,7 +641,7 @@ package org.flixel
 			_point.x += (_point.x > 0)?0.0000001:-0.0000001;
 			_point.y += (_point.y > 0)?0.0000001:-0.0000001;
 			if(PerPixel)
-				return _framePixels.hitTest(new Point(0,0),0xFF,new Point(X-_point.x,Y-_point.y));
+				return framePixels.hitTest(new Point(0,0),0xFF,new Point(X-_point.x,Y-_point.y));
 			return (X > _point.x) && (X < _point.x+frameWidth) && (Y > _point.y) && (Y < _point.y+frameHeight);
 		}
 		
@@ -840,9 +840,9 @@ package org.flixel
 			//Update display bitmap
 			_flashRect.x = rx;
 			_flashRect.y = ry;
-			_framePixels.copyPixels(_pixels,_flashRect,_flashPointZero);
+			framePixels.copyPixels(_pixels,_flashRect,_flashPointZero);
 			_flashRect.x = _flashRect.y = 0;
-			if(_ct != null) _framePixels.colorTransform(_flashRect,_ct);
+			if(_ct != null) framePixels.colorTransform(_flashRect,_ct);
 			if(_callback != null) _callback(_curAnim.name,_curFrame,_caf);
 			dirty = false;
 		}
