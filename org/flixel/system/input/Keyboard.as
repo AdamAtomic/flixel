@@ -2,6 +2,11 @@ package org.flixel.system.input
 {
 	import flash.events.KeyboardEvent;
 	
+	/**
+	 * Keeps track of what keys are pressed and how with handy booleans or strings.
+	 * 
+	 * @author Adam Atomic
+	 */
 	public class Keyboard extends Input
 	{
 		public var ESCAPE:Boolean;

@@ -834,16 +834,26 @@ package org.flixel
 		{
 			var i:uint = 0;
 			var l:uint = plugins.length;
+			var plugin:FlxBasic;
 			while(i < l)
-				(plugins[i++] as FlxBasic).update();
+			{
+				plugin = plugins[i++] as FlxBasic;
+				if(plugin.exists && plugin.active)
+					plugin.update();
+			}
 		}
 		
 		static public function drawPlugins():void
 		{
 			var i:uint = 0;
 			var l:uint = plugins.length;
+			var plugin:FlxBasic;
 			while(i < l)
-				(plugins[i++] as FlxBasic).draw();
+			{
+				plugin = plugins[i++] as FlxBasic;
+				if(plugin.exists && plugin.visible)
+					plugin.draw();
+			}
 		}
 		
 		/**

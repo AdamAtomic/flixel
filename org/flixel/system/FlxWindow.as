@@ -12,18 +12,29 @@ package org.flixel.system
 	
 	import org.flixel.FlxU;
 	
+	/**
+	 * A generic, Flash-based window class, created for use in <code>FlxDebugger</code>.
+	 * 
+	 * @author Adam Atomic
+	 */
 	public class FlxWindow extends Sprite
 	{
 		[Embed(source="../data/handle.png")] protected var ImgHandle:Class;
 
+		/**
+		 * Minimum allowed X and Y dimensions for this window.
+		 */
 		public var minSize:Point;
+		/**
+		 * Maximum allowed X and Y dimensions for this window.
+		 */
 		public var maxSize:Point;
 		
 		protected var _width:uint;
 		protected var _height:uint;
 		protected var _bounds:Rectangle;
 		
-		protected var _bg:Bitmap;
+		protected var _background:Bitmap;
 		protected var _header:Bitmap;
 		protected var _shadow:Bitmap;
 		protected var _title:TextField;
@@ -36,6 +47,17 @@ package org.flixel.system
 		protected var _resizing:Boolean;
 		protected var _resizable:Boolean;
 		
+		/**
+		 * Creates a new window object.  This Flash-based class is mainly (only?) used by <code>FlxDebugger</code>.
+		 * 
+		 * @param Title			The name of the window, displayed in the header bar.
+		 * @param Width			The initial width of the window.
+		 * @param Height		The initial height of the window.
+		 * @param Resizable		Whether you can change the size of the window with a drag handle.
+		 * @param Bounds		A rectangle indicating the valid screen area for the window.
+		 * @param BGColor		What color the window background should be, default is gray and transparent.
+		 * @param TopColor		What color the window header bar should be, default is black and transparent.
+		 */
 		public function FlxWindow(Title:String,Width:Number,Height:Number,Resizable:Boolean=true,Bounds:Rectangle=null,BGColor:uint=0x7f7f7f7f, TopColor:uint=0x7f000000)
 		{
 			super();
@@ -52,9 +74,9 @@ package org.flixel.system
 			
 			_shadow = new Bitmap(new BitmapData(1,2,true,0xff000000));
 			addChild(_shadow);
-			_bg = new Bitmap(new BitmapData(1,1,true,BGColor));
-			_bg.y = 15;
-			addChild(_bg);
+			_background = new Bitmap(new BitmapData(1,1,true,BGColor));
+			_background.y = 15;
+			addChild(_background);
 			_header = new Bitmap(new BitmapData(1,15,true,TopColor));
 			addChild(_header);
 			
@@ -80,6 +102,9 @@ package org.flixel.system
 			addEventListener(Event.ENTER_FRAME,init);
 		}
 		
+		/**
+		 * Clean up memory.
+		 */
 		public function destroy():void
 		{
 			minSize = null;
@@ -87,8 +112,8 @@ package org.flixel.system
 			_bounds = null;
 			removeChild(_shadow);
 			_shadow = null;
-			removeChild(_bg);
-			_bg = null;
+			removeChild(_background);
+			_background = null;
 			removeChild(_header);
 			_header = null;
 			removeChild(_title);
@@ -99,6 +124,12 @@ package org.flixel.system
 			_drag = null;
 		}
 		
+		/**
+		 * Resize the window.  Subject to pre-specified minimums, maximums, and bounding rectangles.
+		 *  
+		 * @param Width		How wide to make the window.
+		 * @param Height	How tall to make the window.
+		 */
 		public function resize(Width:Number,Height:Number):void
 		{
 			_width = Width;
@@ -106,6 +137,12 @@ package org.flixel.system
 			updateSize();
 		}
 		
+		/**
+		 * Change the position of the window.  Subject to pre-specified bounding rectangles.
+		 * 
+		 * @param X		Desired X position of top left corner of the window.
+		 * @param Y		Desired Y position of top left corner of the window.
+		 */
 		public function reposition(X:Number,Y:Number):void
 		{
 			x = X;
@@ -115,6 +152,11 @@ package org.flixel.system
 		
 		//***EVENT HANDLERS***//
 		
+		/**
+		 * Used to set up basic mouse listeners.
+		 * 
+		 * @param E		Flash event.
+		 */
 		protected function init(E:Event=null):void
 		{
 			if(root == null)
@@ -126,6 +168,11 @@ package org.flixel.system
 			stage.addEventListener(MouseEvent.MOUSE_UP,onMouseUp);
 		}
 		
+		/**
+		 * Mouse movement handler.  Figures out if mouse is over handle or header bar or what.
+		 * 
+		 * @param E		Flash mouse event.
+		 */
 		protected function onMouseMove(E:MouseEvent=null):void
 		{
 			if(_dragging) //user is moving the window around
@@ -152,6 +199,11 @@ package org.flixel.system
 			updateGUI();
 		}
 		
+		/**
+		 * Figure out if window is being repositioned (clicked on header) or resized (clicked on handle).
+		 * 
+		 * @param E		Flash mouse event.
+		 */
 		protected function onMouseDown(E:MouseEvent=null):void
 		{
 			if(_overHeader)
@@ -168,6 +220,11 @@ package org.flixel.system
 			}
 		}
 		
+		/**
+		 * User let go of header bar or handler (or nothing), so turn off drag and resize behaviors.
+		 * 
+		 * @param E		Flash mouse event.
+		 */
 		protected function onMouseUp(E:MouseEvent=null):void
 		{
 			_dragging = false;
@@ -176,6 +233,9 @@ package org.flixel.system
 		
 		//***MISC GUI MGMT STUFF***//
 		
+		/**
+		 * Keep the window within the pre-specified bounding rectangle. 
+		 */
 		protected function bound():void
 		{
 			if(_bounds != null)
@@ -185,14 +245,17 @@ package org.flixel.system
 			}
 		}
 		
+		/**
+		 * Update the Flash shapes to match the new size, and reposition the header, shadow, and handle accordingly.
+		 */
 		protected function updateSize():void
 		{
 			_width = FlxU.bound(_width,minSize.x,maxSize.x);
 			_height = FlxU.bound(_height,minSize.y,maxSize.y);
 			
 			_header.scaleX = _width;
-			_bg.scaleX = _width;
-			_bg.scaleY = _height-15;
+			_background.scaleX = _width;
+			_background.scaleY = _height-15;
 			_shadow.scaleX = _width;
 			_shadow.y = _height;
 			_title.width = _width-4;
@@ -203,6 +266,9 @@ package org.flixel.system
 			}
 		}
 		
+		/**
+		 * Figure out if the header or handle are highlighted.
+		 */
 		protected function updateGUI():void
 		{
 			if(_overHeader || _overHandle)
