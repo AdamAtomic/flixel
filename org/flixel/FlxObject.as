@@ -574,7 +574,7 @@ package org.flixel
 		 * 
 		 * @return	Whether the object is on screen or not.
 		 */
-		override public function onScreen(Camera:FlxCamera=null):Boolean
+		public function onScreen(Camera:FlxCamera=null):Boolean
 		{
 			if(Camera == null)
 				Camera = FlxG.camera;
