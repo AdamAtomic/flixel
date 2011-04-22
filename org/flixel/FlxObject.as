@@ -152,7 +152,6 @@ package org.flixel
 		protected var _pathNodeIndex:int;
 		protected var _pathMode:uint;
 		protected var _pathInc:int;
-		protected var _pathCheck:FlxPoint;
 		protected var _pathRotate:Boolean;
 		
 		/**
@@ -201,7 +200,6 @@ package org.flixel
 			path = null;
 			pathSpeed = 0;
 			pathAngle = 0;
-			_pathCheck = null;
 		}
 		
 		/**
@@ -222,7 +220,6 @@ package org.flixel
 			if(path != null)
 				path.destroy();
 			path = null;
-			_pathCheck = null;
 		}
 		
 		override public function preUpdate():void
@@ -365,7 +362,6 @@ package org.flixel
 			pathSpeed = FlxU.abs(Speed);
 			_pathMode = Mode;
 			_pathRotate = AutoRotate;
-			_pathCheck = new FlxPoint();
 			
 			//get starting node
 			if((_pathMode == PATH_BACKWARD) || (_pathMode == PATH_LOOP_BACKWARD))
@@ -378,10 +374,6 @@ package org.flixel
 				_pathNodeIndex = 0;
 				_pathInc = 1;
 			}
-			getMidpoint(_point);
-			var node:FlxPoint = path.nodes[_pathNodeIndex];
-			_pathCheck.x = node.x - _point.x;
-			_pathCheck.y = node.y - _point.y;
 		}
 		
 		public function stopFollowingPath(DestroyPath:Boolean=false):void
@@ -399,8 +391,10 @@ package org.flixel
 			var oldNode:FlxPoint = path.nodes[_pathNodeIndex];
 			if(oldNode != null)
 			{
-				x = oldNode.x - width*0.5;
-				y = oldNode.y - height*0.5;
+				if((_pathMode & PATH_VERTICAL_ONLY) == 0)
+					x = oldNode.x - width*0.5;
+				if((_pathMode & PATH_HORIZONTAL_ONLY) == 0)
+					y = oldNode.y - height*0.5;
 			}
 			_pathNodeIndex += _pathInc;
 			
@@ -457,19 +451,7 @@ package org.flixel
 				}
 			}
 
-			getMidpoint(_point);
-			var node:FlxPoint = path.nodes[_pathNodeIndex];
-			if(oldNode != null)
-			{
-				_pathCheck.x = node.x - oldNode.x;
-				_pathCheck.y = node.y - oldNode.y;
-			}
-			else
-			{
-				_pathCheck.x = node.x - _point.x;
-				_pathCheck.y = node.y - _point.y;
-			}
-			return node;
+			return path.nodes[_pathNodeIndex];
 		}
 		
 		public function updatePathMotion():void
@@ -481,20 +463,22 @@ package org.flixel
 			var dx:Number = node.x - _point.x;
 			var dy:Number = node.y - _point.y;
 			
-			if((_pathMode & PATH_HORIZONTAL_ONLY) > 0)
+			var horizontalOnly:Boolean = (_pathMode & PATH_HORIZONTAL_ONLY) > 0;
+			var verticalOnly:Boolean = (_pathMode & PATH_VERTICAL_ONLY) > 0;
+			
+			if(horizontalOnly)
 			{
-				if( ((_pathCheck.x <= 0) && (dx >= 0)) || ((_pathCheck.x >= 0) && (dx <= 0)) )
+				if(((dx>0)?dx:-dx) < pathSpeed*FlxG.elapsed)
 					node = advancePath();
 			}
-			else if((_pathMode & PATH_VERTICAL_ONLY) > 0)
+			else if(verticalOnly)
 			{
-				if( ((_pathCheck.y <= 0) && (dy >= 0)) || ((_pathCheck.y >= 0) && (dy <= 0)) )
+				if(((dy>0)?dy:-dy) < pathSpeed*FlxG.elapsed)
 					node = advancePath();
 			}
 			else
 			{
-				if( (((_pathCheck.x <= 0) && (dx >= 0)) || ((_pathCheck.x >= 0) && (dx <= 0))) &&
-					(((_pathCheck.y <= 0) && (dy >= 0)) || ((_pathCheck.y >= 0) && (dy <= 0))) )
+				if(Math.sqrt(dx*dx + dy*dy) < pathSpeed*FlxG.elapsed)
 					node = advancePath();
 			}
 			
@@ -504,23 +488,25 @@ package org.flixel
 				//set velocity based on path mode
 				_point.x = x + width*0.5;
 				_point.y = y + height*0.5;
-				if( ((_pathMode & PATH_HORIZONTAL_ONLY) > 0) || (_point.y == node.y))
+				if(horizontalOnly || (_point.y == node.y))
 				{
 					velocity.x = (_point.x < node.x)?pathSpeed:-pathSpeed;
-					velocity.y = 0;
 					if(velocity.x < 0)
 						pathAngle = -90;
 					else
 						pathAngle = 90;
+					if(!horizontalOnly)
+						velocity.y = 0;
 				}
-				else if( ((_pathMode & PATH_VERTICAL_ONLY) > 0) || (_point.x == node.x))
+				else if(verticalOnly || (_point.x == node.x))
 				{
-					velocity.x = 0;
 					velocity.y = (_point.y < node.y)?pathSpeed:-pathSpeed;
 					if(velocity.y < 0)
 						pathAngle = 0;
 					else
 						pathAngle = 180;
+					if(!verticalOnly)
+						velocity.x = 0;
 				}
 				else
 				{
