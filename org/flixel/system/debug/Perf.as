@@ -9,6 +9,11 @@ package org.flixel.system.debug
 	import org.flixel.FlxG;
 	import org.flixel.system.FlxWindow;
 	
+	/**
+	 * A simple performance monitor widget, for use in the debugger overlay.
+	 * 
+	 * @author Adam Atomic
+	 */
 	public class Perf extends FlxWindow
 	{
 		protected var _text:TextField;
@@ -27,6 +32,17 @@ package org.flixel.system.debug
 		protected var _visibleObject:Array;
 		protected var _visibleObjectMarker:uint;
 		
+		/**
+		 * Creates a new window object.  This Flash-based class is mainly (only?) used by <code>FlxDebugger</code>.
+		 * 
+		 * @param Title			The name of the window, displayed in the header bar.
+		 * @param Width			The initial width of the window.
+		 * @param Height		The initial height of the window.
+		 * @param Resizable		Whether you can change the size of the window with a drag handle.
+		 * @param Bounds		A rectangle indicating the valid screen area for the window.
+		 * @param BGColor		What color the window background should be, default is gray and transparent.
+		 * @param TopColor		What color the window header bar should be, default is black and transparent.
+		 */
 		public function Perf(Title:String, Width:Number, Height:Number, Resizable:Boolean=true, Bounds:Rectangle=null, BGColor:uint=0x7f7f7f7f, TopColor:uint=0x7f000000)
 		{
 			super(Title, Width, Height, Resizable, Bounds, BGColor, TopColor);
@@ -57,6 +73,9 @@ package org.flixel.system.debug
 			_visibleObjectMarker = 0;
 		}
 		
+		/**
+		 * Clean up memory.
+		 */
 		override public function destroy():void
 		{
 			removeChild(_text);
@@ -69,6 +88,10 @@ package org.flixel.system.debug
 			super.destroy();
 		}
 		
+		/**
+		 * Called each frame, but really only updates once every second or so, to save on performance.
+		 * Takes all the data in the accumulators and parses it into useful performance data.
+		 */
 		public function update():void
 		{
 			var time:int = getTimer();
@@ -126,26 +149,51 @@ package org.flixel.system.debug
 			}
 		}
 		
+		/**
+		 * Keep track of how long updates take.
+		 * 
+		 * @param Time	How long this update took.
+		 */
 		public function flixelUpdate(Time:int):void
 		{
 			_flixelUpdate[_flixelUpdateMarker++] = Time;
 		}
 		
+		/**
+		 * Keep track of how long renders take.
+		 * 
+		 * @param	Time	How long this render took.
+		 */
 		public function flixelDraw(Time:int):void
 		{
 			_flixelDraw[_flixelDrawMarker++] = Time;
 		}
 		
+		/**
+		 * Keep track of how long the Flash player and browser take.
+		 * 
+		 * @param Time	How long Flash/browser took.
+		 */
 		public function flash(Time:int):void
 		{
 			_flash[_flashMarker++] = Time;
 		}
 		
+		/**
+		 * Keep track of how many objects were updated.
+		 * 
+		 * @param Count	How many objects were updated.
+		 */
 		public function activeObjects(Count:int):void
 		{
 			_activeObject[_objectMarker++] = Count;
 		}
 		
+		/**
+		 * Keep track of how many objects were updated.
+		 *  
+		 * @param Count	How many objects were updated.
+		 */
 		public function visibleObjects(Count:int):void
 		{
 			_visibleObject[_visibleObjectMarker++] = Count;

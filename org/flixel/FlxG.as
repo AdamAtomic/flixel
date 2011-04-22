@@ -9,9 +9,9 @@ package org.flixel
 	import flash.geom.Rectangle;
 	
 	import org.flixel.plugin.DebugPathDisplay;
+	import org.flixel.plugin.TimerManager;
 	import org.flixel.system.FlxDebugger;
 	import org.flixel.system.FlxQuadTree;
-	import org.flixel.system.FlxSound;
 	import org.flixel.system.input.*;
 	
 	/**
@@ -167,6 +167,8 @@ package org.flixel
 		static public var flashGfx:Graphics;
 		
 		static public var plugins:Array;
+		
+		static public var volumeHandler:Function;
 		
 		static public function getLibraryName():String
 		{
@@ -452,6 +454,8 @@ package org.flixel
 				_volume = 0;
 			else if(_volume > 1)
 				_volume = 1;
+			if(volumeHandler != null)
+				volumeHandler(_volume);
 		}
 
 		/**
@@ -551,13 +555,15 @@ package org.flixel
 			if(key == null)
 			{
 				key = Width+"x"+Height+":"+Color;
-				if(Unique && (_cache[key] != undefined) && (_cache[key] != null))
+				if(Unique && checkBitmapCache(key))
 				{
 					//Generate a unique key
 					var inc:uint = 0;
 					var ukey:String;
-					do { ukey = key + inc++;
-					} while((_cache[ukey] != undefined) && (_cache[ukey] != null));
+					do
+					{
+						ukey = key + inc++;
+					} while(checkBitmapCache(ukey));
 					key = ukey;
 				}
 			}
@@ -581,13 +587,15 @@ package org.flixel
 			if(key == null)
 			{
 				key = String(Graphic)+(Reverse?"_REVERSE_":"");
-				if(Unique && (_cache[key] != undefined) && (_cache[key] != null))
+				if(Unique && checkBitmapCache(key))
 				{
 					//Generate a unique key
 					var inc:uint = 0;
 					var ukey:String;
-					do { ukey = key + inc++;
-					} while((_cache[ukey] != undefined) && (_cache[ukey] != null));
+					do
+					{
+						ukey = key + inc++;
+					} while(checkBitmapCache(ukey));
 					key = ukey;
 				}
 			}
@@ -826,16 +834,26 @@ package org.flixel
 		{
 			var i:uint = 0;
 			var l:uint = plugins.length;
+			var plugin:FlxBasic;
 			while(i < l)
-				(plugins[i++] as FlxBasic).update();
+			{
+				plugin = plugins[i++] as FlxBasic;
+				if(plugin.exists && plugin.active)
+					plugin.update();
+			}
 		}
 		
 		static public function drawPlugins():void
 		{
 			var i:uint = 0;
 			var l:uint = plugins.length;
+			var plugin:FlxBasic;
 			while(i < l)
-				(plugins[i++] as FlxBasic).draw();
+			{
+				plugin = plugins[i++] as FlxBasic;
+				if(plugin.exists && plugin.visible)
+					plugin.draw();
+			}
 		}
 		
 		/**
@@ -850,6 +868,7 @@ package org.flixel
 			FlxG.mute = false;
 			FlxG._volume = 0.5;
 			FlxG.sounds = new FlxGroup();
+			FlxG.volumeHandler = null;
 			
 			FlxG.clearBitmapCache();
 			
@@ -866,6 +885,7 @@ package org.flixel
 			
 			plugins = new Array();
 			addPlugin(new DebugPathDisplay());
+			addPlugin(new TimerManager());
 			
 			FlxG.mouse = new Mouse(FlxG._game._mouse);
 			FlxG.keys = new Keyboard();

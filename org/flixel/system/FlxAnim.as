@@ -1,7 +1,9 @@
 package org.flixel.system
 {
 	/**
-	 * Just a helper structure for the FlxSprite animation system
+	 * Just a helper structure for the FlxSprite animation system.
+	 * 
+	 * @author	Adam Atomic
 	 */
 	public class FlxAnim
 	{
@@ -40,6 +42,9 @@ package org.flixel.system
 			looped = Looped;
 		}
 		
+		/**
+		 * Clean up memory.
+		 */
 		public function destroy():void
 		{
 			frames = null;

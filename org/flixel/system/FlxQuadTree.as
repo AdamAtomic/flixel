@@ -152,6 +152,9 @@ package org.flixel.system
 			_my = _t+_hh;
 		}
 		
+		/**
+		 * Clean up memory.
+		 */
 		public function destroy():void
 		{
 			_headA.destroy();
@@ -180,7 +183,15 @@ package org.flixel.system
 			_op = null;
 			_on = null;
 		}
-		
+
+		/**
+		 * Load objects and/or groups into the quad tree, and register notify and processing callbacks.
+		 * 
+		 * @param ObjectOrGroup1	Any object that is or extends FlxObject or FlxGroup.
+		 * @param ObjectOrGroup2	Any object that is or extends FlxObject or FlxGroup.  If null, the first parameter will be checked against itself.
+		 * @param NotifyCallback	A function with the form <code>myFunction(Object1:FlxObject,Object2:FlxObject):void</code> that is called whenever two objects are found to overlap in world space, and either no ProcessCallback is specified, or the ProcessCallback returns true. 
+		 * @param ProcessCallback	A function with the form <code>myFunction(Object1:FlxObject,Object2:FlxObject):Boolean</code> that is called whenever two objects are found to overlap in world space.  The NotifyCallback is only called if this function returns true.  See FlxObject.separate(). 
+		 */
 		public function load(ObjectOrGroup1:FlxBasic, ObjectOrGroup2:FlxBasic=null, NotifyCallback:Function=null, ProcessCallback:Function=null):void
 		{
 			add(ObjectOrGroup1, A_LIST);

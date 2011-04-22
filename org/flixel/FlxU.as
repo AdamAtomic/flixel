@@ -170,6 +170,8 @@ package org.flixel
 		{
 			var x:Number = Point2.x - Point1.x;
 			var y:Number = Point2.y - Point1.y;
+			if((x == 0) && (y == 0))
+				return 0;
 			var c1:Number = 3.14159265 * 0.25;
 			var c2:Number = 3 * c1;
 			var ay:Number = (y < 0)?-y:y;

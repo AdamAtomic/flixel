@@ -25,11 +25,11 @@ package org.flixel
 		 * Set this to true if you want this button to function even while the game is paused.
 		 */
 		public var pauseProof:Boolean;
-
 		/**
 		 * Shows the current state of the button.
 		 */
-		protected var _status:uint;
+		public var status:uint;
+
 		/**
 		 * Used for checkbox-style behavior.
 		 */
@@ -38,6 +38,14 @@ package org.flixel
 		 * This function is called when the button is clicked.
 		 */
 		protected var _onClick:Function;
+		/**
+		 * This function is called when the mouse goes over the button.
+		 */
+		protected var _onOver:Function;
+		/**
+		 * This function is called when the mouse leaves the button area.
+		 */
+		protected var _onOut:Function;
 		/**
 		 * Tracks whether or not the button is currently pressed.
 		 */
@@ -53,13 +61,17 @@ package org.flixel
 		 * 
 		 * @param	X			The X position of the button.
 		 * @param	Y			The Y position of the button.
-		 * @param	Callback	The function to call whenever the button is clicked.
 		 * @param	Label		The text that you want to appear on the button.
+		 * @param	OnClick		The function to call whenever the button is clicked.
+		 * @param	OnOver		The function to call whenever the mouse goes over the button.
+		 * @param	OnOut		The function to call whenever the mouse leaves the button area.
 		 */
-		public function FlxButton(X:int,Y:int,Callback:Function,Label:String=null)
+		public function FlxButton(X:Number=0,Y:Number=0,Label:String=null,OnClick:Function=null,OnOver:Function=null,OnOut:Function=null)
 		{
 			super(X,Y);
-			_onClick = Callback;
+			_onClick = OnClick;
+			_onOver = OnOver;
+			_onOut = OnOut;
 			if(Label != null)
 			{
 				label = new FlxText(0,0,80,Label);
@@ -68,7 +80,7 @@ package org.flixel
 			}
 			loadGraphic(ImgDefaultButton,true,false,80,20);
 
-			_status = NORMAL;
+			status = NORMAL;
 			pauseProof = false;
 			_onToggle = false;
 			_pressed = false;
@@ -145,17 +157,25 @@ package org.flixel
 				{
 					c = cameras[i++] as FlxCamera;
 					FlxG.mouse.getWorldPosition(c,_point);
-					if(overlapsPoint(_point.x,_point.y,c))
+					if(overlapsPoint(_point,true,c))
 					{
 						offAll = false;
 						if(FlxG.mouse.justPressed())
-							_status = PRESSED;
-						if(_status == NORMAL)
-							_status = HIGHLIGHT;
+							status = PRESSED;
+						if(status == NORMAL)
+						{
+							status = HIGHLIGHT;
+							if(_onOver != null)
+								_onOver();
+						}
 					}
 				}
 				if(offAll)
-					_status = NORMAL;
+				{
+					if((status != NORMAL) && (_onOut != null))
+						_onOut();
+					status = NORMAL;
+				}
 			}
 		
 			//Then if the label and/or the label offset exist,
@@ -172,10 +192,10 @@ package org.flixel
 			}
 			
 			//Then pick the appropriate frame of animation
-			if((_status == HIGHLIGHT) && _onToggle)
+			if((status == HIGHLIGHT) && _onToggle)
 				frame = NORMAL;
 			else
-				frame = _status;
+				frame = status;
 		}
 		
 		override public function draw():void
@@ -221,7 +241,7 @@ package org.flixel
 		 */
 		protected function onMouseUp(event:MouseEvent):void
 		{
-			if(exists && visible && active && (_status == PRESSED) && (_onClick != null) && (pauseProof || !FlxG.paused))
+			if(exists && visible && active && (status == PRESSED) && (_onClick != null) && (pauseProof || !FlxG.paused))
 				_onClick();
 		}
 	}

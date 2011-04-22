@@ -51,5 +51,14 @@ package org.flixel
 			}
 			return;
 		}
+		
+		
+		/**
+		 * Triggered whenever this sprite is launched by a <code>FlxEmitter</code>.
+		 */
+		public function onEmit():void
+		{
+			//nothing for now
+		}
 	}
 }

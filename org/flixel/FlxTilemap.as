@@ -65,7 +65,6 @@ package org.flixel
 		protected var _rects:Array;
 		protected var _tileWidth:uint;
 		protected var _tileHeight:uint;
-		protected var _callbacks:Array;
 		protected var _tileObjects:Array;
 		
 		protected var _debugTileNotSolid:BitmapData;
@@ -95,7 +94,6 @@ package org.flixel
 			_rects = null;
 			_tiles = null;
 			_tileObjects = null;
-			_callbacks = new Array();
 			immovable = true;
 			cameras = null;
 			_debugTileNotSolid = null;
@@ -123,7 +121,6 @@ package org.flixel
 			_buffers = null;
 			_data = null;
 			_rects = null;
-			_callbacks = null;
 			_debugTileNotSolid = null;
 			_debugTilePartial = null;
 			_debugTileSolid = null;
@@ -260,8 +257,8 @@ package org.flixel
 			_point.y = int(Camera.scroll.y*scrollFactor.y) - y;
 			var tx:int = (_point.x + ((_point.x > 0)?0.0000001:-0.0000001))/_tileWidth;
 			var ty:int = (_point.y + ((_point.y > 0)?0.0000001:-0.0000001))/_tileHeight;
-			var sr:uint = Buffer.screenRows;
-			var sc:uint = Buffer.screenCols;
+			var sr:uint = Buffer.rows;
+			var sc:uint = Buffer.columns;
 			
 			//Bound the upper left corner
 			if(tx < 0)
@@ -668,17 +665,24 @@ package org.flixel
 		}
 		
 		/**
-		 * Checks for overlaps between the provided object and any tiles above the collision index.
+		 * Checks to see if some <code>FlxObject</code> overlaps this <code>FlxObject</code> object in world space.
+		 * WARNING: Currently tilemaps do NOT support screen space overlap checks!
 		 * 
-		 * @param	Rect		The <code>FlxRect</code> you want to check against.
+		 * @param	Object			The object being tested.
+		 * @param	InScreenSpace	Whether to take scroll factors into account when checking for overlap.
+		 * @param	Camera			Specify which game camera you want.  If null getScreenXY() will just grab the first global camera.
+		 * 
+		 * @return	Whether or not the two objects overlap.
 		 */
-		override public function overlaps(Object:FlxObject):Boolean
+		override public function overlaps(Object:FlxObject,InScreenSpace:Boolean=false,Camera:FlxCamera=null):Boolean
 		{
 			return overlapsWithCallback(Object);
 		}
 		
 		public function overlapsWithCallback(Object:FlxObject,Callback:Function=null):Boolean
 		{
+			//TODO: support screenspace overlap checks
+			
 			var results:Boolean = false;
 			
 			//Figure out what tiles we need to check against
@@ -746,26 +750,25 @@ package org.flixel
 		}
 		
 		/**
-		 * Checks to see if a point in 2D space overlaps a solid tile.
+		 * Checks to see if a point in 2D world space overlaps this <code>FlxObject</code> object.
 		 * 
-		 * @param	X			The X coordinate of the point.
-		 * @param	Y			The Y coordinate of the point.
-		 * @param	Camera		Specify which game camera you want.  If null getScreenXY() will just grab the first global camera.
-		 * @param	PerPixel	Not available in <code>FlxTilemap</code>, ignored.
+		 * @param	Point			The point in world space you want to check.
+		 * @param	InScreenSpace	Whether to take scroll factors into account when checking for overlap.
+		 * @param	Camera			Specify which game camera you want.  If null getScreenXY() will just grab the first global camera.
 		 * 
 		 * @return	Whether or not the point overlaps this object.
 		 */
-		override public function overlapsPoint(X:Number,Y:Number,Camera:FlxCamera=null,PerPixel:Boolean = false):Boolean
+		override public function overlapsPoint(Point:FlxPoint,InScreenSpace:Boolean=false,Camera:FlxCamera=null):Boolean
 		{
+			if(!InScreenSpace)
+				return (_tileObjects[_data[uint(uint((Point.y-y)/_tileHeight)*widthInTiles + (Point.x-x)/_tileWidth)]] as FlxTile).allowCollisions > 0;
+			
 			if(Camera == null)
 				Camera = FlxG.camera;
-			X = X + Camera.scroll.x;
-			Y = Y + Camera.scroll.y;
-			_point.x = x - int(Camera.scroll.x*scrollFactor.x);//copied from getScreenXY()
-			_point.y = y - int(Camera.scroll.y*scrollFactor.y);
-			_point.x += (_point.x > 0)?0.0000001:-0.0000001;
-			_point.y += (_point.y > 0)?0.0000001:-0.0000001;
-			return Boolean((_tileObjects[_data[uint(uint((Y-_point.y)/_tileHeight)*widthInTiles + (X-_point.x)/_tileWidth)]] as FlxTile).allowCollisions);
+			Point.x = Point.x - Camera.scroll.x;
+			Point.y = Point.y - Camera.scroll.y;
+			getScreenXY(_point,Camera);
+			return (_tileObjects[_data[uint(uint((Point.y-_point.y)/_tileHeight)*widthInTiles + (Point.x-_point.x)/_tileWidth)]] as FlxTile).allowCollisions > 0;
 		}
 		
 		/**
@@ -1118,7 +1121,7 @@ package org.flixel
 			var r:uint = 0;
 			var c:uint;
 			var p:uint;
-			var csv:String;
+			var csv:String = "";
 			var w:uint = bitmapData.width;
 			var h:uint = bitmapData.height;
 			while(r < h)

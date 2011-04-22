@@ -18,6 +18,7 @@ package org.flixel
 	
 	import org.flixel.system.FlxDebugger;
 	import org.flixel.system.FlxReplay;
+	import org.flixel.plugin.TimerManager;
 
 	/**
 	 * FlxGame is the heart of all flixel games, and contains a bunch of basic game loops and things.
@@ -38,6 +39,7 @@ package org.flixel
 		//[Embed(source="data/nokiafc22.ttf",fontFamily="system")] protected var junk:String;
 		
 		[Embed(source="data/beep.mp3")] protected var SndBeep:Class;
+		[Embed(source="data/logo.png")] protected var ImgLogo:Class;
 
 		/**
 		 * Sets 0, -, and + to control the global volume sound volume.
@@ -379,6 +381,9 @@ package org.flixel
 			FlxG.destroySounds();
 			if(_debugger != null)
 				_debugger.watch.removeAll();
+			var timerManager:TimerManager = FlxG.getPlugin(TimerManager) as TimerManager;
+			if(timerManager != null)
+				timerManager.clear();
 			
 			//Destroy the old state (if there is an old state)
 			if(_state != null)
@@ -519,8 +524,8 @@ package org.flixel
 			
 			FlxG.elapsed = FlxG.timeScale*(_step/1000);
 			FlxG.updateSounds();
-			_state.update();
 			FlxG.updatePlugins();
+			_state.update();
 			FlxG.updateCameras();
 			
 			if(_debuggerUp)
@@ -669,11 +674,20 @@ package org.flixel
 			var hh:uint = h/2;
 			var tri:uint = FlxU.min(hw,hh)/3;
 			g.moveTo(hw-tri,hh-tri);
-			g.beginFill(0xffffff);
+			g.beginFill(0xffffff,0.65);
 			g.lineTo(hw+tri,hh);
 			g.lineTo(hw-tri,hh+tri);
 			g.lineTo(hw-tri,hh-tri);
 			g.endFill();
+			
+			var logo:Bitmap = new ImgLogo();
+			logo.scaleX = int(tri/10);
+			if(logo.scaleX < 1)
+				logo.scaleX = 1;
+			logo.scaleY = logo.scaleX;
+			logo.x -= logo.scaleX;
+			logo.alpha = 0.35;
+			_focus.addChild(logo);
 
 			addChild(_focus);
 		}
