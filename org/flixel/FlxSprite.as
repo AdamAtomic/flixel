@@ -521,7 +521,7 @@ package org.flixel
 				var ta:int = angle%360;
 				if(ta < 0)
 					ta += 360;
-				_caf = ta/_bakedRotation;
+				_caf = ta/_bakedRotation + 0.5;
 				if(oc != _caf)
 					dirty = true;
 			}
