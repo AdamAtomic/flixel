@@ -433,21 +433,16 @@ package org.flixel
 		 * 
 		 * @param	Camera	Which camera to draw the debug visuals to.
 		 */
-		override public function drawDebug(Camera:FlxCamera=null, offset:FlxPoint=null):void
+		override public function drawDebug(Camera:FlxCamera=null):void
 		{
 			if(Camera == null)
 				Camera = FlxG.camera;
 
 			//get bounding box coordinates
-			var bx:Number = x - int(Camera.scroll.x*scrollFactor.x); //copied from getScreenXY()
-			var by:Number = y - int(Camera.scroll.y*scrollFactor.y);
+			var bx:Number = boundingX - int(Camera.scroll.x*scrollFactor.x); //copied from getScreenXY()
+			var by:Number = boundingY - int(Camera.scroll.y*scrollFactor.y);
 			bx = int(bx + ((bx > 0)?0.0000001:-0.0000001));
 			by = int(by + ((by > 0)?0.0000001:-0.0000001));
-			if(offset)
-			{
-				bx -= offset.x;
-				by -= offset.y;
-			}
 			var bw:int = (width != int(width))?width:width-1;
 			var bh:int = (height != int(height))?height:height-1;
 
@@ -754,6 +749,24 @@ package org.flixel
 			Point.x += (Point.x > 0)?0.0000001:-0.0000001;
 			Point.y += (Point.y > 0)?0.0000001:-0.0000001;
 			return Point;
+		}
+		
+		/**
+		 * Bounding box left position
+		 * @return 
+		 */
+		public function get boundingX():Number
+		{
+			return x;
+		}
+		
+		/**
+		 * Bounding box top position
+		 * @return 
+		 */		
+		public function get boundingY():Number
+		{
+			return y;
 		}
 		
 		/**

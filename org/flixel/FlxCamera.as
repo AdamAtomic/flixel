@@ -231,8 +231,8 @@ package org.flixel
 				else
 				{
 					var t:Number;
-					var targetX:Number = target.x + ((target.x > 0)?0.0000001:-0.0000001);
-					var targetY:Number = target.y + ((target.y > 0)?0.0000001:-0.0000001);
+					var targetX:Number = target.boundingX + ((target.x > 0)?0.0000001:-0.0000001);
+					var targetY:Number = target.boundingY + ((target.y > 0)?0.0000001:-0.0000001);
 					
 					t = targetX - deadzone.x;
 					if(scroll.x > t)

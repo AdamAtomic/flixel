@@ -730,6 +730,16 @@ package org.flixel
 			return _alpha;
 		}
 		
+		override public function get boundingX():Number
+		{
+			return x - offset.x;
+		}
+		
+		override public function get boundingY():Number
+		{
+			return y - offset.y;
+		}
+		
 		/**
 		 * @private
 		 */
