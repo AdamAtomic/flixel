@@ -973,7 +973,6 @@ package org.flixel
 				flashGfxSprite = new Sprite();
 				flashGfx = flashGfxSprite.graphics;
 			}
-			FlxPath.debugDrawTracker = false;
 
 			FlxCamera.defaultZoom = Zoom;
 			FlxG._cameraRect = new Rectangle();

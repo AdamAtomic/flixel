@@ -4,28 +4,48 @@ package org.flixel
 	 * This is an organizational class that can update and render a bunch of <code>FlxBasic</code>s.
 	 * NOTE: Although <code>FlxGroup</code> extends <code>FlxBasic</code>, it will not automatically
 	 * add itself to the global collisions quad tree, it will only add its members.
+	 * 
+	 * @author	Adam Atomic
 	 */
 	public class FlxGroup extends FlxBasic
 	{
+		/**
+		 * Use with <code>sort()</code> to sort in ascending order.
+		 */
 		static public const ASCENDING:int = -1;
+		/**
+		 * Use with <code>sort()</code> to sort in descending order.
+		 */
 		static public const DESCENDING:int = 1;
 		
-		static public const STRICT:uint = 0;
-		static public const GROW:uint = 1;
-		
 		/**
-		 * Array of all the <code>FlxBasic</code>s that exist in this layer.
+		 * Array of all the <code>FlxBasic</code>s that exist in this group.
 		 */
 		public var members:Array;
+		/**
+		 * The number of entries in the members array.
+		 * For performance and safety you should check this variable
+		 * instead of members.length unless you really know what you're doing!
+		 */
 		public var length:Number;
 
+		/**
+		 * Internal tracker for the maximum capacity of the group.
+		 * Default is 0, or no max capacity.
+		 */
 		protected var _maxSize:uint;
+		/**
+		 * Internal helper variable for recycling objects a la <code>FlxEmitter</code>.
+		 */
 		protected var _marker:uint;
 		
 		/**
-		 * Helpers for sorting members.
+		 * Helper for sort.
 		 */
 		protected var _sortIndex:String;
+		/**
+		 * Helper for sort.
+		 */
 		protected var _sortOrder:int;
 
 		/**
@@ -63,14 +83,15 @@ package org.flixel
 			_sortIndex = null;
 		}
 		
+		/**
+		 * Just making sure we don't increment the active objects count.
+		 */
 		override public function preUpdate():void
 		{
-			//just don't increment active count really
 		}
 		
 		/**
-		 * Automatically goes through and calls update on everything you added,
-		 * override this function to handle custom input and perform collisions.
+		 * Automatically goes through and calls update on everything you added.
 		 */
 		override public function update():void
 		{
@@ -89,8 +110,7 @@ package org.flixel
 		}
 		
 		/**
-		 * Automatically goes through and calls render on everything you added,
-		 * override this loop to control render order manually.
+		 * Automatically goes through and calls render on everything you added.
 		 */
 		override public function draw():void
 		{
@@ -104,11 +124,17 @@ package org.flixel
 			}
 		}
 		
+		/**
+		 * The maximum capacity of this group.  Default is 0, meaning no max capacity, and the group can just grow.
+		 */
 		public function get maxSize():uint
 		{
 			return _maxSize;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set maxSize(Size:uint):void
 		{
 			_maxSize = Size;
@@ -131,14 +157,15 @@ package org.flixel
 		}
 		
 		/**
-		 * Adds a new <code>FlxBasic</code> subclass (FlxBasic, FlxSprite, MyEnemy, etc) to the group.
+		 * Adds a new <code>FlxBasic</code> subclass (FlxBasic, FlxSprite, Enemy, etc) to the group.
 		 * FlxGroup will try to replace a null member of the array first.
 		 * Failing that, FlxGroup will add it to the end of the member array,
 		 * assuming there is room for it, and doubling the size of the array if necessary.
-		 * WARNING: If the group has a maxSize that has already been met,
-		 * the object will NOT be added to the group!
 		 *
-		 * @param	Object			The object you want to add to the group.
+		 * <p>WARNING: If the group has a maxSize that has already been met,
+		 * the object will NOT be added to the group!</p>
+		 *
+		 * @param	Object		The object you want to add to the group.
 		 *
 		 * @return	The same <code>FlxBasic</code> object that was passed in.
 		 */
@@ -186,21 +213,21 @@ package org.flixel
 		/**
 		 * Recycling is designed to help you reuse game objects without always re-allocating or "newing" them.
 		 * 
-		 * If you specified a maximum size for this group (like in FlxEmitter),
+		 * <p>If you specified a maximum size for this group (like in FlxEmitter),
 		 * then recycle will employ what we're calling "rotating" recycling.
 		 * Recycle() will first check to see if the group is at capacity yet.
 		 * If group is not yet at capacity, recycle() returns a new object.
-		 * If the group IS at capacity, then recycle() just returns the next object in line.
+		 * If the group IS at capacity, then recycle() just returns the next object in line.</p>
 		 * 
-		 * If you did NOT specify a maximum size for this group,
+		 * <p>If you did NOT specify a maximum size for this group,
 		 * then recycle() will employ what we're calling "grow-style" recycling.
 		 * Recycle() will return either the first object with exists == false,
 		 * or, finding none, add a new object to the array,
-		 * doubling the size of the array if necessary.
+		 * doubling the size of the array if necessary.</p>
 		 * 
-		 * WARNING: If this function needs to create a new object,
+		 * <p>WARNING: If this function needs to create a new object,
 		 * and no object class was provided, it will return null
-		 * instead of a valid object!
+		 * instead of a valid object!</p>
 		 * 
 		 * @param	ObjectClass		The class type you want to recycle (e.g. FlxSprite, EvilRobot, etc). Do NOT "new" the class in the parameter!
 		 * 
@@ -293,6 +320,13 @@ package org.flixel
 			members.sort(sortHandler);
 		}
 
+		/**
+		 * Go through and set the specified variable to the specified value on all members of the group.
+		 * 
+		 * @param	VariableName	The string representation of the variable name you want to modify, for example "visible" or "scrollFactor".
+		 * @param	Value			The value you want to assign to that variable.
+		 * @param	Recurse			Default value is true, meaning if <code>setAll()</code> encounters a member that is a group, it will call <code>setAll()</code> on that group rather than modifying its variable.
+		 */
 		public function setAll(VariableName:String,Value:Object,Recurse:Boolean=true):void
 		{
 			var b:FlxBasic;
@@ -310,6 +344,13 @@ package org.flixel
 			}
 		}
 		
+		/**
+		 * Go through and call the specified function on all members of the group.
+		 * Currently only works on functions that have no required parameters.
+		 * 
+		 * @param	FunctionName	The string representation of the function you want to call on each object, for example "kill()" or "init()".
+		 * @param	Recurse			Default value is true, meaning if <code>callAll()</code> encounters a member that is a group, it will call <code>callAll()</code> on that group rather than calling the group's function.
+		 */ 
 		public function callAll(FunctionName:String,Recurse:Boolean=true):void
 		{
 			var b:FlxBasic;
@@ -494,7 +535,7 @@ package org.flixel
 		}
 		
 		/**
-		 * Calls kill on the group and all its members.
+		 * Calls kill on the group's members and then on the group itself.
 		 */
 		override public function kill():void
 		{

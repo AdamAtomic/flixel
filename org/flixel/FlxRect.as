@@ -4,6 +4,8 @@ package org.flixel
 
 	/**
 	 * Stores a rectangle.
+	 * 
+	 * @author	Adam Atomic
 	 */
 	public class FlxRect
 	{
@@ -90,7 +92,14 @@ package org.flixel
 			height = Height;
 			return this;
 		}
-		
+
+		/**
+		 * Helper function, just copies the values from the specified rectangle.
+		 * 
+		 * @param	Rect	Any <code>FlxRect</code>.
+		 * 
+		 * @return	A reference to itself.
+		 */
 		public function copyFrom(Rect:FlxRect):FlxRect
 		{
 			x = Rect.x;
@@ -100,6 +109,13 @@ package org.flixel
 			return this;
 		}
 		
+		/**
+		 * Helper function, just copies the values from this rectangle to the specified rectangle.
+		 * 
+		 * @param	Point	Any <code>FlxRect</code>.
+		 * 
+		 * @return	A reference to the altered rectangle parameter.
+		 */
 		public function copyTo(Rect:FlxRect):FlxRect
 		{
 			Rect.x = x;
@@ -109,6 +125,13 @@ package org.flixel
 			return Rect;
 		}
 		
+		/**
+		 * Helper function, just copies the values from the specified Flash rectangle.
+		 * 
+		 * @param	FlashRect	Any <code>Rectangle</code>.
+		 * 
+		 * @return	A reference to itself.
+		 */
 		public function copyFromFlash(FlashRect:Rectangle):FlxRect
 		{
 			x = FlashRect.x;
@@ -118,6 +141,13 @@ package org.flixel
 			return this;
 		}
 		
+		/**
+		 * Helper function, just copies the values from this rectangle to the specified Flash rectangle.
+		 * 
+		 * @param	Point	Any <code>Rectangle</code>.
+		 * 
+		 * @return	A reference to the altered rectangle parameter.
+		 */
 		public function copyToFlash(FlashRect:Rectangle):Rectangle
 		{
 			FlashRect.x = x;
@@ -128,17 +158,15 @@ package org.flixel
 		}
 		
 		/**
-		 * Checks to see if some <code>FlxObject</code> object overlaps this <code>FlxObject</code> object.
+		 * Checks to see if some <code>FlxRect</code> object overlaps this <code>FlxRect</code> object.
 		 * 
-		 * @param	Object	The object being tested.
+		 * @param	Rect	The rectangle being tested.
 		 * 
-		 * @return	Whether or not the two objects overlap.
+		 * @return	Whether or not the two rectangles overlap.
 		 */
 		public function overlaps(Rect:FlxRect):Boolean
 		{
-			if((Rect.x + Rect.width <= x) || (Rect.x >= x+width) || (Rect.y + Rect.height <= y) || (Rect.y >= y+height))
-				return false;
-			return true;
+			return (Rect.x + Rect.width > x) && (Rect.x < x+width) && (Rect.y + Rect.height > y) && (Rect.y < y+height);
 		}
 	}
 }

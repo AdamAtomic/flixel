@@ -10,33 +10,98 @@ package org.flixel
 	 * This is the base class for most of the display objects (<code>FlxSprite</code>, <code>FlxText</code>, etc).
 	 * It includes some basic attributes about game objects, including retro-style flickering,
 	 * basic state information, sizes, scrolling, and basic physics and motion.
+	 * 
+	 * @author	Adam Atomic
 	 */
 	public class FlxObject extends FlxBasic
 	{
+		/**
+		 * Generic value for "left" Used by <code>facing</code>, <code>allowCollisions</code>, and <code>touching</code>.
+		 */
 		static public const LEFT:uint	= 0x0001;
+		/**
+		 * Generic value for "right" Used by <code>facing</code>, <code>allowCollisions</code>, and <code>touching</code>.
+		 */
 		static public const RIGHT:uint	= 0x0010;
+		/**
+		 * Generic value for "up" Used by <code>facing</code>, <code>allowCollisions</code>, and <code>touching</code>.
+		 */
 		static public const UP:uint		= 0x0100;
+		/**
+		 * Generic value for "down" Used by <code>facing</code>, <code>allowCollisions</code>, and <code>touching</code>.
+		 */
 		static public const DOWN:uint	= 0x1000;
 		
+		/**
+		 * Special-case constant meaning no collisions, used mainly by <code>allowCollisions</code> and <code>touching</code>.
+		 */
 		static public const NONE:uint	= 0;
+		/**
+		 * Special-case constant meaning up, used mainly by <code>allowCollisions</code> and <code>touching</code>.
+		 */
 		static public const CEILING:uint= UP;
+		/**
+		 * Special-case constant meaning down, used mainly by <code>allowCollisions</code> and <code>touching</code>.
+		 */
 		static public const FLOOR:uint	= DOWN;
+		/**
+		 * Special-case constant meaning only the left and right sides, used mainly by <code>allowCollisions</code> and <code>touching</code>.
+		 */
 		static public const WALL:uint	= LEFT | RIGHT;
+		/**
+		 * Special-case constant meaning any direction, used mainly by <code>allowCollisions</code> and <code>touching</code>.
+		 */
 		static public const ANY:uint	= LEFT | RIGHT | UP | DOWN;
 		
+		/**
+		 * Handy constant used during collision resolution (see <code>separateX()</code> and <code>separateY()</code>).
+		 */
 		static public const OVERLAP_BIAS:Number = 4;
 		
+		/**
+		 * Path behavior controls: move from the start of the path to the end then stop.
+		 */
 		static public const PATH_FORWARD:uint			= 0x000000;
+		/**
+		 * Path behavior controls: move from the end of the path to the start then stop.
+		 */
 		static public const PATH_BACKWARD:uint			= 0x000001;
+		/**
+		 * Path behavior controls: move from the start of the path to the end then directly back to the start, and start over.
+		 */
 		static public const PATH_LOOP_FORWARD:uint		= 0x000010;
+		/**
+		 * Path behavior controls: move from the end of the path to the start then directly back to the end, and start over.
+		 */
 		static public const PATH_LOOP_BACKWARD:uint		= 0x000100;
+		/**
+		 * Path behavior controls: move from the start of the path to the end then turn around and go back to the start, over and over.
+		 */
 		static public const PATH_YOYO:uint				= 0x001000;
+		/**
+		 * Path behavior controls: ignores any vertical component to the path data, only follows side to side.
+		 */
 		static public const PATH_HORIZONTAL_ONLY:uint	= 0x010000;
+		/**
+		 * Path behavior controls: ignores any horizontal component to the path data, only follows up and down.
+		 */
 		static public const PATH_VERTICAL_ONLY:uint		= 0x100000;
 		
+		/**
+		 * X position of the upper left corner of this object in world space.
+		 */
 		public var x:Number;
+		/**
+		 * Y position of the upper left corner of this object in world space.
+		 */
 		public var y:Number;
+		/**
+		 * The width of this object.
+		 */
 		public var width:Number;
+		/**
+		 * The height of this object.
+		 */
 		public var height:Number;
 
 		/**
@@ -48,7 +113,15 @@ package org.flixel
 		 * The basic speed of this object.
 		 */
 		public var velocity:FlxPoint;
+		/**
+		 * The virtual mass of the object. Default value is 1.
+		 * Currently only used with <code>elasticity</code> during collision resolution.
+		 * Change at your own risk; effects seem crazy unpredictable so far!
+		 */
 		public var mass:Number;
+		/**
+		 * The bounciness of this object.  Only affects collisions.  Default value is 0, or "not bouncy at all."
+		 */
 		public var elasticity:Number;
 		/**
 		 * How fast the speed of this object is changing.
@@ -127,11 +200,16 @@ package org.flixel
 		 */
 		public var moves:Boolean;
 		/**
-		 * Bit field of flags (use with UP, DOWN, LEFT, RIGHT, etc) indicating surface contacts and collision qualities.
+		 * Bit field of flags (use with UP, DOWN, LEFT, RIGHT, etc) indicating surface contacts.
 		 * Use bitwise operators to check the values stored here, or use touching(), justStartedTouching(), etc.
 		 * You can even use them broadly as boolean values if you're feeling saucy!
 		 */
 		public var touching:uint;
+		/**
+		 * Bit field of flags (use with UP, DOWN, LEFT, RIGHT, etc) indicating surface contacts from the previous game loop step.
+		 * Use bitwise operators to check the values stored here, or use touching(), justStartedTouching(), etc.
+		 * You can even use them broadly as boolean values if you're feeling saucy!
+		 */
 		public var wasTouching:uint;
 		/**
 		 * Bit field of flags (use with UP, DOWN, LEFT, RIGHT, etc) indicating collision directions.
@@ -141,17 +219,51 @@ package org.flixel
 		 */
 		public var allowCollisions:uint;
 		
+		/**
+		 * Important variable for collision processing.
+		 * By default this value is set automatically during <code>preUpdate()</code>.
+		 */
 		public var last:FlxPoint;
 		
+		/**
+		 * An array of camera objects that this object will use during <code>draw()</code>.
+		 * This value will initialize itself during the first draw to automatically
+		 * point at the main camera list out in <code>FlxG</code> unless you already set it.
+		 * You can also change it afterward too, very flexible!
+		 */
 		public var cameras:Array;
 		
-		//PATH FOLLOWING VARIABLES
+		/**
+		 * A reference to a path object.  Null by default, assigned by <code>followPath()</code>.
+		 */
 		public var path:FlxPath;
+		/**
+		 * The speed at which the object is moving on the path.
+		 * When an object completes a non-looping path circuit,
+		 * the pathSpeed will be zeroed out, but the <code>path</code> reference
+		 * will NOT be nulled out.  So <code>pathSpeed</code> is a good way
+		 * to check if this object is currently following a path or not.
+		 */
 		public var pathSpeed:Number;
+		/**
+		 * The angle in degrees between this object and the next node, where 0 is directly upward, and 90 is to the right.
+		 */
 		public var pathAngle:Number;
+		/**
+		 * Internal helper, tracks which node of the path this object is moving toward.
+		 */
 		protected var _pathNodeIndex:int;
+		/**
+		 * Internal tracker for path behavior flags (like looping, horizontal only, etc).
+		 */
 		protected var _pathMode:uint;
+		/**
+		 * Internal helper for node navigation, specifically yo-yo and backwards movement.
+		 */
 		protected var _pathInc:int;
+		/**
+		 * Internal flag for whether hte object's angle should be adjusted to the path angle during path follow behavior.
+		 */
 		protected var _pathRotate:Boolean;
 		
 		/**
@@ -217,11 +329,18 @@ package org.flixel
 			_point = null;
 			_rect = null;
 			last = null;
+			cameras = null;
 			if(path != null)
 				path.destroy();
 			path = null;
 		}
 		
+		/**
+		 * Pre-update is called right before <code>update()</code> on each object in the game loop.
+		 * In <code>FlxObject</code> it controls the flicker timer,
+		 * tracking the last coordinates for collision purposes,
+		 * and checking if the object is moving along a path or not.
+		 */
 		override public function preUpdate():void
 		{
 			_ACTIVECOUNT++;
@@ -247,13 +366,10 @@ package org.flixel
 		}
 		
 		/**
-		 * Called by the main game loop, handles motion/physics and game logic
+		 * Post-update is called right after <code>update()</code> on each object in the game loop.
+		 * In <code>FlxObject</code> this function handles integrating the objects motion
+		 * based on the velocity and acceleration settings, and tracking/clearing the <code>touching</code> flags.
 		 */
-		override public function update():void
-		{
-			//
-		}
-		
 		override public function postUpdate():void
 		{
 			if(moves)
@@ -290,6 +406,9 @@ package org.flixel
 			y += yd;
 		}
 		
+		/**
+		 * Rarely called, and in this case just increments the visible objects count and calls <code>drawDebug()</code> if necessary.
+		 */
 		override public function draw():void
 		{
 			if(cameras == null)
@@ -309,7 +428,10 @@ package org.flixel
 		}
 		
 		/**
-		 * Called per camera by draw() to draw relevant debug information to the game world.
+		 * Override this function to draw custom "debug mode" graphics to the
+		 * specified camera while the debugger's visual mode is toggled on.
+		 * 
+		 * @param	Camera	Which camera to draw the debug visuals to.
 		 */
 		override public function drawDebug(Camera:FlxCamera=null):void
 		{
@@ -350,6 +472,16 @@ package org.flixel
 			Camera.buffer.draw(FlxG.flashGfxSprite);
 		}
 		
+		/**
+		 * Call this function to give this object a path to follow.
+		 * If the path does not have at least one node in it, this function
+		 * will log a warning message and return.
+		 * 
+		 * @param	Path		The <code>FlxPath</code> you want this object to follow.
+		 * @param	Speed		How fast to travel along the path in pixels per second.
+		 * @param	Mode		Optional, controls the behavior of the object following the path using the path behavior constants.  Can use multiple flags at once, for example PATH_YOYO|PATH_HORIZONTAL_ONLY will make an object move back and forth along the X axis of the path only.
+		 * @param	AutoRotate	Automatically point the object toward the next node.  Assumes the graphic is pointing upward.  Default behavior is false, or no automatic rotation.
+		 */
 		public function followPath(Path:FlxPath,Speed:Number=100,Mode:uint=PATH_FORWARD,AutoRotate:Boolean=false):void
 		{
 			if(Path.nodes.length <= 0)
@@ -376,16 +508,26 @@ package org.flixel
 			}
 		}
 		
+		/**
+		 * Tells this object to stop following the path its on.
+		 * 
+		 * @param	DestroyPath		Tells this function whether to call destroy on the path object.  Default value is false.
+		 */
 		public function stopFollowingPath(DestroyPath:Boolean=false):void
 		{
 			pathSpeed = 0;
-			if(DestroyPath)
+			if(DestroyPath && (path != null))
 			{
 				path.destroy();
 				path = null;
 			}
 		}
 		
+		/**
+		 * Internal function that decides what node in the path to aim for next based on the behavior flags.
+		 * 
+		 * @return	The node (a <code>FlxPoint</code> object) we are aiming for next.
+		 */
 		protected function advancePath():FlxPoint
 		{
 			var oldNode:FlxPoint = path.nodes[_pathNodeIndex];
@@ -454,7 +596,13 @@ package org.flixel
 			return path.nodes[_pathNodeIndex];
 		}
 		
-		public function updatePathMotion():void
+		/**
+		 * Internal function for moving the object along the path.
+		 * Generally this function is called automatically by <code>preUpdate()</code>.
+		 * The first half of the function decides if the object can advance to the next node in the path,
+		 * while the second half handles actually picking a velocity toward the next node.
+		 */
+		protected function updatePathMotion():void
 		{
 			//first check if we need to be pointing at the next node yet
 			_point.x = x + width*0.5;
@@ -626,11 +774,19 @@ package org.flixel
 			return _flickerTimer != 0;
 		}
 		
+		/**
+		 * Whether the object collides or not.  For more control over what directions
+		 * the object will collide from, use collision constants (like LEFT, FLOOR, etc)
+		 * to set the value of allowCollisions directly.
+		 */
 		public function get solid():Boolean
 		{
-			return (allowCollisions & ANY) as Boolean;
+			return (allowCollisions & ANY) > NONE;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set solid(Solid:Boolean):void
 		{
 			if(Solid)
@@ -639,6 +795,13 @@ package org.flixel
 				allowCollisions = NONE;
 		}
 		
+		/**
+		 * Retrieve the midpoint of this object in world coordinates.
+		 * 
+		 * @Point	Allows you to pass in an existing <code>FlxPoint</code> object if you're so inclined.  Otherwise a new one is created.
+		 * 
+		 * @return	A <code>FlxPoint</code> object containing the midpoint of this object in world coordinates.
+		 */
 		public function getMidpoint(Point:FlxPoint=null):FlxPoint
 		{
 			if(Point == null)
@@ -650,7 +813,7 @@ package org.flixel
 		
 		/**
 		 * Handy function for reviving game objects.
-		 * Resets their existence flags and position, including LAST position.
+		 * Resets their existence flags and position.
 		 * 
 		 * @param	X	The new X position of this object.
 		 * @param	Y	The new Y position of this object.
@@ -668,16 +831,53 @@ package org.flixel
 			velocity.y = 0;
 		}
 		
+		/**
+		 * Handy function for checking if this object is touching a particular surface.
+		 * For slightly better performance you can just &amp; the value directly into <code>touching</code>.
+		 * However, this method is good for readability and accessibility.
+		 * 
+		 * @param	Direction	Any of the collision flags (e.g. LEFT, FLOOR, etc).
+		 * 
+		 * @return	Whether the object is touching an object in (any of) the specified direction(s) this frame.
+		 */
 		public function isTouching(Direction:uint):Boolean
 		{
 			return (touching & Direction) > NONE;
 		}
 		
+		/**
+		 * Handy function for checking if this object is just landed on a particular surface.
+		 * 
+		 * @param	Direction	Any of the collision flags (e.g. LEFT, FLOOR, etc).
+		 * 
+		 * @return	Whether the object just landed on (any of) the specified surface(s) this frame.
+		 */
 		public function justTouched(Direction:uint):Boolean
 		{
 			return ((touching & Direction) && (wasTouching & Direction)) > NONE;
 		}
 		
+		/**
+		 * Reduces the "health" variable of this sprite by the amount specified in Damage.
+		 * Calls kill() if health drops to or below zero.
+		 * 
+		 * @param	Damage		How much health to take away (use a negative number to give a health bonus).
+		 */
+		public function hurt(Damage:Number):void
+		{
+			health = health - Damage;
+			if(health <= 0)
+				kill();
+		}
+		
+		/**
+		 * The main collision resolution function in flixel.
+		 * 
+		 * @param	Object1 	Any <code>FlxObject</code>.
+		 * @param	Object2		Any other <code>FlxObject</code>.
+		 * 
+		 * @return	Whether the objects in fact touched and were separated.
+		 */
 		static public function separate(Object1:FlxObject, Object2:FlxObject):Boolean
 		{
 			var sx:Boolean = separateX(Object1,Object2);
@@ -685,6 +885,14 @@ package org.flixel
 			return sx || sy;
 		}
 		
+		/**
+		 * The X-axis component of the object separation process.
+		 * 
+		 * @param	Object1 	Any <code>FlxObject</code>.
+		 * @param	Object2		Any other <code>FlxObject</code>.
+		 * 
+		 * @return	Whether the objects in fact touched and were separated along the X axis.
+		 */
 		static public function separateX(Object1:FlxObject, Object2:FlxObject):Boolean
 		{
 			//can't separate two immovable objects
@@ -762,6 +970,14 @@ package org.flixel
 				return false;
 		}
 		
+		/**
+		 * The Y-axis component of the object separation process.
+		 * 
+		 * @param	Object1 	Any <code>FlxObject</code>.
+		 * @param	Object2		Any other <code>FlxObject</code>.
+		 * 
+		 * @return	Whether the objects in fact touched and were separated along the Y axis.
+		 */
 		static public function separateY(Object1:FlxObject, Object2:FlxObject):Boolean
 		{
 			//can't separate two immovable objects

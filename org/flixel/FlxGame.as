@@ -457,6 +457,11 @@ package org.flixel
 			}
 		}
 
+		/**
+		 * If there is a state change requested during the update loop,
+		 * this function handles actual destroying the old state and related processes,
+		 * and calls creates on the new state and plugs it into the game object.
+		 */
 		protected function switchState():void
 		{ 
 			//Basic reset stuff
@@ -481,7 +486,13 @@ package org.flixel
 			_state = _requestedState;
 			_state.create();
 		}
-			
+		
+		/**
+		 * This is the main game update logic section.
+		 * The onEnterFrame() handler is in charge of calling this
+		 * the appropriate number of times each frame.
+		 * This block handles state changes, replays, all that good stuff.
+		 */
 		protected function step():void
 		{
 			//handle game reset request
@@ -564,9 +575,7 @@ package org.flixel
 		}
 
 		/**
-		 * This function handles updating the volume controls, debugger, stuff like that.
-		 * This function does NOT update the actual game state or game effects!
-		 * May be called multiple times per "frame" or draw call.
+		 * This function just updates the soundtray object.
 		 */
 		protected function updateSoundTray(MS:Number):void
 		{
@@ -599,7 +608,7 @@ package org.flixel
 		}
 		
 		/**
-		 * This function updates the actual game state.
+		 * This function is called by step() and updates the actual game state.
 		 * May be called multiple times per "frame" or draw call.
 		 */
 		protected function update():void
@@ -623,7 +632,6 @@ package org.flixel
 		{
 			var mark:uint = getTimer();
 			FlxG.lockCameras();
-			FlxPath.debugDrawTracker = !FlxPath.debugDrawTracker;
 			_state.draw();
 			FlxG.drawPlugins();
 			FlxG.unlockCameras();
@@ -632,9 +640,9 @@ package org.flixel
 		}
 		
 		/**
-		 * Used to instantiate the guts of flixel once we have a valid reference to the root.
+		 * Used to instantiate the guts of the flixel game object once we have a valid reference to the root.
 		 * 
-		 * @param	event	Just a Flash system event, not too important for our purposes.
+		 * @param	E	Just a Flash system event, not too important for our purposes.
 		 */
 		protected function create(E:Event):void
 		{
