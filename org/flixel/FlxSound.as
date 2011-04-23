@@ -8,10 +8,20 @@ package org.flixel
 	
 	/**
 	 * This is the universal flixel sound object, used for streaming, music, and sound effects.
+	 * 
+	 * @author	Adam Atomic
 	 */
 	public class FlxSound extends FlxBasic
 	{
+		/**
+		 * The X position of this sound in world coordinates.
+		 * Only really matters if you are doing proximity/panning stuff.
+		 */
 		public var x:Number;
+		/**
+		 * The Y position of this sound in world coordinates.
+		 * Only really matters if you are doing proximity/panning stuff.
+		 */
 		public var y:Number;
 		/**
 		 * Whether or not this sound should be automatically destroyed when you switch states.
@@ -37,24 +47,67 @@ package org.flixel
 		 * Just the amplitude of the left stereo channel
 		 */
 		public var amplitudeRight:Number;
-		
-		protected var _init:Boolean;
+
+		/**
+		 * Internal tracker for a Flash sound object.
+		 */
 		protected var _sound:Sound;
+		/**
+		 * Internal tracker for a Flash sound channel object.
+		 */
 		protected var _channel:SoundChannel;
+		/**
+		 * Internal tracker for a Flash sound transform object.
+		 */
 		protected var _transform:SoundTransform;
+		/**
+		 * Internal tracker for the position in runtime of the music playback.
+		 */
 		protected var _position:Number;
+		/**
+		 * Internal tracker for how loud the sound is.
+		 */
 		protected var _volume:Number;
+		/**
+		 * Internal tracker for total volume adjustment.
+		 */
 		protected var _volumeAdjust:Number;
+		/**
+		 * Internal tracker for whether the sound is looping or not.
+		 */
 		protected var _looped:Boolean;
+		/**
+		 * Internal tracker for the sound's "target" (for proximity and panning).
+		 */
 		protected var _target:FlxObject;
+		/**
+		 * Internal tracker for the maximum effective radius of this sound (for proximity and panning).
+		 */
 		protected var _radius:Number;
+		/**
+		 * Internal tracker for whether to pan the sound left and right.  Default is false.
+		 */
 		protected var _pan:Boolean;
+		/**
+		 * Internal timer used to keep track of requests to fade out the sound playback.
+		 */
 		protected var _fadeOutTimer:Number;
+		/**
+		 * Internal helper for fading out sounds.
+		 */
 		protected var _fadeOutTotal:Number;
+		/**
+		 * Internal flag for whether to pause or stop the sound when it's done fading out.
+		 */
 		protected var _pauseOnFadeOut:Boolean;
+		/**
+		 * Internal timer for fading in the sound playback.
+		 */
 		protected var _fadeInTimer:Number;
+		/**
+		 * Internal helper for fading in sounds.
+		 */
 		protected var _fadeInTotal:Number;
-		protected var _point2:FlxPoint;
 		
 		/**
 		 * The FlxSound constructor gets all the variables initialized, but NOT ready to play a sound yet.
@@ -73,8 +126,6 @@ package org.flixel
 			destroy();
 			x = 0;
 			y = 0;
-			if(_point2 == null)
-				_point2 = new FlxPoint();
 			if(_transform == null)
 				_transform = new SoundTransform();
 			_transform.pan = 0;
@@ -102,13 +153,12 @@ package org.flixel
 		}
 		
 		/**
-		 * The basic class destructor, stops the music and removes any leftover events.
+		 * Clean up memory.
 		 */
 		override public function destroy():void
 		{
 			stop();
-			
-			_point2 = null;
+
 			_transform = null;
 			_sound = null;
 			_target = null;
@@ -119,7 +169,7 @@ package org.flixel
 		}
 		
 		/**
-		 * The basic game loop update function.  Just calls <code>updateSound()</code>.
+		 * Handles fade out, fade in, panning, proximity, and amplitude operations each frame.
 		 */
 		override public function update():void
 		{
@@ -374,9 +424,20 @@ package org.flixel
 		}
 		
 		/**
+		 * Returns the currently selected "real" volume of the sound
+		 * by multiplying in the volumeAdjust value (controlled by global sound manager).
+		 * 
+		 * @return	The "speaker" volume of the sound.
+		 */
+		public function getActualVolume():Number
+		{
+			return _volume*_volumeAdjust;
+		}
+		
+		/**
 		 * Call after adjusting the volume to update the sound channel's settings.
 		 */
-		public function updateTransform():void
+		internal function updateTransform():void
 		{
 			_transform.volume = (FlxG.mute?0:1)*FlxG.volume*_volume*_volumeAdjust;
 			if(_channel != null)
@@ -426,11 +487,6 @@ package org.flixel
 			if(_sound.id3.artist.length > 0)
 				artist = _sound.id3.artist;
 			_sound.removeEventListener(Event.ID3, gotID3);
-		}
-		
-		public function getActualVolume():Number
-		{
-			return _volume*_volumeAdjust;
 		}
 	}
 }

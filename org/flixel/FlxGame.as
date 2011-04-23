@@ -25,19 +25,12 @@ package org.flixel
 	 * It is a long and sloppy file that you shouldn't have to worry about too much!
 	 * It is basically only used to create your game object in the first place,
 	 * after that FlxG and FlxState have all the useful stuff you actually need.
+	 * 
+	 * @author	Adam Atomic
 	 */
 	public class FlxGame extends Sprite
 	{
-		// NOTE: Flex 4 introduces DefineFont4, which is used by default and does not work in native text fields.
-		// Use the embedAsCFF="false" param to switch back to DefineFont4. In earlier Flex 4 SDKs this was cff="false".
-		// So if you are using the Flex 3.x SDK compiler, switch the embed statment below to expose the correct version.
-		
-		//Flex v4.x SDK only (see note above):
 		[Embed(source="data/nokiafc22.ttf",fontFamily="system",embedAsCFF="false")] protected var junk:String;
-		
-		//Flex v3.x SDK only (see note above):
-		//[Embed(source="data/nokiafc22.ttf",fontFamily="system")] protected var junk:String;
-		
 		[Embed(source="data/beep.mp3")] protected var SndBeep:Class;
 		[Embed(source="data/logo.png")] protected var ImgLogo:Class;
 
@@ -52,51 +45,127 @@ package org.flixel
 		 */
 		public var forceDebugger:Boolean;
 
-		//basic display stuff
+		/**
+		 * Current game state.
+		 */
 		internal var _state:FlxState;
+		/**
+		 * Mouse cursor.
+		 */
 		internal var _mouse:Sprite;
 		
-		//startup
+		/**
+		 * Class type of the initial/first game state for the game, usually MenuState or something like that.
+		 */
 		protected var _iState:Class;
+		/**
+		 * Whether the game object's basic initialization has finished yet.
+		 */
 		protected var _created:Boolean;
 		
-		//basic update stuff
+		/**
+		 * Total number of milliseconds elapsed since game start.
+		 */
 		protected var _total:uint;
+		/**
+		 * Total number of milliseconds elapsed since last update loop.
+		 * Counts down as we step through the game loop.
+		 */
 		protected var _accumulator:int;
+		/**
+		 * Whether the Flash player lost focus.
+		 */
 		protected var _lostFocus:Boolean;
+		/**
+		 * Milliseconds of time per step of the game loop.  E.g. 60 fps = 16ms.
+		 */
 		internal var _step:uint;
+		/**
+		 * Framerate of the Flash player (NOT the game loop). Default = 30.
+		 */
 		internal var _flashFramerate:uint;
+		/**
+		 * Max allowable accumulation (see _accumulator).
+		 * Should always (and automatically) be set to roughly 2x the flash player framerate.
+		 */
 		internal var _maxAccumulation:uint;
+		/**
+		 * If a state change was requested, the new state object is stored here until we switch to it.
+		 */
 		internal var _requestedState:FlxState;
+		/**
+		 * A flag for keeping track of whether a game reset was requested or not.
+		 */
 		internal var _requestedReset:Boolean;
-		
-		//"focus lost" screen, sound tray, and debugger overlays
+
+		/**
+		 * The "focus lost" screen (see <code>createFocusScreen()</code>).
+		 */
 		protected var _focus:Sprite;
+		/**
+		 * The sound tray display container (see <code>createSoundTray()</code>).
+		 */
 		protected var _soundTray:Sprite;
+		/**
+		 * Helps us auto-hide the sound tray after a volume change.
+		 */
 		protected var _soundTrayTimer:Number;
+		/**
+		 * Helps display the volume bars on the sound tray.
+		 */
 		protected var _soundTrayBars:Array;
+		/**
+		 * The debugger overlay object.
+		 */
 		internal var _debugger:FlxDebugger;
+		/**
+		 * A handy boolean that keeps track of whether the debugger exists and is currently visible.
+		 */
 		internal var _debuggerUp:Boolean;
 		
-		//replays
+		/**
+		 * Container for a game replay object.
+		 */
 		internal var _replay:FlxReplay;
+		/**
+		 * Flag for whether a playback of a recording was requested.
+		 */
 		internal var _replayRequested:Boolean;
+		/**
+		 * Flag for whether a new recording was requested.
+		 */
 		internal var _recordingRequested:Boolean;
+		/**
+		 * Flag for whether a replay is currently playing.
+		 */
 		internal var _replaying:Boolean;
+		/**
+		 * Flag for whether a new recording is being made.
+		 */
 		internal var _recording:Boolean;
+		/**
+		 * Array that keeps track of keypresses that can cancel a replay.
+		 * Handy for skipping cutscenes or getting out of attract modes!
+		 */
 		internal var _replayCancelKeys:Array;
+		/**
+		 * Helps time out a replay if necessary.
+		 */
 		internal var _replayTimer:int;
+		/**
+		 * This function, if set, is triggered when the callback stops playing.
+		 */
 		internal var _replayCallback:Function;
 
 		/**
-		 * Game object constructor - sets up the basic properties of your game.
+		 * Instantiate a new game object.
 		 * 
-		 * @param	GameSizeX		The width of your game in pixels (e.g. 320).
-		 * @param	GameSizeY		The height of your game in pixels (e.g. 240).
+		 * @param	GameSizeX		The width of your game in game pixels, not necessarily final display pixels (see Zoom).
+		 * @param	GameSizeY		The height of your game in game pixels, not necessarily final display pixels (see Zoom).
 		 * @param	InitialState	The class name of the state you want to create and switch to first (e.g. MenuState).
+		 * @param	Zoom			The default level of zoom for the game's cameras (e.g. 2 = all pixels are now drawn at 2x).  Default = 1.
 		 * @param	GameFramerate	How frequently the game should update (default is 60 times per second).
 		 * @param	FlashFramerate	Sets the actual display framerate for Flash player (default is 30 times per second).
-		 * @param	Zoom			The default level of zoom for the game's cameras (e.g. 2 = all pixels are now drawn at 2x).  Default = 1.
 		 */
 		public function FlxGame(GameSizeX:uint,GameSizeY:uint,InitialState:Class,Zoom:Number=1,GameFramerate:uint=60,FlashFramerate:uint=30)
 		{
@@ -158,14 +227,16 @@ package org.flixel
 
 		/**
 		 * Internal event handler for input and focus.
+		 * 
+		 * @param	E	Flash keyboard event.
 		 */
-		protected function onKeyUp(event:KeyboardEvent):void
+		protected function onKeyUp(E:KeyboardEvent):void
 		{
 			if(_debuggerUp && _debugger.watch.editing)
 				return;
 			if(!FlxG.mobile)
 			{
-				if((_debugger != null) && ((event.keyCode == 192) || (event.keyCode == 220)))
+				if((_debugger != null) && ((E.keyCode == 192) || (E.keyCode == 220)))
 				{
 					_debugger.visible = !_debugger.visible;
 					_debuggerUp = _debugger.visible;
@@ -178,8 +249,8 @@ package org.flixel
 				}
 				if(useSoundHotKeys)
 				{
-					var c:int = event.keyCode;
-					var code:String = String.fromCharCode(event.charCode);
+					var c:int = E.keyCode;
+					var code:String = String.fromCharCode(E.charCode);
 					switch(c)
 					{
 						case 48:
@@ -206,17 +277,19 @@ package org.flixel
 			}
 			if(_replaying)
 				return;
-			FlxG.keys.handleKeyUp(event);
+			FlxG.keys.handleKeyUp(E);
 		}
 		
 		/**
 		 * Internal event handler for input and focus.
+		 * 
+		 * @param	E	Flash keyboard event.
 		 */
-		protected function onKeyDown(event:KeyboardEvent):void
+		protected function onKeyDown(E:KeyboardEvent):void
 		{
 			if(_debuggerUp && _debugger.watch.editing)
 				return;
-			if(_replaying && (_replayCancelKeys != null) && (_debugger == null) && (event.keyCode != 192) && (event.keyCode != 220))
+			if(_replaying && (_replayCancelKeys != null) && (_debugger == null) && (E.keyCode != 192) && (E.keyCode != 220))
 			{
 				var cancel:Boolean = false;
 				var k:String;
@@ -225,7 +298,7 @@ package org.flixel
 				while(i < l)
 				{
 					k = _replayCancelKeys[i++];
-					if((k == "ANY") || (FlxG.keys.getKeyCode(k) == event.keyCode))
+					if((k == "ANY") || (FlxG.keys.getKeyCode(k) == E.keyCode))
 					{
 						if(_replayCallback != null)
 						{
@@ -239,13 +312,15 @@ package org.flixel
 				}
 				return;
 			}
-			FlxG.keys.handleKeyDown(event);
+			FlxG.keys.handleKeyDown(E);
 		}
 		
 		/**
 		 * Internal event handler for input and focus.
+		 * 
+		 * @param	E	Flash mouse event.
 		 */
-		protected function onMouseDown(event:MouseEvent):void
+		protected function onMouseDown(E:MouseEvent):void
 		{
 			if(_debuggerUp)
 			{
@@ -276,11 +351,13 @@ package org.flixel
 				}
 				return;
 			}
-			FlxG.mouse.handleMouseDown(event);
+			FlxG.mouse.handleMouseDown(E);
 		}
 		
 		/**
 		 * Internal event handler for input and focus.
+		 * 
+		 * @param	E	Flash mouse event.
 		 */
 		protected function onMouseUp(E:MouseEvent):void
 		{
@@ -291,6 +368,8 @@ package org.flixel
 		
 		/**
 		 * Internal event handler for input and focus.
+		 * 
+		 * @param	E	Flash mouse event.
 		 */
 		protected function onMouseWheel(E:MouseEvent):void
 		{
@@ -301,6 +380,8 @@ package org.flixel
 		
 		/**
 		 * Internal event handler for input and focus.
+		 * 
+		 * @param	E	Flash event.
 		 */
 		protected function onFocus(E:Event=null):void
 		{
@@ -314,6 +395,8 @@ package org.flixel
 		
 		/**
 		 * Internal event handler for input and focus.
+		 * 
+		 * @param	E	Flash event.
 		 */
 		protected function onFocusLost(E:Event=null):void
 		{
@@ -329,8 +412,9 @@ package org.flixel
 		}
 		
 		/**
-		 * Handles the onEnterFrame call, figures out how many updates and draw calls to do.
-		 * @param	event	A Flash system event, not terribly important for our purposes!
+		 * Handles the onEnterFrame call and figures out how many updates and draw calls to do.
+		 * 
+		 * @param	E	Flash event.
 		 */
 		protected function onEnterFrame(E:Event=null):void
 		{			
@@ -373,6 +457,11 @@ package org.flixel
 			}
 		}
 
+		/**
+		 * If there is a state change requested during the update loop,
+		 * this function handles actual destroying the old state and related processes,
+		 * and calls creates on the new state and plugs it into the game object.
+		 */
 		protected function switchState():void
 		{ 
 			//Basic reset stuff
@@ -397,7 +486,13 @@ package org.flixel
 			_state = _requestedState;
 			_state.create();
 		}
-			
+		
+		/**
+		 * This is the main game update logic section.
+		 * The onEnterFrame() handler is in charge of calling this
+		 * the appropriate number of times each frame.
+		 * This block handles state changes, replays, all that good stuff.
+		 */
 		protected function step():void
 		{
 			//handle game reset request
@@ -480,9 +575,7 @@ package org.flixel
 		}
 
 		/**
-		 * This function handles updating the volume controls, debugger, stuff like that.
-		 * This function does NOT update the actual game state or game effects!
-		 * May be called multiple times per "frame" or draw call.
+		 * This function just updates the soundtray object.
 		 */
 		protected function updateSoundTray(MS:Number):void
 		{
@@ -515,7 +608,7 @@ package org.flixel
 		}
 		
 		/**
-		 * This function updates the actual game state.
+		 * This function is called by step() and updates the actual game state.
 		 * May be called multiple times per "frame" or draw call.
 		 */
 		protected function update():void
@@ -539,7 +632,6 @@ package org.flixel
 		{
 			var mark:uint = getTimer();
 			FlxG.lockCameras();
-			FlxPath.debugDrawTracker = !FlxPath.debugDrawTracker;
 			_state.draw();
 			FlxG.drawPlugins();
 			FlxG.unlockCameras();
@@ -548,9 +640,9 @@ package org.flixel
 		}
 		
 		/**
-		 * Used to instantiate the guts of flixel once we have a valid reference to the root.
+		 * Used to instantiate the guts of the flixel game object once we have a valid reference to the root.
 		 * 
-		 * @param	event	Just a Flash system event, not too important for our purposes.
+		 * @param	E	Just a Flash system event, not too important for our purposes.
 		 */
 		protected function create(E:Event):void
 		{

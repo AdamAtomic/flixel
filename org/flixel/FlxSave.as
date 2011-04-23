@@ -6,6 +6,10 @@ package org.flixel
 	
 	/**
 	 * A class to help automate and simplify save game functionality.
+	 * Basicaly a wrapper for the Flash SharedObject thing, but
+	 * handles some annoying storage request stuff too.
+	 * 
+	 * @author	Adam Atomic
 	 */
 	public class FlxSave extends Object
 	{
@@ -28,7 +32,13 @@ package org.flixel
 		 */
 		protected var _so:SharedObject;
 		
+		/**
+		 * Internal tracker for callback function in case save takes too long.
+		 */
 		protected var _onComplete:Function;
+		/**
+		 * Internal tracker for save object close request.
+		 */
 		protected var _closeRequested:Boolean;
 		
 		/**
@@ -39,6 +49,9 @@ package org.flixel
 			destroy();
 		}
 
+		/**
+		 * Clean up memory.
+		 */
 		public function destroy():void
 		{
 			_so = null;
@@ -125,12 +138,25 @@ package org.flixel
 			return true;
 		}
 		
-		protected function onFlushStatus(event:NetStatusEvent):void
+		/**
+		 * Event handler for special case storage requests.
+		 * 
+		 * @param	E	Flash net status event.
+		 */
+		protected function onFlushStatus(E:NetStatusEvent):void
 		{
 			_so.removeEventListener(NetStatusEvent.NET_STATUS,onFlushStatus);
-			onDone((event.info.code == "SharedObject.Flush.Success")?SUCCESS:ERROR);
+			onDone((E.info.code == "SharedObject.Flush.Success")?SUCCESS:ERROR);
 		}
 		
+		/**
+		 * Event handler for special case storage requests.
+		 * Handles logging of errors and calling of callback.
+		 * 
+		 * @param	Result		One of the result codes (PENDING, ERROR, or SUCCESS).
+		 * 
+		 * @return	Whether the operation was a success or not.
+		 */
 		protected function onDone(Result:uint):Boolean
 		{
 			switch(Result)
@@ -151,6 +177,11 @@ package org.flixel
 			return Result == SUCCESS;
 		}
 		
+		/**
+		 * Handy utility function for checking and warning if the shared object is bound yet or not.
+		 * 
+		 * @return	Whether the shared object was bound yet.
+		 */
 		protected function checkBinding():Boolean
 		{
 			if(_so == null)

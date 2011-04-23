@@ -4,6 +4,8 @@ package org.flixel
 	
 	/**
 	 * Stores a 2D floating point coordinate.
+	 * 
+	 * @author	Adam Atomic
 	 */
 	public class FlxPoint
 	{
@@ -41,6 +43,13 @@ package org.flixel
 			return this;
 		}
 		
+		/**
+		 * Helper function, just copies the values from the specified point.
+		 * 
+		 * @param	Point	Any <code>FlxPoint</code>.
+		 * 
+		 * @return	A reference to itself.
+		 */
 		public function copyFrom(Point:FlxPoint):FlxPoint
 		{
 			x = Point.x;
@@ -48,6 +57,13 @@ package org.flixel
 			return this;
 		}
 		
+		/**
+		 * Helper function, just copies the values from this point to the specified point.
+		 * 
+		 * @param	Point	Any <code>FlxPoint</code>.
+		 * 
+		 * @return	A reference to the altered point parameter.
+		 */
 		public function copyTo(Point:FlxPoint):FlxPoint
 		{
 			Point.x = x;
@@ -55,6 +71,13 @@ package org.flixel
 			return Point;
 		}
 		
+		/**
+		 * Helper function, just copies the values from the specified Flash point.
+		 * 
+		 * @param	Point	Any <code>Point</code>.
+		 * 
+		 * @return	A reference to itself.
+		 */
 		public function copyFromFlash(FlashPoint:Point):FlxPoint
 		{
 			x = FlashPoint.x;
@@ -62,6 +85,13 @@ package org.flixel
 			return this;
 		}
 		
+		/**
+		 * Helper function, just copies the values from this point to the specified Flash point.
+		 * 
+		 * @param	Point	Any <code>Point</code>.
+		 * 
+		 * @return	A reference to the altered point parameter.
+		 */
 		public function copyToFlash(FlashPoint:Point):Point
 		{
 			FlashPoint.x = x;
