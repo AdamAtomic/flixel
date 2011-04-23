@@ -10,33 +10,98 @@ package org.flixel
 	 * This is the base class for most of the display objects (<code>FlxSprite</code>, <code>FlxText</code>, etc).
 	 * It includes some basic attributes about game objects, including retro-style flickering,
 	 * basic state information, sizes, scrolling, and basic physics and motion.
+	 * 
+	 * @author	Adam Atomic
 	 */
 	public class FlxObject extends FlxBasic
 	{
+		/**
+		 * Generic value for "left" Used by <code>facing</code>, <code>allowCollisions</code>, and <code>touching</code>.
+		 */
 		static public const LEFT:uint	= 0x0001;
+		/**
+		 * Generic value for "right" Used by <code>facing</code>, <code>allowCollisions</code>, and <code>touching</code>.
+		 */
 		static public const RIGHT:uint	= 0x0010;
+		/**
+		 * Generic value for "up" Used by <code>facing</code>, <code>allowCollisions</code>, and <code>touching</code>.
+		 */
 		static public const UP:uint		= 0x0100;
+		/**
+		 * Generic value for "down" Used by <code>facing</code>, <code>allowCollisions</code>, and <code>touching</code>.
+		 */
 		static public const DOWN:uint	= 0x1000;
 		
+		/**
+		 * Special-case constant meaning no collisions, used mainly by <code>allowCollisions</code> and <code>touching</code>.
+		 */
 		static public const NONE:uint	= 0;
+		/**
+		 * Special-case constant meaning up, used mainly by <code>allowCollisions</code> and <code>touching</code>.
+		 */
 		static public const CEILING:uint= UP;
+		/**
+		 * Special-case constant meaning down, used mainly by <code>allowCollisions</code> and <code>touching</code>.
+		 */
 		static public const FLOOR:uint	= DOWN;
+		/**
+		 * Special-case constant meaning only the left and right sides, used mainly by <code>allowCollisions</code> and <code>touching</code>.
+		 */
 		static public const WALL:uint	= LEFT | RIGHT;
+		/**
+		 * Special-case constant meaning any direction, used mainly by <code>allowCollisions</code> and <code>touching</code>.
+		 */
 		static public const ANY:uint	= LEFT | RIGHT | UP | DOWN;
 		
+		/**
+		 * Handy constant used during collision resolution (see <code>separateX()</code> and <code>separateY()</code>).
+		 */
 		static public const OVERLAP_BIAS:Number = 4;
 		
+		/**
+		 * Path behavior controls: move from the start of the path to the end then stop.
+		 */
 		static public const PATH_FORWARD:uint			= 0x000000;
+		/**
+		 * Path behavior controls: move from the end of the path to the start then stop.
+		 */
 		static public const PATH_BACKWARD:uint			= 0x000001;
+		/**
+		 * Path behavior controls: move from the start of the path to the end then directly back to the start, and start over.
+		 */
 		static public const PATH_LOOP_FORWARD:uint		= 0x000010;
+		/**
+		 * Path behavior controls: move from the end of the path to the start then directly back to the end, and start over.
+		 */
 		static public const PATH_LOOP_BACKWARD:uint		= 0x000100;
+		/**
+		 * Path behavior controls: move from the start of the path to the end then turn around and go back to the start, over and over.
+		 */
 		static public const PATH_YOYO:uint				= 0x001000;
+		/**
+		 * Path behavior controls: ignores any vertical component to the path data, only follows side to side.
+		 */
 		static public const PATH_HORIZONTAL_ONLY:uint	= 0x010000;
+		/**
+		 * Path behavior controls: ignores any horizontal component to the path data, only follows up and down.
+		 */
 		static public const PATH_VERTICAL_ONLY:uint		= 0x100000;
 		
+		/**
+		 * X position of the upper left corner of this object in world space.
+		 */
 		public var x:Number;
+		/**
+		 * Y position of the upper left corner of this object in world space.
+		 */
 		public var y:Number;
+		/**
+		 * The width of this object.
+		 */
 		public var width:Number;
+		/**
+		 * The height of this object.
+		 */
 		public var height:Number;
 
 		/**
@@ -48,7 +113,15 @@ package org.flixel
 		 * The basic speed of this object.
 		 */
 		public var velocity:FlxPoint;
+		/**
+		 * The virtual mass of the object. Default value is 1.
+		 * Currently only used with <code>elasticity</code> during collision resolution.
+		 * Change at your own risk; effects seem crazy unpredictable so far!
+		 */
 		public var mass:Number;
+		/**
+		 * The bounciness of this object.  Only affects collisions.  Default value is 0, or "not bouncy at all."
+		 */
 		public var elasticity:Number;
 		/**
 		 * How fast the speed of this object is changing.
@@ -127,11 +200,16 @@ package org.flixel
 		 */
 		public var moves:Boolean;
 		/**
-		 * Bit field of flags (use with UP, DOWN, LEFT, RIGHT, etc) indicating surface contacts and collision qualities.
+		 * Bit field of flags (use with UP, DOWN, LEFT, RIGHT, etc) indicating surface contacts.
 		 * Use bitwise operators to check the values stored here, or use touching(), justStartedTouching(), etc.
 		 * You can even use them broadly as boolean values if you're feeling saucy!
 		 */
 		public var touching:uint;
+		/**
+		 * Bit field of flags (use with UP, DOWN, LEFT, RIGHT, etc) indicating surface contacts from the previous game loop step.
+		 * Use bitwise operators to check the values stored here, or use touching(), justStartedTouching(), etc.
+		 * You can even use them broadly as boolean values if you're feeling saucy!
+		 */
 		public var wasTouching:uint;
 		/**
 		 * Bit field of flags (use with UP, DOWN, LEFT, RIGHT, etc) indicating collision directions.
@@ -141,17 +219,51 @@ package org.flixel
 		 */
 		public var allowCollisions:uint;
 		
+		/**
+		 * Important variable for collision processing.
+		 * By default this value is set automatically during <code>preUpdate()</code>.
+		 */
 		public var last:FlxPoint;
 		
+		/**
+		 * An array of camera objects that this object will use during <code>draw()</code>.
+		 * This value will initialize itself during the first draw to automatically
+		 * point at the main camera list out in <code>FlxG</code> unless you already set it.
+		 * You can also change it afterward too, very flexible!
+		 */
 		public var cameras:Array;
 		
-		//PATH FOLLOWING VARIABLES
+		/**
+		 * A reference to a path object.  Null by default, assigned by <code>followPath()</code>.
+		 */
 		public var path:FlxPath;
+		/**
+		 * The speed at which the object is moving on the path.
+		 * When an object completes a non-looping path circuit,
+		 * the pathSpeed will be zeroed out, but the <code>path</code> reference
+		 * will NOT be nulled out.  So <code>pathSpeed</code> is a good way
+		 * to check if this object is currently following a path or not.
+		 */
 		public var pathSpeed:Number;
+		/**
+		 * The angle in degrees between this object and the next node, where 0 is directly upward, and 90 is to the right.
+		 */
+		public var pathAngle:Number;
+		/**
+		 * Internal helper, tracks which node of the path this object is moving toward.
+		 */
 		protected var _pathNodeIndex:int;
+		/**
+		 * Internal tracker for path behavior flags (like looping, horizontal only, etc).
+		 */
 		protected var _pathMode:uint;
+		/**
+		 * Internal helper for node navigation, specifically yo-yo and backwards movement.
+		 */
 		protected var _pathInc:int;
-		protected var _pathCheck:FlxPoint;
+		/**
+		 * Internal flag for whether hte object's angle should be adjusted to the path angle during path follow behavior.
+		 */
 		protected var _pathRotate:Boolean;
 		
 		/**
@@ -198,7 +310,8 @@ package org.flixel
 			_rect = new FlxRect();
 			
 			path = null;
-			_pathCheck = null;
+			pathSpeed = 0;
+			pathAngle = 0;
 		}
 		
 		/**
@@ -216,12 +329,18 @@ package org.flixel
 			_point = null;
 			_rect = null;
 			last = null;
+			cameras = null;
 			if(path != null)
 				path.destroy();
 			path = null;
-			_pathCheck = null;
 		}
 		
+		/**
+		 * Pre-update is called right before <code>update()</code> on each object in the game loop.
+		 * In <code>FlxObject</code> it controls the flicker timer,
+		 * tracking the last coordinates for collision purposes,
+		 * and checking if the object is moving along a path or not.
+		 */
 		override public function preUpdate():void
 		{
 			_ACTIVECOUNT++;
@@ -241,24 +360,20 @@ package org.flixel
 			
 			last.x = x;
 			last.y = y;
+			
+			if((path != null) && (pathSpeed != 0) && (path.nodes[_pathNodeIndex] != null))
+				updatePathMotion();
 		}
 		
 		/**
-		 * Called by the main game loop, handles motion/physics and game logic
+		 * Post-update is called right after <code>update()</code> on each object in the game loop.
+		 * In <code>FlxObject</code> this function handles integrating the objects motion
+		 * based on the velocity and acceleration settings, and tracking/clearing the <code>touching</code> flags.
 		 */
-		override public function update():void
-		{
-			//
-		}
-		
 		override public function postUpdate():void
 		{
 			if(moves)
-			{
-				if((path != null) && (pathSpeed != 0) && (path.nodes[_pathNodeIndex] != null))
-					updatePathMotion();
 				updateMotion();
-			}
 			
 			wasTouching = touching;
 			touching = NONE;
@@ -291,6 +406,9 @@ package org.flixel
 			y += yd;
 		}
 		
+		/**
+		 * Rarely called, and in this case just increments the visible objects count and calls <code>drawDebug()</code> if necessary.
+		 */
 		override public function draw():void
 		{
 			if(cameras == null)
@@ -310,7 +428,10 @@ package org.flixel
 		}
 		
 		/**
-		 * Called per camera by draw() to draw relevant debug information to the game world.
+		 * Override this function to draw custom "debug mode" graphics to the
+		 * specified camera while the debugger's visual mode is toggled on.
+		 * 
+		 * @param	Camera	Which camera to draw the debug visuals to.
 		 */
 		override public function drawDebug(Camera:FlxCamera=null, offset:FlxPoint=null):void
 		{
@@ -318,10 +439,10 @@ package org.flixel
 				Camera = FlxG.camera;
 
 			//get bounding box coordinates
-			var bx:int = x - int(Camera.scroll.x*scrollFactor.x); //copied from getScreenXY()
-			var by:int = y - int(Camera.scroll.y*scrollFactor.y);
-			bx += (bx > 0)?0.0000001:-0.0000001;
-			by += (by > 0)?0.0000001:-0.0000001;
+			var bx:Number = x - int(Camera.scroll.x*scrollFactor.x); //copied from getScreenXY()
+			var by:Number = y - int(Camera.scroll.y*scrollFactor.y);
+			bx = int(bx + ((bx > 0)?0.0000001:-0.0000001));
+			by = int(by + ((by > 0)?0.0000001:-0.0000001));
 			if(offset)
 			{
 				bx -= offset.x;
@@ -354,11 +475,18 @@ package org.flixel
 			
 			//draw graphics shape to camera buffer
 			Camera.buffer.draw(FlxG.flashGfxSprite);
-			
-			if(path != null)
-				path.drawDebug(Camera);
 		}
 		
+		/**
+		 * Call this function to give this object a path to follow.
+		 * If the path does not have at least one node in it, this function
+		 * will log a warning message and return.
+		 * 
+		 * @param	Path		The <code>FlxPath</code> you want this object to follow.
+		 * @param	Speed		How fast to travel along the path in pixels per second.
+		 * @param	Mode		Optional, controls the behavior of the object following the path using the path behavior constants.  Can use multiple flags at once, for example PATH_YOYO|PATH_HORIZONTAL_ONLY will make an object move back and forth along the X axis of the path only.
+		 * @param	AutoRotate	Automatically point the object toward the next node.  Assumes the graphic is pointing upward.  Default behavior is false, or no automatic rotation.
+		 */
 		public function followPath(Path:FlxPath,Speed:Number=100,Mode:uint=PATH_FORWARD,AutoRotate:Boolean=false):void
 		{
 			if(Path.nodes.length <= 0)
@@ -371,7 +499,6 @@ package org.flixel
 			pathSpeed = FlxU.abs(Speed);
 			_pathMode = Mode;
 			_pathRotate = AutoRotate;
-			_pathCheck = new FlxPoint();
 			
 			//get starting node
 			if((_pathMode == PATH_BACKWARD) || (_pathMode == PATH_LOOP_BACKWARD))
@@ -384,24 +511,38 @@ package org.flixel
 				_pathNodeIndex = 0;
 				_pathInc = 1;
 			}
-			getMidpoint(_point);
-			var node:FlxPoint = path.nodes[_pathNodeIndex];
-			_pathCheck.x = node.x - _point.x;
-			_pathCheck.y = node.y - _point.y;
 		}
 		
+		/**
+		 * Tells this object to stop following the path its on.
+		 * 
+		 * @param	DestroyPath		Tells this function whether to call destroy on the path object.  Default value is false.
+		 */
 		public function stopFollowingPath(DestroyPath:Boolean=false):void
 		{
 			pathSpeed = 0;
-			if(DestroyPath)
+			if(DestroyPath && (path != null))
 			{
 				path.destroy();
 				path = null;
 			}
 		}
 		
-		protected function advancePath():void
+		/**
+		 * Internal function that decides what node in the path to aim for next based on the behavior flags.
+		 * 
+		 * @return	The node (a <code>FlxPoint</code> object) we are aiming for next.
+		 */
+		protected function advancePath():FlxPoint
 		{
+			var oldNode:FlxPoint = path.nodes[_pathNodeIndex];
+			if(oldNode != null)
+			{
+				if((_pathMode & PATH_VERTICAL_ONLY) == 0)
+					x = oldNode.x - width*0.5;
+				if((_pathMode & PATH_HORIZONTAL_ONLY) == 0)
+					y = oldNode.y - height*0.5;
+			}
 			_pathNodeIndex += _pathInc;
 			
 			if((_pathMode & PATH_BACKWARD) > 0)
@@ -457,48 +598,73 @@ package org.flixel
 				}
 			}
 
-			getMidpoint(_point);
-			var node:FlxPoint = path.nodes[_pathNodeIndex];
-			_pathCheck.x = node.x - _point.x;
-			_pathCheck.y = node.y - _point.y;
+			return path.nodes[_pathNodeIndex];
 		}
 		
-		public function updatePathMotion():void
+		/**
+		 * Internal function for moving the object along the path.
+		 * Generally this function is called automatically by <code>preUpdate()</code>.
+		 * The first half of the function decides if the object can advance to the next node in the path,
+		 * while the second half handles actually picking a velocity toward the next node.
+		 */
+		protected function updatePathMotion():void
 		{
 			//first check if we need to be pointing at the next node yet
-			getMidpoint(_point);
-			var dx:Number = path.nodes[_pathNodeIndex].x - _point.x;
-			var dy:Number = path.nodes[_pathNodeIndex].y - _point.y;
+			_point.x = x + width*0.5;
+			_point.y = y + height*0.5;
+			var node:FlxPoint = path.nodes[_pathNodeIndex];
+			var dx:Number = node.x - _point.x;
+			var dy:Number = node.y - _point.y;
 			
-			if((_pathMode & PATH_HORIZONTAL_ONLY) > 0)
+			var horizontalOnly:Boolean = (_pathMode & PATH_HORIZONTAL_ONLY) > 0;
+			var verticalOnly:Boolean = (_pathMode & PATH_VERTICAL_ONLY) > 0;
+			
+			if(horizontalOnly)
 			{
-				if( ((_pathCheck.x <= 0) && (dx >= 0)) || ((_pathCheck.x >= 0) && (dx <= 0)) )
-					advancePath();
+				if(((dx>0)?dx:-dx) < pathSpeed*FlxG.elapsed)
+					node = advancePath();
 			}
-			else if((_pathMode & PATH_VERTICAL_ONLY) > 0)
+			else if(verticalOnly)
 			{
-				if( ((_pathCheck.y <= 0) && (dy >= 0)) || ((_pathCheck.y >= 0) && (dy <= 0)) )
-					advancePath();
+				if(((dy>0)?dy:-dy) < pathSpeed*FlxG.elapsed)
+					node = advancePath();
 			}
 			else
 			{
-				if( ((_pathCheck.x <= 0) && (dx >= 0)) || ((_pathCheck.x >= 0) && (dx <= 0)) ||
-					((_pathCheck.y <= 0) && (dy >= 0)) || ((_pathCheck.y >= 0) && (dy <= 0)) )
-					advancePath();
+				if(Math.sqrt(dx*dx + dy*dy) < pathSpeed*FlxG.elapsed)
+					node = advancePath();
 			}
 			
 			//then just move toward the current node at the requested speed
 			if(pathSpeed != 0)
 			{
 				//set velocity based on path mode
-				if((_pathMode & PATH_HORIZONTAL_ONLY) > 0)
-					velocity.x = (_point.x < (path.nodes[_pathNodeIndex] as FlxPoint).x)?pathSpeed:-pathSpeed;
-				else if((_pathMode & PATH_VERTICAL_ONLY) > 0)
-					velocity.y = (_point.y < (path.nodes[_pathNodeIndex] as FlxPoint).y)?pathSpeed:-pathSpeed;
+				_point.x = x + width*0.5;
+				_point.y = y + height*0.5;
+				if(horizontalOnly || (_point.y == node.y))
+				{
+					velocity.x = (_point.x < node.x)?pathSpeed:-pathSpeed;
+					if(velocity.x < 0)
+						pathAngle = -90;
+					else
+						pathAngle = 90;
+					if(!horizontalOnly)
+						velocity.y = 0;
+				}
+				else if(verticalOnly || (_point.x == node.x))
+				{
+					velocity.y = (_point.y < node.y)?pathSpeed:-pathSpeed;
+					if(velocity.y < 0)
+						pathAngle = 0;
+					else
+						pathAngle = 180;
+					if(!verticalOnly)
+						velocity.x = 0;
+				}
 				else
 				{
-					var pathAngle:Number = FlxU.getAngle(getMidpoint(_point),path.nodes[_pathNodeIndex])
-					FlxU.rotatePoint(0,pathSpeed,0,0,pathAngle,velocity);				
+					pathAngle = FlxU.getAngle(_point,node);
+					FlxU.rotatePoint(0,pathSpeed,0,0,pathAngle,velocity);
 					if(_pathRotate) //then set object rotation if necessary
 					{
 						angularVelocity = 0;
@@ -506,34 +672,88 @@ package org.flixel
 						angle = pathAngle;
 					}
 				}
-			}
+			}			
+		}
+		
+		/**
+		 * Checks to see if some <code>FlxObject</code> overlaps this <code>FlxObject</code> object in world space.
+		 * 
+		 * @param	Object			The object being tested.
+		 * @param	InScreenSpace	Whether to take scroll factors into account when checking for overlap.
+		 * @param	Camera			Specify which game camera you want.  If null getScreenXY() will just grab the first global camera.
+		 * 
+		 * @return	Whether or not the two objects overlap.
+		 */
+		public function overlaps(Object:FlxObject,InScreenSpace:Boolean=false,Camera:FlxCamera=null):Boolean
+		{
+			if(!InScreenSpace)
+				return	(Object.x + Object.width > x) && (Object.x < x + width) &&
+						(Object.y + Object.height > y) && (Object.y < y + height);
+
+			if(Camera == null)
+				Camera = FlxG.camera;
+			var objectScreenPos:FlxPoint = Object.getScreenXY(null,Camera);
+			getScreenXY(_point,Camera);
+			return	(objectScreenPos.x + Object.width > _point.x) && (objectScreenPos.x < _point.x + width) &&
+					(objectScreenPos.y + Object.height > _point.y) && (objectScreenPos.y < _point.y + height);
 		}
 		
 		/**
 		 * Checks to see if a point in 2D world space overlaps this <code>FlxObject</code> object.
 		 * 
-		 * @param	X			The X coordinate of the point.
-		 * @param	Y			The Y coordinate of the point.
-		 * @param	Camera		Specify which game camera you want.  If null getScreenXY() will just grab the first global camera.
-		 * @param	PerPixel	Whether or not to use per pixel collision checking (only available in <code>FlxSprite</code> subclass).
+		 * @param	Point			The point in world space you want to check.
+		 * @param	InScreenSpace	Whether to take scroll factors into account when checking for overlap.
+		 * @param	Camera			Specify which game camera you want.  If null getScreenXY() will just grab the first global camera.
 		 * 
 		 * @return	Whether or not the point overlaps this object.
 		 */
-		public function overlapsPoint(X:Number,Y:Number,Camera:FlxCamera=null,PerPixel:Boolean = false):Boolean
+		public function overlapsPoint(Point:FlxPoint,InScreenSpace:Boolean=false,Camera:FlxCamera=null):Boolean
+		{
+			if(!InScreenSpace)
+				return (Point.x > x) && (Point.x < x + width) && (Point.y > y) && (Point.y < y + height);
+
+			if(Camera == null)
+				Camera = FlxG.camera;
+			var X:Number = Point.x - Camera.scroll.x;
+			var Y:Number = Point.y - Camera.scroll.y;
+			getScreenXY(_point,Camera);
+			return (X > _point.x) && (X < _point.x+width) && (Y > _point.y) && (Y < _point.y+height);
+		}
+		
+		/**
+		 * Check and see if this object is currently on screen.
+		 * 
+		 * @param	Camera		Specify which game camera you want.  If null getScreenXY() will just grab the first global camera.
+		 * 
+		 * @return	Whether the object is on screen or not.
+		 */
+		public function onScreen(Camera:FlxCamera=null):Boolean
 		{
 			if(Camera == null)
 				Camera = FlxG.camera;
-			
-			//convert passed point into screen space
-			X = X - Camera.scroll.x;
-			Y = Y - Camera.scroll.y;
-			
-			//then compare
-			_point.x = x - int(Camera.scroll.x*scrollFactor.x); //copied from getScreenXY()
-			_point.y = y - int(Camera.scroll.y*scrollFactor.y);
-			_point.x += (_point.x > 0)?0.0000001:-0.0000001;
-			_point.y += (_point.y > 0)?0.0000001:-0.0000001;
-			return (X > _point.x) && (X < _point.x+width) && (Y > _point.y) && (Y < _point.y+height);
+			getScreenXY(_point,Camera);
+			return (_point.x + width > 0) && (_point.x < Camera.width) && (_point.y + height > 0) && (_point.y < Camera.height);
+		}
+		
+		/**
+		 * Call this function to figure out the on-screen position of the object.
+		 * 
+		 * @param	Camera		Specify which game camera you want.  If null getScreenXY() will just grab the first global camera.
+		 * @param	Point		Takes a <code>FlxPoint</code> object and assigns the post-scrolled X and Y values of this object to it.
+		 * 
+		 * @return	The <code>Point</code> you passed in, or a new <code>Point</code> if you didn't pass one, containing the screen X and Y position of this object.
+		 */
+		public function getScreenXY(Point:FlxPoint=null,Camera:FlxCamera=null):FlxPoint
+		{
+			if(Point == null)
+				Point = new FlxPoint();
+			if(Camera == null)
+				Camera = FlxG.camera;
+			Point.x = x - int(Camera.scroll.x*scrollFactor.x); //copied from getScreenXY()
+			Point.y = y - int(Camera.scroll.y*scrollFactor.y);
+			Point.x += (Point.x > 0)?0.0000001:-0.0000001;
+			Point.y += (Point.y > 0)?0.0000001:-0.0000001;
+			return Point;
 		}
 		
 		/**
@@ -559,11 +779,19 @@ package org.flixel
 			return _flickerTimer != 0;
 		}
 		
+		/**
+		 * Whether the object collides or not.  For more control over what directions
+		 * the object will collide from, use collision constants (like LEFT, FLOOR, etc)
+		 * to set the value of allowCollisions directly.
+		 */
 		public function get solid():Boolean
 		{
-			return (allowCollisions & ANY) as Boolean;
+			return (allowCollisions & ANY) > NONE;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set solid(Solid:Boolean):void
 		{
 			if(Solid)
@@ -573,54 +801,24 @@ package org.flixel
 		}
 		
 		/**
-		 * Call this function to figure out the on-screen position of the object.
+		 * Retrieve the midpoint of this object in world coordinates.
 		 * 
-		 * @param	Camera		Specify which game camera you want.  If null getScreenXY() will just grab the first global camera.
-		 * @param	Point		Takes a <code>FlxPoint</code> object and assigns the post-scrolled X and Y values of this object to it.
+		 * @Point	Allows you to pass in an existing <code>FlxPoint</code> object if you're so inclined.  Otherwise a new one is created.
 		 * 
-		 * @return	The <code>Point</code> you passed in, or a new <code>Point</code> if you didn't pass one, containing the screen X and Y position of this object.
+		 * @return	A <code>FlxPoint</code> object containing the midpoint of this object in world coordinates.
 		 */
-		public function getScreenXY(Point:FlxPoint=null,Camera:FlxCamera=null):FlxPoint
-		{
-			if(Point == null)
-				Point = new FlxPoint();
-			if(Camera == null)
-				Camera = FlxG.camera;
-			Point.x = x - int(Camera.scroll.x*scrollFactor.x); //copied from getScreenXY()
-			Point.y = y - int(Camera.scroll.y*scrollFactor.y);
-			Point.x += (Point.x > 0)?0.0000001:-0.0000001;
-			Point.y += (Point.y > 0)?0.0000001:-0.0000001;
-			return Point;
-		}
-		
-		/**
-		 * Check and see if this object is currently on screen.
-		 * 
-		 * @param	Camera		Specify which game camera you want.  If null getScreenXY() will just grab the first global camera.
-		 * 
-		 * @return	Whether the object is on screen or not.
-		 */
-		override public function onScreen(Camera:FlxCamera=null):Boolean
-		{
-			if(Camera == null)
-				Camera = FlxG.camera;
-			_point.x = x - int(Camera.scroll.x*scrollFactor.x); //copied from getScreenXY()
-			_point.y = y - int(Camera.scroll.y*scrollFactor.y);
-			_point.x += (_point.x > 0)?0.0000001:-0.0000001;
-			_point.y += (_point.y > 0)?0.0000001:-0.0000001;
-			return (_point.x + width > 0) && (_point.x < Camera.width) && (_point.y + height > 0) && (_point.y < Camera.height);
-		}
-		
 		public function getMidpoint(Point:FlxPoint=null):FlxPoint
 		{
 			if(Point == null)
 				Point = new FlxPoint();
-			return Point.make(x + (width>>1),y + (height>>1));
+			Point.x = x + width*0.5;
+			Point.y = y + height*0.5;
+			return Point;
 		}
 		
 		/**
 		 * Handy function for reviving game objects.
-		 * Resets their existence flags and position, including LAST position.
+		 * Resets their existence flags and position.
 		 * 
 		 * @param	X	The new X position of this object.
 		 * @param	Y	The new Y position of this object.
@@ -639,27 +837,52 @@ package org.flixel
 		}
 		
 		/**
-		 * Checks to see if some <code>FlxObject</code> overlaps this <code>FlxObject</code> object in world space.
+		 * Handy function for checking if this object is touching a particular surface.
+		 * For slightly better performance you can just &amp; the value directly into <code>touching</code>.
+		 * However, this method is good for readability and accessibility.
 		 * 
-		 * @param	Object	The object being tested.
+		 * @param	Direction	Any of the collision flags (e.g. LEFT, FLOOR, etc).
 		 * 
-		 * @return	Whether or not the two objects overlap.
+		 * @return	Whether the object is touching an object in (any of) the specified direction(s) this frame.
 		 */
-		public function overlaps(Object:FlxObject):Boolean
-		{
-			return (Object.x + Object.width > x) && (Object.x < x + width) && (Object.y + Object.height > y) && (Object.y < y + height);
-		}
-		
 		public function isTouching(Direction:uint):Boolean
 		{
 			return (touching & Direction) > NONE;
 		}
 		
+		/**
+		 * Handy function for checking if this object is just landed on a particular surface.
+		 * 
+		 * @param	Direction	Any of the collision flags (e.g. LEFT, FLOOR, etc).
+		 * 
+		 * @return	Whether the object just landed on (any of) the specified surface(s) this frame.
+		 */
 		public function justTouched(Direction:uint):Boolean
 		{
 			return ((touching & Direction) && (wasTouching & Direction)) > NONE;
 		}
 		
+		/**
+		 * Reduces the "health" variable of this sprite by the amount specified in Damage.
+		 * Calls kill() if health drops to or below zero.
+		 * 
+		 * @param	Damage		How much health to take away (use a negative number to give a health bonus).
+		 */
+		public function hurt(Damage:Number):void
+		{
+			health = health - Damage;
+			if(health <= 0)
+				kill();
+		}
+		
+		/**
+		 * The main collision resolution function in flixel.
+		 * 
+		 * @param	Object1 	Any <code>FlxObject</code>.
+		 * @param	Object2		Any other <code>FlxObject</code>.
+		 * 
+		 * @return	Whether the objects in fact touched and were separated.
+		 */
 		static public function separate(Object1:FlxObject, Object2:FlxObject):Boolean
 		{
 			var sx:Boolean = separateX(Object1,Object2);
@@ -667,6 +890,14 @@ package org.flixel
 			return sx || sy;
 		}
 		
+		/**
+		 * The X-axis component of the object separation process.
+		 * 
+		 * @param	Object1 	Any <code>FlxObject</code>.
+		 * @param	Object2		Any other <code>FlxObject</code>.
+		 * 
+		 * @return	Whether the objects in fact touched and were separated along the X axis.
+		 */
 		static public function separateX(Object1:FlxObject, Object2:FlxObject):Boolean
 		{
 			//can't separate two immovable objects
@@ -744,6 +975,14 @@ package org.flixel
 				return false;
 		}
 		
+		/**
+		 * The Y-axis component of the object separation process.
+		 * 
+		 * @param	Object1 	Any <code>FlxObject</code>.
+		 * @param	Object2		Any other <code>FlxObject</code>.
+		 * 
+		 * @return	Whether the objects in fact touched and were separated along the Y axis.
+		 */
 		static public function separateY(Object1:FlxObject, Object2:FlxObject):Boolean
 		{
 			//can't separate two immovable objects
@@ -809,11 +1048,15 @@ package org.flixel
 				{
 					Object1.y = Object1.y - overlap;
 					Object1.velocity.y = (Object2.mass/Object1.mass)*Object2.velocity.y - Object1.velocity.y*Object1.elasticity;
+					if(Object2.immovable && Object2.moves && (obj1delta > obj2delta))
+						Object1.x += Object2.x - Object2.last.x;
 				}
 				if(!obj2immovable)
 				{
 					Object2.y += overlap;
 					Object2.velocity.y = (Object1.mass/Object2.mass)*object1velocityY - Object2.velocity.y*Object2.elasticity;
+					if(Object1.immovable && Object1.moves && (obj1delta < obj2delta))
+						Object2.x += Object1.x - Object1.last.x;
 				}
 				return true;
 			}

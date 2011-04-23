@@ -4,13 +4,24 @@ package org.flixel
 	
 	/**
 	 * A simple button class that calls a function when clicked by the mouse.
+	 * 
+	 * @author	Adam Atomic
 	 */
 	public class FlxButton extends FlxSprite
 	{
 		[Embed(source="data/button.png")] protected var ImgDefaultButton:Class;
 		
+		/**
+		 * Used with public variable <code>status</code>, means not highlighted or pressed.
+		 */
 		static public var NORMAL:uint = 0;
+		/**
+		 * Used with public variable <code>status</code>, means highlighted (usually from mouse over).
+		 */
 		static public var HIGHLIGHT:uint = 1;
+		/**
+		 * Used with public variable <code>status</code>, means pressed (usually from mouse click).
+		 */
 		static public var PRESSED:uint = 2;
 		
 		/**
@@ -22,14 +33,10 @@ package org.flixel
 		 */
 		public var labelOffset:FlxPoint;
 		/**
-		 * Set this to true if you want this button to function even while the game is paused.
-		 */
-		public var pauseProof:Boolean;
-
-		/**
 		 * Shows the current state of the button.
 		 */
-		protected var _status:uint;
+		public var status:uint;
+
 		/**
 		 * Used for checkbox-style behavior.
 		 */
@@ -38,6 +45,14 @@ package org.flixel
 		 * This function is called when the button is clicked.
 		 */
 		protected var _onClick:Function;
+		/**
+		 * This function is called when the mouse goes over the button.
+		 */
+		protected var _onOver:Function;
+		/**
+		 * This function is called when the mouse leaves the button area.
+		 */
+		protected var _onOut:Function;
 		/**
 		 * Tracks whether or not the button is currently pressed.
 		 */
@@ -53,13 +68,17 @@ package org.flixel
 		 * 
 		 * @param	X			The X position of the button.
 		 * @param	Y			The Y position of the button.
-		 * @param	Callback	The function to call whenever the button is clicked.
 		 * @param	Label		The text that you want to appear on the button.
+		 * @param	OnClick		The function to call whenever the button is clicked.
+		 * @param	OnOver		The function to call whenever the mouse goes over the button.
+		 * @param	OnOut		The function to call whenever the mouse leaves the button area.
 		 */
-		public function FlxButton(X:int,Y:int,Callback:Function,Label:String=null)
+		public function FlxButton(X:Number=0,Y:Number=0,Label:String=null,OnClick:Function=null,OnOver:Function=null,OnOut:Function=null)
 		{
 			super(X,Y);
-			_onClick = Callback;
+			_onClick = OnClick;
+			_onOver = OnOver;
+			_onOut = OnOut;
 			if(Label != null)
 			{
 				label = new FlxText(0,0,80,Label);
@@ -68,23 +87,33 @@ package org.flixel
 			}
 			loadGraphic(ImgDefaultButton,true,false,80,20);
 
-			_status = NORMAL;
-			pauseProof = false;
+			status = NORMAL;
 			_onToggle = false;
 			_pressed = false;
 			_initialized = false;
 		}
 		
 		/**
-		 * Attempting to update the size of the text field to match the button.
+		 * Called by the game state when state is changed (if this object belongs to the state)
 		 */
-		override protected function resetHelpers():void
+		override public function destroy():void
 		{
-			super.resetHelpers();
+			if(FlxG.stage != null)
+				FlxG.stage.removeEventListener(MouseEvent.MOUSE_UP, onMouseUp);
 			if(label != null)
-				label.width = width;
+			{
+				label.destroy();
+				label = null;
+			}
+			_onClick = null;
+			super.destroy();
 		}
 		
+		/**
+		 * Since button uses its own mouse handler for thread reasons,
+		 * we run a little pre-check here to make sure that we only add
+		 * the mouse handler when it is actually safe to do so.
+		 */
 		override public function preUpdate():void
 		{
 			super.preUpdate();
@@ -145,17 +174,25 @@ package org.flixel
 				{
 					c = cameras[i++] as FlxCamera;
 					FlxG.mouse.getWorldPosition(c,_point);
-					if(overlapsPoint(_point.x,_point.y,c))
+					if(overlapsPoint(_point,true,c))
 					{
 						offAll = false;
 						if(FlxG.mouse.justPressed())
-							_status = PRESSED;
-						if(_status == NORMAL)
-							_status = HIGHLIGHT;
+							status = PRESSED;
+						if(status == NORMAL)
+						{
+							status = HIGHLIGHT;
+							if(_onOver != null)
+								_onOver();
+						}
 					}
 				}
 				if(offAll)
-					_status = NORMAL;
+				{
+					if((status != NORMAL) && (_onOut != null))
+						_onOut();
+					status = NORMAL;
+				}
 			}
 		
 			//Then if the label and/or the label offset exist,
@@ -172,16 +209,29 @@ package org.flixel
 			}
 			
 			//Then pick the appropriate frame of animation
-			if((_status == HIGHLIGHT) && _onToggle)
+			if((status == HIGHLIGHT) && _onToggle)
 				frame = NORMAL;
 			else
-				frame = _status;
+				frame = status;
 		}
 		
+		/**
+		 * Just draws the button graphic and text label to the screen.
+		 */
 		override public function draw():void
 		{
 			super.draw();
 			label.draw();
+		}
+		
+		/**
+		 * Updates the size of the text field to match the button.
+		 */
+		override protected function resetHelpers():void
+		{
+			super.resetHelpers();
+			if(label != null)
+				label.width = width;
 		}
 		
 		/**
@@ -201,27 +251,11 @@ package org.flixel
 		}
 		
 		/**
-		 * Called by the game state when state is changed (if this object belongs to the state)
-		 */
-		override public function destroy():void
-		{
-			if(FlxG.stage != null)
-				FlxG.stage.removeEventListener(MouseEvent.MOUSE_UP, onMouseUp);
-			if(label != null)
-			{
-				label.destroy();
-				label = null;
-			}
-			_onClick = null;
-			super.destroy();
-		}
-		
-		/**
 		 * Internal function for handling the actual callback call (for UI thread dependent calls like <code>FlxU.openURL()</code>).
 		 */
 		protected function onMouseUp(event:MouseEvent):void
 		{
-			if(exists && visible && active && (_status == PRESSED) && (_onClick != null) && (pauseProof || !FlxG.paused))
+			if(exists && visible && active && (status == PRESSED) && (_onClick != null))
 				_onClick();
 		}
 	}

@@ -8,20 +8,25 @@ package org.flixel
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
+	import org.flixel.plugin.DebugPathDisplay;
+	import org.flixel.plugin.TimerManager;
 	import org.flixel.system.FlxDebugger;
 	import org.flixel.system.FlxQuadTree;
-	import org.flixel.system.FlxSound;
 	import org.flixel.system.input.*;
 	
 	/**
 	 * This is a global helper class full of useful functions for audio,
 	 * input, basic info, and the camera system among other things.
+	 * Utilities for maths and color and things can be found in <code>FlxU</code>.
+	 * <code>FlxG</code> is specifically for Flixel-specific properties.
+	 * 
+	 * @author	Adam Atomic
 	 */
 	public class FlxG
 	{
 		/**
 		 * If you build and maintain your own version of flixel,
-		 * you can give it your own name here.  Appears in the console.
+		 * you can give it your own name here.
 		 */
 		static public var LIBRARY_NAME:String = "flixel";
 		/**
@@ -35,16 +40,48 @@ package org.flixel
 		 */
 		static public var LIBRARY_MINOR_VERSION:uint = 50;
 		
+		/**
+		 * Debugger overlay layout preset: Wide but low windows at the bottom of the screen.
+		 */
 		static public const DEBUGGER_STANDARD:uint = 0;
+		/**
+		 * Debugger overlay layout preset: Tiny windows in the screen corners.
+		 */
 		static public const DEBUGGER_MICRO:uint = 1;
+		/**
+		 * Debugger overlay layout preset: Large windows taking up bottom half of screen.
+		 */
 		static public const DEBUGGER_BIG:uint = 2;
+		/**
+		 * Debugger overlay layout preset: Wide but low windows at the top of the screen.
+		 */
 		static public const DEBUGGER_TOP:uint = 3;
+		/**
+		 * Debugger overlay layout preset: Large windows taking up left third of screen.
+		 */
 		static public const DEBUGGER_LEFT:uint = 4;
+		/**
+		 * Debugger overlay layout preset: Large windows taking up right third of screen.
+		 */
 		static public const DEBUGGER_RIGHT:uint = 5;
 		
+		/**
+		 * Some handy color presets.  Less glaring than pure RGB full values.
+		 * Primarily used in the visual debugger mode for bounding box displays.
+		 * Red is used to indicate an active, movable, solid object.
+		 */
 		static public const RED:uint = 0xffff0012;
+		/**
+		 * Green is used to indicate solid but immovable objects.
+		 */
 		static public const GREEN:uint = 0xff00f225;
+		/**
+		 * Blue is used to indicate non-solid objects.
+		 */
 		static public const BLUE:uint = 0xff0090e9;
+		/**
+		 * Pink is used to indicate objects that are only partially solid, like one-way platforms.
+		 */
 		static public const PINK:uint = 0xfff01eff;
 
 		/**
@@ -156,15 +193,32 @@ package org.flixel
 		 * Internal helper variable for clearing the cameras each frame.
 		 */
 		static protected var _cameraRect:Rectangle;
+		
+		/**
+		 * An array container for plugins.
+		 * By default flixel uses a couple of plugins:
+		 * DebugPathDisplay, and TimerManager.
+		 */
+		 static public var plugins:Array;
+		 
+		/**
+		 * Set this hook to get a callback whenever the volume changes.
+		 * Function should take the form <code>myVolumeHandler(Volume:Number)</code>.
+		 */
+		static public var volumeHandler:Function;
+		
+		/**
+		 * Useful helper objects for doing Flash-specific rendering.
+		 * Primarily used for "debug visuals" like drawing bounding boxes directly to the screen buffer.
+		 */
+		static public var flashGfxSprite:Sprite;
+		static public var flashGfx:Graphics;
 
 		/**
 		 * Internal storage system to prevent graphics from being used repeatedly in memory.
 		 */
 		static protected var _cache:Object;
-		
-		static public var flashGfxSprite:Sprite;
-		static public var flashGfx:Graphics;
-		
+
 		static public function getLibraryName():String
 		{
 			return FlxG.LIBRARY_NAME + " v" + FlxG.LIBRARY_MAJOR_VERSION + "." + FlxG.LIBRARY_MINOR_VERSION;
@@ -285,6 +339,14 @@ package org.flixel
 			return Objects;
 		}
 		
+		/**
+		 * Fetch a random entry from the given array.
+		 * Will return null if random selection is missing, or array has no entries.
+		 * 
+		 * @param	Objects		A Flash array of objects.
+		 * 
+		 * @return	The random object that was selected.
+		 */
 		static public function getRandom(Objects:Array):Object
 		{
 			if(Objects != null)
@@ -318,6 +380,11 @@ package org.flixel
 			_game._replayRequested = true;
 		}
 		
+		/**
+		 * Resets the game or state and replay requested flag.
+		 * 
+		 * @param	StandardMode	If true, reload entire game, else just reload current game state.
+		 */
 		static public function reloadReplay(StandardMode:Boolean=true):void
 		{
 			if(StandardMode)
@@ -328,6 +395,9 @@ package org.flixel
 				_game._replayRequested = true;
 		}
 		
+		/**
+		 * Stops the current replay.
+		 */
 		static public function stopReplay():void
 		{
 			_game._replaying = false;
@@ -336,6 +406,11 @@ package org.flixel
 			resetInput();
 		}
 		
+		/**
+		 * Resets the game or state and requests a new recording.
+		 * 
+		 * @param	StandardMode	If true, reset the entire game, else just reset the current state.
+		 */
 		static public function recordReplay(StandardMode:Boolean=true):void
 		{
 			if(StandardMode)
@@ -345,6 +420,11 @@ package org.flixel
 			_game._recordingRequested = true;
 		}
 		
+		/**
+		 * Stop recording the current replay and return the replay data.
+		 * 
+		 * @return	The replay data in simple ASCII format (see <code>FlxReplay.save()</code>).
+		 */
 		static public function stopRecording():String
 		{
 			_game._recording = false;
@@ -353,6 +433,9 @@ package org.flixel
 			return _game._replay.save();
 		}
 		
+		/**
+		 * Request a reset of the current game state.
+		 */
 		static public function resetState():void
 		{
 			_game._requestedState = new (FlxU.getClass(FlxU.getClassName(_game._state,false)))();
@@ -414,9 +497,9 @@ package org.flixel
 		/**
 		 * Creates a new sound object from a URL.
 		 * 
-		 * @param	EmbeddedSound	The sound you want to play.
-		 * @param	Volume			How loud to play it (0 to 1).
-		 * @param	Looped			Whether or not to loop this sound.
+		 * @param	URL		The URL of the sound you want to play.
+		 * @param	Volume	How loud to play it (0 to 1).
+		 * @param	Looped	Whether or not to loop this sound.
 		 * 
 		 * @return	A FlxSound object.
 		 */
@@ -434,7 +517,10 @@ package org.flixel
 		 * 
 		 * @default 0.5
 		 */
-		 static public function get volume():Number { return _volume; }
+		 static public function get volume():Number
+		 {
+			 return _volume;
+		 }
 		 
 		/**
 		 * @private
@@ -446,6 +532,8 @@ package org.flixel
 				_volume = 0;
 			else if(_volume > 1)
 				_volume = 1;
+			if(volumeHandler != null)
+				volumeHandler(_volume);
 		}
 
 		/**
@@ -536,28 +624,30 @@ package org.flixel
 		 * @param	Width	How wide the square should be.
 		 * @param	Height	How high the square should be.
 		 * @param	Color	What color the square should be (0xAARRGGBB)
+		 * @param	Unique	Ensures that the bitmap data uses a new slot in the cache.
+		 * @param	Key		Force the cache to use a specific Key to index the bitmap.
 		 * 
 		 * @return	The <code>BitmapData</code> we just created.
 		 */
 		static public function createBitmap(Width:uint, Height:uint, Color:uint, Unique:Boolean=false, Key:String=null):BitmapData
 		{
-			var key:String = Key;
-			if(key == null)
+			if(Key == null)
 			{
-				key = Width+"x"+Height+":"+Color;
-				if(Unique && (_cache[key] != undefined) && (_cache[key] != null))
+				Key = Width+"x"+Height+":"+Color;
+				if(Unique && checkBitmapCache(Key))
 				{
-					//Generate a unique key
 					var inc:uint = 0;
 					var ukey:String;
-					do { ukey = key + inc++;
-					} while((_cache[ukey] != undefined) && (_cache[ukey] != null));
-					key = ukey;
+					do
+					{
+						ukey = Key + inc++;
+					} while(checkBitmapCache(ukey));
+					Key = ukey;
 				}
 			}
-			if(!checkBitmapCache(key))
-				_cache[key] = new BitmapData(Width,Height,true,Color);
-			return _cache[key];
+			if(!checkBitmapCache(Key))
+				_cache[Key] = new BitmapData(Width,Height,true,Color);
+			return _cache[Key];
 		}
 		
 		/**
@@ -565,33 +655,36 @@ package org.flixel
 		 * 
 		 * @param	Graphic		The image file that you want to load.
 		 * @param	Reverse		Whether to generate a flipped version.
+		 * @param	Unique		Ensures that the bitmap data uses a new slot in the cache.
+		 * @param	Key			Force the cache to use a specific Key to index the bitmap.
 		 * 
 		 * @return	The <code>BitmapData</code> we just created.
 		 */
 		static public function addBitmap(Graphic:Class, Reverse:Boolean=false, Unique:Boolean=false, Key:String=null):BitmapData
 		{
 			var needReverse:Boolean = false;
-			var key:String = Key;
-			if(key == null)
+			if(Key == null)
 			{
-				key = String(Graphic)+(Reverse?"_REVERSE_":"");
-				if(Unique && (_cache[key] != undefined) && (_cache[key] != null))
+				Key = String(Graphic)+(Reverse?"_REVERSE_":"");
+				if(Unique && checkBitmapCache(Key))
 				{
-					//Generate a unique key
 					var inc:uint = 0;
 					var ukey:String;
-					do { ukey = key + inc++;
-					} while((_cache[ukey] != undefined) && (_cache[ukey] != null));
-					key = ukey;
+					do
+					{
+						ukey = Key + inc++;
+					} while(checkBitmapCache(ukey));
+					Key = ukey;
 				}
 			}
+			
 			//If there is no data for this key, generate the requested graphic
-			if(!checkBitmapCache(key))
+			if(!checkBitmapCache(Key))
 			{
-				_cache[key] = (new Graphic).bitmapData;
+				_cache[Key] = (new Graphic).bitmapData;
 				if(Reverse) needReverse = true;
 			}
-			var pixels:BitmapData = _cache[key];
+			var pixels:BitmapData = _cache[Key];
 			if(!needReverse && Reverse && (pixels.width == (new Graphic).bitmapData.width))
 				needReverse = true;
 			if(needReverse)
@@ -607,15 +700,17 @@ package org.flixel
 			return pixels;
 		}
 		
+		/**
+		 * Dumps the cache's image references.
+		 */
 		static public function clearBitmapCache():void
 		{
 			_cache = new Object();
 		}
 		
 		/**
-		 * Retrieves the Flash stage object (required for event listeners)
-		 * 
-		 * @return	A Flash <code>MovieClip</code> object.
+		 * Read-only: retrieves the Flash stage object (required for event listeners)
+		 * Will be null if it's not safe/useful yet.
 		 */
 		static public function get stage():Stage
 		{
@@ -625,7 +720,7 @@ package org.flixel
 		}
 		
 		/**
-		 * Access the current game state from anywhere.
+		 * Read-only: access the current game state from anywhere.
 		 */
 		static public function get state():FlxState
 		{
@@ -643,7 +738,7 @@ package org.flixel
 		/**
 		 * Change the way the debugger's windows are laid out.
 		 * 
-		 * @param	Layout		Check aux/FlxDebugger for helpful constants like FlxDebugger.LEFT, etc.
+		 * @param	Layout		See the presets above (e.g. <code>DEBUGGER_MICRO</code>, etc).
 		 */
 		static public function setDebuggerLayout(Layout:uint):void
 		{
@@ -652,7 +747,7 @@ package org.flixel
 		}
 		
 		/**
-		 * Just resets the debugger windows to whatever the sizes and positions of the selected layout are.
+		 * Just resets the debugger windows to whatever the last selected layout was (<code>DEBUGGER_STANDARD</code> by default).
 		 */
 		static public function resetDebuggerLayout():void
 		{
@@ -660,6 +755,14 @@ package org.flixel
 				_game._debugger.resetLayout();
 		}
 		
+		/**
+		 * Add a new camera object to the game.
+		 * Handy for PiP, split-screen, etc.
+		 * 
+		 * @param	NewCamera	The camera you want to add.
+		 * 
+		 * @return	This <code>FlxCamera</code> instance.
+		 */
 		static public function addCamera(NewCamera:FlxCamera):FlxCamera
 		{
 			FlxG._game.addChildAt(NewCamera._flashBitmap,FlxG._game.getChildIndex(FlxG._game._mouse));
@@ -667,6 +770,12 @@ package org.flixel
 			return NewCamera;
 		}
 		
+		/**
+		 * Dumps all the current cameras and resets to just one camera.
+		 * Handy for doing split-screen especially.
+		 * 
+		 * @param	NewCamera	Optional; specify a specific camera object to be the new main camera.
+		 */
 		static public function resetCameras(NewCamera:FlxCamera=null):void
 		{
 			var c:FlxCamera;
@@ -737,6 +846,11 @@ package org.flixel
 				(cameras[i++] as FlxCamera).shake(Intensity,Duration,OnComplete,Force,Direction);
 		}
 		
+		/**
+		 * Get and set the background color of the game.
+		 * Get functionality is equivalent to FlxG.camera.bgColor.
+		 * Set functionality sets the background color of all the current cameras.
+		 */
 		static public function get bgColor():uint
 		{
 			if(FlxG.camera == null)
@@ -757,15 +871,17 @@ package org.flixel
 		/**
 		 * Call this function to see if one <code>FlxObject</code> overlaps another.
 		 * Can be called with one object and one group, or two groups, or two objects,
-		 * whatever floats your boat!  It will put everything into a quad tree and then
-		 * check for overlaps.  For maximum performance try bundling a lot of objects
-		 * together using a <code>FlxGroup</code> (even bundling groups together!)
-		 * NOTE: does NOT take objects' scrollfactor into account.
+		 * whatever floats your boat! For maximum performance try bundling a lot of objects
+		 * together using a <code>FlxGroup</code> (or even bundling groups together!).
+		 * 
+		 * <p>NOTE: does NOT take objects' scrollfactor into account, all overlaps are checked in world space.</p>
 		 * 
 		 * @param	ObjectOrGroup1	The first object or group you want to check.
 		 * @param	ObjectOrGroup2	The second object or group you want to check.  If it is the same as the first, flixel knows to just do a comparison within that group.
 		 * @param	NotifyCallback	A function with two <code>FlxObject</code> parameters - e.g. <code>myOverlapFunction(Object1:FlxObject,Object2:FlxObject)</code> - that is called if those two objects overlap.
 		 * @param	ProcessCallback	A function with two <code>FlxObject</code> parameters - e.g. <code>myOverlapFunction(Object1:FlxObject,Object2:FlxObject)</code> - that is called if those two objects overlap.  If a ProcessCallback is provided, then NotifyCallback will only be called if ProcessCallback returns true for those objects!
+		 * 
+		 * @return	Whether any oevrlaps were detected.
 		 */
 		static public function overlap(ObjectOrGroup1:FlxBasic=null,ObjectOrGroup2:FlxBasic=null,NotifyCallback:Function=null,ProcessCallback:Function=null):Boolean
 		{
@@ -784,18 +900,56 @@ package org.flixel
 		/**
 		 * Call this function to see if one <code>FlxObject</code> collides with another.
 		 * Can be called with one object and one group, or two groups, or two objects,
-		 * whatever floats your boat!  It will put everything into a quad tree and then
-		 * check for collisions.  For maximum performance try bundling a lot of objects
-		 * together using a <code>FlxGroup</code> (even bundling groups together!)
-		 * NOTE: does NOT take objects' scrollfactor into account.
+		 * whatever floats your boat! For maximum performance try bundling a lot of objects
+		 * together using a <code>FlxGroup</code> (or even bundling groups together!).
+		 * 
+		 * <p>This function just calls FlxG.overlap and presets the ProcessCallback parameter to FlxObject.separate.
+		 * To create your own collision logic, write your own ProcessCallback and use FlxG.overlap to set it up.</p>
+		 * 
+		 * <p>NOTE: does NOT take objects' scrollfactor into account, all overlaps are checked in world space.</p>
 		 * 
 		 * @param	ObjectOrGroup1	The first object or group you want to check.
 		 * @param	ObjectOrGroup2	The second object or group you want to check.  If it is the same as the first, flixel knows to just do a comparison within that group.
 		 * @param	NotifyCallback	A function with two <code>FlxObject</code> parameters - e.g. <code>myOverlapFunction(Object1:FlxObject,Object2:FlxObject)</code> - that is called if those two objects overlap.
+		 * 
+		 * @return	Whether any objects were successfully collided/separated.
 		 */
 		static public function collide(ObjectOrGroup1:FlxBasic=null, ObjectOrGroup2:FlxBasic=null, NotifyCallback:Function=null):Boolean
 		{
 			return overlap(ObjectOrGroup1,ObjectOrGroup2,NotifyCallback,FlxObject.separate);
+		}
+		
+		/**
+		 * Adds a new plugin to the global plugin array.
+		 * 
+		 * @param	Plugin	Any object that extends FlxBasic. Useful for managers and other things.  See org.flixel.plugin for some examples!
+		 * 
+		 * @return	The same <code>FlxBasic</code>-based plugin you passed in.
+		 */
+		static public function addPlugin(Plugin:FlxBasic):FlxBasic
+		{
+			plugins.push(Plugin);
+			return Plugin;
+		}
+		
+		/**
+		 * Retrieves a plugin from the global plugin array.
+		 * 
+		 * @param	ClassType	Useful for retrieving plugins based on their type. See the <code>FlxPath</code> or <code>FlxTimer</code> constructors for example usage.
+		 * 
+		 * @return	The plugin object, or null if no matching plugin was found.
+		 */
+		static public function getPlugin(ClassType:Class):FlxBasic
+		{
+			var i:uint = 0;
+			var l:uint = plugins.length;
+			while(i < l)
+			{
+				if(plugins[i] is ClassType)
+					return plugins[i];
+				i++;
+			}
+			return null;
 		}
 		
 		/**
@@ -810,6 +964,7 @@ package org.flixel
 			FlxG.mute = false;
 			FlxG._volume = 0.5;
 			FlxG.sounds = new FlxGroup();
+			FlxG.volumeHandler = null;
 			
 			FlxG.clearBitmapCache();
 			
@@ -818,11 +973,14 @@ package org.flixel
 				flashGfxSprite = new Sprite();
 				flashGfx = flashGfxSprite.graphics;
 			}
-			FlxPath.debugDrawTracker = false;
 
 			FlxCamera.defaultZoom = Zoom;
 			FlxG._cameraRect = new Rectangle();
 			FlxG.cameras = new Array();
+			
+			plugins = new Array();
+			addPlugin(new DebugPathDisplay());
+			addPlugin(new TimerManager());
 			
 			FlxG.mouse = new Mouse(FlxG._game._mouse);
 			FlxG.keys = new Keyboard();
@@ -830,11 +988,12 @@ package org.flixel
 
 			FlxG.levels = new Array();
 			FlxG.scores = new Array();
-			FlxG.worldBounds = new FlxRect(0,0,FlxG.width,FlxG.height);
-			FlxG.worldDivisions = 6;
 			FlxG.visualDebug = false;
 		}
 		
+		/**
+		 * Called whenever the game is reset, doesn't have to do quite as much work as the basic initialization stuff.
+		 */
 		static internal function reset():void
 		{
 			FlxG.clearBitmapCache();
@@ -848,8 +1007,26 @@ package org.flixel
 			FlxG.timeScale = 1.0;
 			FlxG.elapsed = 0;
 			FlxG.globalSeed = Math.random();
+			FlxG.worldBounds = new FlxRect(-10,-10,FlxG.width+20,FlxG.height+20);
+			FlxG.worldDivisions = 6;
+			var debugPathDisplay:DebugPathDisplay = FlxG.getPlugin(DebugPathDisplay) as DebugPathDisplay;
+			if(debugPathDisplay != null)
+				debugPathDisplay.clear();
 		}
 		
+		/**
+		 * Called by the game object to update the keyboard and mouse input tracking objects.
+		 */
+		static internal function updateInput():void
+		{
+			FlxG.keys.update();
+			if(!_game._debuggerUp || !_game._debugger.hasMouse)
+				FlxG.mouse.update(FlxG._game.mouseX,FlxG._game.mouseY);
+		}
+		
+		/**
+		 * Called by the game object to lock all the camera buffers and clear them for the next draw pass.
+		 */
 		static internal function lockCameras():void
 		{
 			var c:FlxCamera;
@@ -866,6 +1043,9 @@ package org.flixel
 			}
 		}
 		
+		/**
+		 * Called by the game object to draw the special FX and unlock all the camera buffers.
+		 */
 		static internal function unlockCameras():void
 		{
 			var c:FlxCamera;
@@ -881,6 +1061,9 @@ package org.flixel
 			}
 		}
 		
+		/**
+		 * Called by the game object to update the cameras and their tracking/special effects logic.
+		 */
 		static internal function updateCameras():void
 		{
 			var c:FlxCamera;
@@ -901,13 +1084,35 @@ package org.flixel
 		}
 		
 		/**
-		 * Calls update on the keyboard and mouse input tracking objects.
+		 * Used by the game object to call <code>update()</code> on all the plugins.
 		 */
-		static internal function updateInput():void
+		static internal function updatePlugins():void
 		{
-			FlxG.keys.update();
-			if(!_game._debuggerUp || !_game._debugger.hasMouse)
-				FlxG.mouse.update(FlxG._game.mouseX,FlxG._game.mouseY);
+			var i:uint = 0;
+			var l:uint = plugins.length;
+			var plugin:FlxBasic;
+			while(i < l)
+			{
+				plugin = plugins[i++] as FlxBasic;
+				if(plugin.exists && plugin.active)
+					plugin.update();
+			}
+		}
+		
+		/**
+		 * Used by the game object to call <code>draw()</code> on all the plugins.
+		 */
+		static internal function drawPlugins():void
+		{
+			var i:uint = 0;
+			var l:uint = plugins.length;
+			var plugin:FlxBasic;
+			while(i < l)
+			{
+				plugin = plugins[i++] as FlxBasic;
+				if(plugin.exists && plugin.visible)
+					plugin.draw();
+			}
 		}
 	}
 }

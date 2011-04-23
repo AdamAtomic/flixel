@@ -1,5 +1,11 @@
 package org.flixel.system.input
-{	
+{
+	/**
+	 * Basic input class that manages the fast-access Booleans and detailed key-state tracking.
+	 * Keyboard extends this with actual specific key data.
+	 * 
+	 * @author Adam Atomic
+	 */
 	public class Input
 	{
 		/**
@@ -169,6 +175,9 @@ package org.flixel.system.input
 			_map[KeyCode] = { name: KeyName, current: 0, last: 0 };
 		}
 		
+		/**
+		 * Clean up memory.
+		 */
 		public function destroy():void
 		{
 			_lookup = null;

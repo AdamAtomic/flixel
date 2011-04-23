@@ -15,7 +15,9 @@ package org.flixel
 	 * It takes a string of comma-separated numbers and then associates
 	 * those values with tiles from the sheet you pass in.
 	 * It also includes some handy static parsers that can convert
-	 * arrays or PNG files into strings that can be successfully loaded.
+	 * arrays or images into strings that can be loaded.
+	 * 
+	 * @author	Adam Atomic
 	 */
 	public class FlxTilemap extends FlxObject
 	{
@@ -54,26 +56,67 @@ package org.flixel
 		public var totalTiles:uint;
 		
 		/**
-		 * Rendering helper.
+		 * Rendering helper, minimize new object instantiation on repetitive methods.
 		 */
 		protected var _flashPoint:Point;
+		/**
+		 * Rendering helper, minimize new object instantiation on repetitive methods.
+		 */
 		protected var _flashRect:Rectangle;
 		
+		/**
+		 * Internal reference to the bitmap data object that stores the original tile graphics.
+		 */
 		protected var _tiles:BitmapData;
+		/**
+		 * Internal list of buffers, one for each camera, used for drawing the tilemaps.
+		 */
 		protected var _buffers:Array;
+		/**
+		 * Internal representation of the actual tile data, as a large 1D array of integers.
+		 */
 		protected var _data:Array;
+		/**
+		 * Internal representation of rectangles, one for each tile in the entire tilemap, used to speed up drawing.
+		 */
 		protected var _rects:Array;
+		/**
+		 * Internal, the width of a single tile.
+		 */
 		protected var _tileWidth:uint;
+		/**
+		 * Internal, the height of a single tile.
+		 */
 		protected var _tileHeight:uint;
-		protected var _callbacks:Array;
+		/**
+		 * Internal collection of tile objects, one for each type of tile in the map (NOTE one for every single tile in the whole map).
+		 */
 		protected var _tileObjects:Array;
 		
+		/**
+		 * Internal, used for rendering the debug bounding box display.
+		 */
 		protected var _debugTileNotSolid:BitmapData;
+		/**
+		 * Internal, used for rendering the debug bounding box display.
+		 */
 		protected var _debugTilePartial:BitmapData;
+		/**
+		 * Internal, used for rendering the debug bounding box display.
+		 */
 		protected var _debugTileSolid:BitmapData;
+		/**
+		 * Internal, used for rendering the debug bounding box display.
+		 */
 		protected var _debugRect:Rectangle;
-		
+		/**
+		 * Internal flag for checking to see if we need to refresh
+		 * the tilemap display to show or hide the bounding boxes.
+		 */
 		protected var _lastVisualDebug:Boolean;
+		/**
+		 * Internal, used to sort of insert blank tiles in front of the tiles in the provided graphic.
+		 */
 		protected var _startingIndex:uint;
 		
 		/**
@@ -95,7 +138,6 @@ package org.flixel
 			_rects = null;
 			_tiles = null;
 			_tileObjects = null;
-			_callbacks = new Array();
 			immovable = true;
 			cameras = null;
 			_debugTileNotSolid = null;
@@ -106,6 +148,9 @@ package org.flixel
 			_startingIndex = 0;
 		}
 		
+		/**
+		 * Clean up memory.
+		 */
 		override public function destroy():void
 		{
 			_flashPoint = null;
@@ -123,7 +168,6 @@ package org.flixel
 			_buffers = null;
 			_data = null;
 			_rects = null;
-			_callbacks = null;
 			_debugTileNotSolid = null;
 			_debugTilePartial = null;
 			_debugTileSolid = null;
@@ -139,6 +183,10 @@ package org.flixel
 		 * @param	TileGraphic		All the tiles you want to use, arranged in a strip corresponding to the numbers in MapData.
 		 * @param	TileWidth		The width of your tiles (e.g. 8) - defaults to height of the tile graphic if unspecified.
 		 * @param	TileHeight		The height of your tiles (e.g. 8) - defaults to width if unspecified.
+		 * @param	AutoTile		Whether to load the map using an automatic tile placement algorithm.  Setting this to either AUTO or ALT will override any values you put for StartingIndex, DrawIndex, or CollideIndex.
+		 * @param	StartingIndex	Used to sort of insert empty tiles in front of the provided graphic.  Default is 0, usually safest ot leave it at that.  Ignored if AutoTile is set.
+		 * @param	DrawIndex		Initializes all tile objects equal to and after this index as visible. Default value is 1.  Ignored if AutoTile is set.
+		 * @param	CollideIndex	Initializes all tile objects equal to and after this index as allowCollisions = ANY.  Default value is 1.  Ignored if AutoTile is set.  Can override and customize per-tile-type collision behavior using <code>setTileProperties()</code>.	
 		 * 
 		 * @return	A pointer this instance of FlxTilemap, for chaining as usual :)
 		 */
@@ -221,6 +269,10 @@ package org.flixel
 			return this;
 		}
 		
+		/**
+		 * Internal function to clean up the map loading code.
+		 * Just generates a wireframe box the size of a tile with the specified color.
+		 */
 		protected function makeDebugTile(Color:uint):BitmapData
 		{
 			var debugTile:BitmapData
@@ -239,6 +291,12 @@ package org.flixel
 			return debugTile;
 		}
 		
+		/**
+		 * Main logic loop for tilemap is pretty simple,
+		 * just checks to see if visual debug got turned on.
+		 * If it did, the tilemap is flagged as dirty so it
+		 * will be redrawn with debug info on the next draw call.
+		 */
 		override public function update():void
 		{
 			if(_lastVisualDebug != FlxG.visualDebug)
@@ -249,7 +307,10 @@ package org.flixel
 		}
 
 		/**
-		 * Internal function that actually renders the tilemap to the tilemap buffer.  Called by render().
+		 * Internal function that actually renders the tilemap to the tilemap buffer.  Called by draw().
+		 * 
+		 * @param	Buffer		The <code>FlxTilemapBuffer</code> you are rendering to.
+		 * @param	Camera		The related <code>FlxCamera</code>, mainly for scroll values.
 		 */
 		protected function drawTilemap(Buffer:FlxTilemapBuffer,Camera:FlxCamera):void
 		{
@@ -260,8 +321,8 @@ package org.flixel
 			_point.y = int(Camera.scroll.y*scrollFactor.y) - y;
 			var tx:int = (_point.x + ((_point.x > 0)?0.0000001:-0.0000001))/_tileWidth;
 			var ty:int = (_point.y + ((_point.y > 0)?0.0000001:-0.0000001))/_tileHeight;
-			var sr:uint = Buffer.screenRows;
-			var sc:uint = Buffer.screenCols;
+			var sr:uint = Buffer.rows;
+			var sc:uint = Buffer.columns;
 			
 			//Bound the upper left corner
 			if(tx < 0)
@@ -319,7 +380,7 @@ package org.flixel
 		}
 		
 		/**
-		 * Draws the tilemap.
+		 * Draws the tilemap buffers to the cameras and handles flickering.
 		 */
 		override public function draw():void
 		{
@@ -364,6 +425,13 @@ package org.flixel
 			}
 		}
 		
+		/**
+		 * Fetches the tilemap data array.
+		 * 
+		 * @param	Simple		If true, returns the data as copy, as a series of 1s and 0s (useful for auto-tiling stuff). Default value is false, meaning it will return the actual data array (NOT a copy).
+		 * 
+		 * @return	An array the size of the tilemap full of integers indicating tile placement.
+		 */
 		public function getData(Simple:Boolean=false):Array
 		{
 			if(!Simple)
@@ -372,10 +440,16 @@ package org.flixel
 			var l:uint = _data.length;
 			var data:Array = new Array(l);
 			for(var i:uint = 0; i < l; i++)
-				data[i] = (_data[i] > 0)?1:0;
+				data[i] = ((_tileObjects[_data[i]] as FlxTile).allowCollisions > 0)?1:0;
 			return data;
 		}
 		
+		/**
+		 * Set the dirty flag on all the tilemap buffers.
+		 * Basically forces a reset of the drawn tilemaps, even if it wasn't necessary.
+		 * 
+		 * @param	Dirty		Whether to flag the tilemap buffers as dirty or not.
+		 */
 		public function setDirty(Dirty:Boolean=true):void
 		{
 			var l:uint = _buffers.length;
@@ -383,6 +457,17 @@ package org.flixel
 				(_buffers[i] as FlxTilemapBuffer).dirty = Dirty;
 		}
 		
+		/**
+		 * Find a path through the tilemap.  Any tile with any collision flags set is treated as impassable.
+		 * If no path is discovered then a null reference is returned.
+		 * 
+		 * @param	Start		The start point in world coordinates.
+		 * @param	End			The end point in world coordinates.
+		 * @param	Simplify	Whether to run a basic simplification algorithm over the path data, removing extra points that are on the same line.  Default value is true.
+		 * @param	RaySimplify	Whether to run an extra raycasting simplification algorithm over the remaining path data.  This can result in some close corners being cut, and should be used with care if at all (yet).  Default value is false.
+		 * 
+		 * @return	A <code>FlxPath</code> from the start to the end.  If no path could be found, then a null reference is returned.
+		 */
 		public function findPath(Start:FlxPoint,End:FlxPoint,Simplify:Boolean=true,RaySimplify:Boolean=false):FlxPath
 		{
 			//figure out what tile we are starting and ending on.
@@ -390,8 +475,8 @@ package org.flixel
 			var endIndex:uint = uint((End.y-y)/_tileHeight) * widthInTiles + uint((End.x-x)/_tileWidth);
 
 			//check that the start and end are clear.
-			if( (_tileObjects[_data[startIndex]] as FlxTile).allowCollisions ||
-				(_tileObjects[_data[endIndex]] as FlxTile).allowCollisions )
+			if( ((_tileObjects[_data[startIndex]] as FlxTile).allowCollisions > 0) ||
+				((_tileObjects[_data[endIndex]] as FlxTile).allowCollisions > 0) )
 				return null;
 			
 			//figure out how far each of the tiles is from the starting tile
@@ -430,6 +515,11 @@ package org.flixel
 			return path;
 		}
 		
+		/**
+		 * Pathfinding helper function, strips out extra points on the same line.
+		 *
+		 * @param	Points		An array of <code>FlxPoint</code> nodes.
+		 */
 		protected function simplifyPath(Points:Array):void
 		{
 			var i:uint = 1;
@@ -451,6 +541,11 @@ package org.flixel
 			}
 		}
 		
+		/**
+		 * Pathfinding helper function, strips out even more points by raycasting from one point to the next and dropping unnecessary points.
+		 * 
+		 * @param	Points		An array of <code>FlxPoint</code> nodes.
+		 */
 		protected function raySimplifyPath(Points:Array):void
 		{			
 			var i:uint = 1;
@@ -474,6 +569,15 @@ package org.flixel
 			}
 		}
 		
+		/**
+		 * Pathfinding helper function, floods a grid with distance information until it finds the end point.
+		 * NOTE: Currently this process does NOT use any kind of fancy heuristic!  It's pretty brute.
+		 * 
+		 * @param	StartIndex	The starting tile's map index.
+		 * @param	EndIndex	The ending tile's map index.
+		 * 
+		 * @return	A Flash <code>Array</code> of <code>FlxPoint</code> nodes.  If the end tile could not be found, then a null <code>Array</code> is returned instead.
+		 */
 		protected function computePathDistance(StartIndex:uint, EndIndex:uint):Array
 		{
 			//Create a distance-based representation of the tilemap.
@@ -603,6 +707,13 @@ package org.flixel
 			return distances;
 		}
 		
+		/**
+		 * Pathfinding helper function, recursively walks the grid and finds a shortest path back to the start.
+		 * 
+		 * @param	Data	A Flash <code>Array</code> of distance information.
+		 * @param	Start	The tile we're on in our walk backward.
+		 * @param	Points	A Flash <code>Array</code> of <code>FlxPoint</code> nodes composing the path from the start to the end, compiled in reverse order.
+		 */
 		protected function walkPath(Data:Array,Start:uint,Points:Array):void
 		{
 			Points.push(new FlxPoint(x + uint(Start%widthInTiles)*_tileWidth + _tileWidth*0.5, y + uint(Start/widthInTiles)*_tileHeight + _tileHeight*0.5));
@@ -668,17 +779,34 @@ package org.flixel
 		}
 		
 		/**
-		 * Checks for overlaps between the provided object and any tiles above the collision index.
+		 * Checks to see if some <code>FlxObject</code> overlaps this <code>FlxObject</code> object in world space.
+		 * WARNING: Currently tilemaps do NOT support screen space overlap checks!
 		 * 
-		 * @param	Rect		The <code>FlxRect</code> you want to check against.
+		 * @param	Object			The object being tested.
+		 * @param	InScreenSpace	Whether to take scroll factors into account when checking for overlap.
+		 * @param	Camera			Specify which game camera you want.  If null getScreenXY() will just grab the first global camera.
+		 * 
+		 * @return	Whether or not the two objects overlap.
 		 */
-		override public function overlaps(Object:FlxObject):Boolean
+		override public function overlaps(Object:FlxObject,InScreenSpace:Boolean=false,Camera:FlxCamera=null):Boolean
 		{
 			return overlapsWithCallback(Object);
 		}
 		
+		/**
+		 * Checks if the Object overlaps any tiles with any collision flags set,
+		 * and calls the specified callback function (if there is one).
+		 * Also calls the tile's registered callback if the filter matches.
+		 * 
+		 * @param	Object		The <code>FlxObject</code> you are checking for overlaps against.
+		 * @param	Callback	An optional function that takes the form "myCallback(Object1:FlxObject,Object2:FlxObject)", where one object is the object passed in in the first parameter, and the other is the relevant FlxTile from _tileObjects.
+		 * 
+		 * @return	Whether there were overlaps, or if a callback was specified, whatever the return value of the callback was.
+		 */
 		public function overlapsWithCallback(Object:FlxObject,Callback:Function=null):Boolean
 		{
+			//TODO: support screenspace overlap checks
+			
 			var results:Boolean = false;
 			
 			//Figure out what tiles we need to check against
@@ -746,26 +874,25 @@ package org.flixel
 		}
 		
 		/**
-		 * Checks to see if a point in 2D space overlaps a solid tile.
+		 * Checks to see if a point in 2D world space overlaps this <code>FlxObject</code> object.
 		 * 
-		 * @param	X			The X coordinate of the point.
-		 * @param	Y			The Y coordinate of the point.
-		 * @param	Camera		Specify which game camera you want.  If null getScreenXY() will just grab the first global camera.
-		 * @param	PerPixel	Not available in <code>FlxTilemap</code>, ignored.
+		 * @param	Point			The point in world space you want to check.
+		 * @param	InScreenSpace	Whether to take scroll factors into account when checking for overlap.
+		 * @param	Camera			Specify which game camera you want.  If null getScreenXY() will just grab the first global camera.
 		 * 
 		 * @return	Whether or not the point overlaps this object.
 		 */
-		override public function overlapsPoint(X:Number,Y:Number,Camera:FlxCamera=null,PerPixel:Boolean = false):Boolean
+		override public function overlapsPoint(Point:FlxPoint,InScreenSpace:Boolean=false,Camera:FlxCamera=null):Boolean
 		{
+			if(!InScreenSpace)
+				return (_tileObjects[_data[uint(uint((Point.y-y)/_tileHeight)*widthInTiles + (Point.x-x)/_tileWidth)]] as FlxTile).allowCollisions > 0;
+			
 			if(Camera == null)
 				Camera = FlxG.camera;
-			X = X + Camera.scroll.x;
-			Y = Y + Camera.scroll.y;
-			_point.x = x - int(Camera.scroll.x*scrollFactor.x);//copied from getScreenXY()
-			_point.y = y - int(Camera.scroll.y*scrollFactor.y);
-			_point.x += (_point.x > 0)?0.0000001:-0.0000001;
-			_point.y += (_point.y > 0)?0.0000001:-0.0000001;
-			return Boolean((_tileObjects[_data[uint(uint((Y-_point.y)/_tileHeight)*widthInTiles + (X-_point.x)/_tileWidth)]] as FlxTile).allowCollisions);
+			Point.x = Point.x - Camera.scroll.x;
+			Point.y = Point.y - Camera.scroll.y;
+			getScreenXY(_point,Camera);
+			return (_tileObjects[_data[uint(uint((Point.y-_point.y)/_tileHeight)*widthInTiles + (Point.x-_point.x)/_tileWidth)]] as FlxTile).allowCollisions > 0;
 		}
 		
 		/**
@@ -793,6 +920,13 @@ package org.flixel
 			return _data[Index] as uint;
 		}
 		
+		/**
+		 * Returns a new Flash <code>Array</code> full of every map index of the requested tile type.
+		 *
+		 * @param	Index	The requested tile type.
+		 * 
+		 * @return	An <code>Array</code> with a list of all map indices of that tile type.
+		 */
 		public function getTileInstances(Index:uint):Array
 		{
 			var array:Array = null;
@@ -814,6 +948,14 @@ package org.flixel
 			return array;
 		}
 		
+		/**
+		 * Returns a new Flash <code>Array</code> full of every coordinate of the requested tile type.
+		 * 
+		 * @param	Index		The requested tile type.
+		 * @param	Midpoint	Whether to return the coordinates of the tile midpoint, or upper left corner. Default is true, return midpoint.
+		 * 
+		 * @return	An <code>Array</code> with a list of all the coordinates of that tile type.
+		 */
 		public function getTileCoords(Index:uint,Midpoint:Boolean=true):Array
 		{
 			var array:Array = null;
@@ -940,14 +1082,29 @@ package org.flixel
 		/**
 		 * Call this function to lock the automatic camera to the map's edges.
 		 * 
-		 * @param	Camera		Specify which game camera you want.  If null getScreenXY() will just grab the first global camera.
-		 * @param	Border		Adjusts the camera follow boundary by whatever number of tiles you specify here.  Handy for blocking off deadends that are offscreen, etc.  Use a negative number to add padding instead of hiding the edges.
+		 * @param	Camera			Specify which game camera you want.  If null getScreenXY() will just grab the first global camera.
+		 * @param	Border			Adjusts the camera follow boundary by whatever number of tiles you specify here.  Handy for blocking off deadends that are offscreen, etc.  Use a negative number to add padding instead of hiding the edges.
+		 * @param	UpdateWorld		Whether to update the collision system's world size, default value is true.
 		 */
 		public function follow(Camera:FlxCamera=null,Border:int=0,UpdateWorld:Boolean=true):void
 		{
 			if(Camera == null)
 				Camera = FlxG.camera;
 			Camera.setBounds(x+Border*_tileWidth,y+Border*_tileHeight,width-Border*_tileWidth*2,height-Border*_tileHeight*2,UpdateWorld);
+		}
+		
+		/**
+		 * Get the world coordinates and size of the entire tilemap as a <code>FlxRect</code>.
+		 * 
+		 * @param	Bounds		Optional, pass in a pre-existing <code>FlxRect</code> to prevent instantiation of a new object.
+		 * 
+		 * @return	A <code>FlxRect</code> containing the world coordinates and size of the entire tilemap.
+		 */
+		public function getBounds(Bounds:FlxRect=null):FlxRect
+		{
+			if(Bounds == null)
+				Bounds = new FlxRect();
+			return Bounds.make(x,y,width,height);
 		}
 		
 		/**
@@ -1089,9 +1246,9 @@ package org.flixel
 		 * non-black pixels are set as non-colliding.
 		 * Black pixels must be PURE BLACK.
 		 * 
-		 * @param	PNGFile		An embedded graphic, preferably black and white.
+		 * @param	bitmapData	A Flash <code>BitmapData</code> object, preferably black and white.
 		 * @param	Invert		Load white pixels as solid instead.
-		 * @param	Scale		1 pixel = Scale number of tiles.  Default is 1.
+		 * @param	Scale		Default is 1.  Scale of 2 means each pixel forms a 2x2 block of tiles, and so on.
 		 * 
 		 * @return	A comma-separated string containing the level data in a <code>FlxTilemap</code>-friendly format.
 		 */
@@ -1111,7 +1268,7 @@ package org.flixel
 			var r:uint = 0;
 			var c:uint;
 			var p:uint;
-			var csv:String;
+			var csv:String = "";
 			var w:uint = bitmapData.width;
 			var h:uint = bitmapData.height;
 			while(r < h)
@@ -1149,8 +1306,9 @@ package org.flixel
 		 * non-black pixels are set as non-colliding.
 		 * Black pixels must be PURE BLACK.
 		 * 
-		 * @param	PNGFile		An embedded graphic, preferably black and white.
+		 * @param	ImageFile	An embedded graphic, preferably black and white.
 		 * @param	Invert		Load white pixels as solid instead.
+		 * @param	Scale		Default is 1.  Scale of 2 means each pixel forms a 2x2 block of tiles, and so on.
 		 * 
 		 * @return	A comma-separated string containing the level data in a <code>FlxTilemap</code>-friendly format.
 		 */

@@ -11,8 +11,11 @@ package org.flixel
 	import org.flixel.system.FlxAnim;
 	
 	/**
-	* The main "game object" class, handles basic physics and animation.
-	*/
+	 * The main "game object" class, the sprite is a <code>FlxObject</code>
+	 * with a bunch of graphics options and abilities, like animation and stamping.
+	 * 
+	 * @author	Adam Atomic
+	 */
 	public class FlxSprite extends FlxObject
 	{
 		[Embed(source="data/default.png")] protected var ImgDefault:Class;
@@ -24,8 +27,8 @@ package org.flixel
 		 */
 		public var origin:FlxPoint;
 		/**
-		* If you changed the size of your sprite object to shrink the bounding box,
-		* you might need to offset the new bounding box from the top-left corner of the sprite.
+		* If you changed the size of your sprite object after loading or making the graphic,
+		* you might need to offset the graphic away from the bound box to center it the way you want.
 		*/
 		public var offset:FlxPoint;
 		
@@ -37,7 +40,7 @@ package org.flixel
 		 */
 		public var scale:FlxPoint;
 		/**
-		 * Blending modes, just like Photoshop!
+		 * Blending modes, just like Photoshop or whatever.
 		 * E.g. "multiply", "screen", etc.
 		 * @default null
 		 */
@@ -62,36 +65,94 @@ package org.flixel
 		 */
 		public var frameHeight:uint;
 		/**
-		 * The total number of frames in this image (assumes each row is full).
+		 * The total number of frames in this image.  WARNING: assumes each row in the sprite sheet is full!
 		 */
 		public var frames:uint;
+		/**
+		 * The actual Flash <code>BitmapData</code> object representing the current display state of the sprite.
+		 */
+		public var framePixels:BitmapData;
 		/**
 		 * Set this flag to true to force the sprite to update during the draw() call.
 		 * NOTE: Rarely if ever necessary, most sprite operations will flip this flag automatically.
 		 */
 		public var dirty:Boolean;
 		
-		//Animation helpers
+		/**
+		 * Internal, stores all the animations that were added to this sprite.
+		 */
 		protected var _animations:Array;
+		/**
+		 * Internal, keeps track of whether the sprite was loaded with support for automatic reverse/mirroring.
+		 */
 		protected var _flipped:uint;
+		/**
+		 * Internal, keeps track of the current animation being played.
+		 */
 		protected var _curAnim:FlxAnim;
+		/**
+		 * Internal, keeps track of the current frame of animation.
+		 * This is NOT an index into the tile sheet, but the frame number in the animation object.
+		 */
 		protected var _curFrame:uint;
+		/**
+		 * Internal, keeps track of the current index into the tile sheet based on animation or rotation.
+		 */
 		protected var _caf:uint;
+		/**
+		 * Internal, used to time each frame of animation.
+		 */
 		protected var _frameTimer:Number;
+		/**
+		 * Internal tracker for the animation callback.  Default is null.
+		 * If assigned, will be called each time the current frame changes.
+		 * A function that has 3 parameters: a string name, a uint frame number, and a uint frame index.
+		 */
 		protected var _callback:Function;
+		/**
+		 * Internal tracker for what direction the sprite is currently facing, used with Flash getter/setter.
+		 */
 		protected var _facing:uint;
-		protected var _bakedRotation:Number;
-		
-		//Various rendering helpers
-		protected var _flashPoint:Point;
-		protected var _flashRect:Rectangle;
-		protected var _flashRect2:Rectangle;
-		protected var _flashPointZero:Point;
-		protected var _pixels:BitmapData;
-		protected var _framePixels:BitmapData;
+		/**
+		 * Internal tracker for opacity, used with Flash getter/setter.
+		 */
 		protected var _alpha:Number;
+		/**
+		 * Internal tracker for color tint, used with Flash getter/setter.
+		 */
 		protected var _color:uint;
+		/**
+		 * Internal tracker for how many frames of "baked" rotation there are (if any).
+		 */
+		protected var _bakedRotation:Number;
+		/**
+		 * Internal, stores the entire source graphic (not the current displayed animation frame), used with Flash getter/setter.
+		 */
+		protected var _pixels:BitmapData;
+		
+		/**
+		 * Internal, reused frequently during drawing and animating.
+		 */
+		protected var _flashPoint:Point;
+		/**
+		 * Internal, reused frequently during drawing and animating.
+		 */
+		protected var _flashRect:Rectangle;
+		/**
+		 * Internal, reused frequently during drawing and animating.
+		 */
+		protected var _flashRect2:Rectangle;
+		/**
+		 * Internal, reused frequently during drawing and animating. Always contains (0,0).
+		 */
+		protected var _flashPointZero:Point;
+		/**
+		 * Internal, helps with animation, caching and drawing.
+		 */
 		protected var _ct:ColorTransform;
+		/**
+		 * Internal, helps with animation, caching and drawing.
+		 */
 		protected var _mtx:Matrix;
 		
 		/**
@@ -139,6 +200,9 @@ package org.flixel
 			loadGraphic(SimpleGraphic);
 		}
 		
+		/**
+		 * Clean up memory.
+		 */
 		override public function destroy():void
 		{
 			if(_animations != null)
@@ -165,7 +229,7 @@ package org.flixel
 			_curAnim = null;
 			_mtx = null;
 			_callback = null;
-			_framePixels = null;
+			framePixels = null;
 		}
 		
 		/**
@@ -174,9 +238,9 @@ package org.flixel
 		 * @param	Graphic		The image you want to use.
 		 * @param	Animated	Whether the Graphic parameter is a single sprite or a row of sprites.
 		 * @param	Reverse		Whether you need this class to generate horizontally flipped versions of the animation frames.
-		 * @param	Width		OPTIONAL - Specify the width of your sprite (helps FlxSprite figure out what to do with non-square sprites or sprite sheets).
-		 * @param	Height		OPTIONAL - Specify the height of your sprite (helps FlxSprite figure out what to do with non-square sprites or sprite sheets).
-		 * @param	Unique		Whether the graphic should be a unique instance in the graphics cache.
+		 * @param	Width		Optional, specify the width of your sprite (helps FlxSprite figure out what to do with non-square sprites or sprite sheets).
+		 * @param	Height		Optional, specify the height of your sprite (helps FlxSprite figure out what to do with non-square sprites or sprite sheets).
+		 * @param	Unique		Optional, whether the graphic should be a unique instance in the graphics cache.  Default is false.
 		 * 
 		 * @return	This FlxSprite instance (nice for chaining stuff together, if you're into that).
 		 */
@@ -215,10 +279,10 @@ package org.flixel
 		 * This can make a huge difference in graphical performance!
 		 * 
 		 * @param	Graphic			The image you want to rotate and stamp.
-		 * @param	Frames			The number of frames you want to use (more == smoother rotations).
-		 * @param	Offset			Use this to select a specific frame to draw from the graphic.
-		 * @param	AntiAliasing	Whether to use high quality rotations when creating the graphic.
-		 * @param	AutoBuffer		Whether to automatically increase the image size to accomodate rotated corners.
+		 * @param	Rotations		The number of rotation frames the final sprite should have.  For small sprites this can be quite a large number (360 even) without any problems.
+		 * @param	Frame			If the Graphic has a single row of square animation frames on it, you can specify which of the frames you want to use here.  Default is -1, or "use whole graphic."
+		 * @param	AntiAliasing	Whether to use high quality rotations when creating the graphic.  Default is false.
+		 * @param	AutoBuffer		Whether to automatically increase the image size to accomodate rotated corners.  Default is false.  Will create frames that are 150% larger on each axis than the original frame or graphic.
 		 * 
 		 * @return	This FlxSprite instance (nice for chaining stuff together, if you're into that).
 		 */
@@ -300,7 +364,7 @@ package org.flixel
 		 * @param	Width		The width of the sprite you want to generate.
 		 * @param	Height		The height of the sprite you want to generate.
 		 * @param	Color		Specifies the color of the generated block.
-		 * @param	Unique		Whether the graphic should be a unique instance in the graphics cache.
+		 * @param	Unique		Whether the graphic should be a unique instance in the graphics cache.  Default is false.
 		 * @param	Key			Optional parameter - specify a string key to identify this graphic in the cache.  Trumps Unique flag.
 		 * 
 		 * @return	This FlxSprite instance (nice for chaining stuff together, if you're into that).
@@ -328,13 +392,294 @@ package org.flixel
 			_flashRect2.y = 0;
 			_flashRect2.width = _pixels.width;
 			_flashRect2.height = _pixels.height;
-			if((_framePixels == null) || (_framePixels.width != width) || (_framePixels.height != height))
-				_framePixels = new BitmapData(width,height);
+			if((framePixels == null) || (framePixels.width != width) || (framePixels.height != height))
+				framePixels = new BitmapData(width,height);
 			origin.make(frameWidth*0.5,frameHeight*0.5);
-			_framePixels.copyPixels(_pixels,_flashRect,_flashPointZero);
+			framePixels.copyPixels(_pixels,_flashRect,_flashPointZero);
 			frames = (_flashRect2.width / _flashRect.width) * (_flashRect2.height / _flashRect.height);
-			if(_ct != null) _framePixels.colorTransform(_flashRect,_ct);
+			if(_ct != null) framePixels.colorTransform(_flashRect,_ct);
 			_caf = 0;
+		}
+		
+		/**
+		 * Automatically called after update() by the game loop,
+		 * this function just calls updateAnimation().
+		 */
+		override public function postUpdate():void
+		{
+			super.postUpdate();
+			updateAnimation();
+		}
+		
+		/**
+		 * Called by game loop, updates then blits or renders current frame of animation to the screen
+		 */
+		override public function draw():void
+		{
+			if(_flickerTimer != 0)
+			{
+				_flicker = !_flicker;
+				if(_flicker)
+					return;
+			}
+			
+			if(dirty)	//rarely 
+				calcFrame();
+			
+			if(cameras == null)
+				cameras = FlxG.cameras;
+			var c:FlxCamera;
+			var i:uint = 0;
+			var l:uint = cameras.length;
+			while(i < l)
+			{
+				c = cameras[i++];
+				if(!onScreen(c))
+					continue;
+				_point.x = x - int(c.scroll.x*scrollFactor.x) - offset.x;
+				_point.y = y - int(c.scroll.y*scrollFactor.y) - offset.y;
+				_point.x += (_point.x > 0)?0.0000001:-0.0000001;
+				_point.y += (_point.y > 0)?0.0000001:-0.0000001;
+				if(((angle == 0) || (_bakedRotation > 0)) && (scale.x == 1) && (scale.y == 1) && (blend == null))
+				{	//Simple render
+					_flashPoint.x = _point.x;
+					_flashPoint.y = _point.y;
+					c.buffer.copyPixels(framePixels,_flashRect,_flashPoint,null,null,true);
+				}
+				else
+				{	//Advanced render
+					_mtx.identity();
+					_mtx.translate(-origin.x,-origin.y);
+					_mtx.scale(scale.x,scale.y);
+					if((angle != 0) && (_bakedRotation <= 0))
+						_mtx.rotate(angle * 0.017453293);
+					_mtx.translate(_point.x+origin.x,_point.y+origin.y);
+					c.buffer.draw(framePixels,_mtx,null,blend,null,antialiasing);
+				}
+				_VISIBLECOUNT++;
+				if(FlxG.visualDebug)
+					drawDebug(c);
+			}
+		}
+		
+		/**
+		 * This function draws or stamps one <code>FlxSprite</code> onto another.
+		 * This function is NOT intended to replace <code>render()</code>!
+		 * 
+		 * @param	Brush		The image you want to use as a brush or stamp or pen or whatever.
+		 * @param	X			The X coordinate of the brush's top left corner on this sprite.
+		 * @param	Y			They Y coordinate of the brush's top left corner on this sprite.
+		 */
+		public function stamp(Brush:FlxSprite,X:int=0,Y:int=0):void
+		{
+			var b:BitmapData = Brush.framePixels;
+			
+			//Simple draw
+			if(((Brush.angle == 0) || (Brush._bakedRotation > 0)) && (Brush.scale.x == 1) && (Brush.scale.y == 1) && (Brush.blend == null))
+			{
+				_flashPoint.x = X;
+				_flashPoint.y = Y;
+				_flashRect2.width = b.width;
+				_flashRect2.height = b.height;
+				_pixels.copyPixels(b,_flashRect2,_flashPoint,null,null,true);
+				_flashRect2.width = _pixels.width;
+				_flashRect2.height = _pixels.height;
+				calcFrame();
+				return;
+			}
+			
+			//Advanced draw
+			_mtx.identity();
+			_mtx.translate(-Brush.origin.x,-Brush.origin.y);
+			_mtx.scale(Brush.scale.x,Brush.scale.y);
+			if(Brush.angle != 0)
+				_mtx.rotate(Brush.angle * 0.017453293);
+			_mtx.translate(X+Brush.origin.x,Y+Brush.origin.y);
+			_pixels.draw(b,_mtx,null,Brush.blend,null,Brush.antialiasing);
+			calcFrame();
+		}
+		
+		/**
+		 * This function draws a line on this sprite from position X1,Y1
+		 * to position X2,Y2 with the specified color.
+		 * 
+		 * @param	StartX		X coordinate of the line's start point.
+		 * @param	StartY		Y coordinate of the line's start point.
+		 * @param	EndX		X coordinate of the line's end point.
+		 * @param	EndY		Y coordinate of the line's end point.
+		 * @param	Color		The line's color.
+		 * @param	Thickness	How thick the line is in pixels (default value is 1).
+		 */
+		public function drawLine(StartX:Number,StartY:Number,EndX:Number,EndY:Number,Color:uint,Thickness:uint=1):void
+		{
+			//Draw line
+			var gfx:Graphics = FlxG.flashGfx;
+			gfx.clear();
+			gfx.moveTo(StartX,StartY);
+			var a:Number = Number((Color >> 24) & 0xFF) / 255;
+			if(a <= 0)
+				a = 1;
+			gfx.lineStyle(Thickness,Color,a);
+			gfx.lineTo(EndX,EndY);
+			
+			//Cache line to bitmap
+			_pixels.draw(FlxG.flashGfxSprite);
+			dirty = true;
+		}
+		
+		/**
+		 * Fills this sprite's graphic with a specific color.
+		 * 
+		 * @param	Color		The color with which to fill the graphic, format 0xAARRGGBB.
+		 */
+		public function fill(Color:uint):void
+		{
+			_pixels.fillRect(_flashRect2,Color);
+			if(_pixels != framePixels)
+				dirty = true;
+		}
+		
+		/**
+		 * Internal function for updating the sprite's animation.
+		 * Useful for cases when you need to update this but are buried down in too many supers.
+		 * This function is called automatically by <code>FlxSprite.postUpdate()</code>.
+		 */
+		protected function updateAnimation():void
+		{
+			if(_bakedRotation > 0)
+			{
+				var oc:uint = _caf;
+				var ta:int = angle%360;
+				if(ta < 0)
+					ta += 360;
+				_caf = ta/_bakedRotation + 0.5;
+				if(oc != _caf)
+					dirty = true;
+			}
+			else if((_curAnim != null) && (_curAnim.delay > 0) && (_curAnim.looped || !finished))
+			{
+				_frameTimer += FlxG.elapsed;
+				while(_frameTimer > _curAnim.delay)
+				{
+					_frameTimer = _frameTimer - _curAnim.delay;
+					if(_curFrame == _curAnim.frames.length-1)
+					{
+						if(_curAnim.looped)
+							_curFrame = 0;
+						finished = true;
+					}
+					else
+						_curFrame++;
+					_caf = _curAnim.frames[_curFrame];
+					dirty = true;
+				}
+			}
+			
+			if(dirty)
+				calcFrame();
+		}
+		
+		/**
+		 * Request (or force) that the sprite update the frame before rendering.
+		 * Useful if you are doing procedural generation or other weirdness!
+		 * 
+		 * @param	Force	Force the frame to redraw, even if its not flagged as necessary.
+		 */
+		public function drawFrame(Force:Boolean=false):void
+		{
+			if(Force || dirty)
+				calcFrame();
+		}
+		
+		/**
+		 * Adds a new animation to the sprite.
+		 * 
+		 * @param	Name		What this animation should be called (e.g. "run").
+		 * @param	Frames		An array of numbers indicating what frames to play in what order (e.g. 1, 2, 3).
+		 * @param	FrameRate	The speed in frames per second that the animation should play at (e.g. 40 fps).
+		 * @param	Looped		Whether or not the animation is looped or just plays once.
+		 */
+		public function addAnimation(Name:String, Frames:Array, FrameRate:Number=0, Looped:Boolean=true):void
+		{
+			_animations.push(new FlxAnim(Name,Frames,FrameRate,Looped));
+		}
+		
+		/**
+		 * Pass in a function to be called whenever this sprite's animation changes.
+		 * 
+		 * @param	AnimationCallback		A function that has 3 parameters: a string name, a uint frame number, and a uint frame index.
+		 */
+		public function addAnimationCallback(AnimationCallback:Function):void
+		{
+			_callback = AnimationCallback;
+		}
+		
+		/**
+		 * Plays an existing animation (e.g. "run").
+		 * If you call an animation that is already playing it will be ignored.
+		 * 
+		 * @param	AnimName	The string name of the animation you want to play.
+		 * @param	Force		Whether to force the animation to restart.
+		 */
+		public function play(AnimName:String,Force:Boolean=false):void
+		{
+			if(!Force && (_curAnim != null) && (AnimName == _curAnim.name) && (_curAnim.looped || !finished)) return;
+			_curFrame = 0;
+			_caf = 0;
+			_frameTimer = 0;
+			var i:uint = 0;
+			var al:uint = _animations.length;
+			while(i < al)
+			{
+				if(_animations[i].name == AnimName)
+				{
+					_curAnim = _animations[i];
+					if(_curAnim.delay <= 0)
+						finished = true;
+					else
+						finished = false;
+					_caf = _curAnim.frames[_curFrame];
+					dirty = true;
+					return;
+				}
+				i++;
+			}
+			FlxG.log("WARNING: No animation called \""+AnimName+"\"");
+		}
+		
+		/**
+		 * Tell the sprite to change to a random frame of animation
+		 * Useful for instantiating particles or other weird things.
+		 */
+		public function randomFrame():void
+		{
+			_curAnim = null;
+			_caf = int(FlxG.random()*(_pixels.width/frameWidth));
+			dirty = true;
+		}
+		
+		/**
+		 * Helper function that just sets origin to (0,0)
+		 */
+		public function setOriginToCorner():void
+		{
+			origin.x = origin.y = 0;
+		}
+		
+		/**
+		 * Helper function that adjusts the offset automatically to center the bounding box within the graphic.
+		 * 
+		 * @param	AdjustPosition		Adjusts the actual X and Y position just once to match the offset change. Default is false.
+		 */
+		public function centerOffsets(AdjustPosition:Boolean=false):void
+		{
+			offset.x = (frameWidth-width)*0.5;
+			offset.y = (frameHeight-height)*0.5;
+			if(AdjustPosition)
+			{
+				x += offset.x;
+				y += offset.y;
+			}
 		}
 		
 		/**
@@ -430,292 +775,6 @@ package org.flixel
 			dirty = true;
 		}
 		
-
-		/**
-		 * This function draws or stamps one <code>FlxSprite</code> onto another.
-		 * This function is NOT intended to replace <code>render()</code>!
-		 * 
-		 * @param	Brush		The image you want to use as a brush or stamp or pen or whatever.
-		 * @param	X			The X coordinate of the brush's top left corner on this sprite.
-		 * @param	Y			They Y coordinate of the brush's top left corner on this sprite.
-		 */
-		public function stamp(Brush:FlxSprite,X:int=0,Y:int=0):void
-		{
-			var b:BitmapData = Brush._framePixels;
-			
-			//Simple draw
-			if(((Brush.angle == 0) || (Brush._bakedRotation > 0)) && (Brush.scale.x == 1) && (Brush.scale.y == 1) && (Brush.blend == null))
-			{
-				_flashPoint.x = X;
-				_flashPoint.y = Y;
-				_flashRect2.width = b.width;
-				_flashRect2.height = b.height;
-				_pixels.copyPixels(b,_flashRect2,_flashPoint,null,null,true);
-				_flashRect2.width = _pixels.width;
-				_flashRect2.height = _pixels.height;
-				calcFrame();
-				return;
-			}
-
-			//Advanced draw
-			_mtx.identity();
-			_mtx.translate(-Brush.origin.x,-Brush.origin.y);
-			_mtx.scale(Brush.scale.x,Brush.scale.y);
-			if(Brush.angle != 0)
-				_mtx.rotate(Brush.angle * 0.017453293);
-			_mtx.translate(X+Brush.origin.x,Y+Brush.origin.y);
-			_pixels.draw(b,_mtx,null,Brush.blend,null,Brush.antialiasing);
-			calcFrame();
-		}
-		
-		/**
-		 * This function draws a line on this sprite from position X1,Y1
-		 * to position X2,Y2 with the specified color.
-		 * 
-		 * @param	StartX		X coordinate of the line's start point.
-		 * @param	StartY		Y coordinate of the line's start point.
-		 * @param	EndX		X coordinate of the line's end point.
-		 * @param	EndY		Y coordinate of the line's end point.
-		 * @param	Color		The line's color.
-		 * @param	Thickness	How thick the line is in pixels (default value is 1).
-		 */
-		public function drawLine(StartX:Number,StartY:Number,EndX:Number,EndY:Number,Color:uint,Thickness:uint=1):void
-		{
-			//Draw line
-			var gfx:Graphics = FlxG.flashGfx;
-			gfx.clear();
-			gfx.moveTo(StartX,StartY);
-			var a:Number = Number((Color >> 24) & 0xFF) / 255;
-			if(a <= 0)
-				a = 1;
-			gfx.lineStyle(Thickness,Color,a);
-			gfx.lineTo(EndX,EndY);
-			
-			//Cache line to bitmap
-			_pixels.draw(FlxG.flashGfxSprite);
-			dirty = true;
-		}
-		
-		/**
-		 * Fills this sprite's graphic with a specific color.
-		 * 
-		 * @param	Color		The color with which to fill the graphic, format 0xAARRGGBB.
-		 */
-		public function fill(Color:uint):void
-		{
-			_pixels.fillRect(_flashRect2,Color);
-			if(_pixels != _framePixels)
-				dirty = true;
-		}
-		
-		/**
-		 * Internal function for updating the sprite's animation.
-		 * Useful for cases when you need to update this but are buried down in too many supers.
-		 * This function is called automatically by <code>FlxSprite.update()</code>.
-		 */
-		protected function updateAnimation():void
-		{
-			if(_bakedRotation > 0)
-			{
-				var oc:uint = _caf;
-				var ta:int = angle%360;
-				if(ta < 0)
-					ta += 360;
-				_caf = ta/_bakedRotation;
-				if(oc != _caf)
-					dirty = true;
-			}
-			else if((_curAnim != null) && (_curAnim.delay > 0) && (_curAnim.looped || !finished))
-			{
-				_frameTimer += FlxG.elapsed;
-				while(_frameTimer > _curAnim.delay)
-				{
-					_frameTimer = _frameTimer - _curAnim.delay;
-					if(_curFrame == _curAnim.frames.length-1)
-					{
-						if(_curAnim.looped) _curFrame = 0;
-						finished = true;
-					}
-					else
-						_curFrame++;
-					_caf = _curAnim.frames[_curFrame];
-					dirty = true;
-				}
-			}
-			
-			if(dirty)
-				calcFrame();
-		}
-		
-		override public function postUpdate():void
-		{
-			super.postUpdate();
-			updateAnimation();
-		}
-		
-		/**
-		 * Called by game loop, updates then blits or renders current frame of animation to the screen
-		 */
-		override public function draw():void
-		{
-			if(_flickerTimer != 0)
-			{
-				_flicker = !_flicker;
-				if(_flicker)
-					return;
-			}
-			
-			if(dirty)	//rarely 
-				calcFrame();
-			
-			if(cameras == null)
-				cameras = FlxG.cameras;
-			var c:FlxCamera;
-			var i:uint = 0;
-			var l:uint = cameras.length;
-			while(i < l)
-			{
-				c = cameras[i++];
-				if(!onScreen(c))
-					continue;
-				_point.x = x - int(c.scroll.x*scrollFactor.x) - offset.x; //copied from getScreenXY()
-				_point.y = y - int(c.scroll.y*scrollFactor.y) - offset.y;
-				_point.x += (_point.x > 0)?0.0000001:-0.0000001;
-				_point.y += (_point.y > 0)?0.0000001:-0.0000001;
-				if(((angle == 0) || (_bakedRotation > 0)) && (scale.x == 1) && (scale.y == 1) && (blend == null))
-				{	//Simple render
-					_flashPoint.x = _point.x;
-					_flashPoint.y = _point.y;
-					c.buffer.copyPixels(_framePixels,_flashRect,_flashPoint,null,null,true);
-				}
-				else
-				{	//Advanced render
-					_mtx.identity();
-					_mtx.translate(-origin.x,-origin.y);
-					_mtx.scale(scale.x,scale.y);
-					if((angle != 0) && (_bakedRotation <= 0))
-						_mtx.rotate(angle * 0.017453293);
-					_mtx.translate(_point.x+origin.x,_point.y+origin.y);
-					c.buffer.draw(_framePixels,_mtx,null,blend,null,antialiasing);
-				}
-				_VISIBLECOUNT++;
-				if(FlxG.visualDebug)
-					drawDebug(c, offset);
-			}
-		}
-		
-		/**
-		 * Request (or force) that the sprite update the frame before rendering.
-		 * Useful if you are doing procedural generation or other weirdness!
-		 * 
-		 * @param	Force	Force the frame to redraw, even if its not flagged as necessary.
-		 */
-		public function drawFrame(Force:Boolean=false):void
-		{
-			if(Force || dirty)
-				calcFrame();
-		}
-		
-		/**
-		 * Checks to see if a point in 2D world space overlaps this FlxCore object.
-		 * 
-		 * @param	X			The X coordinate of the point.
-		 * @param	Y			The Y coordinate of the point.
-		 * @param	Camera		Specify which game camera you want.  If null getScreenXY() will just grab the first global camera.
-		 * @param	PerPixel	Whether or not to use per pixel collision checking.
-		 * 
-		 * @return	Whether or not the point overlaps this object.
-		 */
-		override public function overlapsPoint(X:Number,Y:Number,Camera:FlxCamera=null,PerPixel:Boolean = false):Boolean
-		{
-			if(Camera == null)
-				Camera = FlxG.camera;
-			
-			//convert the passed in point to screen space
-			X = X - Camera.scroll.x;
-			Y = Y - Camera.scroll.y;
-			
-			//then compare
-			_point.x = x - int(Camera.scroll.x*scrollFactor.x) - offset.x; //copied from getScreenXY()
-			_point.y = y - int(Camera.scroll.y*scrollFactor.y) - offset.y;
-			_point.x += (_point.x > 0)?0.0000001:-0.0000001;
-			_point.y += (_point.y > 0)?0.0000001:-0.0000001;
-			if(PerPixel)
-				return _framePixels.hitTest(new Point(0,0),0xFF,new Point(X-_point.x,Y-_point.y));
-			return (X > _point.x) && (X < _point.x+frameWidth) && (Y > _point.y) && (Y < _point.y+frameHeight);
-		}
-		
-		/**
-		 * Triggered whenever this sprite is launched by a <code>FlxEmitter</code>.
-		 */
-		virtual public function onEmit():void { }
-		
-		/**
-		 * Adds a new animation to the sprite.
-		 * 
-		 * @param	Name		What this animation should be called (e.g. "run").
-		 * @param	Frames		An array of numbers indicating what frames to play in what order (e.g. 1, 2, 3).
-		 * @param	FrameRate	The speed in frames per second that the animation should play at (e.g. 40 fps).
-		 * @param	Looped		Whether or not the animation is looped or just plays once.
-		 */
-		public function addAnimation(Name:String, Frames:Array, FrameRate:Number=0, Looped:Boolean=true):void
-		{
-			_animations.push(new FlxAnim(Name,Frames,FrameRate,Looped));
-		}
-		
-		/**
-		 * Pass in a function to be called whenever this sprite's animation changes.
-		 * 
-		 * @param	AnimationCallback		A function that has 3 parameters: a string name, a uint frame number, and a uint frame index.
-		 */
-		public function addAnimationCallback(AnimationCallback:Function):void
-		{
-			_callback = AnimationCallback;
-		}
-		
-		/**
-		 * Plays an existing animation (e.g. "run").
-		 * If you call an animation that is already playing it will be ignored.
-		 * 
-		 * @param	AnimName	The string name of the animation you want to play.
-		 * @param	Force		Whether to force the animation to restart.
-		 */
-		public function play(AnimName:String,Force:Boolean=false):void
-		{
-			if(!Force && (_curAnim != null) && (AnimName == _curAnim.name) && (_curAnim.looped || !finished)) return;
-			_curFrame = 0;
-			_caf = 0;
-			_frameTimer = 0;
-			var i:uint = 0;
-			var al:uint = _animations.length;
-			while(i < al)
-			{
-				if(_animations[i].name == AnimName)
-				{
-					_curAnim = _animations[i];
-					if(_curAnim.delay <= 0)
-						finished = true;
-					else
-						finished = false;
-					_caf = _curAnim.frames[_curFrame];
-					dirty = true;
-					return;
-				}
-				i++;
-			}
-		}
-
-		/**
-		 * Tell the sprite to change to a random frame of animation
-		 * Useful for instantiating particles or other weird things.
-		 */
-		public function randomFrame():void
-		{
-			_curAnim = null;
-			_caf = int(FlxG.random()*(_pixels.width/frameWidth));
-			dirty = true;
-		}
-		
 		/**
 		 * Tell the sprite to change to a specific frame of animation.
 		 * 
@@ -736,47 +795,11 @@ package org.flixel
 			dirty = true;
 		}
 		
-		public function corner():void
-		{
-			origin.x = origin.y = 0;
-		}
-		
-		/**
-		 * Reduces the "health" variable of this sprite by the amount specified in Damage.
-		 * Calls kill() if health drops to or below zero.
-		 * 
-		 * @param	Damage		How much health to take away (use a negative number to give a health bonus).
-		 */
-		public function hurt(Damage:Number):void
-		{
-			health = health - Damage;
-			if(health <= 0)
-				kill();
-		}
-		
-		/**
-		 * Call this function to figure out the on-screen position of the object.
-		 * 
-		 * @param	Camera		Specify which game camera you want.  If null getScreenXY() will just grab the first global camera.
-		 * @param	P	Takes a <code>Point</code> object and assigns the post-scrolled X and Y values of this object to it.
-		 * 
-		 * @return	The <code>Point</code> you passed in, or a new <code>Point</code> if you didn't pass one, containing the screen X and Y position of this object.
-		 */
-		override public function getScreenXY(Point:FlxPoint=null,Camera:FlxCamera=null):FlxPoint
-		{
-			if(Point == null)
-				Point = new FlxPoint();
-			if(Camera == null)
-				Camera = FlxG.camera;
-			Point.x = x - int(Camera.scroll.x*scrollFactor.x) - offset.x; //copied from getScreenXY()
-			Point.y = y - int(Camera.scroll.y*scrollFactor.y) - offset.y;
-			Point.x += (Point.x > 0)?0.0000001:-0.0000001;
-			Point.y += (Point.y > 0)?0.0000001:-0.0000001;
-			return Point;
-		}
-		
 		/**
 		 * Check and see if this object is currently on screen.
+		 * Differs from <code>FlxObject</code>'s implementation
+		 * in that it takes the actual graphic into account,
+		 * not just the hitbox or bounding box or whatever.
 		 * 
 		 * @param	Camera		Specify which game camera you want.  If null getScreenXY() will just grab the first global camera.
 		 * 
@@ -786,23 +809,43 @@ package org.flixel
 		{
 			if(Camera == null)
 				Camera = FlxG.camera;
-			_point.x = x - int(Camera.scroll.x*scrollFactor.x) - offset.x; //copied from getScreenXY()
-			_point.y = y - int(Camera.scroll.y*scrollFactor.y) - offset.y;
-			_point.x += (_point.x > 0)?0.0000001:-0.0000001;
-			_point.y += (_point.y > 0)?0.0000001:-0.0000001;
+			getScreenXY(_point,Camera);
+			_point.x = _point.x - offset.x;
+			_point.y = _point.y - offset.y;
+
 			if(((angle == 0) || (_bakedRotation > 0)) && (scale.x == 1) && (scale.y == 1))
-			{
 				return ((_point.x + frameWidth > 0) && (_point.x < Camera.width) && (_point.y + frameHeight > 0) && (_point.y < Camera.height));
-			}
-			else
-			{
-				var hw:Number = width/2;
-				var hh:Number = height/2;
-				var radius:Number = Math.sqrt(hw*hw+hh*hh)*((scale.x >= scale.y)?scale.x:scale.y);
-				_point.x += hw;
-				_point.y += hh;
-				return ((_point.x + radius > 0) && (_point.x - radius < Camera.width) && (_point.y + radius > 0) && (_point.y - radius < Camera.height));
-			}
+			
+			var hw:Number = frameWidth/2;
+			var hh:Number = frameHeight/2;
+			var absScaleX:Number = (scale.x>0)?scale.x:-scale.x;
+			var absScaleY:Number = (scale.y>0)?scale.y:-scale.y;
+			var radius:Number = Math.sqrt(hw*hw+hh*hh)*((absScaleX >= absScaleY)?absScaleX:absScaleY);
+			_point.x += hw;
+			_point.y += hh;
+			return ((_point.x + radius > 0) && (_point.x - radius < Camera.width) && (_point.y + radius > 0) && (_point.y - radius < Camera.height));
+		}
+		
+		/**
+		 * Checks to see if a point in 2D world space overlaps this <code>FlxSprite</code> object's current displayed pixels.
+		 * This check is ALWAYS made in screen space, and always takes scroll factors into account.
+		 * 
+		 * @param	Point		The point in world space you want to check.
+		 * @param	Mask		Used in the pixel hit test to determine what counts as solid.
+		 * @param	Camera		Specify which game camera you want.  If null getScreenXY() will just grab the first global camera.
+		 * 
+		 * @return	Whether or not the point overlaps this object.
+		 */
+		public function pixelsOverlapPoint(Point:FlxPoint,Mask:uint=0xFF,Camera:FlxCamera=null):Boolean
+		{
+			if(Camera == null)
+				Camera = FlxG.camera;
+			getScreenXY(_point,Camera);
+			_point.x = _point.x - offset.x;
+			_point.y = _point.y - offset.y;
+			_flashPoint.x = (Point.x - Camera.scroll.x) - _point.x;
+			_flashPoint.y = (Point.y - Camera.scroll.y) - _point.y;
+			return framePixels.hitTest(_flashPointZero,Mask,_flashPoint);
 		}
 		
 		/**
@@ -828,10 +871,12 @@ package org.flixel
 			//Update display bitmap
 			_flashRect.x = rx;
 			_flashRect.y = ry;
-			_framePixels.copyPixels(_pixels,_flashRect,_flashPointZero);
+			framePixels.copyPixels(_pixels,_flashRect,_flashPointZero);
 			_flashRect.x = _flashRect.y = 0;
-			if(_ct != null) _framePixels.colorTransform(_flashRect,_ct);
-			if(_callback != null) _callback(_curAnim.name,_curFrame,_caf);
+			if(_ct != null)
+				framePixels.colorTransform(_flashRect,_ct);
+			if(_callback != null)
+				_callback(((_curAnim != null)?(_curAnim.name):null),_curFrame,_caf);
 			dirty = false;
 		}
 	}

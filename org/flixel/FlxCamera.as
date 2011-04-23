@@ -6,22 +6,68 @@ package org.flixel
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
+	/**
+	 * The camera class is used to display the game's visuals in the Flash player.
+	 * By default one camera is created automatically, that is the same size as the Flash player.
+	 * You can add more cameras or even replace the main camera using utilities in <code>FlxG</code>.
+	 * 
+	 * @author Adam Atomic
+	 */
 	public class FlxCamera extends FlxBasic
 	{
+		/**
+		 * Camera "follow" style preset: camera has no deadzone, just tracks the focus object directly.
+		 */
 		static public const STYLE_LOCKON:uint = 0;
+		/**
+		 * Camera "follow" style preset: camera deadzone is narrow but tall.
+		 */
 		static public const STYLE_PLATFORMER:uint = 1;
+		/**
+		 * Camera "follow" style preset: camera deadzone is a medium-size square around the focus object.
+		 */
 		static public const STYLE_TOPDOWN:uint = 2;
+		/**
+		 * Camera "follow" style preset: camera deadzone is a small square around the focus object.
+		 */
 		static public const STYLE_TOPDOWN_TIGHT:uint = 3;
 		
+		/**
+		 * Camera "shake" effect preset: shake camera on both the X and Y axes.
+		 */
 		static public const SHAKE_BOTH_AXES:uint = 0;
-		static public const SHAKE_VERTICAL_ONLY:uint = 1;
-		static public const SHAKE_HORIZONTAL_ONLY:uint = 2;
+		/**
+		 * Camera "shake" effect preset: shake camera on the X axis only.
+		 */
+		static public const SHAKE_HORIZONTAL_ONLY:uint = 1;
+		/**
+		 * Camera "shake" effect preset: shake camera on the Y axis only.
+		 */
+		static public const SHAKE_VERTICAL_ONLY:uint = 2;
 		
+		/**
+		 * While you can alter the zoom of each camera after the fact,
+		 * this variable determines what value the camera will start at when created.
+		 */
 		static public var defaultZoom:Number;
 		
+		/**
+		 * The X position of this camera's display.  Zoom does NOT affect this number.
+		 * Measured in pixels from the left side of the flash window.
+		 */
 		public var x:Number;
+		/**
+		 * The Y position of this camera's display.  Zoom does NOT affect this number.
+		 * Measured in pixels from the top of the flash window.
+		 */
 		public var y:Number;
+		/**
+		 * How wide the camera display is, in game pixels.
+		 */
 		public var width:uint;
+		/**
+		 * How tall the camera display is, in game pixels.
+		 */
 		public var height:uint;
 		/**
 		 * Tells the camera to follow this <code>FlxObject</code> object around.
@@ -29,11 +75,15 @@ package org.flixel
 		public var target:FlxObject;
 		/**
 		 * You can assign a "dead zone" to the camera in order to better control its movement.
-		 * The camera will always keep the player inside the dead zone.
+		 * The camera will always keep the focus object inside the dead zone,
+		 * unless it is bumping up against the bounds rectangle's edges.
+		 * The deadzone's coordinates are measured from the camera's upper left corner in game pixels.
+		 * For rapid prototyping, you can use the preset deadzones (e.g. <code>STYLE_PLATFORMER</code>) with <code>follow()</code>.
 		 */
 		public var deadzone:FlxRect;
 		/**
 		 * The edges of the camera's range, i.e. where to stop scrolling.
+		 * Measured in game pixels and world coordinates.
 		 */
 		public var bounds:FlxRect;
 		
@@ -70,26 +120,42 @@ package org.flixel
 		internal var _flashBitmap:Bitmap;
 		protected var _flashRect:Rectangle;
 		protected var _flashPoint:Point;
-		
-		//special effects
+		/**
+		 * Internal, used to control the "flash" special effect.
+		 */
 		protected var _fxFlashColor:uint;
 		protected var _fxFlashDuration:Number;
 		protected var _fxFlashComplete:Function;
 		protected var _fxFlashAlpha:Number;
-		
+		/**
+		 * Internal, used to control the "fade" special effect.
+		 */
 		protected var _fxFadeColor:uint;
 		protected var _fxFadeDuration:Number;
 		protected var _fxFadeComplete:Function;
 		protected var _fxFadeAlpha:Number;
-		
+		/**
+		 * Internal, used to control the "shake" special effect.
+		 */
 		protected var _fxShakeIntensity:Number;
 		protected var _fxShakeDuration:Number;
 		protected var _fxShakeComplete:Function;
 		protected var _fxShakeOffset:FlxPoint;
 		protected var _fxShakeDirection:uint;
-		
+		/**
+		 * Internal helper variable for doing better wipes/fills between renders.
+		 */
 		protected var _fill:BitmapData;
 		
+		/**
+		 * Instantiates a new camera at the specified location, with the specified size and zoom level.
+		 * 
+		 * @param X			X location of the camera's display in pixels. Uses native, 1:1 resolution, ignores zoom.
+		 * @param Y			Y location of the camera's display in pixels. Uses native, 1:1 resolution, ignores zoom.
+		 * @param Width		The width of the camera display in pixels.
+		 * @param Height	The height of the camera display in pixels.
+		 * @param Zoom		The initial zoom level of the camera.  A zoom level of 2 will make all pixels display at 2x resolution.
+		 */
 		public function FlxCamera(X:int,Y:int,Width:int,Height:int,Zoom:Number=0)
 		{
 			x = X;
@@ -131,6 +197,9 @@ package org.flixel
 			_fill = new BitmapData(width,height,true,0);
 		}
 		
+		/**
+		 * Clean up memory.
+		 */
 		override public function destroy():void
 		{
 			target = null;
@@ -148,6 +217,9 @@ package org.flixel
 			_fill = null;
 		}
 		
+		/**
+		 * Updates the camera scroll as well as special effects like screen-shake or fades.
+		 */
 		override public function update():void
 		{
 			//Either follow the object closely, 
@@ -159,17 +231,20 @@ package org.flixel
 				else
 				{
 					var t:Number;
-					t = target.x - deadzone.x;
+					var targetX:Number = target.x + ((target.x > 0)?0.0000001:-0.0000001);
+					var targetY:Number = target.y + ((target.y > 0)?0.0000001:-0.0000001);
+					
+					t = targetX - deadzone.x;
 					if(scroll.x > t)
 						scroll.x = t;
-					t = target.x + target.width - deadzone.x - deadzone.width;
+					t = targetX + target.width - deadzone.x - deadzone.width;
 					if(scroll.x < t)
 						scroll.x = t;
 					
-					t = target.y - deadzone.y;
+					t = targetY - deadzone.y;
 					if(scroll.y > t)
 						scroll.y = t;
-					t = target.y + target.height - deadzone.y - deadzone.height;
+					t = targetY + target.height - deadzone.y - deadzone.height;
 					if(scroll.y < t)
 						scroll.y = t;
 				}
@@ -232,10 +307,7 @@ package org.flixel
 		 * Tells this camera object what <code>FlxObject</code> to track.
 		 * 
 		 * @param	Target		The object you want the camera to track.  Set to null to not follow anything.
-		 * @param	Speed		How fast to track it (default: 1 - slowish).
-		 * @param	LeadX		How far in front of the camera to look on the X axis, times the target's X velocity (default: 0).
-		 * @param	LeadY		How far in front of the camera to look on the Y axis, times the target's Y velocity (default: 0).
-		 * @param	Snap		Whether the camera should start on the new object, or smoothly scroll over to it (default: true).
+		 * @param	Style		Leverage one of the existing "deadzone" presets.  If you use a custom deadzone, ignore this parameter and manually specify the deadzone after calling <code>follow()</code>.
 		 */
 		public function follow(Target:FlxObject, Style:uint=STYLE_LOCKON):void
 		{
@@ -270,7 +342,9 @@ package org.flixel
 		 */
 		public function focusOn(Point:FlxPoint):void
 		{
-			scroll.make(Point.x - (width>>1),Point.y - (height>>1));
+			Point.x += (Point.x > 0)?0.0000001:-0.0000001;
+			Point.y += (Point.y > 0)?0.0000001:-0.0000001;
+			scroll.make(Point.x - width*0.5,Point.y - height*0.5);
 		}
 		
 		/**
@@ -352,6 +426,9 @@ package org.flixel
 			_fxShakeOffset.make();
 		}
 		
+		/**
+		 * Just turns off all the camera effects instantly.
+		 */
 		public function stopFX():void
 		{
 			_fxFlashAlpha = 0.0;
@@ -361,6 +438,13 @@ package org.flixel
 			_flashBitmap.y = y;
 		}
 		
+		/**
+		 * Copy the bounds, focus object, and deadzone info from an existing camera.
+		 * 
+		 * @param	Camera	The camera you want to copy from.
+		 * 
+		 * @return	A reference to this <code>FlxCamera</code> object.
+		 */
 		public function copyFrom(Camera:FlxCamera):FlxCamera
 		{
 			if(Camera.bounds == null)
@@ -386,11 +470,17 @@ package org.flixel
 			return this;
 		}
 		
+		/**
+		 * The zoom level of this camera. 1 = 1:1, 2 = 2x zoom, etc.
+		 */
 		public function get zoom():Number
 		{
 			return _zoom;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set zoom(Zoom:Number):void
 		{
 			if(Zoom == 0)
@@ -401,31 +491,51 @@ package org.flixel
 			_flashBitmap.scaleY = _zoom;
 		}
 		
+		/**
+		 * The alpha value of this camera display (a Number between 0.0 and 1.0).
+		 */
 		public function get alpha():Number
 		{
 			return _flashBitmap.alpha;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set alpha(Alpha:Number):void
 		{
 			_flashBitmap.alpha = Alpha;
 		}
 		
+		/**
+		 * The angle of the camera display (in degrees).
+		 * Currently yields weird display results,
+		 * since cameras aren't nested in an extra display object yet.
+		 */
 		public function get angle():Number
 		{
 			return _flashBitmap.rotation;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set angle(Angle:Number):void
 		{
 			_flashBitmap.rotation = Angle;
 		}
 		
+		/**
+		 * The color tint of the camera display.
+		 */
 		public function get color():uint
 		{
 			return _color;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set color(Color:uint):void
 		{
 			_color = Color;
@@ -436,27 +546,48 @@ package org.flixel
 			_flashBitmap.transform.colorTransform = ct;
 		}
 		
+		/**
+		 * Whether the camera display is smooth and filtered, or chunky and pixelated.
+		 * Default behavior is chunky-style.
+		 */
 		public function get antialiasing():Boolean
 		{
 			return _flashBitmap.smoothing;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set antialiasing(Antialiasing:Boolean):void
 		{
 			_flashBitmap.smoothing = Antialiasing;
 		}
 		
+		/**
+		 * The scale of the camera object, irrespective of zoom.
+		 * Currently yields weird display results,
+		 * since cameras aren't nested in an extra display object yet.
+		 */
 		public function getScale():FlxPoint
 		{
 			return _point.make(_flashBitmap.scaleX,_flashBitmap.scaleY);
 		}
 		
+		/**
+		 * @private
+		 */
 		public function setScale(X:Number,Y:Number):void
 		{
 			_flashBitmap.scaleX = X;
 			_flashBitmap.scaleY = Y;
 		}
 		
+		/**
+		 * Fill the camera with the specified color.
+		 * 
+		 * @param	Color		The color to fill with in 0xAARRGGBB hex format.
+		 * @param	BlendAlpha	Whether to blend the alpha value or just wipe the previous contents.  Default is true.
+		 */
 		public function fill(Color:uint=0,BlendAlpha:Boolean=true):void
 		{
 			if(Color == 0)
@@ -465,22 +596,25 @@ package org.flixel
 			buffer.copyPixels(_fill,_flashRect,_flashPoint,null,null,BlendAlpha);
 		}
 		
+		/**
+		 * Internal helper function, handles the actual drawing of all the special effects.
+		 */
 		internal function drawFX():void
 		{
-			var a:Number;
+			var alphaComponent:Number;
 			
 			//Draw the "flash" special effect onto the buffer
 			if(_fxFlashAlpha > 0.0)
 			{
-				a = _fxFlashColor>>24;
-				fill((uint(((a <= 0)?0xff:a)*_fxFlashAlpha)<<24)+(_fxFlashColor&0x00ffffff));
+				alphaComponent = _fxFlashColor>>24;
+				fill((uint(((alphaComponent <= 0)?0xff:alphaComponent)*_fxFlashAlpha)<<24)+(_fxFlashColor&0x00ffffff));
 			}
 			
 			//Draw the "fade" special effect onto the buffer
 			if(_fxFadeAlpha > 0.0)
 			{
-				a = _fxFadeColor>>24;
-				fill((uint(((a <= 0)?0xff:a)*_fxFadeAlpha)<<24)+(_fxFadeColor&0x00ffffff));
+				alphaComponent = _fxFadeColor>>24;
+				fill((uint(((alphaComponent <= 0)?0xff:alphaComponent)*_fxFadeAlpha)<<24)+(_fxFadeColor&0x00ffffff));
 			}
 			
 			if((_fxShakeOffset.x != 0) || (_fxShakeOffset.y != 0))

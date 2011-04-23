@@ -17,7 +17,6 @@ package org.flixel.system
 	import flash.utils.getTimer;
 	
 	import org.flixel.FlxG;
-	
 
 	/**
 	 * This class handles the 8-bit style preloader.

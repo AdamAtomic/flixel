@@ -2,42 +2,90 @@ package org.flixel
 {
 	import flash.display.Graphics;
 	
+	import org.flixel.plugin.DebugPathDisplay;
+	
+	/**
+	 * This is a simple path data container.  Basically a list of points that
+	 * a <code>FlxObject</code> can follow.  Also has code for drawing debug visuals.
+	 * <code>FlxTilemap.findPath()</code> returns a path object, but you can
+	 * also just make your own, using the <code>add()</code> functions below
+	 * or by creating your own array of points.
+	 * 
+	 * @author	Adam Atomic
+	 */
 	public class FlxPath
 	{
-		static public var debugDrawTracker:Boolean;
-		
+		/**
+		 * The list of <code>FlxPoint</code>s that make up the path data.
+		 */
 		public var nodes:Array;
-		
-		//NOTE: doesn't actually affect anything, just used for debug visuals
-		public var scrollFactor:FlxPoint;
-		
-		protected var _debugDrawSwitches:Array;
+		/**
+		 * Specify a debug display color for the path.  Default is white.
+		 */
+		public var debugColor:uint;
+		/**
+		 * Specify a debug display scroll factor for the path.  Default is (1,1).
+		 * NOTE: does not affect world movement!  Object scroll factors take care of that.
+		 */
+		public var debugScrollFactor:FlxPoint;
+
+		/**
+		 * Internal helper for keeping new variable instantiations under control.
+		 */
 		protected var _point:FlxPoint;
 		
+		/**
+		 * Instantiate a new path object.
+		 * 
+		 * @param	Nodes	Optional, can specify all the points for the path up front if you want.
+		 */
 		public function FlxPath(Nodes:Array=null)
 		{
 			if(Nodes == null)
 				nodes = new Array();
 			else
 				nodes = Nodes;
-			_debugDrawSwitches = new Array();
 			_point = new FlxPoint();
-			scrollFactor = new FlxPoint(1.0,1.0);
+			debugScrollFactor = new FlxPoint(1.0,1.0);
+			debugColor = 0xffffff;
+			
+			var plugin:DebugPathDisplay = FlxG.getPlugin(DebugPathDisplay) as DebugPathDisplay;
+			if(plugin != null)
+				plugin.add(this);
 		}
 		
+		/**
+		 * Clean up memory.
+		 */
 		public function destroy():void
 		{
-			scrollFactor = null;
-			_debugDrawSwitches = null;
+			var plugin:DebugPathDisplay = FlxG.getPlugin(DebugPathDisplay) as DebugPathDisplay;
+			if(plugin != null)
+				plugin.remove(this);
+			
+			debugScrollFactor = null;
 			_point = null;
 			nodes = null;
 		}
 		
+		/**
+		 * Add a new node to the end of the path at the specified location.
+		 * 
+		 * @param	X	X position of the new path point in world coordinates.
+		 * @param	Y	Y position of the new path point in world coordinates.
+		 */
 		public function add(X:Number,Y:Number):void
 		{
 			nodes.push(new FlxPoint(X,Y));
 		}
 		
+		/**
+		 * Add a new node to the path at the specified location and index within the path.
+		 * 
+		 * @param	X		X position of the new path point in world coordinates.
+		 * @param	Y		Y position of the new path point in world coordinates.
+		 * @param	Index	Where within the list of path nodes to insert this new point.
+		 */
 		public function addAt(X:Number, Y:Number, Index:uint):void
 		{
 			if(Index > nodes.length)
@@ -45,34 +93,65 @@ package org.flixel
 			nodes.splice(Index,0,new FlxPoint(X,Y));
 		}
 		
-		public function addPoint(Point:FlxPoint,AsReference:Boolean=false):void
+		/**
+		 * Sometimes its easier or faster to just pass a point object instead of separate X and Y coordinates.
+		 * This also gives you the option of not creating a new node but actually adding that specific
+		 * <code>FlxPoint</code> object to the path.  This allows you to do neat things, like dynamic paths.
+		 * 
+		 * @param	Node			The point in world coordinates you want to add to the path.
+		 * @param	AsReference		Whether to add the point as a reference, or to create a new point with the specified values.
+		 */
+		public function addPoint(Node:FlxPoint,AsReference:Boolean=false):void
 		{
 			if(AsReference)
-				nodes.push(Point);
+				nodes.push(Node);
 			else
-				nodes.push(new FlxPoint(Point.x,Point.y));
+				nodes.push(new FlxPoint(Node.x,Node.y));
 		}
 		
-		public function addPointAt(Point:FlxPoint,Index:uint,AsReference:Boolean=false):void
+		/**
+		 * Sometimes its easier or faster to just pass a point object instead of separate X and Y coordinates.
+		 * This also gives you the option of not creating a new node but actually adding that specific
+		 * <code>FlxPoint</code> object to the path.  This allows you to do neat things, like dynamic paths.
+		 * 
+		 * @param	Node			The point in world coordinates you want to add to the path.
+		 * @param	Index			Where within the list of path nodes to insert this new point.
+		 * @param	AsReference		Whether to add the point as a reference, or to create a new point with the specified values.
+		 */
+		public function addPointAt(Node:FlxPoint,Index:uint,AsReference:Boolean=false):void
 		{
 			if(Index > nodes.length)
 				Index = nodes.length;
 			if(AsReference)
-				nodes.splice(Index,0,Point);
+				nodes.splice(Index,0,Node);
 			else
-				nodes.splice(Index,0,new FlxPoint(Point.x,Point.y));
+				nodes.splice(Index,0,new FlxPoint(Node.x,Node.y));
 		}
 		
-		//note: only works with points added by reference or with references from nodes itself
-		public function remove(Point:FlxPoint):FlxPoint
+		/**
+		 * Remove a node from the path.
+		 * NOTE: only works with points added by reference or with references from <code>nodes</code> itself!
+		 * 
+		 * @param	Node	The point object you want to remove from the path.
+		 * 
+		 * @return	The node that was excised.  Returns null if the node was not found.
+		 */
+		public function remove(Node:FlxPoint):FlxPoint
 		{
-			var index:int = nodes.indexOf(Point);
+			var index:int = nodes.indexOf(Node);
 			if(index >= 0)
 				return nodes.splice(index,1);
 			else
 				return null;
 		}
 		
+		/**
+		 * Remove a node from the path using the specified position in the list of path nodes.
+		 * 
+		 * @param	Index	Where within the list of path nodes you want to remove a node.
+		 * 
+		 * @return	The node that was excised.  Returns null if there were no nodes in the path.
+		 */
 		public function removeAt(Index:uint):FlxPoint
 		{
 			if(nodes.length <= 0)
@@ -82,6 +161,11 @@ package org.flixel
 			return nodes.splice(Index,1);
 		}
 		
+		/**
+		 * Get the first node in the list.
+		 * 
+		 * @return	The first node in the path.
+		 */
 		public function head():FlxPoint
 		{
 			if(nodes.length > 0)
@@ -89,6 +173,11 @@ package org.flixel
 			return null;
 		}
 		
+		/**
+		 * Get the last node in the list.
+		 * 
+		 * @return	The last node in the path.
+		 */
 		public function tail():FlxPoint
 		{
 			if(nodes.length > 0)
@@ -96,22 +185,20 @@ package org.flixel
 			return null;
 		}
 		
+		/**
+		 * While this doesn't override <code>FlxBasic.drawDebug()</code>, the behavior is very similar.
+		 * Based on this path data, it draws a simple lines-and-boxes representation of the path
+		 * if the visual debug mode was toggled in the debugger overlay.  You can use <code>debugColor</code>
+		 * and <code>debugScrollFactor</code> to control the path's appearance.
+		 * 
+		 * @param	Camera		The camera object the path will draw to.
+		 */
 		public function drawDebug(Camera:FlxCamera=null):void
 		{
 			if(nodes.length <= 0)
 				return;
-
-			//Figure out which camera to draw to, but only draw the path once per frame.
 			if(Camera == null)
 				Camera = FlxG.camera;
-			var debugIndex:int = FlxG.cameras.indexOf(Camera);
-			if(debugIndex < 0)
-				return;
-			if(debugIndex >= _debugDrawSwitches.length)
-				_debugDrawSwitches.push(!debugDrawTracker);
-			if(_debugDrawSwitches[debugIndex] == debugDrawTracker)
-				return;
-			_debugDrawSwitches[debugIndex] = !_debugDrawSwitches[debugIndex];
 			
 			//Set up our global flash graphics object to draw out the path
 			var gfx:Graphics = FlxG.flashGfx;
@@ -128,8 +215,8 @@ package org.flixel
 				p = nodes[i] as FlxPoint;
 				
 				//find the screen position of the node on this camera
-				_point.x = p.x - int(Camera.scroll.x*scrollFactor.x); //copied from getScreenXY()
-				_point.y = p.y - int(Camera.scroll.y*scrollFactor.y);
+				_point.x = p.x - int(Camera.scroll.x*debugScrollFactor.x); //copied from getScreenXY()
+				_point.y = p.y - int(Camera.scroll.y*debugScrollFactor.y);
 				_point.x = int(_point.x + ((_point.x > 0)?0.0000001:-0.0000001));
 				_point.y = int(_point.y + ((_point.y > 0)?0.0000001:-0.0000001));
 				
@@ -137,17 +224,17 @@ package org.flixel
 				var nodeSize:uint = 2;
 				if((i == 0) || (i == l-1))
 					nodeSize *= 2;
-				var color:uint = 0xffffff;
+				var nodeColor:uint = debugColor;
 				if(l > 1)
 				{
 					if(i == 0)
-						color = FlxG.GREEN;
+						nodeColor = FlxG.GREEN;
 					else if(i == l-1)
-						color = FlxG.RED;
+						nodeColor = FlxG.RED;
 				}
 				
 				//draw a box for the node
-				gfx.beginFill(color,0.5);
+				gfx.beginFill(nodeColor,0.5);
 				gfx.lineStyle();
 				gfx.drawRect(_point.x-nodeSize*0.5,_point.y-nodeSize*0.5,nodeSize,nodeSize);
 				gfx.endFill();
@@ -164,9 +251,9 @@ package org.flixel
 				
 				//then draw a line to the next node
 				gfx.moveTo(_point.x,_point.y);
-				gfx.lineStyle(1,0xffffff,linealpha);
-				_point.x = n.x - int(Camera.scroll.x*scrollFactor.x); //copied from getScreenXY()
-				_point.y = n.y - int(Camera.scroll.y*scrollFactor.y);
+				gfx.lineStyle(1,debugColor,linealpha);
+				_point.x = n.x - int(Camera.scroll.x*debugScrollFactor.x); //copied from getScreenXY()
+				_point.y = n.y - int(Camera.scroll.y*debugScrollFactor.y);
 				_point.x = int(_point.x + ((_point.x > 0)?0.0000001:-0.0000001));
 				_point.y = int(_point.y + ((_point.y > 0)?0.0000001:-0.0000001));
 				gfx.lineTo(_point.x,_point.y);

@@ -16,20 +16,48 @@ package org.flixel.system
 	import org.flixel.system.debug.Vis;
 	import org.flixel.system.debug.Watch;
 	
+	/**
+	 * Container for the new debugger overlay.
+	 * Most of the functionality is in the debug folder widgets,
+	 * but this class instantiates the widgets and handles their basic formatting and arrangement.
+	 */
 	public class FlxDebugger extends Sprite
 	{
+		/**
+		 * Container for the performance monitor widget.
+		 */
 		public var perf:Perf;
+		/**
+		 * Container for the trace output widget.
+		 */
 		public var log:Log;
+		/**
+		 * Container for the watch window widget.
+		 */
 		public var watch:Watch;
+		/**
+		 * Container for the record, stop and play buttons.
+		 */
 		public var vcr:VCR;
+		/**
+		 * Container for the visual debug mode toggle.
+		 */
 		public var vis:Vis;
-		
+		/**
+		 * Whether the mouse is currently over one of the debugger windows or not.
+		 */
 		public var hasMouse:Boolean;
 		
 		protected var _layout:uint;
 		protected var _screen:Point;
 		protected var _gutter:uint;
 		
+		/**
+		 * Instantiates the debugger overlay.
+		 * 
+		 * @param Width		The width of the screen.
+		 * @param Height	The height of the screen.
+		 */
 		public function FlxDebugger(Width:Number,Height:Number)
 		{
 			super();
@@ -82,10 +110,10 @@ package org.flixel.system
 			addEventListener(MouseEvent.MOUSE_OVER,onMouseOver);
 			addEventListener(MouseEvent.MOUSE_OUT,onMouseOut);
 		}
-		//Should help with fake mouse focus type behavior
-		protected function onMouseOver(E:MouseEvent=null):void { hasMouse = true; }
-		protected function onMouseOut(E:MouseEvent=null):void { hasMouse = false; }
 		
+		/**
+		 * Clean up memory.
+		 */
 		public function destroy():void
 		{
 			_screen = null;
@@ -109,12 +137,38 @@ package org.flixel.system
 			removeEventListener(MouseEvent.MOUSE_OUT,onMouseOut);
 		}
 		
+		/**
+		 * Mouse handler that helps with fake "mouse focus" type behavior.
+		 * 
+		 * @param	E	Flash mouse event.
+		 */
+		protected function onMouseOver(E:MouseEvent=null):void
+		{
+			hasMouse = true;
+		}
+		
+		/**
+		 * Mouse handler that helps with fake "mouse focus" type behavior.
+		 * 
+		 * @param	E	Flash mouse event.
+		 */
+		protected function onMouseOut(E:MouseEvent=null):void { hasMouse = false; }
+		
+		/**
+		 * Rearrange the debugger windows using one of the constants specified in FlxG.
+		 * 
+		 * @param	Layout		The layout style for the debugger windows, e.g. <code>FlxG.DEBUGGER_MICRO</code>.
+		 */
 		public function setLayout(Layout:uint):void
 		{
 			_layout = Layout;
 			resetLayout();
 		}
 		
+		/**
+		 * Forces the debugger windows to reset to the last specified layout.
+		 * The default layout is <code>FlxG.DEBUGGER_STANDARD</code>.
+		 */
 		public function resetLayout():void
 		{
 			switch(_layout)

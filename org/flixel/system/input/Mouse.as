@@ -14,6 +14,8 @@ package org.flixel.system.input
 	/**
 	 * This class helps contain and track the mouse pointer in your game.
 	 * Automatically accounts for parallax scrolling, etc.
+	 * 
+	 * @author Adam Atomic
 	 */
 	public class Mouse extends FlxPoint
 	{
@@ -75,6 +77,9 @@ package org.flixel.system.input
 			_screenPosition = new FlxPoint();
 		}
 		
+		/**
+		 * Clean up memory.
+		 */
 		public function destroy():void
 		{
 			_cursorContainer = null;
@@ -108,6 +113,9 @@ package org.flixel.system.input
 			_cursorContainer.visible = false;
 		}
 		
+		/**
+		 * Read only, check visibility of mouse cursor.
+		 */
 		public function get visible():Boolean
 		{
 			return _cursorContainer.visible;
@@ -188,6 +196,15 @@ package org.flixel.system.input
 			_cursorContainer.y = _screenPosition.y;
 		}
 		
+		/**
+		 * Fetch the world position of the mouse on any given camera.
+		 * NOTE: Mouse.x and Mouse.y also store the world position of the mouse cursor on the main camera.
+		 * 
+		 * @param Camera	If unspecified, first/main global camera is used instead.
+		 * @param Point		An existing point object to store the results (if you don't want a new one created). 
+		 * 
+		 * @return The mouse's location in world space.
+		 */
 		public function getWorldPosition(Camera:FlxCamera=null,Point:FlxPoint=null):FlxPoint
 		{
 			if(Camera == null)
@@ -198,6 +215,15 @@ package org.flixel.system.input
 			return Point.make(_point.x + Camera.scroll.x, _point.y + Camera.scroll.y);
 		}
 		
+		/**
+		 * Fetch the screen position of the mouse on any given camera.
+		 * NOTE: Mouse.screenX and Mouse.screenY also store the screen position of the mouse cursor on the main camera.
+		 * 
+		 * @param Camera	If unspecified, first/main global camera is used instead.
+		 * @param Point		An existing point object to store the results (if you don't want a new one created). 
+		 * 
+		 * @return The mouse's location in screen space.
+		 */
 		public function getScreenPosition(Camera:FlxCamera=null,Point:FlxPoint=null):FlxPoint
 		{
 			if(Camera == null)

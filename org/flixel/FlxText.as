@@ -10,11 +10,23 @@ package org.flixel
 	 * Doesn't really animate though, as far as I know.
 	 * Also does nice pixel-perfect centering on pixel fonts
 	 * as long as they are only one liners.
+	 * 
+	 * @author	Adam Atomic
 	 */
 	public class FlxText extends FlxSprite
 	{
+		/**
+		 * Internal reference to a Flash <code>TextField</code> object.
+		 */
 		protected var _tf:TextField;
+		/**
+		 * Whether the actual text field needs to be regenerated and stamped again.
+		 * This is NOT the same thing as <code>FlxSprite.dirty</code>.
+		 */
 		protected var _regen:Boolean;
+		/**
+		 * Internal tracker for the text shadow color, default is clear/transparent.
+		 */
 		protected var _shadow:uint;
 		
 		/**
@@ -55,6 +67,9 @@ package org.flixel
 			calcFrame();
 		}
 		
+		/**
+		 * Clean up memory.
+		 */
 		override public function destroy():void
 		{
 			_tf = null;
@@ -266,9 +281,9 @@ package org.flixel
 			}
 			
 			//Finally, update the visible pixels
-			if((_framePixels == null) || (_framePixels.width != _pixels.width) || (_framePixels.height != _pixels.height))
-				_framePixels = new BitmapData(_pixels.width,_pixels.height,true,0);
-			_framePixels.copyPixels(_pixels,_flashRect,_flashPointZero);
+			if((framePixels == null) || (framePixels.width != _pixels.width) || (framePixels.height != _pixels.height))
+				framePixels = new BitmapData(_pixels.width,_pixels.height,true,0);
+			framePixels.copyPixels(_pixels,_flashRect,_flashPointZero);
 		}
 		
 		/**
