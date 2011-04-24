@@ -161,7 +161,7 @@ package org.flixel
 		 */
 		public var maxAngular:Number;
 		/**
-		 * A handy "empty point" object
+		 * Should always represent (0,0) - useful for different things, for avoiding unnecessary <code>new</code> calls.
 		 */
 		static protected const _pZero:FlxPoint = new FlxPoint();
 		
@@ -382,28 +382,29 @@ package org.flixel
 		/**
 		 * Internal function for updating the position and speed of this object.
 		 * Useful for cases when you need to update this but are buried down in too many supers.
+		 * Does a slightly fancier-than-normal integration to help with higher fidelity framerate-independenct motion.
 		 */
 		protected function updateMotion():void
 		{
-			var vc:Number;
+			var delta:Number;
+			var velocityDelta:Number;
 
-			vc = (FlxU.computeVelocity(angularVelocity,angularAcceleration,angularDrag,maxAngular) - angularVelocity)/2;
-			angularVelocity += vc; 
+			velocityDelta = (FlxU.computeVelocity(angularVelocity,angularAcceleration,angularDrag,maxAngular) - angularVelocity)/2;
+			angularVelocity += velocityDelta; 
 			angle += angularVelocity*FlxG.elapsed;
-			angularVelocity += vc;
+			angularVelocity += velocityDelta;
 			
-			vc = (FlxU.computeVelocity(velocity.x,acceleration.x,drag.x,maxVelocity.x) - velocity.x)/2;
-			velocity.x += vc;
-			var xd:Number = velocity.x*FlxG.elapsed;
-			velocity.x += vc;
+			velocityDelta = (FlxU.computeVelocity(velocity.x,acceleration.x,drag.x,maxVelocity.x) - velocity.x)/2;
+			velocity.x += velocityDelta;
+			delta = velocity.x*FlxG.elapsed;
+			velocity.x += velocityDelta;
+			x += delta;
 			
-			vc = (FlxU.computeVelocity(velocity.y,acceleration.y,drag.y,maxVelocity.y) - velocity.y)/2;
-			velocity.y += vc;
-			var yd:Number = velocity.y*FlxG.elapsed;
-			velocity.y += vc;
-			
-			x += xd;
-			y += yd;
+			velocityDelta = (FlxU.computeVelocity(velocity.y,acceleration.y,drag.y,maxVelocity.y) - velocity.y)/2;
+			velocity.y += velocityDelta;
+			delta = velocity.y*FlxG.elapsed;
+			velocity.y += velocityDelta;
+			y += delta;
 		}
 		
 		/**
@@ -413,17 +414,17 @@ package org.flixel
 		{
 			if(cameras == null)
 				cameras = FlxG.cameras;
-			var c:FlxCamera;
+			var camera:FlxCamera;
 			var i:uint = 0;
 			var l:uint = cameras.length;
 			while(i < l)
 			{
-				c = cameras[i++];
-				if(!onScreen(c)) //preloads _point with getScreenXY results
+				camera = cameras[i++];
+				if(!onScreen(camera))
 					continue;
 				_VISIBLECOUNT++;
 				if(FlxG.visualDebug)
-					drawDebug(c);
+					drawDebug(camera);
 			}
 		}
 		
@@ -439,34 +440,34 @@ package org.flixel
 				Camera = FlxG.camera;
 
 			//get bounding box coordinates
-			var bx:Number = x - int(Camera.scroll.x*scrollFactor.x); //copied from getScreenXY()
-			var by:Number = y - int(Camera.scroll.y*scrollFactor.y);
-			bx = int(bx + ((bx > 0)?0.0000001:-0.0000001));
-			by = int(by + ((by > 0)?0.0000001:-0.0000001));
-			var bw:int = (width != int(width))?width:width-1;
-			var bh:int = (height != int(height))?height:height-1;
+			var boundingBoxX:Number = x - int(Camera.scroll.x*scrollFactor.x); //copied from getScreenXY()
+			var boundingBoxY:Number = y - int(Camera.scroll.y*scrollFactor.y);
+			boundingBoxX = int(boundingBoxX + ((boundingBoxX > 0)?0.0000001:-0.0000001));
+			boundingBoxY = int(boundingBoxY + ((boundingBoxY > 0)?0.0000001:-0.0000001));
+			var boundingBoxWidth:int = (width != int(width))?width:width-1;
+			var boundingBoxHeight:int = (height != int(height))?height:height-1;
 
 			//fill static graphics object with square shape
 			var gfx:Graphics = FlxG.flashGfx;
 			gfx.clear();
-			gfx.moveTo(bx,by);
-			var c:uint;
+			gfx.moveTo(boundingBoxX,boundingBoxY);
+			var boundingBoxColor:uint;
 			if(allowCollisions)
 			{
 				if(allowCollisions != ANY)
-					c = FlxG.PINK;
+					boundingBoxColor = FlxG.PINK;
 				if(immovable)
-					c = FlxG.GREEN;
+					boundingBoxColor = FlxG.GREEN;
 				else
-					c = FlxG.RED;
+					boundingBoxColor = FlxG.RED;
 			}
 			else
-				c = FlxG.BLUE;
-			gfx.lineStyle(1,c,0.5);
-			gfx.lineTo(bx+bw,by);
-			gfx.lineTo(bx+bw,by+bh);
-			gfx.lineTo(bx,by+bh);
-			gfx.lineTo(bx,by);
+				boundingBoxColor = FlxG.BLUE;
+			gfx.lineStyle(1,boundingBoxColor,0.5);
+			gfx.lineTo(boundingBoxX+boundingBoxWidth,boundingBoxY);
+			gfx.lineTo(boundingBoxX+boundingBoxWidth,boundingBoxY+boundingBoxHeight);
+			gfx.lineTo(boundingBoxX,boundingBoxY+boundingBoxHeight);
+			gfx.lineTo(boundingBoxX,boundingBoxY);
 			
 			//draw graphics shape to camera buffer
 			Camera.buffer.draw(FlxG.flashGfxSprite);
@@ -608,25 +609,25 @@ package org.flixel
 			_point.x = x + width*0.5;
 			_point.y = y + height*0.5;
 			var node:FlxPoint = path.nodes[_pathNodeIndex];
-			var dx:Number = node.x - _point.x;
-			var dy:Number = node.y - _point.y;
+			var deltaX:Number = node.x - _point.x;
+			var deltaY:Number = node.y - _point.y;
 			
 			var horizontalOnly:Boolean = (_pathMode & PATH_HORIZONTAL_ONLY) > 0;
 			var verticalOnly:Boolean = (_pathMode & PATH_VERTICAL_ONLY) > 0;
 			
 			if(horizontalOnly)
 			{
-				if(((dx>0)?dx:-dx) < pathSpeed*FlxG.elapsed)
+				if(((deltaX>0)?deltaX:-deltaX) < pathSpeed*FlxG.elapsed)
 					node = advancePath();
 			}
 			else if(verticalOnly)
 			{
-				if(((dy>0)?dy:-dy) < pathSpeed*FlxG.elapsed)
+				if(((deltaY>0)?deltaY:-deltaY) < pathSpeed*FlxG.elapsed)
 					node = advancePath();
 			}
 			else
 			{
-				if(Math.sqrt(dx*dx + dy*dy) < pathSpeed*FlxG.elapsed)
+				if(Math.sqrt(deltaX*deltaX + deltaY*deltaY) < pathSpeed*FlxG.elapsed)
 					node = advancePath();
 			}
 			
@@ -880,9 +881,9 @@ package org.flixel
 		 */
 		static public function separate(Object1:FlxObject, Object2:FlxObject):Boolean
 		{
-			var sx:Boolean = separateX(Object1,Object2);
-			var sy:Boolean = separateY(Object1,Object2);
-			return sx || sy;
+			var separatedX:Boolean = separateX(Object1,Object2);
+			var separatedY:Boolean = separateY(Object1,Object2);
+			return separatedX || separatedY;
 		}
 		
 		/**

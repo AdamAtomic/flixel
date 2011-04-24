@@ -424,10 +424,9 @@ package org.flixel
 		}
 		
 		/**
-		 * Returns the currently selected "real" volume of the sound
-		 * by multiplying in the volumeAdjust value (controlled by global sound manager).
+		 * Returns the currently selected "real" volume of the sound (takes fades and proximity into account).
 		 * 
-		 * @return	The "speaker" volume of the sound.
+		 * @return	The adjusted volume of the sound.
 		 */
 		public function getActualVolume():Number
 		{

@@ -105,25 +105,25 @@ package org.flixel.system
 				tmp = new Bitmap(new BitmapData(stage.stageWidth,stage.stageHeight,true,0xFFFFFFFF));
 				addChild(tmp);
 				
-				var fmt:TextFormat = new TextFormat();
-				fmt.color = 0x000000;
-				fmt.size = 16;
-				fmt.align = "center";
-				fmt.bold = true;
-				fmt.font = "system";
+				var format:TextFormat = new TextFormat();
+				format.color = 0x000000;
+				format.size = 16;
+				format.align = "center";
+				format.bold = true;
+				format.font = "system";
 				
-				var txt:TextField = new TextField();
-				txt.width = tmp.width-16;
-				txt.height = tmp.height-16;
-				txt.y = 8;
-				txt.multiline = true;
-				txt.wordWrap = true;
-				txt.embedFonts = true;
-				txt.defaultTextFormat = fmt;
-				txt.text = "Hi there!  It looks like somebody copied this game without my permission.  Just click anywhere, or copy-paste this URL into your browser.\n\n"+myURL+"\n\nto play the game at my site.  Thanks, and have fun!";
-				addChild(txt);
+				var textField:TextField = new TextField();
+				textField.width = tmp.width-16;
+				textField.height = tmp.height-16;
+				textField.y = 8;
+				textField.multiline = true;
+				textField.wordWrap = true;
+				textField.embedFonts = true;
+				textField.defaultTextFormat = format;
+				textField.text = "Hi there!  It looks like somebody copied this game without my permission.  Just click anywhere, or copy-paste this URL into your browser.\n\n"+myURL+"\n\nto play the game at my site.  Thanks, and have fun!";
+				addChild(textField);
 				
-				txt.addEventListener(MouseEvent.CLICK,goToMyURL);
+				textField.addEventListener(MouseEvent.CLICK,goToMyURL);
 				tmp.addEventListener(MouseEvent.CLICK,goToMyURL);
 				return;
 			}
@@ -145,7 +145,6 @@ package org.flixel.system
 				create();
 				_init = true;
 			}
-        	var i:int;
             graphics.clear();
 			var time:uint = getTimer();
             if((framesLoaded >= totalFrames) && (time > _min))
@@ -185,11 +184,11 @@ package org.flixel.system
 			_width = stage.stageWidth/_buffer.scaleX;
 			_height = stage.stageHeight/_buffer.scaleY;
 			_buffer.addChild(new Bitmap(new BitmapData(_width,_height,false,0x00345e)));
-			var b:Bitmap = new ImgLogoLight();
-			b.smoothing = true;
-			b.width = b.height = _height;
-			b.x = (_width-b.width)/2;
-			_buffer.addChild(b);
+			var bitmap:Bitmap = new ImgLogoLight();
+			bitmap.smoothing = true;
+			bitmap.width = bitmap.height = _height;
+			bitmap.x = (_width-bitmap.width)/2;
+			_buffer.addChild(bitmap);
 			_bmpBar = new Bitmap(new BitmapData(1,7,false,0x5f6aff));
 			_bmpBar.x = 4;
 			_bmpBar.y = _height-11;
@@ -215,24 +214,24 @@ package org.flixel.system
 			_logoGlow.x = (_width-_logoGlow.width)/2;
 			_logoGlow.y = (_height-_logoGlow.height)/2;
 			_buffer.addChild(_logoGlow);
-			b = new ImgLogoCorners();
-			b.smoothing = true;
-			b.width = _width;
-			b.height = _height;
-			_buffer.addChild(b);
-			b = new Bitmap(new BitmapData(_width,_height,false,0xffffff));
+			bitmap = new ImgLogoCorners();
+			bitmap.smoothing = true;
+			bitmap.width = _width;
+			bitmap.height = _height;
+			_buffer.addChild(bitmap);
+			bitmap = new Bitmap(new BitmapData(_width,_height,false,0xffffff));
 			var i:uint = 0;
 			var j:uint = 0;
 			while(i < _height)
 			{
 				j = 0;
 				while(j < _width)
-					b.bitmapData.setPixel(j++,i,0);
+					bitmap.bitmapData.setPixel(j++,i,0);
 				i+=2;
 			}
-			b.blendMode = "overlay";
-			b.alpha = 0.25;
-			_buffer.addChild(b);
+			bitmap.blendMode = "overlay";
+			bitmap.alpha = 0.25;
+			_buffer.addChild(bitmap);
 		}
 		
 		protected function destroy():void

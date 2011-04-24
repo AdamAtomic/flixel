@@ -205,18 +205,18 @@ package org.flixel
 			gfx.clear();
 			
 			//Then fill up the object with node and path graphics
-			var p:FlxPoint;
-			var n:FlxPoint;
+			var node:FlxPoint;
+			var nextNode:FlxPoint;
 			var i:uint = 0;
 			var l:uint = nodes.length;
 			while(i < l)
 			{
 				//get a reference to the current node
-				p = nodes[i] as FlxPoint;
+				node = nodes[i] as FlxPoint;
 				
 				//find the screen position of the node on this camera
-				_point.x = p.x - int(Camera.scroll.x*debugScrollFactor.x); //copied from getScreenXY()
-				_point.y = p.y - int(Camera.scroll.y*debugScrollFactor.y);
+				_point.x = node.x - int(Camera.scroll.x*debugScrollFactor.x); //copied from getScreenXY()
+				_point.y = node.y - int(Camera.scroll.y*debugScrollFactor.y);
 				_point.x = int(_point.x + ((_point.x > 0)?0.0000001:-0.0000001));
 				_point.y = int(_point.y + ((_point.y > 0)?0.0000001:-0.0000001));
 				
@@ -242,18 +242,18 @@ package org.flixel
 				//then find the next node in the path
 				var linealpha:Number = 0.3;
 				if(i < l-1)
-					n = nodes[i+1];
+					nextNode = nodes[i+1];
 				else
 				{
-					n = nodes[0];
+					nextNode = nodes[0];
 					linealpha = 0.15;
 				}
 				
 				//then draw a line to the next node
 				gfx.moveTo(_point.x,_point.y);
 				gfx.lineStyle(1,debugColor,linealpha);
-				_point.x = n.x - int(Camera.scroll.x*debugScrollFactor.x); //copied from getScreenXY()
-				_point.y = n.y - int(Camera.scroll.y*debugScrollFactor.y);
+				_point.x = nextNode.x - int(Camera.scroll.x*debugScrollFactor.x); //copied from getScreenXY()
+				_point.y = nextNode.y - int(Camera.scroll.y*debugScrollFactor.y);
 				_point.x = int(_point.x + ((_point.x > 0)?0.0000001:-0.0000001));
 				_point.y = int(_point.y + ((_point.y > 0)?0.0000001:-0.0000001));
 				gfx.lineTo(_point.x,_point.y);

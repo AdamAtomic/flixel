@@ -77,7 +77,7 @@ package org.flixel
 		 */
 		protected var _lostFocus:Boolean;
 		/**
-		 * Milliseconds of time per step of the game loop.  E.g. 60 fps = 16ms.
+		 * Milliseconds of time per step of the game loop.  FlashEvent.g. 60 fps = 16ms.
 		 */
 		internal var _step:uint;
 		/**
@@ -215,12 +215,12 @@ package org.flixel
 			_soundTrayTimer = 1;
 			_soundTray.y = 0;
 			_soundTray.visible = true;
-			var gv:uint = Math.round(FlxG.volume*10);
+			var globalVolume:uint = Math.round(FlxG.volume*10);
 			if(FlxG.mute)
-				gv = 0;
+				globalVolume = 0;
 			for (var i:uint = 0; i < _soundTrayBars.length; i++)
 			{
-				if(i < gv) _soundTrayBars[i].alpha = 1;
+				if(i < globalVolume) _soundTrayBars[i].alpha = 1;
 				else _soundTrayBars[i].alpha = 0.5;
 			}
 		}
@@ -228,15 +228,15 @@ package org.flixel
 		/**
 		 * Internal event handler for input and focus.
 		 * 
-		 * @param	E	Flash keyboard event.
+		 * @param	FlashEvent	Flash keyboard event.
 		 */
-		protected function onKeyUp(E:KeyboardEvent):void
+		protected function onKeyUp(FlashEvent:KeyboardEvent):void
 		{
 			if(_debuggerUp && _debugger.watch.editing)
 				return;
 			if(!FlxG.mobile)
 			{
-				if((_debugger != null) && ((E.keyCode == 192) || (E.keyCode == 220)))
+				if((_debugger != null) && ((FlashEvent.keyCode == 192) || (FlashEvent.keyCode == 220)))
 				{
 					_debugger.visible = !_debugger.visible;
 					_debuggerUp = _debugger.visible;
@@ -249,13 +249,15 @@ package org.flixel
 				}
 				if(useSoundHotKeys)
 				{
-					var c:int = E.keyCode;
-					var code:String = String.fromCharCode(E.charCode);
+					var c:int = FlashEvent.keyCode;
+					var code:String = String.fromCharCode(FlashEvent.charCode);
 					switch(c)
 					{
 						case 48:
 						case 96:
 							FlxG.mute = !FlxG.mute;
+							if(FlxG.volumeHandler != null)
+								FlxG.volumeHandler(FlxG.mute?0:FlxG.volume);
 							showSoundTray();
 							return;
 						case 109:
@@ -277,28 +279,28 @@ package org.flixel
 			}
 			if(_replaying)
 				return;
-			FlxG.keys.handleKeyUp(E);
+			FlxG.keys.handleKeyUp(FlashEvent);
 		}
 		
 		/**
 		 * Internal event handler for input and focus.
 		 * 
-		 * @param	E	Flash keyboard event.
+		 * @param	FlashEvent	Flash keyboard event.
 		 */
-		protected function onKeyDown(E:KeyboardEvent):void
+		protected function onKeyDown(FlashEvent:KeyboardEvent):void
 		{
 			if(_debuggerUp && _debugger.watch.editing)
 				return;
-			if(_replaying && (_replayCancelKeys != null) && (_debugger == null) && (E.keyCode != 192) && (E.keyCode != 220))
+			if(_replaying && (_replayCancelKeys != null) && (_debugger == null) && (FlashEvent.keyCode != 192) && (FlashEvent.keyCode != 220))
 			{
 				var cancel:Boolean = false;
-				var k:String;
+				var replayCancelKey:String;
 				var i:uint = 0;
 				var l:uint = _replayCancelKeys.length;
 				while(i < l)
 				{
-					k = _replayCancelKeys[i++];
-					if((k == "ANY") || (FlxG.keys.getKeyCode(k) == E.keyCode))
+					replayCancelKey = _replayCancelKeys[i++];
+					if((replayCancelKey == "ANY") || (FlxG.keys.getKeyCode(replayCancelKey) == FlashEvent.keyCode))
 					{
 						if(_replayCallback != null)
 						{
@@ -312,15 +314,15 @@ package org.flixel
 				}
 				return;
 			}
-			FlxG.keys.handleKeyDown(E);
+			FlxG.keys.handleKeyDown(FlashEvent);
 		}
 		
 		/**
 		 * Internal event handler for input and focus.
 		 * 
-		 * @param	E	Flash mouse event.
+		 * @param	FlashEvent	Flash mouse event.
 		 */
-		protected function onMouseDown(E:MouseEvent):void
+		protected function onMouseDown(FlashEvent:MouseEvent):void
 		{
 			if(_debuggerUp)
 			{
@@ -331,13 +333,13 @@ package org.flixel
 			}
 			if(_replaying && (_replayCancelKeys != null))
 			{
-				var m:String;
+				var replayCancelKey:String;
 				var i:uint = 0;
 				var l:uint = _replayCancelKeys.length;
 				while(i < l)
 				{
-					m = _replayCancelKeys[i++] as String;
-					if((m == "MOUSE") || (m == "ANY"))
+					replayCancelKey = _replayCancelKeys[i++] as String;
+					if((replayCancelKey == "MOUSE") || (replayCancelKey == "ANY"))
 					{
 						if(_replayCallback != null)
 						{
@@ -351,39 +353,39 @@ package org.flixel
 				}
 				return;
 			}
-			FlxG.mouse.handleMouseDown(E);
+			FlxG.mouse.handleMouseDown(FlashEvent);
 		}
 		
 		/**
 		 * Internal event handler for input and focus.
 		 * 
-		 * @param	E	Flash mouse event.
+		 * @param	FlashEvent	Flash mouse event.
 		 */
-		protected function onMouseUp(E:MouseEvent):void
+		protected function onMouseUp(FlashEvent:MouseEvent):void
 		{
 			if((_debuggerUp && _debugger.hasMouse) || _replaying)
 				return;
-			FlxG.mouse.handleMouseUp(E);
+			FlxG.mouse.handleMouseUp(FlashEvent);
 		}
 		
 		/**
 		 * Internal event handler for input and focus.
 		 * 
-		 * @param	E	Flash mouse event.
+		 * @param	FlashEvent	Flash mouse event.
 		 */
-		protected function onMouseWheel(E:MouseEvent):void
+		protected function onMouseWheel(FlashEvent:MouseEvent):void
 		{
 			if((_debuggerUp && _debugger.hasMouse) || _replaying)
 				return;
-			FlxG.mouse.handleMouseWheel(E);
+			FlxG.mouse.handleMouseWheel(FlashEvent);
 		}
 		
 		/**
 		 * Internal event handler for input and focus.
 		 * 
-		 * @param	E	Flash event.
+		 * @param	FlashEvent	Flash event.
 		 */
-		protected function onFocus(E:Event=null):void
+		protected function onFocus(FlashEvent:Event=null):void
 		{
 			if(!_debuggerUp)
 				flash.ui.Mouse.hide();
@@ -396,9 +398,9 @@ package org.flixel
 		/**
 		 * Internal event handler for input and focus.
 		 * 
-		 * @param	E	Flash event.
+		 * @param	FlashEvent	Flash event.
 		 */
-		protected function onFocusLost(E:Event=null):void
+		protected function onFocusLost(FlashEvent:Event=null):void
 		{
 			if((x != 0) || (y != 0))
 			{
@@ -414,14 +416,14 @@ package org.flixel
 		/**
 		 * Handles the onEnterFrame call and figures out how many updates and draw calls to do.
 		 * 
-		 * @param	E	Flash event.
+		 * @param	FlashEvent	Flash event.
 		 */
-		protected function onEnterFrame(E:Event=null):void
+		protected function onEnterFrame(FlashEvent:Event=null):void
 		{			
 			var mark:uint = getTimer();
-			var ems:uint = mark-_total;
+			var elapsedMS:uint = mark-_total;
 			_total = mark;
-			updateSoundTray(ems);
+			updateSoundTray(elapsedMS);
 			if(!_lostFocus)
 			{
 				if((_debugger != null) && _debugger.vcr.paused)
@@ -434,7 +436,7 @@ package org.flixel
 				}
 				else
 				{
-					_accumulator += ems;
+					_accumulator += elapsedMS;
 					if(_accumulator > _maxAccumulation)
 						_accumulator = _maxAccumulation;
 					while(_accumulator >= _step)
@@ -449,7 +451,7 @@ package org.flixel
 				
 				if(_debuggerUp)
 				{
-					_debugger.perf.flash(ems);
+					_debugger.perf.flash(elapsedMS);
 					_debugger.perf.visibleObjects(FlxBasic._VISIBLECOUNT);
 					_debugger.perf.update();
 					_debugger.watch.update();
@@ -642,9 +644,9 @@ package org.flixel
 		/**
 		 * Used to instantiate the guts of the flixel game object once we have a valid reference to the root.
 		 * 
-		 * @param	E	Just a Flash system event, not too important for our purposes.
+		 * @param	FlashEvent	Just a Flash system event, not too important for our purposes.
 		 */
-		protected function create(E:Event):void
+		protected function create(FlashEvent:Event):void
 		{
 			if(root == null)
 				return;
@@ -748,32 +750,32 @@ package org.flixel
 		 */
 		protected function createFocusScreen():void
 		{
-			var g:Graphics = _focus.graphics;
-			var w:uint = FlxG.width*FlxCamera.defaultZoom;
-			var h:uint = FlxG.height*FlxCamera.defaultZoom;
+			var gfx:Graphics = _focus.graphics;
+			var screenWidth:uint = FlxG.width*FlxCamera.defaultZoom;
+			var screenHeight:uint = FlxG.height*FlxCamera.defaultZoom;
 			
 			//draw transparent black backdrop
-			g.moveTo(0,0);
-			g.beginFill(0,0.5);
-			g.lineTo(w,0);
-			g.lineTo(w,h);
-			g.lineTo(0,h);
-			g.lineTo(0,0);
-			g.endFill();
+			gfx.moveTo(0,0);
+			gfx.beginFill(0,0.5);
+			gfx.lineTo(screenWidth,0);
+			gfx.lineTo(screenWidth,screenHeight);
+			gfx.lineTo(0,screenHeight);
+			gfx.lineTo(0,0);
+			gfx.endFill();
 			
 			//draw white arrow
-			var hw:uint = w/2;
-			var hh:uint = h/2;
-			var tri:uint = FlxU.min(hw,hh)/3;
-			g.moveTo(hw-tri,hh-tri);
-			g.beginFill(0xffffff,0.65);
-			g.lineTo(hw+tri,hh);
-			g.lineTo(hw-tri,hh+tri);
-			g.lineTo(hw-tri,hh-tri);
-			g.endFill();
+			var halfWidth:uint = screenWidth/2;
+			var halfHeight:uint = screenHeight/2;
+			var helper:uint = FlxU.min(halfWidth,halfHeight)/3;
+			gfx.moveTo(halfWidth-helper,halfHeight-helper);
+			gfx.beginFill(0xffffff,0.65);
+			gfx.lineTo(halfWidth+helper,halfHeight);
+			gfx.lineTo(halfWidth-helper,halfHeight+helper);
+			gfx.lineTo(halfWidth-helper,halfHeight-helper);
+			gfx.endFill();
 			
 			var logo:Bitmap = new ImgLogo();
-			logo.scaleX = int(tri/10);
+			logo.scaleX = int(helper/10);
 			if(logo.scaleX < 1)
 				logo.scaleX = 1;
 			logo.scaleY = logo.scaleX;

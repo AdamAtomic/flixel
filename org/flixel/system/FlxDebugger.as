@@ -48,8 +48,17 @@ package org.flixel.system
 		 */
 		public var hasMouse:Boolean;
 		
+		/**
+		 * Internal, tracks what debugger window layout user has currently selected.
+		 */
 		protected var _layout:uint;
+		/**
+		 * Internal, stores width and height of the Flash Player window.
+		 */
 		protected var _screen:Point;
+		/**
+		 * Internal, used to space out windows from the edges.
+		 */
 		protected var _gutter:uint;
 		
 		/**

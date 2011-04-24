@@ -178,29 +178,29 @@ package org.flixel.system.input
 		/**
 		 * Event handler so FlxGame can toggle keys.
 		 * 
-		 * @param	event	A <code>KeyboardEvent</code> object.
+		 * @param	FlashEvent	A <code>KeyboardEvent</code> object.
 		 */
-		public function handleKeyDown(event:KeyboardEvent):void
+		public function handleKeyDown(FlashEvent:KeyboardEvent):void
 		{
-			var o:Object = _map[event.keyCode];
-			if(o == null) return;
-			if(o.current > 0) o.current = 1;
-			else o.current = 2;
-			this[o.name] = true;
+			var object:Object = _map[FlashEvent.keyCode];
+			if(object == null) return;
+			if(object.current > 0) object.current = 1;
+			else object.current = 2;
+			this[object.name] = true;
 		}
 		
 		/**
 		 * Event handler so FlxGame can toggle keys.
 		 * 
-		 * @param	event	A <code>KeyboardEvent</code> object.
+		 * @param	FlashEvent	A <code>KeyboardEvent</code> object.
 		 */
-		public function handleKeyUp(event:KeyboardEvent):void
+		public function handleKeyUp(FlashEvent:KeyboardEvent):void
 		{
-			var o:Object = _map[event.keyCode];
-			if(o == null) return;
-			if(o.current > 0) o.current = -1;
-			else o.current = 0;
-			this[o.name] = false;
+			var object:Object = _map[FlashEvent.keyCode];
+			if(object == null) return;
+			if(object.current > 0) object.current = -1;
+			else object.current = 0;
+			this[object.name] = false;
 		}
 	}
 }

@@ -30,7 +30,7 @@ package org.flixel
 		 * The local shared object itself.
 		 * @default null
 		 */
-		protected var _so:SharedObject;
+		protected var _sharedObject:SharedObject;
 		
 		/**
 		 * Internal tracker for callback function in case save takes too long.
@@ -54,7 +54,7 @@ package org.flixel
 		 */
 		public function destroy():void
 		{
-			_so = null;
+			_sharedObject = null;
 			name = null;
 			data = null;
 			_onComplete = null;
@@ -74,7 +74,7 @@ package org.flixel
 			name = Name;
 			try
 			{
-				_so = SharedObject.getLocal(name);
+				_sharedObject = SharedObject.getLocal(name);
 			}
 			catch(e:Error)
 			{
@@ -82,7 +82,7 @@ package org.flixel
 				destroy();
 				return false;
 			}
-			data = _so.data;
+			data = _sharedObject.data;
 			return true;
 		}
 		
@@ -116,10 +116,10 @@ package org.flixel
 				return false;
 			_onComplete = OnComplete;
 			var result:String = null;
-			try { result = _so.flush(MinFileSize); }
+			try { result = _sharedObject.flush(MinFileSize); }
 			catch (e:Error) { return onDone(ERROR); }
 			if(result == SharedObjectFlushStatus.PENDING)
-				_so.addEventListener(NetStatusEvent.NET_STATUS,onFlushStatus);
+				_sharedObject.addEventListener(NetStatusEvent.NET_STATUS,onFlushStatus);
 			return onDone((result == SharedObjectFlushStatus.FLUSHED)?SUCCESS:PENDING);
 		}
 		
@@ -134,7 +134,7 @@ package org.flixel
 		{
 			if(!checkBinding())
 				return false;
-			_so.clear();
+			_sharedObject.clear();
 			return true;
 		}
 		
@@ -145,7 +145,7 @@ package org.flixel
 		 */
 		protected function onFlushStatus(E:NetStatusEvent):void
 		{
-			_so.removeEventListener(NetStatusEvent.NET_STATUS,onFlushStatus);
+			_sharedObject.removeEventListener(NetStatusEvent.NET_STATUS,onFlushStatus);
 			onDone((E.info.code == "SharedObject.Flush.Success")?SUCCESS:ERROR);
 		}
 		
@@ -184,7 +184,7 @@ package org.flixel
 		 */
 		protected function checkBinding():Boolean
 		{
-			if(_so == null)
+			if(_sharedObject == null)
 			{
 				FlxG.log("FLIXEL: You must call FlxSave.bind()\nbefore you can read or write data.");
 				return false;

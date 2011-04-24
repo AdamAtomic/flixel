@@ -146,9 +146,9 @@ package org.flixel.system.debug
 		/**
 		 * A watch entry was clicked, so flip into edit mode for that entry.
 		 * 
-		 * @param	E	Flash mouse event.
+		 * @param	FlashEvent	Flash mouse event.
 		 */
-		public function onMouseUp(E:MouseEvent):void
+		public function onMouseUp(FlashEvent:MouseEvent):void
 		{
 			editing = true;
 			oldValue = object[field];
@@ -162,14 +162,13 @@ package org.flixel.system.debug
 		 * Check to see if Enter, Tab or Escape were just released.
 		 * Enter or Tab submit the change, and Escape cancels it.
 		 * 
-		 * @param	E	Flash keyboard event.
+		 * @param	FlashEvent	Flash keyboard event.
 		 */
-		public function onKeyUp(E:KeyboardEvent):void
+		public function onKeyUp(FlashEvent:KeyboardEvent):void
 		{
-			var k:uint = E.keyCode;
-			if((k == 13) || (k == 9) || (k == 27)) //enter or tab or escape
+			if((FlashEvent.keyCode == 13) || (FlashEvent.keyCode == 9) || (FlashEvent.keyCode == 27)) //enter or tab or escape
 			{
-				if(k == 27)
+				if(FlashEvent.keyCode == 27)
 					cancel();
 				else
 					submit();

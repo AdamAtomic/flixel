@@ -19,7 +19,7 @@ package org.flixel.system.input
 		/**
 		 * @private
 		 */
-		internal const _t:uint = 256;
+		internal const _total:uint = 256;
 		
 		/**
 		 * Constructor
@@ -27,7 +27,7 @@ package org.flixel.system.input
 		public function Input()
 		{
 			_lookup = new Object();
-			_map = new Array(_t);
+			_map = new Array(_total);
 		}
 		
 		/**
@@ -36,7 +36,7 @@ package org.flixel.system.input
 		public function update():void
 		{
 			var i:uint = 0;
-			while(i < _t)
+			while(i < _total)
 			{
 				var o:Object = _map[i++];
 				if(o == null) continue;
@@ -52,7 +52,7 @@ package org.flixel.system.input
 		public function reset():void
 		{
 			var i:uint = 0;
-			while(i < _t)
+			while(i < _total)
 			{
 				var o:Object = _map[i++];
 				if(o == null) continue;
@@ -100,7 +100,7 @@ package org.flixel.system.input
 		{
 			var data:Array = null;
 			var i:uint = 0;
-			while(i < _t)
+			while(i < _total)
 			{
 				var o:Object = _map[i++];
 				if((o == null) || (o.current == 0))
@@ -154,7 +154,7 @@ package org.flixel.system.input
 		public function any():Boolean
 		{
 			var i:uint = 0;
-			while(i < _t)
+			while(i < _total)
 			{
 				var o:Object = _map[i++];
 				if((o != null) || (o.current > 0))
