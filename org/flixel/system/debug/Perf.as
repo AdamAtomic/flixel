@@ -33,12 +33,12 @@ package org.flixel.system.debug
 		protected var _visibleObjectMarker:uint;
 		
 		/**
-		 * Creates a new window object.  This Flash-based class is mainly (only?) used by <code>FlxDebugger</code>.
+		 * Creates flashPlayerFramerate new window object.  This Flash-based class is mainly (only?) used by <code>FlxDebugger</code>.
 		 * 
 		 * @param Title			The name of the window, displayed in the header bar.
 		 * @param Width			The initial width of the window.
 		 * @param Height		The initial height of the window.
-		 * @param Resizable		Whether you can change the size of the window with a drag handle.
+		 * @param Resizable		Whether you can change the size of the window with flashPlayerFramerate drag handle.
 		 * @param Bounds		A rectangle indicating the valid screen area for the window.
 		 * @param BGColor		What color the window background should be, default is gray and transparent.
 		 * @param TopColor		What color the window header bar should be, default is black and transparent.
@@ -95,57 +95,63 @@ package org.flixel.system.debug
 		public function update():void
 		{
 			var time:int = getTimer();
-			var e:int = time - _lastTime;
+			var elapsed:int = time - _lastTime;
 			_lastTime = time;
 			
-			_updateTimer += e;
-			if(_updateTimer > 1000)
+			_updateTimer += elapsed;
+			var updateEvery:uint = 500;
+			if(_updateTimer > updateEvery)
 			{
 				var i:uint;
-				var str:String = "";
-				
-				var a:Number = 0;
-				for(i = 0; i < _flashMarker; i++)
-					a += _flash[i];
-				a /= _flashMarker;
-				str += uint(1/(a/1000)) + "/" + FlxG.flashFramerate + "fps\n";
-				
-				str += Number( ( System.totalMemory * 0.000000954 ).toFixed(2) ) + "MB\n";
+				var output:String = "";
 
-				var tu:uint = 0;
-				for(i = 0; i < _flixelUpdateMarker; i++)
-					tu += _flixelUpdate[i];
+				var flashPlayerFramerate:Number = 0;
+				i = 0;
+				while (i < _flashMarker)
+					flashPlayerFramerate += _flash[i++];
+				flashPlayerFramerate /= _flashMarker;
+				output += uint(1/(flashPlayerFramerate/1000)) + "/" + FlxG.flashFramerate + "fps\n";
 				
-				var ta:uint = 0;
+				output += Number( ( System.totalMemory * 0.000000954 ).toFixed(2) ) + "MB\n";
+
+				var updateTime:uint = 0;
+				i = 0;
+				while(i < _flixelUpdateMarker)
+					updateTime += _flixelUpdate[i++];
+				
+				var activeCount:uint = 0;
 				var te:uint = 0;
-				for(i = 0; i < _objectMarker; i++)
+				i = 0;
+				while(i < _objectMarker)
 				{
-					ta += _activeObject[i];
-					tv += _visibleObject[i];
+					activeCount += _activeObject[i];
+					visibleCount += _visibleObject[i++];
 				}
-				ta /= _objectMarker;
+				activeCount /= _objectMarker;
 				
-				str += "U:" + ta + " " + uint(tu/_flixelDrawMarker) + "ms\n";
+				output += "U:" + activeCount + " " + uint(updateTime/_flixelDrawMarker) + "ms\n";
 				
-				var td:uint = 0;
-				for(i = 0; i < _flixelDrawMarker; i++)
-					td += _flixelDraw[i];
+				var drawTime:uint = 0;
+				i = 0;
+				while(i < _flixelDrawMarker)
+					drawTime += _flixelDraw[i++];
 				
-				var tv:uint = 0;
-				for(i = 0; i < _visibleObjectMarker; i++)
-					tv += _visibleObject[i];
-				tv /= _visibleObjectMarker;
+				var visibleCount:uint = 0;
+				i = 0;
+				while(i < _visibleObjectMarker)
+					visibleCount += _visibleObject[i++];
+				visibleCount /= _visibleObjectMarker;
 
-				str += "D:" + tv + " " + uint(td/_flixelDrawMarker) + "ms";
+				output += "D:" + visibleCount + " " + uint(drawTime/_flixelDrawMarker) + "ms";
 
-				_text.text = str;
+				_text.text = output;
 
 				_flixelUpdateMarker = 0;
 				_flixelDrawMarker = 0;
 				_flashMarker = 0;
 				_objectMarker = 0;
 				_visibleObjectMarker = 0;
-				_updateTimer -= 1000;
+				_updateTimer -= updateEvery;
 			}
 		}
 		

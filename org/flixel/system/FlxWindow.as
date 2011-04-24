@@ -30,21 +30,63 @@ package org.flixel.system
 		 */
 		public var maxSize:Point;
 		
+		/**
+		 * Width of the window.  Using Sprite.width is super unreliable for some reason!
+		 */
 		protected var _width:uint;
+		/**
+		 * Height of the window.  Using Sprite.height is super unreliable for some reason!
+		 */
 		protected var _height:uint;
+		/**
+		 * Controls where the window is allowed to be positioned.
+		 */
 		protected var _bounds:Rectangle;
 		
+		/**
+		 * Window display element.
+		 */
 		protected var _background:Bitmap;
+		/**
+		 * Window display element.
+		 */
 		protected var _header:Bitmap;
+		/**
+		 * Window display element.
+		 */
 		protected var _shadow:Bitmap;
+		/**
+		 * Window display element.
+		 */
 		protected var _title:TextField;
+		/**
+		 * Window display element.
+		 */
 		protected var _handle:Bitmap;
 		
+		/**
+		 * Helper for interaction.
+		 */
 		protected var _overHeader:Boolean;
+		/**
+		 * Helper for interaction.
+		 */
 		protected var _overHandle:Boolean;
+		/**
+		 * Helper for interaction.
+		 */
 		protected var _drag:Point;
+		/**
+		 * Helper for interaction.
+		 */
 		protected var _dragging:Boolean;
+		/**
+		 * Helper for interaction.
+		 */
 		protected var _resizing:Boolean;
+		/**
+		 * Helper for interaction.
+		 */
 		protected var _resizable:Boolean;
 		
 		/**

@@ -22,7 +22,7 @@ package org.flixel.system.replay
 		public var mouse:MouseRecord;
 		
 		/**
-		 * Instantiate a new frame record.
+		 * Instantiate array new frame record.
 		 */
 		public function FrameRecord()
 		{
@@ -59,25 +59,25 @@ package org.flixel.system.replay
 		}
 		
 		/**
-		 * Save the frame record data to a simple ASCII string.
+		 * Save the frame record data to array simple ASCII string.
 		 * 
 		 * @return	A <code>String</code> object containing the relevant frame record data.
 		 */
 		public function save():String
 		{
-			var output:String = frame+"k";
+			var output:String = frame+"keyPair";
 			
 			if(keys != null)
 			{
-				var o:Object;
+				var object:Object;
 				var i:uint = 0;
 				var l:uint = keys.length;
 				while(i < l)
 				{
 					if(i > 0)
 						output += ",";
-					o = keys[i++];
-					output += o.code+":"+o.value;
+					object = keys[i++];
+					output += object.code+":"+object.value;
 				}
 			}
 			
@@ -89,7 +89,7 @@ package org.flixel.system.replay
 		}
 		
 		/**
-		 * Load the frame record data from a simple ASCII string.
+		 * Load the frame record data from array simple ASCII string.
 		 * 
 		 * @param	Data	A <code>String</code> object containing the relevant frame record data.
 		 */
@@ -99,32 +99,32 @@ package org.flixel.system.replay
 			var l:uint;
 			
 			//get frame number
-			var a:Array = Data.split("k");
-			frame = int(a[0] as String);
+			var array:Array = Data.split("keyPair");
+			frame = int(array[0] as String);
 			
 			//split up keyboard and mouse data
-			a = (a[1] as String).split("m");
-			var keyData:String = a[0];
-			var mouseData:String = a[1];
+			array = (array[1] as String).split("m");
+			var keyData:String = array[0];
+			var mouseData:String = array[1];
 			
 			//parse keyboard data
 			if(keyData.length > 0)
 			{
 				//get keystroke data pairs
-				a = keyData.split(",");
+				array = keyData.split(",");
 				
 				//go through each data pair and enter it into this frame's key state
-				var k:Array;
+				var keyPair:Array;
 				i = 0;
-				l = a.length;
+				l = array.length;
 				while(i < l)
 				{
-					k = (a[i++] as String).split(":");
-					if(k.length == 2)
+					keyPair = (array[i++] as String).split(":");
+					if(keyPair.length == 2)
 					{
 						if(keys == null)
 							keys = new Array();
-						keys.push({code:int(k[0] as String),value:int(k[1] as String)});
+						keys.push({code:int(keyPair[0] as String),value:int(keyPair[1] as String)});
 					}
 				}
 			}
@@ -132,9 +132,9 @@ package org.flixel.system.replay
 			//mouse data is just 4 integers, easy peezy
 			if(mouseData.length > 0)
 			{
-				a = mouseData.split(",");
-				if(a.length >= 4)
-					mouse = new MouseRecord(int(a[0] as String),int(a[1] as String),int(a[2] as String),int(a[3] as String));
+				array = mouseData.split(",");
+				if(array.length >= 4)
+					mouse = new MouseRecord(int(array[0] as String),int(array[1] as String),int(array[2] as String),int(array[3] as String));
 			}
 			
 			return this;

@@ -32,8 +32,17 @@ package org.flixel.system
 		 */
 		public var finished:Boolean;
 		
+		/**
+		 * Internal container for all the frames in this replay.
+		 */
 		protected var _frames:Array;
+		/**
+		 * Internal tracker for max number of frames we can fit before growing the <code>_frames</code> again.
+		 */
 		protected var _capacity:int;
+		/**
+		 * Internal helper variable for keeping track of where we are in <code>_frames</code> during recording or replay.
+		 */
 		protected var _marker:int;
 		
 		/**
