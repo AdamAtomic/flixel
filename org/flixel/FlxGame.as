@@ -256,6 +256,8 @@ package org.flixel
 						case 48:
 						case 96:
 							FlxG.mute = !FlxG.mute;
+							if(FlxG.volumeHandler != null)
+								FlxG.volumeHandler(FlxG.mute?0:FlxG.volume);
 							showSoundTray();
 							return;
 						case 109:

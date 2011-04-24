@@ -533,7 +533,7 @@ package org.flixel
 			else if(_volume > 1)
 				_volume = 1;
 			if(volumeHandler != null)
-				volumeHandler(_volume);
+				volumeHandler(FlxG.mute?0:_volume);
 		}
 
 		/**
