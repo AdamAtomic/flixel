@@ -99,7 +99,7 @@ package org.flixel.system.replay
 			var l:uint;
 			
 			//get frame number
-			var array:Array = Data.split("keyPair");
+			var array:Array = Data.split("k");
 			frame = int(array[0] as String);
 			
 			//split up keyboard and mouse data

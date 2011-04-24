@@ -118,29 +118,65 @@ package org.flixel
 		 * Internal, used to render buffer to screen space.
 		 */
 		internal var _flashBitmap:Bitmap;
+		/**
+		 * Internal, used to render buffer to screen space.
+		 */
 		protected var _flashRect:Rectangle;
+		/**
+		 * Internal, used to render buffer to screen space.
+		 */
 		protected var _flashPoint:Point;
 		/**
 		 * Internal, used to control the "flash" special effect.
 		 */
 		protected var _fxFlashColor:uint;
+		/**
+		 * Internal, used to control the "flash" special effect.
+		 */
 		protected var _fxFlashDuration:Number;
+		/**
+		 * Internal, used to control the "flash" special effect.
+		 */
 		protected var _fxFlashComplete:Function;
+		/**
+		 * Internal, used to control the "flash" special effect.
+		 */
 		protected var _fxFlashAlpha:Number;
 		/**
 		 * Internal, used to control the "fade" special effect.
 		 */
 		protected var _fxFadeColor:uint;
+		/**
+		 * Internal, used to control the "fade" special effect.
+		 */
 		protected var _fxFadeDuration:Number;
+		/**
+		 * Internal, used to control the "fade" special effect.
+		 */
 		protected var _fxFadeComplete:Function;
+		/**
+		 * Internal, used to control the "fade" special effect.
+		 */
 		protected var _fxFadeAlpha:Number;
 		/**
 		 * Internal, used to control the "shake" special effect.
 		 */
 		protected var _fxShakeIntensity:Number;
+		/**
+		 * Internal, used to control the "shake" special effect.
+		 */
 		protected var _fxShakeDuration:Number;
+		/**
+		 * Internal, used to control the "shake" special effect.
+		 */
 		protected var _fxShakeComplete:Function;
+		/**
+		 * Internal, used to control the "shake" special effect.
+		 */
 		protected var _fxShakeOffset:FlxPoint;
+		/**
+		 * Internal, used to control the "shake" special effect.
+		 */
 		protected var _fxShakeDirection:uint;
 		/**
 		 * Internal helper variable for doing better wipes/fills between renders.
@@ -230,23 +266,23 @@ package org.flixel
 					focusOn(target.getMidpoint(_point));
 				else
 				{
-					var t:Number;
+					var edge:Number;
 					var targetX:Number = target.x + ((target.x > 0)?0.0000001:-0.0000001);
 					var targetY:Number = target.y + ((target.y > 0)?0.0000001:-0.0000001);
 					
-					t = targetX - deadzone.x;
-					if(scroll.x > t)
-						scroll.x = t;
-					t = targetX + target.width - deadzone.x - deadzone.width;
-					if(scroll.x < t)
-						scroll.x = t;
+					edge = targetX - deadzone.x;
+					if(scroll.x > edge)
+						scroll.x = edge;
+					edge = targetX + target.width - deadzone.x - deadzone.width;
+					if(scroll.x < edge)
+						scroll.x = edge;
 					
-					t = targetY - deadzone.y;
-					if(scroll.y > t)
-						scroll.y = t;
-					t = targetY + target.height - deadzone.y - deadzone.height;
-					if(scroll.y < t)
-						scroll.y = t;
+					edge = targetY - deadzone.y;
+					if(scroll.y > edge)
+						scroll.y = edge;
+					edge = targetY + target.height - deadzone.y - deadzone.height;
+					if(scroll.y < edge)
+						scroll.y = edge;
 				}
 			}
 			
@@ -312,7 +348,7 @@ package org.flixel
 		public function follow(Target:FlxObject, Style:uint=STYLE_LOCKON):void
 		{
 			target = Target;
-			var d:Number;
+			var helper:Number;
 			switch(Style)
 			{
 				case STYLE_PLATFORMER:
@@ -321,12 +357,12 @@ package org.flixel
 					deadzone = new FlxRect((width-w)/2,(height-h)/2 - h*0.25,w,h);
 					break;
 				case STYLE_TOPDOWN:
-					d = FlxU.max(width,height)/4;
-					deadzone = new FlxRect((width-d)/2,(height-d)/2,d,d);
+					helper = FlxU.max(width,height)/4;
+					deadzone = new FlxRect((width-helper)/2,(height-helper)/2,helper,helper);
 					break;
 				case STYLE_TOPDOWN_TIGHT:
-					d = FlxU.max(width,height)/8;
-					deadzone = new FlxRect((width-d)/2,(height-d)/2,d,d);
+					helper = FlxU.max(width,height)/8;
+					deadzone = new FlxRect((width-helper)/2,(height-helper)/2,helper,helper);
 					break;
 				case STYLE_LOCKON:
 				default:
@@ -539,11 +575,11 @@ package org.flixel
 		public function set color(Color:uint):void
 		{
 			_color = Color;
-			var ct:ColorTransform = _flashBitmap.transform.colorTransform;
-			ct.redMultiplier = (_color>>16)*0.00392;
-			ct.greenMultiplier = (_color>>8&0xff)*0.00392;
-			ct.blueMultiplier = (_color&0xff)*0.00392;
-			_flashBitmap.transform.colorTransform = ct;
+			var colorTransform:ColorTransform = _flashBitmap.transform.colorTransform;
+			colorTransform.redMultiplier = (_color>>16)*0.00392;
+			colorTransform.greenMultiplier = (_color>>8&0xff)*0.00392;
+			colorTransform.blueMultiplier = (_color&0xff)*0.00392;
+			_flashBitmap.transform.colorTransform = colorTransform;
 		}
 		
 		/**

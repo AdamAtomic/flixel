@@ -166,15 +166,15 @@ package org.flixel
 			{
 				if(cameras == null)
 					cameras = FlxG.cameras;
-				var c:FlxCamera;
+				var camera:FlxCamera;
 				var i:uint = 0;
 				var l:uint = cameras.length;
 				var offAll:Boolean = true;
 				while(i < l)
 				{
-					c = cameras[i++] as FlxCamera;
-					FlxG.mouse.getWorldPosition(c,_point);
-					if(overlapsPoint(_point,true,c))
+					camera = cameras[i++] as FlxCamera;
+					FlxG.mouse.getWorldPosition(camera,_point);
+					if(overlapsPoint(_point,true,camera))
 					{
 						offAll = false;
 						if(FlxG.mouse.justPressed())

@@ -317,6 +317,8 @@ package org.flixel
 		
 		/**
 		 * Shuffles the entries in an array into a new random order.
+		 * <code>FlxG.shuffle()</code> is deterministic and safe for use with replays/recordings.
+		 * HOWEVER, <code>FlxU.shuffle()</code> is NOT deterministic and unsafe for use with replays/recordings.
 		 * 
 		 * @param	A				A Flash <code>Array</code> object containing...stuff.
 		 * @param	HowManyTimes	How many swaps to perform during the shuffle operation.  Good rule of thumb is 2-4 times as many objects are in the list.
@@ -325,16 +327,18 @@ package org.flixel
 		 */
 		static public function shuffle(Objects:Array,HowManyTimes:uint):Array
 		{
-			var i1:uint;
-			var i2:uint;
-			var o:Object;
-			for(var i:uint = 0; i < HowManyTimes; i++)
+			var i:uint = 0;
+			var index1:uint;
+			var index2:uint;
+			var object:Object;
+			while(i < HowManyTimes)
 			{
-				i1 = FlxG.random()*Objects.length;
-				i2 = FlxG.random()*Objects.length;
-				o = Objects[i2];
-				Objects[i2] = Objects[i1];
-				Objects[i1] = o;
+				index1 = FlxG.random()*Objects.length;
+				index2 = FlxG.random()*Objects.length;
+				object = Objects[index2];
+				Objects[index2] = Objects[index1];
+				Objects[index1] = object;
+				i++;
 			}
 			return Objects;
 		}
@@ -342,6 +346,8 @@ package org.flixel
 		/**
 		 * Fetch a random entry from the given array.
 		 * Will return null if random selection is missing, or array has no entries.
+		 * <code>FlxG.getRandom()</code> is deterministic and safe for use with replays/recordings.
+		 * HOWEVER, <code>FlxU.getRandom()</code> is NOT deterministic and unsafe for use with replays/recordings.
 		 * 
 		 * @param	Objects		A Flash array of objects.
 		 * 
@@ -487,11 +493,11 @@ package org.flixel
 		 */
 		static public function play(EmbeddedSound:Class,Volume:Number=1.0,Looped:Boolean=false):FlxSound
 		{
-			var s:FlxSound = sounds.recycle(FlxSound) as FlxSound;
-			s.loadEmbedded(EmbeddedSound,Looped);
-			s.volume = Volume;
-			s.play();
-			return s;
+			var sound:FlxSound = sounds.recycle(FlxSound) as FlxSound;
+			sound.loadEmbedded(EmbeddedSound,Looped);
+			sound.volume = Volume;
+			sound.play();
+			return sound;
 		}
 		
 		/**
@@ -505,11 +511,11 @@ package org.flixel
 		 */
 		static public function stream(URL:String,Volume:Number=1.0,Looped:Boolean=false):FlxSound
 		{
-			var s:FlxSound = sounds.recycle(FlxSound) as FlxSound;
-			s.loadStream(URL,Looped);
-			s.volume = Volume;
-			s.play();
-			return s;
+			var sound:FlxSound = sounds.recycle(FlxSound) as FlxSound;
+			sound.loadStream(URL,Looped);
+			sound.volume = Volume;
+			sound.play();
+			return sound;
 		}
 		
 		/**
@@ -549,13 +555,13 @@ package org.flixel
 				music = null;
 			}
 			var i:uint = 0;
-			var s:FlxSound;
+			var sound:FlxSound;
 			var l:uint = sounds.members.length;
 			while(i < l)
 			{
-				s = sounds.members[i++] as FlxSound;
-				if((s != null) && (ForceDestroy || !s.survive))
-					s.destroy();
+				sound = sounds.members[i++] as FlxSound;
+				if((sound != null) && (ForceDestroy || !sound.survive))
+					sound.destroy();
 			}
 		}
 		
@@ -578,13 +584,13 @@ package org.flixel
 			if((music != null) && music.exists && music.active)
 				music.pause();
 			var i:uint = 0;
-			var s:FlxSound;
+			var sound:FlxSound;
 			var l:uint = sounds.members.length;
 			while(i < l)
 			{
-				s = sounds.members[i++] as FlxSound;
-				if((s != null) && s.exists && s.active)
-					s.pause();
+				sound = sounds.members[i++] as FlxSound;
+				if((sound != null) && sound.exists && sound.active)
+					sound.pause();
 			}
 		}
 		
@@ -596,13 +602,13 @@ package org.flixel
 			if((music != null) && music.exists)
 				music.play();
 			var i:uint = 0;
-			var s:FlxSound;
+			var sound:FlxSound;
 			var l:uint = sounds.members.length;
 			while(i < l)
 			{
-				s = sounds.members[i++] as FlxSound;
-				if((s != null) && s.exists)
-					s.play();
+				sound = sounds.members[i++] as FlxSound;
+				if((sound != null) && sound.exists)
+					sound.play();
 			}
 		}
 		
@@ -778,20 +784,20 @@ package org.flixel
 		 */
 		static public function resetCameras(NewCamera:FlxCamera=null):void
 		{
-			var c:FlxCamera;
+			var cam:FlxCamera;
 			var i:uint = 0;
 			var l:uint = cameras.length;
 			while(i < l)
 			{
-				c = cameras[i++] as FlxCamera;
-				FlxG._game.removeChild(c._flashBitmap);
-				c.destroy();
+				cam = FlxG.cameras[i++] as FlxCamera;
+				FlxG._game.removeChild(cam._flashBitmap);
+				cam.destroy();
 			}
-			cameras.length = 0;
+			FlxG.cameras.length = 0;
 			
 			if(NewCamera == null)
 				NewCamera = new FlxCamera(0,0,FlxG.width,FlxG.height)
-			camera = FlxG.addCamera(NewCamera);
+			FlxG.camera = FlxG.addCamera(NewCamera);
 		}
 		
 		/**
@@ -804,11 +810,10 @@ package org.flixel
 		 */
 		static public function flash(Color:uint=0xffffffff, Duration:Number=1, OnComplete:Function=null, Force:Boolean=false):void
 		{
-			var c:FlxCamera;
 			var i:uint = 0;
-			var l:uint = cameras.length;
+			var l:uint = FlxG.cameras.length;
 			while(i < l)
-				(cameras[i++] as FlxCamera).flash(Color,Duration,OnComplete,Force);
+				(FlxG.cameras[i++] as FlxCamera).flash(Color,Duration,OnComplete,Force);
 		}
 		
 		/**
@@ -821,11 +826,10 @@ package org.flixel
 		 */
 		static public function fade(Color:uint=0xffffffff, Duration:Number=1, OnComplete:Function=null, Force:Boolean=false):void
 		{
-			var c:FlxCamera;
 			var i:uint = 0;
-			var l:uint = cameras.length;
+			var l:uint = FlxG.cameras.length;
 			while(i < l)
-				(cameras[i++] as FlxCamera).fade(Color,Duration,OnComplete,Force);
+				(FlxG.cameras[i++] as FlxCamera).fade(Color,Duration,OnComplete,Force);
 		}
 		
 		/**
@@ -839,11 +843,10 @@ package org.flixel
 		 */
 		static public function shake(Intensity:Number=0.05, Duration:Number=0.5, OnComplete:Function=null, Force:Boolean=true, Direction:uint=FlxCamera.SHAKE_BOTH_AXES):void
 		{
-			var c:FlxCamera;
 			var i:uint = 0;
-			var l:uint = cameras.length;
+			var l:uint = FlxG.cameras.length;
 			while(i < l)
-				(cameras[i++] as FlxCamera).shake(Intensity,Duration,OnComplete,Force,Direction);
+				(FlxG.cameras[i++] as FlxCamera).shake(Intensity,Duration,OnComplete,Force,Direction);
 		}
 		
 		/**
@@ -861,11 +864,10 @@ package org.flixel
 		
 		static public function set bgColor(Color:uint):void
 		{
-			var c:FlxCamera;
 			var i:uint = 0;
-			var l:uint = cameras.length;
+			var l:uint = FlxG.cameras.length;
 			while(i < l)
-				(cameras[i++] as FlxCamera).bgColor = Color;
+				(FlxG.cameras[i++] as FlxCamera).bgColor = Color;
 		}
 
 		/**
@@ -1029,17 +1031,17 @@ package org.flixel
 		 */
 		static internal function lockCameras():void
 		{
-			var c:FlxCamera;
-			var b:FlxRect;
+			var cam:FlxCamera;
+			var cams:Array = FlxG.cameras;
 			var i:uint = 0;
-			var l:uint = cameras.length;
+			var l:uint = cams.length;
 			while(i < l)
 			{
-				c = cameras[i++] as FlxCamera;
-				if((c == null) || !c.exists || !c.visible)
+				cam = cams[i++] as FlxCamera;
+				if((cam == null) || !cam.exists || !cam.visible)
 					continue;
-				c.buffer.lock();
-				c.fill();
+				cam.buffer.lock();
+				cam.fill();
 			}
 		}
 		
@@ -1048,16 +1050,17 @@ package org.flixel
 		 */
 		static internal function unlockCameras():void
 		{
-			var c:FlxCamera;
+			var cam:FlxCamera;
+			var cams:Array = FlxG.cameras;
 			var i:uint = 0;
-			var l:uint = cameras.length;
+			var l:uint = cams.length;
 			while(i < l)
 			{
-				c = cameras[i++] as FlxCamera;
-				if((c == null) || !c.exists || !c.visible)
+				cam = cams[i++] as FlxCamera;
+				if((cam == null) || !cam.exists || !cam.visible)
 					continue;
-				c.drawFX();
-				c.buffer.unlock();
+				cam.drawFX();
+				cam.buffer.unlock();
 			}
 		}
 		
@@ -1066,19 +1069,20 @@ package org.flixel
 		 */
 		static internal function updateCameras():void
 		{
-			var c:FlxCamera;
+			var cam:FlxCamera;
+			var cams:Array = FlxG.cameras;
 			var i:uint = 0;
-			var l:uint = cameras.length;
+			var l:uint = cams.length;
 			while(i < l)
 			{
-				c = cameras[i++] as FlxCamera;
-				if((c != null) && c.exists)
+				cam = cams[i++] as FlxCamera;
+				if((cam != null) && cam.exists)
 				{
-					if(c.active)
-						c.update();
-					c._flashBitmap.x = c.x;
-					c._flashBitmap.y = c.y;
-					c._flashBitmap.visible = c.exists && c.visible;
+					if(cam.active)
+						cam.update();
+					cam._flashBitmap.x = cam.x;
+					cam._flashBitmap.y = cam.y;
+					cam._flashBitmap.visible = cam.exists && cam.visible;
 				}
 			}
 		}
@@ -1088,12 +1092,13 @@ package org.flixel
 		 */
 		static internal function updatePlugins():void
 		{
-			var i:uint = 0;
-			var l:uint = plugins.length;
 			var plugin:FlxBasic;
+			var pluginList:Array = FlxG.plugins;
+			var i:uint = 0;
+			var l:uint = pluginList.length;
 			while(i < l)
 			{
-				plugin = plugins[i++] as FlxBasic;
+				plugin = pluginList[i++] as FlxBasic;
 				if(plugin.exists && plugin.active)
 					plugin.update();
 			}
@@ -1104,12 +1109,13 @@ package org.flixel
 		 */
 		static internal function drawPlugins():void
 		{
-			var i:uint = 0;
-			var l:uint = plugins.length;
 			var plugin:FlxBasic;
+			var pluginList:Array = FlxG.plugins;
+			var i:uint = 0;
+			var l:uint = pluginList.length;
 			while(i < l)
 			{
-				plugin = plugins[i++] as FlxBasic;
+				plugin = pluginList[i++] as FlxBasic;
 				if(plugin.exists && plugin.visible)
 					plugin.draw();
 			}

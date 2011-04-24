@@ -69,13 +69,13 @@ package org.flixel
 		{
 			if(members != null)
 			{
-				var b:FlxBasic;
+				var basic:FlxBasic;
 				var i:uint = 0;
 				while(i < length)
 				{
-					b = members[i++] as FlxBasic;
-					if(b != null)
-						b.destroy();
+					basic = members[i++] as FlxBasic;
+					if(basic != null)
+						basic.destroy();
 				}
 				members.length = 0;
 				members = null;
@@ -95,16 +95,16 @@ package org.flixel
 		 */
 		override public function update():void
 		{
-			var b:FlxBasic;
+			var basic:FlxBasic;
 			var i:uint = 0;
 			while(i < length)
 			{
-				b = members[i++] as FlxBasic;
-				if((b != null) && b.exists && b.active)
+				basic = members[i++] as FlxBasic;
+				if((basic != null) && basic.exists && basic.active)
 				{
-					b.preUpdate();
-					b.update();
-					b.postUpdate();
+					basic.preUpdate();
+					basic.update();
+					basic.postUpdate();
 				}
 			}
 		}
@@ -114,13 +114,13 @@ package org.flixel
 		 */
 		override public function draw():void
 		{
-			var b:FlxBasic;
+			var basic:FlxBasic;
 			var i:uint = 0;
 			while(i < length)
 			{
-				b = members[i++] as FlxBasic;
-				if((b != null) && b.exists && b.visible)
-					b.draw();
+				basic = members[i++] as FlxBasic;
+				if((basic != null) && basic.exists && basic.visible)
+					basic.draw();
 			}
 		}
 		
@@ -144,14 +144,14 @@ package org.flixel
 				return;
 			
 			//If the max size has shrunk, we need to get rid of some objects
-			var b:FlxBasic;
+			var basic:FlxBasic;
 			var i:uint = _maxSize;
 			var l:uint = members.length;
 			while(i < l)
 			{
-				b = members[i++] as FlxBasic;
-				if(b != null)
-					b.destroy();
+				basic = members[i++] as FlxBasic;
+				if(basic != null)
+					basic.destroy();
 			}
 			length = members.length = _maxSize;
 		}
@@ -235,7 +235,7 @@ package org.flixel
 		 */
 		public function recycle(ObjectClass:Class=null):FlxBasic
 		{
-			var b:FlxBasic;
+			var basic:FlxBasic;
 			if(_maxSize > 0)
 			{
 				if(length < _maxSize)
@@ -246,17 +246,17 @@ package org.flixel
 				}
 				else
 				{
-					b = members[_marker++];
+					basic = members[_marker++];
 					if(_marker >= _maxSize)
 						_marker = 0;
-					return b;
+					return basic;
 				}
 			}
 			else
 			{
-				b = getFirstAvail(ObjectClass);
-				if(b != null)
-					return b;
+				basic = getFirstAvail(ObjectClass);
+				if(basic != null)
+					return basic;
 				if(ObjectClass == null)
 					return null;
 				return add(new ObjectClass() as FlxBasic);
@@ -329,17 +329,17 @@ package org.flixel
 		 */
 		public function setAll(VariableName:String,Value:Object,Recurse:Boolean=true):void
 		{
-			var b:FlxBasic;
+			var basic:FlxBasic;
 			var i:uint = 0;
 			while(i < length)
 			{
-				b = members[i++] as FlxBasic;
-				if(b != null)
+				basic = members[i++] as FlxBasic;
+				if(basic != null)
 				{
-					if(Recurse && (b is FlxGroup))
-						(b as FlxGroup).setAll(VariableName,Value,Recurse);
+					if(Recurse && (basic is FlxGroup))
+						(basic as FlxGroup).setAll(VariableName,Value,Recurse);
 					else
-						b[VariableName] = Value;
+						basic[VariableName] = Value;
 				}
 			}
 		}
@@ -353,17 +353,17 @@ package org.flixel
 		 */ 
 		public function callAll(FunctionName:String,Recurse:Boolean=true):void
 		{
-			var b:FlxBasic;
+			var basic:FlxBasic;
 			var i:uint = 0;
 			while(i < length)
 			{
-				b = members[i++] as FlxBasic;
-				if(b != null)
+				basic = members[i++] as FlxBasic;
+				if(basic != null)
 				{
-					if(Recurse && (b is FlxGroup))
-						(b as FlxGroup).callAll(FunctionName,Recurse);
+					if(Recurse && (basic is FlxGroup))
+						(basic as FlxGroup).callAll(FunctionName,Recurse);
 					else
-						b[FunctionName]();
+						basic[FunctionName]();
 				}
 			}
 		}
@@ -378,13 +378,13 @@ package org.flixel
 		 */
 		public function getFirstAvail(ObjectClass:Class=null):FlxBasic
 		{
-			var b:FlxBasic;
+			var basic:FlxBasic;
 			var i:uint = 0;
 			while(i < length)
 			{
-				b = members[i++] as FlxBasic;
-				if((b != null) && !b.exists && ((ObjectClass == null) || (b is ObjectClass)))
-					return b;
+				basic = members[i++] as FlxBasic;
+				if((basic != null) && !basic.exists && ((ObjectClass == null) || (basic is ObjectClass)))
+					return basic;
 			}
 			return null;
 		}
@@ -397,7 +397,7 @@ package org.flixel
 		 */
 		public function getFirstNull():int
 		{
-			var b:FlxBasic;
+			var basic:FlxBasic;
 			var i:uint = 0;
 			var l:uint = members.length;
 			while(i < l)
@@ -418,13 +418,13 @@ package org.flixel
 		 */
 		public function getFirstExtant():FlxBasic
 		{
-			var b:FlxBasic;
+			var basic:FlxBasic;
 			var i:uint = 0;
 			while(i < length)
 			{
-				b = members[i++] as FlxBasic;
-				if((b != null) && b.exists)
-					return b;
+				basic = members[i++] as FlxBasic;
+				if((basic != null) && basic.exists)
+					return basic;
 			}
 			return null;
 		}
@@ -437,13 +437,13 @@ package org.flixel
 		 */
 		public function getFirstAlive():FlxBasic
 		{
-			var b:FlxBasic;
+			var basic:FlxBasic;
 			var i:uint = 0;
 			while(i < length)
 			{
-				b = members[i++] as FlxBasic;
-				if((b != null) && b.exists && b.alive)
-					return b;
+				basic = members[i++] as FlxBasic;
+				if((basic != null) && basic.exists && basic.alive)
+					return basic;
 			}
 			return null;
 		}
@@ -456,13 +456,13 @@ package org.flixel
 		 */
 		public function getFirstDead():FlxBasic
 		{
-			var b:FlxBasic;
+			var basic:FlxBasic;
 			var i:uint = 0;
 			while(i < length)
 			{
-				b = members[i++] as FlxBasic;
-				if((b != null) && !b.alive)
-					return b;
+				basic = members[i++] as FlxBasic;
+				if((basic != null) && !basic.alive)
+					return basic;
 			}
 			return null;
 		}
@@ -475,16 +475,16 @@ package org.flixel
 		public function countLiving():int
 		{
 			var count:int = -1;
-			var b:FlxBasic;
+			var basic:FlxBasic;
 			var i:uint = 0;
 			while(i < length)
 			{
-				b = members[i++] as FlxBasic;
-				if(b != null)
+				basic = members[i++] as FlxBasic;
+				if(basic != null)
 				{
 					if(count < 0)
 						count = 0;
-					if(b.exists && b.alive)
+					if(basic.exists && basic.alive)
 						count++;
 				}
 			}
@@ -499,16 +499,16 @@ package org.flixel
 		public function countDead():int
 		{
 			var count:int = -1;
-			var b:FlxBasic;
+			var basic:FlxBasic;
 			var i:uint = 0;
 			while(i < length)
 			{
-				b = members[i++] as FlxBasic;
-				if(b != null)
+				basic = members[i++] as FlxBasic;
+				if(basic != null)
 				{
 					if(count < 0)
 						count = 0;
-					if(!b.alive)
+					if(!basic.alive)
 						count++;
 				}
 			}
@@ -539,13 +539,13 @@ package org.flixel
 		 */
 		override public function kill():void
 		{
-			var b:FlxBasic;
+			var basic:FlxBasic;
 			var i:uint = 0;
 			while(i < length)
 			{
-				b = members[i++] as FlxBasic;
-				if((b != null) && b.exists)
-					b.kill();
+				basic = members[i++] as FlxBasic;
+				if((basic != null) && basic.exists)
+					basic.kill();
 			}
 			super.kill();
 		}
