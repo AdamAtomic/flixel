@@ -21,6 +21,13 @@ package org.flixel
 		public var lifespan:Number;
 		
 		/**
+		 * Determines how quickly the particles come to rest on the ground.
+		 * Only used if the particle has gravity-like acceleration applied.
+		 * @default 500
+		 */
+		public var friction:Number;
+		
+		/**
 		 * Instantiate a new particle.  Like <code>FlxSprite</code>, all meaningful creation
 		 * happens during <code>loadGraphic()</code> or <code>makeGraphic()</code> or whatever.
 		 */
@@ -28,6 +35,7 @@ package org.flixel
 		{
 			super();
 			lifespan = 0;
+			friction = 500;
 		}
 		
 		/**
@@ -47,17 +55,17 @@ package org.flixel
 			if(touching)
 			{
 				if(angularVelocity != 0)
-					angularVelocity = -angularVelocity * elasticity;
+					angularVelocity = -angularVelocity;
 			}
 			if(acceleration.y > 0) //special behavior for particles with gravity
 			{
 				if(touching & FLOOR)
 				{
-					drag.x = 200;
+					drag.x = friction;
 					
 					if(!(wasTouching & FLOOR))
 					{
-						if(velocity.y < -elasticity*100)
+						if(velocity.y < -elasticity*10)
 						{
 							if(angularVelocity != 0)
 								angularVelocity *= -elasticity;
@@ -74,7 +82,6 @@ package org.flixel
 			}
 			return;
 		}
-		
 		
 		/**
 		 * Triggered whenever this object is launched by a <code>FlxEmitter</code>.

@@ -803,12 +803,13 @@ package org.flixel
 		 * and calls the specified callback function (if there is one).
 		 * Also calls the tile's registered callback if the filter matches.
 		 * 
-		 * @param	Object		The <code>FlxObject</code> you are checking for overlaps against.
-		 * @param	Callback	An optional function that takes the form "myCallback(Object1:FlxObject,Object2:FlxObject)", where one object is the object passed in in the first parameter, and the other is the relevant FlxTile from _tileObjects.
+		 * @param	Object				The <code>FlxObject</code> you are checking for overlaps against.
+		 * @param	Callback			An optional function that takes the form "myCallback(Object1:FlxObject,Object2:FlxObject)", where Object1 is a FlxTile object, and Object2 is the object passed in in the first parameter of this method.
+		 * @param	FlipCallbackParams	Used to preserve A-B list ordering from FlxObject.separate() - returns the FlxTile object as the second parameter instead.
 		 * 
 		 * @return	Whether there were overlaps, or if a callback was specified, whatever the return value of the callback was.
 		 */
-		public function overlapsWithCallback(Object:FlxObject,Callback:Function=null):Boolean
+		public function overlapsWithCallback(Object:FlxObject,Callback:Function=null,FlipCallbackParams:Boolean=false):Boolean
 		{
 			var results:Boolean = false;
 			
@@ -850,7 +851,12 @@ package org.flixel
 						tile.last.x = tile.x - deltaX;
 						tile.last.y = tile.y - deltaY;
 						if(Callback != null)
-							overlapFound = Callback(Object,tile);
+						{
+							if(FlipCallbackParams)
+								overlapFound = Callback(Object,tile);
+							else
+								Callback(tile,Object);
+						}
 						else
 							overlapFound = (Object.x + Object.width > tile.x) && (Object.x < tile.x + tile.width) && (Object.y + Object.height > tile.y) && (Object.y < tile.y + tile.height);
 						if(overlapFound)

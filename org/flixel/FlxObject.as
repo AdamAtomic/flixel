@@ -906,7 +906,7 @@ package org.flixel
 			if(Object1 is FlxTilemap)
 				return (Object1 as FlxTilemap).overlapsWithCallback(Object2,separateX);
 			if(Object2 is FlxTilemap)
-				return (Object2 as FlxTilemap).overlapsWithCallback(Object1,separateX);
+				return (Object2 as FlxTilemap).overlapsWithCallback(Object1,separateX,true);
 			
 			//First, get the two object deltas
 			var overlap:Number = 0;
@@ -1005,7 +1005,7 @@ package org.flixel
 			if(Object1 is FlxTilemap)
 				return (Object1 as FlxTilemap).overlapsWithCallback(Object2,separateY);
 			if(Object2 is FlxTilemap)
-				return (Object2 as FlxTilemap).overlapsWithCallback(Object1,separateY);
+				return (Object2 as FlxTilemap).overlapsWithCallback(Object1,separateY,true);
 
 			//First, get the two object deltas
 			var overlap:Number = 0;
