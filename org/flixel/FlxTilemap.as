@@ -855,7 +855,7 @@ package org.flixel
 							if(FlipCallbackParams)
 								overlapFound = Callback(Object,tile);
 							else
-								Callback(tile,Object);
+								overlapFound = Callback(tile,Object);
 						}
 						else
 							overlapFound = (Object.x + Object.width > tile.x) && (Object.x < tile.x + tile.width) && (Object.y + Object.height > tile.y) && (Object.y < tile.y + tile.height);
