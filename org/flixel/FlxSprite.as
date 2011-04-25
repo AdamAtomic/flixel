@@ -355,6 +355,12 @@ package org.flixel
 			}
 			frameWidth = frameHeight = width = height = max;
 			resetHelpers();
+			if(AutoBuffer)
+			{
+				width = brush.width;
+				height = brush.height;
+				centerOffsets();
+			}
 			return this;
 		}
 		
@@ -464,7 +470,7 @@ package org.flixel
 		
 		/**
 		 * This function draws or stamps one <code>FlxSprite</code> onto another.
-		 * This function is NOT intended to replace <code>render()</code>!
+		 * This function is NOT intended to replace <code>draw()</code>!
 		 * 
 		 * @param	Brush		The image you want to use as a brush or stamp or pen or whatever.
 		 * @param	X			The X coordinate of the brush's top left corner on this sprite.

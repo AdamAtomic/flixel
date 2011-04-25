@@ -221,7 +221,8 @@ package org.flixel
 		override public function draw():void
 		{
 			super.draw();
-			label.draw();
+			if(label != null)
+				label.draw();
 		}
 		
 		/**

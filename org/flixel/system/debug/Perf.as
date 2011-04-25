@@ -96,10 +96,12 @@ package org.flixel.system.debug
 		{
 			var time:int = getTimer();
 			var elapsed:int = time - _lastTime;
+			var updateEvery:uint = 500;
+			if(elapsed > updateEvery)
+				elapsed = updateEvery;
 			_lastTime = time;
 			
 			_updateTimer += elapsed;
-			var updateEvery:uint = 500;
 			if(_updateTimer > updateEvery)
 			{
 				var i:uint;
