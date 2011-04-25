@@ -58,9 +58,9 @@ package org.flixel
 			paused = false;
 			finished = false;
 			
-			var plugin:TimerManager = FlxG.getPlugin(TimerManager) as TimerManager;
-			if(plugin != null)
-				plugin.add(this);
+			var timerManager:TimerManager = manager;
+			if(timerManager != null)
+				timerManager.add(this);
 		}
 		
 		/**
@@ -129,9 +129,9 @@ package org.flixel
 		public function stop():void
 		{
 			finished = true;
-			var plugin:TimerManager = FlxG.getPlugin(TimerManager) as TimerManager;
-			if(plugin != null)
-				plugin.remove(this);
+			var timerManager:TimerManager = manager;
+			if(timerManager != null)
+				timerManager.remove(this);
 		}
 		
 		/**
@@ -148,6 +148,11 @@ package org.flixel
 		public function get loopsLeft():int
 		{
 			return loops-_loopsCounter;
+		}
+		
+		static public function get manager():TimerManager
+		{
+			return FlxG.getPlugin(TimerManager) as TimerManager;
 		}
 	}
 }

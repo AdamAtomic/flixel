@@ -49,9 +49,9 @@ package org.flixel
 			debugScrollFactor = new FlxPoint(1.0,1.0);
 			debugColor = 0xffffff;
 			
-			var plugin:DebugPathDisplay = FlxG.getPlugin(DebugPathDisplay) as DebugPathDisplay;
-			if(plugin != null)
-				plugin.add(this);
+			var debugPathDisplay:DebugPathDisplay = manager;
+			if(debugPathDisplay != null)
+				debugPathDisplay.add(this);
 		}
 		
 		/**
@@ -59,9 +59,9 @@ package org.flixel
 		 */
 		public function destroy():void
 		{
-			var plugin:DebugPathDisplay = FlxG.getPlugin(DebugPathDisplay) as DebugPathDisplay;
-			if(plugin != null)
-				plugin.remove(this);
+			var debugPathDisplay:DebugPathDisplay = manager;
+			if(debugPathDisplay != null)
+				debugPathDisplay.remove(this);
 			
 			debugScrollFactor = null;
 			_point = null;
@@ -263,6 +263,11 @@ package org.flixel
 			
 			//then stamp the path down onto the game buffer
 			Camera.buffer.draw(FlxG.flashGfxSprite);
+		}
+		
+		static public function get manager():DebugPathDisplay
+		{
+			return FlxG.getPlugin(DebugPathDisplay) as DebugPathDisplay;
 		}
 	}
 }
