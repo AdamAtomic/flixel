@@ -493,7 +493,7 @@ package org.flixel.system
 					while(iterator != null)
 					{
 						_object = iterator.object;
-						if(_object.exists && _object.allowCollisions && overlapNode())
+						if(_object.exists && (_object.allowCollisions > 0) && overlapNode())
 							overlapProcessed = true;
 						iterator = iterator.next;
 					}
@@ -505,7 +505,7 @@ package org.flixel.system
 					while(iterator != null)
 					{
 						_object = iterator.object;
-						if(_object.exists && _object.allowCollisions)
+						if(_object.exists && (_object.allowCollisions > 0))
 						{
 							if((_northWestTree != null) && _northWestTree.overlapNode())
 								overlapProcessed = true;
@@ -529,7 +529,7 @@ package org.flixel.system
 					while(iterator != null)
 					{
 						_object = iterator.object;
-						if(_object.exists && _object.allowCollisions && overlapNode(iterator.next))
+						if(_object.exists && (_object.allowCollisions > 0) && overlapNode(iterator.next))
 							overlapProcessed = true;
 						iterator = iterator.next;
 					}
@@ -574,8 +574,11 @@ package org.flixel.system
 			var checkObject:FlxObject;
 			while(Iterator != null)
 			{
+				if(!_object.exists || (_object.allowCollisions <= 0))
+					break;
+				
 				checkObject = Iterator.object;
-				if((_object === checkObject) || !checkObject.exists || !checkObject.allowCollisions)
+				if((_object === checkObject) || !checkObject.exists || (checkObject.allowCollisions <= 0))
 				{
 					Iterator = Iterator.next;
 					continue;
