@@ -930,28 +930,86 @@ package org.flixel
 		 */
 		static public function addPlugin(Plugin:FlxBasic):FlxBasic
 		{
-			plugins.push(Plugin);
+			//Don't add repeats
+			var pluginList:Array = FlxG.plugins;
+			var i:uint = 0;
+			var l:uint = pluginList.length;
+			while(i < l)
+			{
+				if(pluginList[i++].toString() == Plugin.toString())
+					return Plugin;
+			}
+			
+			//no repeats! safe to add a new instance of this plugin
+			pluginList.push(Plugin);
 			return Plugin;
 		}
 		
 		/**
-		 * Retrieves a plugin from the global plugin array.
+		 * Retrieves a plugin based on its class name from the global plugin array.
 		 * 
-		 * @param	ClassType	Useful for retrieving plugins based on their type. See the <code>FlxPath</code> or <code>FlxTimer</code> constructors for example usage.
+		 * @param	ClassType	The class name of the plugin you want to retrieve. See the <code>FlxPath</code> or <code>FlxTimer</code> constructors for example usage.
 		 * 
 		 * @return	The plugin object, or null if no matching plugin was found.
 		 */
 		static public function getPlugin(ClassType:Class):FlxBasic
 		{
+			var pluginList:Array = FlxG.plugins;
 			var i:uint = 0;
-			var l:uint = plugins.length;
+			var l:uint = pluginList.length;
 			while(i < l)
 			{
-				if(plugins[i] is ClassType)
+				if(pluginList[i++] is ClassType)
 					return plugins[i];
 				i++;
 			}
 			return null;
+		}
+		
+		/**
+		 * Removes an instance of a plugin from the global plugin array.
+		 * 
+		 * @param	Plugin	The plugin instance you want to remove.
+		 * 
+		 * @return	The same <code>FlxBasic</code>-based plugin you passed in.
+		 */
+		static public function removePlugin(Plugin:FlxBasic):FlxBasic
+		{
+			//Don't add repeats
+			var pluginList:Array = FlxG.plugins;
+			var i:int = pluginList.length-1;
+			while(i >= 0)
+			{
+				if(pluginList[i] == Plugin)
+					pluginList.splice(i,1);
+				i--;
+			}
+			return Plugin;
+		}
+		
+		/**
+		 * Removes an instance of a plugin from the global plugin array.
+		 * 
+		 * @param	ClassType	The class name of the plugin type you want removed from the array.
+		 * 
+		 * @return	Whether or not at least one instance of this plugin type was removed.
+		 */
+		static public function removePluginType(ClassType:Class):Boolean
+		{
+			//Don't add repeats
+			var results:Boolean = false;
+			var pluginList:Array = FlxG.plugins;
+			var i:int = pluginList.length-1;
+			while(i >= 0)
+			{
+				if(pluginList[i] is ClassType)
+				{
+					pluginList.splice(i,1);
+					results = true;
+				}
+				i--;
+			}
+			return results;
 		}
 		
 		/**

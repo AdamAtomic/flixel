@@ -472,7 +472,7 @@ package org.flixel
 			FlxG.destroySounds();
 			if(_debugger != null)
 				_debugger.watch.removeAll();
-			var timerManager:TimerManager = FlxG.getPlugin(TimerManager) as TimerManager;
+			var timerManager:TimerManager = FlxTimer.manager;
 			if(timerManager != null)
 				timerManager.clear();
 			
