@@ -100,6 +100,12 @@ package org.flixel
 		 * NOTE: can be transparent for crazy FX!
 		 */
 		public var bgColor:uint;
+		/**
+		 * Sometimes it's easier to just work with a <code>FlxSprite</code> than it is to work
+		 * directly with the <code>BitmapData</code> buffer.  This sprite reference will
+		 * allow you to do exactly that.
+		 */
+		public var screen:FlxSprite;
 		
 		/**
 		 * Indicates how far the camera is zoomed in.
@@ -203,8 +209,11 @@ package org.flixel
 			scroll = new FlxPoint();
 			_point = new FlxPoint();
 			bounds = null;
+			screen = new FlxSprite();
+			screen.makeGraphic(width,height,0,true);
+			screen.setOriginToCorner();
+			buffer = screen.pixels;
 			bgColor = FlxG.bgColor;
-			buffer = new BitmapData(width,height,true,0);
 			_color = 0xffffff;
 
 			_flashBitmap = new Bitmap(buffer);
@@ -238,6 +247,8 @@ package org.flixel
 		 */
 		override public function destroy():void
 		{
+			screen.destroy();
+			screen = null;
 			target = null;
 			scroll = null;
 			deadzone = null;

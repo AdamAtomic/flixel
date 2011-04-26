@@ -211,7 +211,7 @@ package org.flixel
 		}
 		
 		/**
-		 * The alignment of the font ("left", "right", or "center").
+		 * The color of the text shadow in 0xAARRGGBB hex format.
 		 */
 		public function get shadow():uint
 		{

@@ -83,6 +83,14 @@ package org.flixel
 		 * Pink is used to indicate objects that are only partially solid, like one-way platforms.
 		 */
 		static public const PINK:uint = 0xfff01eff;
+		/**
+		 * White... for white stuff.
+		 */
+		static public const WHITE:uint = 0xffffffff;
+		/**
+		 * And black too.
+		 */
+		static public const BLACK:uint = 0xff000000;
 
 		/**
 		 * Internal tracker for game object.
@@ -189,6 +197,12 @@ package org.flixel
 		 * declared above, but you can do what you like with it.
 		 */
 		static public var camera:FlxCamera;
+		/**
+		 * Allows you to possibly slightly optimize the rendering process IF
+		 * you are not doing any pre-processing in your game state's <code>draw()</code> call.
+		 * @default false
+		 */
+		static public var useBufferLocking:Boolean;
 		/**
 		 * Internal helper variable for clearing the cameras each frame.
 		 */
@@ -839,9 +853,9 @@ package org.flixel
 		 * @param	Duration	The length in seconds that the shaking effect should last.
 		 * @param	OnComplete	A function you want to run when the shake effect finishes.
 		 * @param	Force		Force the effect to reset (default = true, unlike flash() and fade()!).
-		 * @param	Direction	Whether to shake on both axes, just up and down, or just side to side (use class constants SHAKE_BOTH_AXES, SHAKE_VERTICAL_ONLY, or SHAKE_HORIZONTAL_ONLY).
+		 * @param	Direction	Whether to shake on both axes, just up and down, or just side to side (use class constants SHAKE_BOTH_AXES, SHAKE_VERTICAL_ONLY, or SHAKE_HORIZONTAL_ONLY).  Default value is SHAKE_BOTH_AXES (0).
 		 */
-		static public function shake(Intensity:Number=0.05, Duration:Number=0.5, OnComplete:Function=null, Force:Boolean=true, Direction:uint=FlxCamera.SHAKE_BOTH_AXES):void
+		static public function shake(Intensity:Number=0.05, Duration:Number=0.5, OnComplete:Function=null, Force:Boolean=true, Direction:uint=0):void
 		{
 			var i:uint = 0;
 			var l:uint = FlxG.cameras.length;
@@ -1037,6 +1051,7 @@ package org.flixel
 			FlxCamera.defaultZoom = Zoom;
 			FlxG._cameraRect = new Rectangle();
 			FlxG.cameras = new Array();
+			useBufferLocking = false;
 			
 			plugins = new Array();
 			addPlugin(new DebugPathDisplay());
@@ -1098,8 +1113,10 @@ package org.flixel
 				cam = cams[i++] as FlxCamera;
 				if((cam == null) || !cam.exists || !cam.visible)
 					continue;
-				cam.buffer.lock();
+				if(useBufferLocking)
+					cam.buffer.lock();
 				cam.fill();
+				cam.screen.dirty = true;
 			}
 		}
 		
@@ -1118,7 +1135,8 @@ package org.flixel
 				if((cam == null) || !cam.exists || !cam.visible)
 					continue;
 				cam.drawFX();
-				cam.buffer.unlock();
+				if(useBufferLocking)
+					cam.buffer.unlock();
 			}
 		}
 		

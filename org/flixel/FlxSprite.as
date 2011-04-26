@@ -355,6 +355,12 @@ package org.flixel
 			}
 			frameWidth = frameHeight = width = height = max;
 			resetHelpers();
+			if(AutoBuffer)
+			{
+				width = brush.width;
+				height = brush.height;
+				centerOffsets();
+			}
 			return this;
 		}
 		
@@ -457,14 +463,14 @@ package org.flixel
 					camera.buffer.draw(framePixels,_matrix,null,blend,null,antialiasing);
 				}
 				_VISIBLECOUNT++;
-				if(FlxG.visualDebug)
+				if(FlxG.visualDebug && !ignoreDrawDebug)
 					drawDebug(camera);
 			}
 		}
 		
 		/**
 		 * This function draws or stamps one <code>FlxSprite</code> onto another.
-		 * This function is NOT intended to replace <code>render()</code>!
+		 * This function is NOT intended to replace <code>draw()</code>!
 		 * 
 		 * @param	Brush		The image you want to use as a brush or stamp or pen or whatever.
 		 * @param	X			The X coordinate of the brush's top left corner on this sprite.
@@ -472,6 +478,7 @@ package org.flixel
 		 */
 		public function stamp(Brush:FlxSprite,X:int=0,Y:int=0):void
 		{
+			Brush.drawFrame();
 			var bitmapData:BitmapData = Brush.framePixels;
 			
 			//Simple draw

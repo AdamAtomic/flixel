@@ -31,7 +31,7 @@ package org.flixel.plugin
 		
 		/**
 		 * Called by <code>FlxG.updatePlugins()</code> before the game state has been updated.
-		 * Cycles through cameras and calls <code>drawDebug()</code> on each one.
+		 * Cycles through timers and calls <code>update()</code> on each one.
 		 */
 		override public function update():void
 		{

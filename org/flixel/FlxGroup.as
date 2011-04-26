@@ -254,7 +254,7 @@ package org.flixel
 			}
 			else
 			{
-				basic = getFirstAvail(ObjectClass);
+				basic = getFirstAvailable(ObjectClass);
 				if(basic != null)
 					return basic;
 				if(ObjectClass == null)
@@ -376,7 +376,7 @@ package org.flixel
 		 * 
 		 * @return	A <code>FlxBasic</code> currently flagged as not existing.
 		 */
-		public function getFirstAvail(ObjectClass:Class=null):FlxBasic
+		public function getFirstAvailable(ObjectClass:Class=null):FlxBasic
 		{
 			var basic:FlxBasic;
 			var i:uint = 0;
