@@ -226,14 +226,6 @@ package org.flixel
 		public var last:FlxPoint;
 		
 		/**
-		 * An array of camera objects that this object will use during <code>draw()</code>.
-		 * This value will initialize itself during the first draw to automatically
-		 * point at the main camera list out in <code>FlxG</code> unless you already set it.
-		 * You can also change it afterward too, very flexible!
-		 */
-		public var cameras:Array;
-		
-		/**
 		 * A reference to a path object.  Null by default, assigned by <code>followPath()</code>.
 		 */
 		public var path:FlxPath;
@@ -423,7 +415,7 @@ package org.flixel
 				if(!onScreen(camera))
 					continue;
 				_VISIBLECOUNT++;
-				if(FlxG.visualDebug)
+				if(FlxG.visualDebug && !ignoreDrawDebug)
 					drawDebug(camera);
 			}
 		}

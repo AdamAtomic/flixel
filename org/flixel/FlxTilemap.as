@@ -352,7 +352,7 @@ package org.flixel
 					if(_flashRect != null)
 					{
 						Buffer.pixels.copyPixels(_tiles,_flashRect,_flashPoint,null,null,true);
-						if(FlxG.visualDebug)
+						if(FlxG.visualDebug && !ignoreDrawDebug)
 						{
 							tile = _tileObjects[_data[columnIndex]];
 							if(tile != null)

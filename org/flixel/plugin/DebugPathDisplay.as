@@ -9,11 +9,6 @@ package org.flixel.plugin
 	 */
 	public class DebugPathDisplay extends FlxBasic
 	{
-		/**
-		 * A list of all the game's cameras, similar to what <code>FlxSprite</code> has.
-		 */
-		public var cameras:Array;
-		
 		protected var _paths:Array;
 		
 		/**
@@ -30,6 +25,7 @@ package org.flixel.plugin
 		 */
 		override public function destroy():void
 		{
+			super.destroy();
 			clear();
 			_paths = null;
 		}
@@ -40,7 +36,7 @@ package org.flixel.plugin
 		 */
 		override public function draw():void
 		{
-			if(!FlxG.visualDebug)
+			if(!FlxG.visualDebug || ignoreDrawDebug)
 				return;			
 			
 			if(cameras == null)
@@ -68,7 +64,7 @@ package org.flixel.plugin
 			while(i >= 0)
 			{
 				path = _paths[i--] as FlxPath;
-				if(path != null)
+				if((path != null) && !path.ignoreDrawDebug)
 					path.drawDebug(Camera);
 			}
 		}

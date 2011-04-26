@@ -463,7 +463,7 @@ package org.flixel
 					camera.buffer.draw(framePixels,_matrix,null,blend,null,antialiasing);
 				}
 				_VISIBLECOUNT++;
-				if(FlxG.visualDebug)
+				if(FlxG.visualDebug && !ignoreDrawDebug)
 					drawDebug(camera);
 			}
 		}
@@ -478,6 +478,7 @@ package org.flixel
 		 */
 		public function stamp(Brush:FlxSprite,X:int=0,Y:int=0):void
 		{
+			Brush.drawFrame();
 			var bitmapData:BitmapData = Brush.framePixels;
 			
 			//Simple draw

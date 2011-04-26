@@ -28,6 +28,11 @@ package org.flixel
 		 * NOTE: does not affect world movement!  Object scroll factors take care of that.
 		 */
 		public var debugScrollFactor:FlxPoint;
+		/**
+		 * Setting this to true will prevent the object from appearing
+		 * when the visual debug mode in the debugger overlay is toggled on.
+		 */
+		public var ignoreDrawDebug:Boolean;
 
 		/**
 		 * Internal helper for keeping new variable instantiations under control.
