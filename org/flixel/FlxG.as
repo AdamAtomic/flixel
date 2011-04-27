@@ -316,6 +316,8 @@ package org.flixel
 			if(_game.root != null)
 				_game.stage.frameRate = _game._flashFramerate;
 			_game._maxAccumulation = 2000/Framerate - 1;
+			if(_game._maxAccumulation < _game._step)
+				_game._maxAccumulation = _game._step;
 		}
 		
 		/**
