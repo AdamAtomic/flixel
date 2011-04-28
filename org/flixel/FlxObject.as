@@ -666,6 +666,7 @@ package org.flixel
 		/**
 		 * Checks to see if some <code>FlxObject</code> overlaps this <code>FlxObject</code> or <code>FlxGroup</code>.
 		 * If the group has a LOT of things in it, it might be faster to use <code>FlxG.overlaps()</code>.
+		 * WARNING: Currently tilemaps do NOT support screen space overlap checks!
 		 * 
 		 * @param	ObjectOrGroup	The object or group being tested.
 		 * @param	InScreenSpace	Whether to take scroll factors into account when checking for overlap.  Default is false, or "only compare in world space."
@@ -713,6 +714,7 @@ package org.flixel
 		/**
 		 * Checks to see if this <code>FlxObject</code> were located at the given position, would it overlap the <code>FlxObject</code> or <code>FlxGroup</code>?
 		 * This is distinct from overlapsPoint(), which just checks that point, rather than taking the object's size into account.
+		 * WARNING: Currently tilemaps do NOT support screen space overlap checks!
 		 * 
 		 * @param	X				The X position you want to check.  Pretends this object (the caller, not the parameter) is located here.
 		 * @param	Y				The Y position you want to check.  Pretends this object (the caller, not the parameter) is located here.
