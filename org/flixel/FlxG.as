@@ -38,7 +38,7 @@ package org.flixel
 		 * Assign a minor version to your library.
 		 * Appears after the decimal in the console.
 		 */
-		static public var LIBRARY_MINOR_VERSION:uint = 50;
+		static public var LIBRARY_MINOR_VERSION:uint = 51;
 		
 		/**
 		 * Debugger overlay layout preset: Wide but low windows at the bottom of the screen.
@@ -102,7 +102,7 @@ package org.flixel
 		static public var paused:Boolean;
 		/**
 		 * Whether you are running in Debug or Release mode.
-		 * Set automatically by <code>FlxFactory</code> during startup.
+		 * Set automatically by <code>FlxPreloader</code> during startup.
 		 */
 		static public var debug:Boolean;
 		

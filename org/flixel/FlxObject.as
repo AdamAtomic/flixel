@@ -664,26 +664,106 @@ package org.flixel
 		}
 		
 		/**
-		 * Checks to see if some <code>FlxObject</code> overlaps this <code>FlxObject</code> object in world space.
+		 * Checks to see if some <code>FlxObject</code> overlaps this <code>FlxObject</code> or <code>FlxGroup</code>.
+		 * If the group has a LOT of things in it, it might be faster to use <code>FlxG.overlaps()</code>.
 		 * 
-		 * @param	Object			The object being tested.
-		 * @param	InScreenSpace	Whether to take scroll factors into account when checking for overlap.
+		 * @param	ObjectOrGroup	The object or group being tested.
+		 * @param	InScreenSpace	Whether to take scroll factors into account when checking for overlap.  Default is false, or "only compare in world space."
 		 * @param	Camera			Specify which game camera you want.  If null getScreenXY() will just grab the first global camera.
 		 * 
 		 * @return	Whether or not the two objects overlap.
 		 */
-		public function overlaps(Object:FlxObject,InScreenSpace:Boolean=false,Camera:FlxCamera=null):Boolean
+		public function overlaps(ObjectOrGroup:FlxBasic,InScreenSpace:Boolean=false,Camera:FlxCamera=null):Boolean
 		{
+			if(ObjectOrGroup is FlxGroup)
+			{
+				var results:Boolean = false;
+				var i:uint = 0;
+				var members:Array = (ObjectOrGroup as FlxGroup).members;
+				while(i < length)
+				{
+					if(overlaps(members[i++],InScreenSpace,Camera))
+						results = true;
+				}
+				return results;
+			}
+			
+			if(ObjectOrGroup is FlxTilemap)
+			{
+				//Since tilemap's have to be the caller, not the target, to do proper tile-based collisions,
+				// we redirect the call to the tilemap overlap here.
+				return (ObjectOrGroup as FlxTilemap).overlaps(this,InScreenSpace,Camera);
+			}
+			
+			var object:FlxObject = ObjectOrGroup as FlxObject;
 			if(!InScreenSpace)
-				return	(Object.x + Object.width > x) && (Object.x < x + width) &&
-						(Object.y + Object.height > y) && (Object.y < y + height);
+			{
+				return	(object.x + object.width > x) && (object.x < x + width) &&
+						(object.y + object.height > y) && (object.y < y + height);
+			}
 
 			if(Camera == null)
 				Camera = FlxG.camera;
-			var objectScreenPos:FlxPoint = Object.getScreenXY(null,Camera);
+			var objectScreenPos:FlxPoint = object.getScreenXY(null,Camera);
 			getScreenXY(_point,Camera);
-			return	(objectScreenPos.x + Object.width > _point.x) && (objectScreenPos.x < _point.x + width) &&
-					(objectScreenPos.y + Object.height > _point.y) && (objectScreenPos.y < _point.y + height);
+			return	(objectScreenPos.x + object.width > _point.x) && (objectScreenPos.x < _point.x + width) &&
+					(objectScreenPos.y + object.height > _point.y) && (objectScreenPos.y < _point.y + height);
+		}
+		
+		/**
+		 * Checks to see if this <code>FlxObject</code> were located at the given position, would it overlap the <code>FlxObject</code> or <code>FlxGroup</code>?
+		 * This is distinct from overlapsPoint(), which just checks that point, rather than taking the object's size into account.
+		 * 
+		 * @param	X				The X position you want to check.  Pretends this object (the caller, not the parameter) is located here.
+		 * @param	Y				The Y position you want to check.  Pretends this object (the caller, not the parameter) is located here.
+		 * @param	ObjectOrGroup	The object or group being tested.
+		 * @param	InScreenSpace	Whether to take scroll factors into account when checking for overlap.  Default is false, or "only compare in world space."
+		 * @param	Camera			Specify which game camera you want.  If null getScreenXY() will just grab the first global camera.
+		 * 
+		 * @return	Whether or not the two objects overlap.
+		 */
+		public function overlapsAt(X:Number,Y:Number,ObjectOrGroup:FlxBasic,InScreenSpace:Boolean=false,Camera:FlxCamera=null):Boolean
+		{
+			if(ObjectOrGroup is FlxGroup)
+			{
+				var results:Boolean = false;
+				var basic:FlxBasic;
+				var i:uint = 0;
+				var members:Array = (ObjectOrGroup as FlxGroup).members;
+				while(i < length)
+				{
+					if(overlapsAt(X,Y,members[i++],InScreenSpace,Camera))
+						results = true;
+				}
+				return results;
+			}
+			
+			if(ObjectOrGroup is FlxTilemap)
+			{
+				//Since tilemap's have to be the caller, not the target, to do proper tile-based collisions,
+				// we redirect the call to the tilemap overlap here.
+				//However, since this is overlapsAt(), we also have to invent the appropriate position for the tilemap.
+				//So we calculate the offset between the player and the requested position, and subtract that from the tilemap.
+				var tilemap:FlxTilemap = ObjectOrGroup as FlxTilemap;
+				return tilemap.overlapsAt(tilemap.x - (X - x),tilemap.y - (Y - y),this,InScreenSpace,Camera);
+			}
+			
+			var object:FlxObject = ObjectOrGroup as FlxObject;
+			if(!InScreenSpace)
+			{
+				return	(object.x + object.width > X) && (object.x < X + width) &&
+						(object.y + object.height > Y) && (object.y < Y + height);
+			}
+			
+			if(Camera == null)
+				Camera = FlxG.camera;
+			var objectScreenPos:FlxPoint = object.getScreenXY(null,Camera);
+			_point.x = X - int(Camera.scroll.x*scrollFactor.x); //copied from getScreenXY()
+			_point.y = Y - int(Camera.scroll.y*scrollFactor.y);
+			_point.x += (_point.x > 0)?0.0000001:-0.0000001;
+			_point.y += (_point.y > 0)?0.0000001:-0.0000001;
+			return	(objectScreenPos.x + object.width > _point.x) && (objectScreenPos.x < _point.x + width) &&
+				(objectScreenPos.y + object.height > _point.y) && (objectScreenPos.y < _point.y + height);
 		}
 		
 		/**
@@ -737,7 +817,7 @@ package org.flixel
 				Point = new FlxPoint();
 			if(Camera == null)
 				Camera = FlxG.camera;
-			Point.x = x - int(Camera.scroll.x*scrollFactor.x); //copied from getScreenXY()
+			Point.x = x - int(Camera.scroll.x*scrollFactor.x);
 			Point.y = y - int(Camera.scroll.y*scrollFactor.y);
 			Point.x += (Point.x > 0)?0.0000001:-0.0000001;
 			Point.y += (Point.y > 0)?0.0000001:-0.0000001;

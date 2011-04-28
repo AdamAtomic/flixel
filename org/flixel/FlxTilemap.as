@@ -793,9 +793,81 @@ package org.flixel
 		 * 
 		 * @return	Whether or not the two objects overlap.
 		 */
-		override public function overlaps(Object:FlxObject,InScreenSpace:Boolean=false,Camera:FlxCamera=null):Boolean
+		override public function overlaps(ObjectOrGroup:FlxBasic,InScreenSpace:Boolean=false,Camera:FlxCamera=null):Boolean
 		{
-			return overlapsWithCallback(Object);
+			if(ObjectOrGroup is FlxGroup)
+			{
+				var results:Boolean = false;
+				var basic:FlxBasic;
+				var i:uint = 0;
+				var members:Array = (ObjectOrGroup as FlxGroup).members;
+				while(i < length)
+				{
+					basic = members[i++] as FlxBasic;
+					if(basic is FlxObject)
+					{
+						if(overlapsWithCallback(basic as FlxObject))
+							results = true;
+					}
+					else
+					{
+						if(overlaps(basic,InScreenSpace,Camera))
+							results = true;
+					}
+				}
+				return results;
+			}
+			else if(ObjectOrGroup is FlxObject)
+				return overlapsWithCallback(ObjectOrGroup as FlxObject);
+			return false;
+		}
+		
+		/**
+		 * Checks to see if this <code>FlxObject</code> were located at the given position, would it overlap the <code>FlxObject</code> or <code>FlxGroup</code>?
+		 * This is distinct from overlapsPoint(), which just checks that point, rather than taking the object's size into account.
+		 * WARNING: Currently tilemaps do NOT support screen space overlap checks!
+		 * 
+		 * @param	X				The X position you want to check.  Pretends this object (the caller, not the parameter) is located here.
+		 * @param	Y				The Y position you want to check.  Pretends this object (the caller, not the parameter) is located here.
+		 * @param	ObjectOrGroup	The object or group being tested.
+		 * @param	InScreenSpace	Whether to take scroll factors into account when checking for overlap.  Default is false, or "only compare in world space."
+		 * @param	Camera			Specify which game camera you want.  If null getScreenXY() will just grab the first global camera.
+		 * 
+		 * @return	Whether or not the two objects overlap.
+		 */
+		override public function overlapsAt(X:Number,Y:Number,ObjectOrGroup:FlxBasic,InScreenSpace:Boolean=false,Camera:FlxCamera=null):Boolean
+		{
+			if(ObjectOrGroup is FlxGroup)
+			{
+				var results:Boolean = false;
+				var basic:FlxBasic;
+				var i:uint = 0;
+				var members:Array = (ObjectOrGroup as FlxGroup).members;
+				while(i < length)
+				{
+					basic = members[i++] as FlxBasic;
+					if(basic is FlxObject)
+					{
+						_point.x = X;
+						_point.y = Y;
+						if(overlapsWithCallback(basic as FlxObject,null,false,_point))
+							results = true;
+					}
+					else
+					{
+						if(overlapsAt(X,Y,basic,InScreenSpace,Camera))
+							results = true;
+					}
+				}
+				return results;
+			}
+			else if(ObjectOrGroup is FlxObject)
+			{
+				_point.x = X;
+				_point.y = Y;
+				return overlapsWithCallback(ObjectOrGroup as FlxObject,null,false,_point);
+			}
+			return false;
 		}
 		
 		/**
@@ -806,16 +878,25 @@ package org.flixel
 		 * @param	Object				The <code>FlxObject</code> you are checking for overlaps against.
 		 * @param	Callback			An optional function that takes the form "myCallback(Object1:FlxObject,Object2:FlxObject)", where Object1 is a FlxTile object, and Object2 is the object passed in in the first parameter of this method.
 		 * @param	FlipCallbackParams	Used to preserve A-B list ordering from FlxObject.separate() - returns the FlxTile object as the second parameter instead.
+		 * @param	Position			Optional, specify a custom position for the tilemap (useful for overlapsAt()-type funcitonality).
 		 * 
 		 * @return	Whether there were overlaps, or if a callback was specified, whatever the return value of the callback was.
 		 */
-		public function overlapsWithCallback(Object:FlxObject,Callback:Function=null,FlipCallbackParams:Boolean=false):Boolean
+		public function overlapsWithCallback(Object:FlxObject,Callback:Function=null,FlipCallbackParams:Boolean=false,Position:FlxPoint=null):Boolean
 		{
 			var results:Boolean = false;
 			
+			var X:Number = x;
+			var Y:Number = y;
+			if(Position != null)
+			{
+				X = Position.x;
+				Y = Position.y;
+			}
+			
 			//Figure out what tiles we need to check against
-			var selectionX:int = FlxU.floor((Object.x - x)/_tileWidth);
-			var selectionY:int = FlxU.floor((Object.y - y)/_tileHeight);
+			var selectionX:int = FlxU.floor((Object.x - X)/_tileWidth);
+			var selectionY:int = FlxU.floor((Object.y - Y)/_tileHeight);
 			var selectionWidth:uint = selectionX + (FlxU.ceil(Object.width/_tileWidth)) + 1;
 			var selectionHeight:uint = selectionY + FlxU.ceil(Object.height/_tileHeight) + 1;
 			
@@ -835,8 +916,8 @@ package org.flixel
 			var column:uint;
 			var tile:FlxTile;
 			var overlapFound:Boolean;
-			var deltaX:Number = x - last.x;
-			var deltaY:Number = y - last.y;
+			var deltaX:Number = X - last.x;
+			var deltaY:Number = Y - last.y;
 			while(row < selectionHeight)
 			{
 				column = selectionX;
@@ -846,8 +927,8 @@ package org.flixel
 					tile = _tileObjects[_data[rowStart+column]] as FlxTile;
 					if(tile.allowCollisions)
 					{
-						tile.x = x+column*_tileWidth;
-						tile.y = y+row*_tileHeight;
+						tile.x = X+column*_tileWidth;
+						tile.y = Y+row*_tileHeight;
 						tile.last.x = tile.x - deltaX;
 						tile.last.y = tile.y - deltaY;
 						if(Callback != null)
