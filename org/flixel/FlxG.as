@@ -292,6 +292,8 @@ package org.flixel
 		static public function set framerate(Framerate:Number):void
 		{
 			_game._step = 1000/Framerate;
+			if(_game._maxAccumulation < _game._step)
+				_game._maxAccumulation = _game._step;
 		}
 		
 		/**
@@ -315,7 +317,7 @@ package org.flixel
 			_game._flashFramerate = Framerate;
 			if(_game.root != null)
 				_game.stage.frameRate = _game._flashFramerate;
-			_game._maxAccumulation = 2000/Framerate - 1;
+			_game._maxAccumulation = 2000/_game._flashFramerate - 1;
 			if(_game._maxAccumulation < _game._step)
 				_game._maxAccumulation = _game._step;
 		}
