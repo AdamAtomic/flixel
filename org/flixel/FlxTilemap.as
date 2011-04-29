@@ -785,6 +785,7 @@ package org.flixel
 		
 		/**
 		 * Checks to see if some <code>FlxObject</code> overlaps this <code>FlxObject</code> object in world space.
+		 * If the group has a LOT of things in it, it might be faster to use <code>FlxG.overlaps()</code>.
 		 * WARNING: Currently tilemaps do NOT support screen space overlap checks!
 		 * 
 		 * @param	Object			The object being tested.
