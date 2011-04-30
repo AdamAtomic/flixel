@@ -68,6 +68,9 @@ package org.flixel
 		 */
 		public function destroy():void
 		{
+			var timerManager:TimerManager = manager;
+			if(timerManager != null)
+				timerManager.remove(this);
 			stop();
 			_callback = null;
 		}
@@ -80,16 +83,13 @@ package org.flixel
 		 */
 		public function update():void
 		{
-			if(paused || finished)
-				return;
-			
 			_timeCounter += FlxG.elapsed;
 			while((_timeCounter >= time) && !paused && !finished)
 			{
 				_timeCounter -= time;
 				
 				_loopsCounter++;
-				if(_loopsCounter >= loops)
+				if((loops > 0) && (_loopsCounter >= loops))
 					stop();
 				
 				if(_callback != null)
@@ -115,6 +115,8 @@ package org.flixel
 				return this;
 			}
 			
+			paused = false;
+			finished = false;
 			time = Time;
 			loops = Loops;
 			_callback = Callback;
@@ -129,9 +131,6 @@ package org.flixel
 		public function stop():void
 		{
 			finished = true;
-			var timerManager:TimerManager = manager;
-			if(timerManager != null)
-				timerManager.remove(this);
 		}
 		
 		/**
