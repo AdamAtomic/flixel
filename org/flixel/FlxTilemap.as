@@ -407,8 +407,6 @@ package org.flixel
 				{
 					_point.x = x - int(camera.scroll.x*scrollFactor.x) + buffer.x; //copied from getScreenXY()
 					_point.y = y - int(camera.scroll.y*scrollFactor.y) + buffer.y;
-					_point.x += (_point.x > 0)?0.0000001:-0.0000001;
-					_point.y += (_point.y > 0)?0.0000001:-0.0000001;
 					buffer.dirty = (_point.x > 0) || (_point.y > 0) || (_point.x + buffer.width < camera.width) || (_point.y + buffer.height < camera.height);
 				}
 				if(buffer.dirty)
