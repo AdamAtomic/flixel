@@ -977,7 +977,7 @@ package org.flixel
 			var l:uint = pluginList.length;
 			while(i < l)
 			{
-				if(pluginList[i++] is ClassType)
+				if(pluginList[i] is ClassType)
 					return plugins[i];
 				i++;
 			}

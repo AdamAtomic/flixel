@@ -31,6 +31,7 @@ package org.flixel
 		/**
 		 * Setting this to true will prevent the object from appearing
 		 * when the visual debug mode in the debugger overlay is toggled on.
+		 * @default false
 		 */
 		public var ignoreDrawDebug:Boolean;
 
@@ -53,6 +54,7 @@ package org.flixel
 			_point = new FlxPoint();
 			debugScrollFactor = new FlxPoint(1.0,1.0);
 			debugColor = 0xffffff;
+			ignoreDrawDebug = false;
 			
 			var debugPathDisplay:DebugPathDisplay = manager;
 			if(debugPathDisplay != null)

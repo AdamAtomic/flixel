@@ -37,7 +37,7 @@ package org.flixel.plugin
 		override public function draw():void
 		{
 			if(!FlxG.visualDebug || ignoreDrawDebug)
-				return;			
+				return;	
 			
 			if(cameras == null)
 				cameras = FlxG.cameras;
