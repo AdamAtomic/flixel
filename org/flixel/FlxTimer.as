@@ -45,7 +45,6 @@ package org.flixel
 		
 		/**
 		 * Instantiate the timer.  Does not set or start the timer.
-		 * Does, however, automatically add the timer to the timer manager.
 		 */
 		public function FlxTimer()
 		{
@@ -57,10 +56,6 @@ package org.flixel
 
 			paused = false;
 			finished = false;
-			
-			var timerManager:TimerManager = manager;
-			if(timerManager != null)
-				timerManager.add(this);
 		}
 		
 		/**
@@ -68,9 +63,6 @@ package org.flixel
 		 */
 		public function destroy():void
 		{
-			var timerManager:TimerManager = manager;
-			if(timerManager != null)
-				timerManager.remove(this);
 			stop();
 			_callback = null;
 		}
@@ -100,6 +92,7 @@ package org.flixel
 		/**
 		 * Starts or resumes the timer.  If this timer was paused,
 		 * then all the parameters are ignored, and the timer is resumed.
+		 * Adds the timer to the timer manager.
 		 * 
 		 * @param	Time		How many seconds it takes for the timer to go off.
 		 * @param	Loops		How many times the timer should go off.  Default is 1, or "just count down once."
@@ -109,6 +102,10 @@ package org.flixel
 		 */
 		public function start(Time:Number=1,Loops:uint=1,Callback:Function=null):FlxTimer
 		{
+			var timerManager:TimerManager = manager;
+			if(timerManager != null)
+				timerManager.add(this);
+			
 			if(paused)
 			{
 				paused = false;
@@ -131,6 +128,9 @@ package org.flixel
 		public function stop():void
 		{
 			finished = true;
+			var timerManager:TimerManager = manager;
+			if(timerManager != null)
+				timerManager.remove(this);
 		}
 		
 		/**

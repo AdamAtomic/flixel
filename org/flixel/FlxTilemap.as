@@ -1054,7 +1054,7 @@ package org.flixel
 			{
 				if(_data[i] == Index)
 				{
-					point = new FlxPoint(uint(i%widthInTiles)*_tileWidth,uint(i/widthInTiles)*_tileHeight);
+					point = new FlxPoint(x + uint(i%widthInTiles)*_tileWidth,y + uint(i/widthInTiles)*_tileHeight);
 					if(Midpoint)
 					{
 						point.x += _tileWidth*0.5;

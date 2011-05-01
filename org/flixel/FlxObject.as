@@ -521,16 +521,20 @@ package org.flixel
 		 * 
 		 * @return	The node (a <code>FlxPoint</code> object) we are aiming for next.
 		 */
-		protected function advancePath():FlxPoint
+		protected function advancePath(Snap:Boolean=true):FlxPoint
 		{
-			var oldNode:FlxPoint = path.nodes[_pathNodeIndex];
-			if(oldNode != null)
+			if(Snap)
 			{
-				if((_pathMode & PATH_VERTICAL_ONLY) == 0)
-					x = oldNode.x - width*0.5;
-				if((_pathMode & PATH_HORIZONTAL_ONLY) == 0)
-					y = oldNode.y - height*0.5;
+				var oldNode:FlxPoint = path.nodes[_pathNodeIndex];
+				if(oldNode != null)
+				{
+					if((_pathMode & PATH_VERTICAL_ONLY) == 0)
+						x = oldNode.x - width*0.5;
+					if((_pathMode & PATH_HORIZONTAL_ONLY) == 0)
+						y = oldNode.y - height*0.5;
+				}
 			}
+			
 			_pathNodeIndex += _pathInc;
 			
 			if((_pathMode & PATH_BACKWARD) > 0)
