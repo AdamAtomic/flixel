@@ -441,7 +441,7 @@ package org.flixel
 		 * @param	OnComplete	A function you want to run when the fade finishes.
 		 * @param	Force		Force the effect to reset.
 		 */
-		public function fade(Color:uint=0xffffffff, Duration:Number=1, OnComplete:Function=null, Force:Boolean=false):void
+		public function fade(Color:uint=0xff000000, Duration:Number=1, OnComplete:Function=null, Force:Boolean=false):void
 		{
 			if(!Force && (_fxFadeAlpha > 0.0))
 				return;
