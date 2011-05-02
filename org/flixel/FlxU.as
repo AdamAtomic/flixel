@@ -438,7 +438,20 @@ package org.flixel
 			if(Simple)
 				string = string.substr(string.lastIndexOf(".")+1);
 			return string;
-		};
+		}
+		
+		/**
+		 * Check to see if two objects have the same class name.
+		 * 
+		 * @param	Object1		The first object you want to check.
+		 * @param	Object2		The second object you want to check.
+		 * 
+		 * @return	Whether they have the same class name or not.
+		 */
+		static public function compareClassNames(Object1:Object,Object2:Object):Boolean
+		{
+			return getQualifiedClassName(Object1) == getQualifiedClassName(Object2);
+		}
 		
 		/**
 		 * Look up a <code>Class</code> object by its string name.

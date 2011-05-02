@@ -706,7 +706,8 @@ package org.flixel
 			if(!checkBitmapCache(Key))
 			{
 				_cache[Key] = (new Graphic).bitmapData;
-				if(Reverse) needReverse = true;
+				if(Reverse)
+					needReverse = true;
 			}
 			var pixels:BitmapData = _cache[Key];
 			if(!needReverse && Reverse && (pixels.width == (new Graphic).bitmapData.width))

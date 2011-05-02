@@ -470,19 +470,20 @@ package org.flixel
 			FlxG.resetCameras();
 			FlxG.resetInput();
 			FlxG.destroySounds();
+			FlxG.clearBitmapCache();
+			
+			//Clear the debugger overlay's Watch window
 			if(_debugger != null)
 				_debugger.watch.removeAll();
+			
+			//Clear any timers left in the timer manager
 			var timerManager:TimerManager = FlxTimer.manager;
 			if(timerManager != null)
 				timerManager.clear();
 			
 			//Destroy the old state (if there is an old state)
 			if(_state != null)
-			{
 				_state.destroy();
-				if(FlxU.getClassName(_state) != FlxU.getClassName(_requestedState))
-					FlxG.clearBitmapCache();
-			}
 			
 			//Finally assign and create the new state
 			_state = _requestedState;
