@@ -145,7 +145,7 @@ package org.flixel
 		{
 			var index:int = nodes.indexOf(Node);
 			if(index >= 0)
-				return nodes.splice(index,1);
+				return nodes.splice(index,1)[0];
 			else
 				return null;
 		}
@@ -163,7 +163,7 @@ package org.flixel
 				return null;
 			if(Index >= nodes.length)
 				Index = nodes.length-1;
-			return nodes.splice(Index,1);
+			return nodes.splice(Index,1)[0];
 		}
 		
 		/**
