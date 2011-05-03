@@ -93,10 +93,10 @@ package org.flixel.system
             {
                 throw new Error("Setting global debug flag...");
             }
-            catch(e:Error)
+            catch(E:Error)
             {
                 var re:RegExp = /\[.*:[0-9]+\]/;
-                FlxG.debug = re.test(e.getStackTrace());
+                FlxG.debug = re.test(E.getStackTrace());
             }
 			
 			var tmp:Bitmap;

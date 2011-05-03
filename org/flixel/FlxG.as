@@ -790,9 +790,29 @@ package org.flixel
 		 */
 		static public function addCamera(NewCamera:FlxCamera):FlxCamera
 		{
-			FlxG._game.addChildAt(NewCamera._flashBitmap,FlxG._game.getChildIndex(FlxG._game._mouse));
+			FlxG._game.addChildAt(NewCamera._flashSprite,FlxG._game.getChildIndex(FlxG._game._mouse));
 			FlxG.cameras.push(NewCamera);
 			return NewCamera;
+		}
+		
+		/**
+		 * Remove a camera from the game.
+		 * 
+		 * @param	Camera	The camera you want to remove.
+		 * @param	Destroy	Whether to call destroy() on the camera, default value is true.
+		 */
+		static public function removeCamera(Camera:FlxCamera,Destroy:Boolean=true):void
+		{
+			try
+			{
+				FlxG._game.removeChild(Camera._flashSprite);
+			}
+			catch(E:Error)
+			{
+				FlxG.log("Error removing camera, not part of game.");
+			}
+			if(Destroy)
+				Camera.destroy();
 		}
 		
 		/**
@@ -809,7 +829,7 @@ package org.flixel
 			while(i < l)
 			{
 				cam = FlxG.cameras[i++] as FlxCamera;
-				FlxG._game.removeChild(cam._flashBitmap);
+				FlxG._game.removeChild(cam._flashSprite);
 				cam.destroy();
 			}
 			FlxG.cameras.length = 0;
@@ -1161,9 +1181,9 @@ package org.flixel
 				{
 					if(cam.active)
 						cam.update();
-					cam._flashBitmap.x = cam.x;
-					cam._flashBitmap.y = cam.y;
-					cam._flashBitmap.visible = cam.exists && cam.visible;
+					cam._flashSprite.x = cam.x + cam._flashOffsetX;
+					cam._flashSprite.y = cam.y + cam._flashOffsetY;
+					cam._flashSprite.visible = cam.visible;
 				}
 			}
 		}
