@@ -562,14 +562,16 @@ package org.flixel
 						_replayCallback = null;
 					}
 				}
-				_debugger.vcr.updateRuntime(_step);
+				if(_debugger != null)
+					_debugger.vcr.updateRuntime(_step);
 			}
 			else
 				FlxG.updateInput();
 			if(_recording)
 			{
 				_replay.recordFrame();
-				_debugger.vcr.updateRuntime(_step);
+				if(_debugger != null)
+					_debugger.vcr.updateRuntime(_step);
 			}
 			update();
 			FlxG.mouse.wheel = 0;
