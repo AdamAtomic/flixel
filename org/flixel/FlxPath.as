@@ -28,6 +28,12 @@ package org.flixel
 		 * NOTE: does not affect world movement!  Object scroll factors take care of that.
 		 */
 		public var debugScrollFactor:FlxPoint;
+		/**
+		 * Setting this to true will prevent the object from appearing
+		 * when the visual debug mode in the debugger overlay is toggled on.
+		 * @default false
+		 */
+		public var ignoreDrawDebug:Boolean;
 
 		/**
 		 * Internal helper for keeping new variable instantiations under control.
@@ -48,10 +54,11 @@ package org.flixel
 			_point = new FlxPoint();
 			debugScrollFactor = new FlxPoint(1.0,1.0);
 			debugColor = 0xffffff;
+			ignoreDrawDebug = false;
 			
-			var plugin:DebugPathDisplay = FlxG.getPlugin(DebugPathDisplay) as DebugPathDisplay;
-			if(plugin != null)
-				plugin.add(this);
+			var debugPathDisplay:DebugPathDisplay = manager;
+			if(debugPathDisplay != null)
+				debugPathDisplay.add(this);
 		}
 		
 		/**
@@ -59,9 +66,9 @@ package org.flixel
 		 */
 		public function destroy():void
 		{
-			var plugin:DebugPathDisplay = FlxG.getPlugin(DebugPathDisplay) as DebugPathDisplay;
-			if(plugin != null)
-				plugin.remove(this);
+			var debugPathDisplay:DebugPathDisplay = manager;
+			if(debugPathDisplay != null)
+				debugPathDisplay.remove(this);
 			
 			debugScrollFactor = null;
 			_point = null;
@@ -140,7 +147,7 @@ package org.flixel
 		{
 			var index:int = nodes.indexOf(Node);
 			if(index >= 0)
-				return nodes.splice(index,1);
+				return nodes.splice(index,1)[0];
 			else
 				return null;
 		}
@@ -158,7 +165,7 @@ package org.flixel
 				return null;
 			if(Index >= nodes.length)
 				Index = nodes.length-1;
-			return nodes.splice(Index,1);
+			return nodes.splice(Index,1)[0];
 		}
 		
 		/**
@@ -205,18 +212,18 @@ package org.flixel
 			gfx.clear();
 			
 			//Then fill up the object with node and path graphics
-			var p:FlxPoint;
-			var n:FlxPoint;
+			var node:FlxPoint;
+			var nextNode:FlxPoint;
 			var i:uint = 0;
 			var l:uint = nodes.length;
 			while(i < l)
 			{
 				//get a reference to the current node
-				p = nodes[i] as FlxPoint;
+				node = nodes[i] as FlxPoint;
 				
 				//find the screen position of the node on this camera
-				_point.x = p.x - int(Camera.scroll.x*debugScrollFactor.x); //copied from getScreenXY()
-				_point.y = p.y - int(Camera.scroll.y*debugScrollFactor.y);
+				_point.x = node.x - int(Camera.scroll.x*debugScrollFactor.x); //copied from getScreenXY()
+				_point.y = node.y - int(Camera.scroll.y*debugScrollFactor.y);
 				_point.x = int(_point.x + ((_point.x > 0)?0.0000001:-0.0000001));
 				_point.y = int(_point.y + ((_point.y > 0)?0.0000001:-0.0000001));
 				
@@ -242,18 +249,18 @@ package org.flixel
 				//then find the next node in the path
 				var linealpha:Number = 0.3;
 				if(i < l-1)
-					n = nodes[i+1];
+					nextNode = nodes[i+1];
 				else
 				{
-					n = nodes[0];
+					nextNode = nodes[0];
 					linealpha = 0.15;
 				}
 				
 				//then draw a line to the next node
 				gfx.moveTo(_point.x,_point.y);
 				gfx.lineStyle(1,debugColor,linealpha);
-				_point.x = n.x - int(Camera.scroll.x*debugScrollFactor.x); //copied from getScreenXY()
-				_point.y = n.y - int(Camera.scroll.y*debugScrollFactor.y);
+				_point.x = nextNode.x - int(Camera.scroll.x*debugScrollFactor.x); //copied from getScreenXY()
+				_point.y = nextNode.y - int(Camera.scroll.y*debugScrollFactor.y);
 				_point.x = int(_point.x + ((_point.x > 0)?0.0000001:-0.0000001));
 				_point.y = int(_point.y + ((_point.y > 0)?0.0000001:-0.0000001));
 				gfx.lineTo(_point.x,_point.y);
@@ -263,6 +270,11 @@ package org.flixel
 			
 			//then stamp the path down onto the game buffer
 			Camera.buffer.draw(FlxG.flashGfxSprite);
+		}
+		
+		static public function get manager():DebugPathDisplay
+		{
+			return FlxG.getPlugin(DebugPathDisplay) as DebugPathDisplay;
 		}
 	}
 }

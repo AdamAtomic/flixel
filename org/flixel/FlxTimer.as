@@ -45,7 +45,6 @@ package org.flixel
 		
 		/**
 		 * Instantiate the timer.  Does not set or start the timer.
-		 * Does, however, automatically add the timer to the timer manager.
 		 */
 		public function FlxTimer()
 		{
@@ -57,10 +56,6 @@ package org.flixel
 
 			paused = false;
 			finished = false;
-			
-			var plugin:TimerManager = FlxG.getPlugin(TimerManager) as TimerManager;
-			if(plugin != null)
-				plugin.add(this);
 		}
 		
 		/**
@@ -80,16 +75,13 @@ package org.flixel
 		 */
 		public function update():void
 		{
-			if(paused || finished)
-				return;
-			
 			_timeCounter += FlxG.elapsed;
 			while((_timeCounter >= time) && !paused && !finished)
 			{
 				_timeCounter -= time;
 				
 				_loopsCounter++;
-				if(_loopsCounter >= loops)
+				if((loops > 0) && (_loopsCounter >= loops))
 					stop();
 				
 				if(_callback != null)
@@ -100,6 +92,7 @@ package org.flixel
 		/**
 		 * Starts or resumes the timer.  If this timer was paused,
 		 * then all the parameters are ignored, and the timer is resumed.
+		 * Adds the timer to the timer manager.
 		 * 
 		 * @param	Time		How many seconds it takes for the timer to go off.
 		 * @param	Loops		How many times the timer should go off.  Default is 1, or "just count down once."
@@ -109,12 +102,18 @@ package org.flixel
 		 */
 		public function start(Time:Number=1,Loops:uint=1,Callback:Function=null):FlxTimer
 		{
+			var timerManager:TimerManager = manager;
+			if(timerManager != null)
+				timerManager.add(this);
+			
 			if(paused)
 			{
 				paused = false;
 				return this;
 			}
 			
+			paused = false;
+			finished = false;
 			time = Time;
 			loops = Loops;
 			_callback = Callback;
@@ -129,9 +128,9 @@ package org.flixel
 		public function stop():void
 		{
 			finished = true;
-			var plugin:TimerManager = FlxG.getPlugin(TimerManager) as TimerManager;
-			if(plugin != null)
-				plugin.remove(this);
+			var timerManager:TimerManager = manager;
+			if(timerManager != null)
+				timerManager.remove(this);
 		}
 		
 		/**
@@ -148,6 +147,11 @@ package org.flixel
 		public function get loopsLeft():int
 		{
 			return loops-_loopsCounter;
+		}
+		
+		static public function get manager():TimerManager
+		{
+			return FlxG.getPlugin(TimerManager) as TimerManager;
 		}
 	}
 }

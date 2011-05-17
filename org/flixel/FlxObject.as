@@ -161,7 +161,7 @@ package org.flixel
 		 */
 		public var maxAngular:Number;
 		/**
-		 * A handy "empty point" object
+		 * Should always represent (0,0) - useful for different things, for avoiding unnecessary <code>new</code> calls.
 		 */
 		static protected const _pZero:FlxPoint = new FlxPoint();
 		
@@ -224,14 +224,6 @@ package org.flixel
 		 * By default this value is set automatically during <code>preUpdate()</code>.
 		 */
 		public var last:FlxPoint;
-		
-		/**
-		 * An array of camera objects that this object will use during <code>draw()</code>.
-		 * This value will initialize itself during the first draw to automatically
-		 * point at the main camera list out in <code>FlxG</code> unless you already set it.
-		 * You can also change it afterward too, very flexible!
-		 */
-		public var cameras:Array;
 		
 		/**
 		 * A reference to a path object.  Null by default, assigned by <code>followPath()</code>.
@@ -382,28 +374,29 @@ package org.flixel
 		/**
 		 * Internal function for updating the position and speed of this object.
 		 * Useful for cases when you need to update this but are buried down in too many supers.
+		 * Does a slightly fancier-than-normal integration to help with higher fidelity framerate-independenct motion.
 		 */
 		protected function updateMotion():void
 		{
-			var vc:Number;
+			var delta:Number;
+			var velocityDelta:Number;
 
-			vc = (FlxU.computeVelocity(angularVelocity,angularAcceleration,angularDrag,maxAngular) - angularVelocity)/2;
-			angularVelocity += vc; 
+			velocityDelta = (FlxU.computeVelocity(angularVelocity,angularAcceleration,angularDrag,maxAngular) - angularVelocity)/2;
+			angularVelocity += velocityDelta; 
 			angle += angularVelocity*FlxG.elapsed;
-			angularVelocity += vc;
+			angularVelocity += velocityDelta;
 			
-			vc = (FlxU.computeVelocity(velocity.x,acceleration.x,drag.x,maxVelocity.x) - velocity.x)/2;
-			velocity.x += vc;
-			var xd:Number = velocity.x*FlxG.elapsed;
-			velocity.x += vc;
+			velocityDelta = (FlxU.computeVelocity(velocity.x,acceleration.x,drag.x,maxVelocity.x) - velocity.x)/2;
+			velocity.x += velocityDelta;
+			delta = velocity.x*FlxG.elapsed;
+			velocity.x += velocityDelta;
+			x += delta;
 			
-			vc = (FlxU.computeVelocity(velocity.y,acceleration.y,drag.y,maxVelocity.y) - velocity.y)/2;
-			velocity.y += vc;
-			var yd:Number = velocity.y*FlxG.elapsed;
-			velocity.y += vc;
-			
-			x += xd;
-			y += yd;
+			velocityDelta = (FlxU.computeVelocity(velocity.y,acceleration.y,drag.y,maxVelocity.y) - velocity.y)/2;
+			velocity.y += velocityDelta;
+			delta = velocity.y*FlxG.elapsed;
+			velocity.y += velocityDelta;
+			y += delta;
 		}
 		
 		/**
@@ -413,17 +406,17 @@ package org.flixel
 		{
 			if(cameras == null)
 				cameras = FlxG.cameras;
-			var c:FlxCamera;
+			var camera:FlxCamera;
 			var i:uint = 0;
 			var l:uint = cameras.length;
 			while(i < l)
 			{
-				c = cameras[i++];
-				if(!onScreen(c)) //preloads _point with getScreenXY results
+				camera = cameras[i++];
+				if(!onScreen(camera))
 					continue;
 				_VISIBLECOUNT++;
-				if(FlxG.visualDebug)
-					drawDebug(c);
+				if(FlxG.visualDebug && !ignoreDrawDebug)
+					drawDebug(camera);
 			}
 		}
 		
@@ -449,24 +442,24 @@ package org.flixel
 			//fill static graphics object with square shape
 			var gfx:Graphics = FlxG.flashGfx;
 			gfx.clear();
-			gfx.moveTo(bx,by);
-			var c:uint;
+			gfx.moveTo(boundingBoxX,boundingBoxY);
+			var boundingBoxColor:uint;
 			if(allowCollisions)
 			{
 				if(allowCollisions != ANY)
-					c = FlxG.PINK;
+					boundingBoxColor = FlxG.PINK;
 				if(immovable)
-					c = FlxG.GREEN;
+					boundingBoxColor = FlxG.GREEN;
 				else
-					c = FlxG.RED;
+					boundingBoxColor = FlxG.RED;
 			}
 			else
-				c = FlxG.BLUE;
-			gfx.lineStyle(1,c,0.5);
-			gfx.lineTo(bx+bw,by);
-			gfx.lineTo(bx+bw,by+bh);
-			gfx.lineTo(bx,by+bh);
-			gfx.lineTo(bx,by);
+				boundingBoxColor = FlxG.BLUE;
+			gfx.lineStyle(1,boundingBoxColor,0.5);
+			gfx.lineTo(boundingBoxX+boundingBoxWidth,boundingBoxY);
+			gfx.lineTo(boundingBoxX+boundingBoxWidth,boundingBoxY+boundingBoxHeight);
+			gfx.lineTo(boundingBoxX,boundingBoxY+boundingBoxHeight);
+			gfx.lineTo(boundingBoxX,boundingBoxY);
 			
 			//draw graphics shape to camera buffer
 			Camera.buffer.draw(FlxG.flashGfxSprite);
@@ -528,16 +521,20 @@ package org.flixel
 		 * 
 		 * @return	The node (a <code>FlxPoint</code> object) we are aiming for next.
 		 */
-		protected function advancePath():FlxPoint
+		protected function advancePath(Snap:Boolean=true):FlxPoint
 		{
-			var oldNode:FlxPoint = path.nodes[_pathNodeIndex];
-			if(oldNode != null)
+			if(Snap)
 			{
-				if((_pathMode & PATH_VERTICAL_ONLY) == 0)
-					x = oldNode.x - width*0.5;
-				if((_pathMode & PATH_HORIZONTAL_ONLY) == 0)
-					y = oldNode.y - height*0.5;
+				var oldNode:FlxPoint = path.nodes[_pathNodeIndex];
+				if(oldNode != null)
+				{
+					if((_pathMode & PATH_VERTICAL_ONLY) == 0)
+						x = oldNode.x - width*0.5;
+					if((_pathMode & PATH_HORIZONTAL_ONLY) == 0)
+						y = oldNode.y - height*0.5;
+				}
 			}
+			
 			_pathNodeIndex += _pathInc;
 			
 			if((_pathMode & PATH_BACKWARD) > 0)
@@ -608,25 +605,25 @@ package org.flixel
 			_point.x = x + width*0.5;
 			_point.y = y + height*0.5;
 			var node:FlxPoint = path.nodes[_pathNodeIndex];
-			var dx:Number = node.x - _point.x;
-			var dy:Number = node.y - _point.y;
+			var deltaX:Number = node.x - _point.x;
+			var deltaY:Number = node.y - _point.y;
 			
 			var horizontalOnly:Boolean = (_pathMode & PATH_HORIZONTAL_ONLY) > 0;
 			var verticalOnly:Boolean = (_pathMode & PATH_VERTICAL_ONLY) > 0;
 			
 			if(horizontalOnly)
 			{
-				if(((dx>0)?dx:-dx) < pathSpeed*FlxG.elapsed)
+				if(((deltaX>0)?deltaX:-deltaX) < pathSpeed*FlxG.elapsed)
 					node = advancePath();
 			}
 			else if(verticalOnly)
 			{
-				if(((dy>0)?dy:-dy) < pathSpeed*FlxG.elapsed)
+				if(((deltaY>0)?deltaY:-deltaY) < pathSpeed*FlxG.elapsed)
 					node = advancePath();
 			}
 			else
 			{
-				if(Math.sqrt(dx*dx + dy*dy) < pathSpeed*FlxG.elapsed)
+				if(Math.sqrt(deltaX*deltaX + deltaY*deltaY) < pathSpeed*FlxG.elapsed)
 					node = advancePath();
 			}
 			
@@ -671,26 +668,108 @@ package org.flixel
 		}
 		
 		/**
-		 * Checks to see if some <code>FlxObject</code> overlaps this <code>FlxObject</code> object in world space.
+		 * Checks to see if some <code>FlxObject</code> overlaps this <code>FlxObject</code> or <code>FlxGroup</code>.
+		 * If the group has a LOT of things in it, it might be faster to use <code>FlxG.overlaps()</code>.
+		 * WARNING: Currently tilemaps do NOT support screen space overlap checks!
 		 * 
-		 * @param	Object			The object being tested.
-		 * @param	InScreenSpace	Whether to take scroll factors into account when checking for overlap.
+		 * @param	ObjectOrGroup	The object or group being tested.
+		 * @param	InScreenSpace	Whether to take scroll factors into account when checking for overlap.  Default is false, or "only compare in world space."
 		 * @param	Camera			Specify which game camera you want.  If null getScreenXY() will just grab the first global camera.
 		 * 
 		 * @return	Whether or not the two objects overlap.
 		 */
-		public function overlaps(Object:FlxObject,InScreenSpace:Boolean=false,Camera:FlxCamera=null):Boolean
+		public function overlaps(ObjectOrGroup:FlxBasic,InScreenSpace:Boolean=false,Camera:FlxCamera=null):Boolean
 		{
+			if(ObjectOrGroup is FlxGroup)
+			{
+				var results:Boolean = false;
+				var i:uint = 0;
+				var members:Array = (ObjectOrGroup as FlxGroup).members;
+				while(i < length)
+				{
+					if(overlaps(members[i++],InScreenSpace,Camera))
+						results = true;
+				}
+				return results;
+			}
+			
+			if(ObjectOrGroup is FlxTilemap)
+			{
+				//Since tilemap's have to be the caller, not the target, to do proper tile-based collisions,
+				// we redirect the call to the tilemap overlap here.
+				return (ObjectOrGroup as FlxTilemap).overlaps(this,InScreenSpace,Camera);
+			}
+			
+			var object:FlxObject = ObjectOrGroup as FlxObject;
 			if(!InScreenSpace)
-				return	(Object.x + Object.width > x) && (Object.x < x + width) &&
-						(Object.y + Object.height > y) && (Object.y < y + height);
+			{
+				return	(object.x + object.width > x) && (object.x < x + width) &&
+						(object.y + object.height > y) && (object.y < y + height);
+			}
 
 			if(Camera == null)
 				Camera = FlxG.camera;
-			var objectScreenPos:FlxPoint = Object.getScreenXY(null,Camera);
+			var objectScreenPos:FlxPoint = object.getScreenXY(null,Camera);
 			getScreenXY(_point,Camera);
-			return	(objectScreenPos.x + Object.width > _point.x) && (objectScreenPos.x < _point.x + width) &&
-					(objectScreenPos.y + Object.height > _point.y) && (objectScreenPos.y < _point.y + height);
+			return	(objectScreenPos.x + object.width > _point.x) && (objectScreenPos.x < _point.x + width) &&
+					(objectScreenPos.y + object.height > _point.y) && (objectScreenPos.y < _point.y + height);
+		}
+		
+		/**
+		 * Checks to see if this <code>FlxObject</code> were located at the given position, would it overlap the <code>FlxObject</code> or <code>FlxGroup</code>?
+		 * This is distinct from overlapsPoint(), which just checks that point, rather than taking the object's size into account.
+		 * WARNING: Currently tilemaps do NOT support screen space overlap checks!
+		 * 
+		 * @param	X				The X position you want to check.  Pretends this object (the caller, not the parameter) is located here.
+		 * @param	Y				The Y position you want to check.  Pretends this object (the caller, not the parameter) is located here.
+		 * @param	ObjectOrGroup	The object or group being tested.
+		 * @param	InScreenSpace	Whether to take scroll factors into account when checking for overlap.  Default is false, or "only compare in world space."
+		 * @param	Camera			Specify which game camera you want.  If null getScreenXY() will just grab the first global camera.
+		 * 
+		 * @return	Whether or not the two objects overlap.
+		 */
+		public function overlapsAt(X:Number,Y:Number,ObjectOrGroup:FlxBasic,InScreenSpace:Boolean=false,Camera:FlxCamera=null):Boolean
+		{
+			if(ObjectOrGroup is FlxGroup)
+			{
+				var results:Boolean = false;
+				var basic:FlxBasic;
+				var i:uint = 0;
+				var members:Array = (ObjectOrGroup as FlxGroup).members;
+				while(i < length)
+				{
+					if(overlapsAt(X,Y,members[i++],InScreenSpace,Camera))
+						results = true;
+				}
+				return results;
+			}
+			
+			if(ObjectOrGroup is FlxTilemap)
+			{
+				//Since tilemap's have to be the caller, not the target, to do proper tile-based collisions,
+				// we redirect the call to the tilemap overlap here.
+				//However, since this is overlapsAt(), we also have to invent the appropriate position for the tilemap.
+				//So we calculate the offset between the player and the requested position, and subtract that from the tilemap.
+				var tilemap:FlxTilemap = ObjectOrGroup as FlxTilemap;
+				return tilemap.overlapsAt(tilemap.x - (X - x),tilemap.y - (Y - y),this,InScreenSpace,Camera);
+			}
+			
+			var object:FlxObject = ObjectOrGroup as FlxObject;
+			if(!InScreenSpace)
+			{
+				return	(object.x + object.width > X) && (object.x < X + width) &&
+						(object.y + object.height > Y) && (object.y < Y + height);
+			}
+			
+			if(Camera == null)
+				Camera = FlxG.camera;
+			var objectScreenPos:FlxPoint = object.getScreenXY(null,Camera);
+			_point.x = X - int(Camera.scroll.x*scrollFactor.x); //copied from getScreenXY()
+			_point.y = Y - int(Camera.scroll.y*scrollFactor.y);
+			_point.x += (_point.x > 0)?0.0000001:-0.0000001;
+			_point.y += (_point.y > 0)?0.0000001:-0.0000001;
+			return	(objectScreenPos.x + object.width > _point.x) && (objectScreenPos.x < _point.x + width) &&
+				(objectScreenPos.y + object.height > _point.y) && (objectScreenPos.y < _point.y + height);
 		}
 		
 		/**
@@ -744,7 +823,7 @@ package org.flixel
 				Point = new FlxPoint();
 			if(Camera == null)
 				Camera = FlxG.camera;
-			Point.x = x - int(Camera.scroll.x*scrollFactor.x); //copied from getScreenXY()
+			Point.x = x - int(Camera.scroll.x*scrollFactor.x);
 			Point.y = y - int(Camera.scroll.y*scrollFactor.y);
 			Point.x += (Point.x > 0)?0.0000001:-0.0000001;
 			Point.y += (Point.y > 0)?0.0000001:-0.0000001;
@@ -872,7 +951,7 @@ package org.flixel
 		 */
 		public function justTouched(Direction:uint):Boolean
 		{
-			return ((touching & Direction) && (wasTouching & Direction)) > NONE;
+			return ((touching & Direction) > NONE) && ((wasTouching & Direction) <= NONE);
 		}
 		
 		/**
@@ -898,9 +977,9 @@ package org.flixel
 		 */
 		static public function separate(Object1:FlxObject, Object2:FlxObject):Boolean
 		{
-			var sx:Boolean = separateX(Object1,Object2);
-			var sy:Boolean = separateY(Object1,Object2);
-			return sx || sy;
+			var separatedX:Boolean = separateX(Object1,Object2);
+			var separatedY:Boolean = separateY(Object1,Object2);
+			return separatedX || separatedY;
 		}
 		
 		/**
@@ -923,7 +1002,7 @@ package org.flixel
 			if(Object1 is FlxTilemap)
 				return (Object1 as FlxTilemap).overlapsWithCallback(Object2,separateX);
 			if(Object2 is FlxTilemap)
-				return (Object2 as FlxTilemap).overlapsWithCallback(Object1,separateX);
+				return (Object2 as FlxTilemap).overlapsWithCallback(Object1,separateX,true);
 			
 			//First, get the two object deltas
 			var overlap:Number = 0;
@@ -969,18 +1048,32 @@ package org.flixel
 			//Then adjust their positions and velocities accordingly (if there was any overlap)
 			if(overlap != 0)
 			{
+				var obj1v:Number = Object1.velocity.x;
+				var obj2v:Number = Object2.velocity.x;
+				
 				if(!obj1immovable && !obj2immovable)
-					overlap *= 0.5;
-				var object1velocityX:Number = Object1.velocity.x;
-				if(!obj1immovable)
 				{
-					Object1.x -= overlap;
-					Object1.velocity.x = (Object2.mass/Object1.mass)*Object2.velocity.x - Object1.velocity.x*Object1.elasticity;
+					overlap *= 0.5;
+					Object1.x = Object1.x - overlap;
+					Object2.x += overlap;
+
+					var obj1velocity:Number = Math.sqrt((obj2v * obj2v * Object2.mass)/Object1.mass) * ((obj2v > 0)?1:-1);
+					var obj2velocity:Number = Math.sqrt((obj1v * obj1v * Object1.mass)/Object2.mass) * ((obj1v > 0)?1:-1);
+					var average:Number = (obj1velocity + obj2velocity)*0.5;
+					obj1velocity -= average;
+					obj2velocity -= average;
+					Object1.velocity.x = average + obj1velocity * Object1.elasticity;
+					Object2.velocity.x = average + obj2velocity * Object2.elasticity;
 				}
-				if(!obj2immovable)
+				else if(!obj1immovable)
+				{
+					Object1.x = Object1.x - overlap;
+					Object1.velocity.x = obj2v - obj1v*Object1.elasticity;
+				}
+				else if(!obj2immovable)
 				{
 					Object2.x += overlap;
-					Object2.velocity.x = (Object1.mass/Object2.mass)*object1velocityX - Object2.velocity.x*Object2.elasticity;
+					Object2.velocity.x = obj1v - obj2v*Object2.elasticity;
 				}
 				return true;
 			}
@@ -1008,7 +1101,7 @@ package org.flixel
 			if(Object1 is FlxTilemap)
 				return (Object1 as FlxTilemap).overlapsWithCallback(Object2,separateY);
 			if(Object2 is FlxTilemap)
-				return (Object2 as FlxTilemap).overlapsWithCallback(Object1,separateY);
+				return (Object2 as FlxTilemap).overlapsWithCallback(Object1,separateY,true);
 
 			//First, get the two object deltas
 			var overlap:Number = 0;
@@ -1054,21 +1147,37 @@ package org.flixel
 			//Then adjust their positions and velocities accordingly (if there was any overlap)
 			if(overlap != 0)
 			{
+				var obj1v:Number = Object1.velocity.y;
+				var obj2v:Number = Object2.velocity.y;
+				
 				if(!obj1immovable && !obj2immovable)
+				{
 					overlap *= 0.5;
-				var object1velocityY:Number = Object1.velocity.y;
-				if(!obj1immovable)
+					Object1.y = Object1.y - overlap;
+					Object2.y += overlap;
+
+					var obj1velocity:Number = Math.sqrt((obj2v * obj2v * Object2.mass)/Object1.mass) * ((obj2v > 0)?1:-1);
+					var obj2velocity:Number = Math.sqrt((obj1v * obj1v * Object1.mass)/Object2.mass) * ((obj1v > 0)?1:-1);
+					var average:Number = (obj1velocity + obj2velocity)*0.5;
+					obj1velocity -= average;
+					obj2velocity -= average;
+					Object1.velocity.y = average + obj1velocity * Object1.elasticity;
+					Object2.velocity.y = average + obj2velocity * Object2.elasticity;
+				}
+				else if(!obj1immovable)
 				{
 					Object1.y = Object1.y - overlap;
-					Object1.velocity.y = (Object2.mass/Object1.mass)*Object2.velocity.y - Object1.velocity.y*Object1.elasticity;
-					if(Object2.immovable && Object2.moves && (obj1delta > obj2delta))
+					Object1.velocity.y = obj2v - obj1v*Object1.elasticity;
+					//This is special case code that handles cases like horizontal moving platforms you can ride
+					if(Object2.active && Object2.moves && (obj1delta > obj2delta))
 						Object1.x += Object2.x - Object2.last.x;
 				}
-				if(!obj2immovable)
+				else if(!obj2immovable)
 				{
 					Object2.y += overlap;
-					Object2.velocity.y = (Object1.mass/Object2.mass)*object1velocityY - Object2.velocity.y*Object2.elasticity;
-					if(Object1.immovable && Object1.moves && (obj1delta < obj2delta))
+					Object2.velocity.y = obj1v - obj2v*Object2.elasticity;
+					//This is special case code that handles cases like horizontal moving platforms you can ride
+					if(Object1.active && Object1.moves && (obj1delta < obj2delta))
 						Object2.x += Object1.x - Object1.last.x;
 				}
 				return true;

@@ -38,7 +38,7 @@ package org.flixel
 		 * Assign a minor version to your library.
 		 * Appears after the decimal in the console.
 		 */
-		static public var LIBRARY_MINOR_VERSION:uint = 50;
+		static public var LIBRARY_MINOR_VERSION:uint = 53;
 		
 		/**
 		 * Debugger overlay layout preset: Wide but low windows at the bottom of the screen.
@@ -83,6 +83,14 @@ package org.flixel
 		 * Pink is used to indicate objects that are only partially solid, like one-way platforms.
 		 */
 		static public const PINK:uint = 0xfff01eff;
+		/**
+		 * White... for white stuff.
+		 */
+		static public const WHITE:uint = 0xffffffff;
+		/**
+		 * And black too.
+		 */
+		static public const BLACK:uint = 0xff000000;
 
 		/**
 		 * Internal tracker for game object.
@@ -94,7 +102,7 @@ package org.flixel
 		static public var paused:Boolean;
 		/**
 		 * Whether you are running in Debug or Release mode.
-		 * Set automatically by <code>FlxFactory</code> during startup.
+		 * Set automatically by <code>FlxPreloader</code> during startup.
 		 */
 		static public var debug:Boolean;
 		
@@ -190,6 +198,12 @@ package org.flixel
 		 */
 		static public var camera:FlxCamera;
 		/**
+		 * Allows you to possibly slightly optimize the rendering process IF
+		 * you are not doing any pre-processing in your game state's <code>draw()</code> call.
+		 * @default false
+		 */
+		static public var useBufferLocking:Boolean;
+		/**
 		 * Internal helper variable for clearing the cameras each frame.
 		 */
 		static protected var _cameraRect:Rectangle;
@@ -278,6 +292,8 @@ package org.flixel
 		static public function set framerate(Framerate:Number):void
 		{
 			_game._step = 1000/Framerate;
+			if(_game._maxAccumulation < _game._step)
+				_game._maxAccumulation = _game._step;
 		}
 		
 		/**
@@ -301,7 +317,9 @@ package org.flixel
 			_game._flashFramerate = Framerate;
 			if(_game.root != null)
 				_game.stage.frameRate = _game._flashFramerate;
-			_game._maxAccumulation = 2000/Framerate - 1;
+			_game._maxAccumulation = 2000/_game._flashFramerate - 1;
+			if(_game._maxAccumulation < _game._step)
+				_game._maxAccumulation = _game._step;
 		}
 		
 		/**
@@ -317,6 +335,8 @@ package org.flixel
 		
 		/**
 		 * Shuffles the entries in an array into a new random order.
+		 * <code>FlxG.shuffle()</code> is deterministic and safe for use with replays/recordings.
+		 * HOWEVER, <code>FlxU.shuffle()</code> is NOT deterministic and unsafe for use with replays/recordings.
 		 * 
 		 * @param	A				A Flash <code>Array</code> object containing...stuff.
 		 * @param	HowManyTimes	How many swaps to perform during the shuffle operation.  Good rule of thumb is 2-4 times as many objects are in the list.
@@ -325,16 +345,18 @@ package org.flixel
 		 */
 		static public function shuffle(Objects:Array,HowManyTimes:uint):Array
 		{
-			var i1:uint;
-			var i2:uint;
-			var o:Object;
-			for(var i:uint = 0; i < HowManyTimes; i++)
+			var i:uint = 0;
+			var index1:uint;
+			var index2:uint;
+			var object:Object;
+			while(i < HowManyTimes)
 			{
-				i1 = FlxG.random()*Objects.length;
-				i2 = FlxG.random()*Objects.length;
-				o = Objects[i2];
-				Objects[i2] = Objects[i1];
-				Objects[i1] = o;
+				index1 = FlxG.random()*Objects.length;
+				index2 = FlxG.random()*Objects.length;
+				object = Objects[index2];
+				Objects[index2] = Objects[index1];
+				Objects[index1] = object;
+				i++;
 			}
 			return Objects;
 		}
@@ -342,6 +364,8 @@ package org.flixel
 		/**
 		 * Fetch a random entry from the given array.
 		 * Will return null if random selection is missing, or array has no entries.
+		 * <code>FlxG.getRandom()</code> is deterministic and safe for use with replays/recordings.
+		 * HOWEVER, <code>FlxU.getRandom()</code> is NOT deterministic and unsafe for use with replays/recordings.
 		 * 
 		 * @param	Objects		A Flash array of objects.
 		 * 
@@ -487,11 +511,11 @@ package org.flixel
 		 */
 		static public function play(EmbeddedSound:Class,Volume:Number=1.0,Looped:Boolean=false):FlxSound
 		{
-			var s:FlxSound = sounds.recycle(FlxSound) as FlxSound;
-			s.loadEmbedded(EmbeddedSound,Looped);
-			s.volume = Volume;
-			s.play();
-			return s;
+			var sound:FlxSound = sounds.recycle(FlxSound) as FlxSound;
+			sound.loadEmbedded(EmbeddedSound,Looped);
+			sound.volume = Volume;
+			sound.play();
+			return sound;
 		}
 		
 		/**
@@ -505,11 +529,11 @@ package org.flixel
 		 */
 		static public function stream(URL:String,Volume:Number=1.0,Looped:Boolean=false):FlxSound
 		{
-			var s:FlxSound = sounds.recycle(FlxSound) as FlxSound;
-			s.loadStream(URL,Looped);
-			s.volume = Volume;
-			s.play();
-			return s;
+			var sound:FlxSound = sounds.recycle(FlxSound) as FlxSound;
+			sound.loadStream(URL,Looped);
+			sound.volume = Volume;
+			sound.play();
+			return sound;
 		}
 		
 		/**
@@ -533,7 +557,7 @@ package org.flixel
 			else if(_volume > 1)
 				_volume = 1;
 			if(volumeHandler != null)
-				volumeHandler(_volume);
+				volumeHandler(FlxG.mute?0:_volume);
 		}
 
 		/**
@@ -549,13 +573,13 @@ package org.flixel
 				music = null;
 			}
 			var i:uint = 0;
-			var s:FlxSound;
+			var sound:FlxSound;
 			var l:uint = sounds.members.length;
 			while(i < l)
 			{
-				s = sounds.members[i++] as FlxSound;
-				if((s != null) && (ForceDestroy || !s.survive))
-					s.destroy();
+				sound = sounds.members[i++] as FlxSound;
+				if((sound != null) && (ForceDestroy || !sound.survive))
+					sound.destroy();
 			}
 		}
 		
@@ -578,13 +602,13 @@ package org.flixel
 			if((music != null) && music.exists && music.active)
 				music.pause();
 			var i:uint = 0;
-			var s:FlxSound;
+			var sound:FlxSound;
 			var l:uint = sounds.members.length;
 			while(i < l)
 			{
-				s = sounds.members[i++] as FlxSound;
-				if((s != null) && s.exists && s.active)
-					s.pause();
+				sound = sounds.members[i++] as FlxSound;
+				if((sound != null) && sound.exists && sound.active)
+					sound.pause();
 			}
 		}
 		
@@ -596,13 +620,13 @@ package org.flixel
 			if((music != null) && music.exists)
 				music.play();
 			var i:uint = 0;
-			var s:FlxSound;
+			var sound:FlxSound;
 			var l:uint = sounds.members.length;
 			while(i < l)
 			{
-				s = sounds.members[i++] as FlxSound;
-				if((s != null) && s.exists)
-					s.play();
+				sound = sounds.members[i++] as FlxSound;
+				if((sound != null) && sound.exists)
+					sound.play();
 			}
 		}
 		
@@ -682,7 +706,8 @@ package org.flixel
 			if(!checkBitmapCache(Key))
 			{
 				_cache[Key] = (new Graphic).bitmapData;
-				if(Reverse) needReverse = true;
+				if(Reverse)
+					needReverse = true;
 			}
 			var pixels:BitmapData = _cache[Key];
 			if(!needReverse && Reverse && (pixels.width == (new Graphic).bitmapData.width))
@@ -765,9 +790,29 @@ package org.flixel
 		 */
 		static public function addCamera(NewCamera:FlxCamera):FlxCamera
 		{
-			FlxG._game.addChildAt(NewCamera._flashBitmap,FlxG._game.getChildIndex(FlxG._game._mouse));
+			FlxG._game.addChildAt(NewCamera._flashSprite,FlxG._game.getChildIndex(FlxG._game._mouse));
 			FlxG.cameras.push(NewCamera);
 			return NewCamera;
+		}
+		
+		/**
+		 * Remove a camera from the game.
+		 * 
+		 * @param	Camera	The camera you want to remove.
+		 * @param	Destroy	Whether to call destroy() on the camera, default value is true.
+		 */
+		static public function removeCamera(Camera:FlxCamera,Destroy:Boolean=true):void
+		{
+			try
+			{
+				FlxG._game.removeChild(Camera._flashSprite);
+			}
+			catch(E:Error)
+			{
+				FlxG.log("Error removing camera, not part of game.");
+			}
+			if(Destroy)
+				Camera.destroy();
 		}
 		
 		/**
@@ -778,20 +823,20 @@ package org.flixel
 		 */
 		static public function resetCameras(NewCamera:FlxCamera=null):void
 		{
-			var c:FlxCamera;
+			var cam:FlxCamera;
 			var i:uint = 0;
 			var l:uint = cameras.length;
 			while(i < l)
 			{
-				c = cameras[i++] as FlxCamera;
-				FlxG._game.removeChild(c._flashBitmap);
-				c.destroy();
+				cam = FlxG.cameras[i++] as FlxCamera;
+				FlxG._game.removeChild(cam._flashSprite);
+				cam.destroy();
 			}
-			cameras.length = 0;
+			FlxG.cameras.length = 0;
 			
 			if(NewCamera == null)
 				NewCamera = new FlxCamera(0,0,FlxG.width,FlxG.height)
-			camera = FlxG.addCamera(NewCamera);
+			FlxG.camera = FlxG.addCamera(NewCamera);
 		}
 		
 		/**
@@ -804,11 +849,10 @@ package org.flixel
 		 */
 		static public function flash(Color:uint=0xffffffff, Duration:Number=1, OnComplete:Function=null, Force:Boolean=false):void
 		{
-			var c:FlxCamera;
 			var i:uint = 0;
-			var l:uint = cameras.length;
+			var l:uint = FlxG.cameras.length;
 			while(i < l)
-				(cameras[i++] as FlxCamera).flash(Color,Duration,OnComplete,Force);
+				(FlxG.cameras[i++] as FlxCamera).flash(Color,Duration,OnComplete,Force);
 		}
 		
 		/**
@@ -821,11 +865,10 @@ package org.flixel
 		 */
 		static public function fade(Color:uint=0xffffffff, Duration:Number=1, OnComplete:Function=null, Force:Boolean=false):void
 		{
-			var c:FlxCamera;
 			var i:uint = 0;
-			var l:uint = cameras.length;
+			var l:uint = FlxG.cameras.length;
 			while(i < l)
-				(cameras[i++] as FlxCamera).fade(Color,Duration,OnComplete,Force);
+				(FlxG.cameras[i++] as FlxCamera).fade(Color,Duration,OnComplete,Force);
 		}
 		
 		/**
@@ -835,15 +878,14 @@ package org.flixel
 		 * @param	Duration	The length in seconds that the shaking effect should last.
 		 * @param	OnComplete	A function you want to run when the shake effect finishes.
 		 * @param	Force		Force the effect to reset (default = true, unlike flash() and fade()!).
-		 * @param	Direction	Whether to shake on both axes, just up and down, or just side to side (use class constants SHAKE_BOTH_AXES, SHAKE_VERTICAL_ONLY, or SHAKE_HORIZONTAL_ONLY).
+		 * @param	Direction	Whether to shake on both axes, just up and down, or just side to side (use class constants SHAKE_BOTH_AXES, SHAKE_VERTICAL_ONLY, or SHAKE_HORIZONTAL_ONLY).  Default value is SHAKE_BOTH_AXES (0).
 		 */
-		static public function shake(Intensity:Number=0.05, Duration:Number=0.5, OnComplete:Function=null, Force:Boolean=true, Direction:uint=FlxCamera.SHAKE_BOTH_AXES):void
+		static public function shake(Intensity:Number=0.05, Duration:Number=0.5, OnComplete:Function=null, Force:Boolean=true, Direction:uint=0):void
 		{
-			var c:FlxCamera;
 			var i:uint = 0;
-			var l:uint = cameras.length;
+			var l:uint = FlxG.cameras.length;
 			while(i < l)
-				(cameras[i++] as FlxCamera).shake(Intensity,Duration,OnComplete,Force,Direction);
+				(FlxG.cameras[i++] as FlxCamera).shake(Intensity,Duration,OnComplete,Force,Direction);
 		}
 		
 		/**
@@ -861,11 +903,10 @@ package org.flixel
 		
 		static public function set bgColor(Color:uint):void
 		{
-			var c:FlxCamera;
 			var i:uint = 0;
-			var l:uint = cameras.length;
+			var l:uint = FlxG.cameras.length;
 			while(i < l)
-				(cameras[i++] as FlxCamera).bgColor = Color;
+				(FlxG.cameras[i++] as FlxCamera).bgColor = Color;
 		}
 
 		/**
@@ -928,28 +969,86 @@ package org.flixel
 		 */
 		static public function addPlugin(Plugin:FlxBasic):FlxBasic
 		{
-			plugins.push(Plugin);
+			//Don't add repeats
+			var pluginList:Array = FlxG.plugins;
+			var i:uint = 0;
+			var l:uint = pluginList.length;
+			while(i < l)
+			{
+				if(pluginList[i++].toString() == Plugin.toString())
+					return Plugin;
+			}
+			
+			//no repeats! safe to add a new instance of this plugin
+			pluginList.push(Plugin);
 			return Plugin;
 		}
 		
 		/**
-		 * Retrieves a plugin from the global plugin array.
+		 * Retrieves a plugin based on its class name from the global plugin array.
 		 * 
-		 * @param	ClassType	Useful for retrieving plugins based on their type. See the <code>FlxPath</code> or <code>FlxTimer</code> constructors for example usage.
+		 * @param	ClassType	The class name of the plugin you want to retrieve. See the <code>FlxPath</code> or <code>FlxTimer</code> constructors for example usage.
 		 * 
 		 * @return	The plugin object, or null if no matching plugin was found.
 		 */
 		static public function getPlugin(ClassType:Class):FlxBasic
 		{
+			var pluginList:Array = FlxG.plugins;
 			var i:uint = 0;
-			var l:uint = plugins.length;
+			var l:uint = pluginList.length;
 			while(i < l)
 			{
-				if(plugins[i] is ClassType)
+				if(pluginList[i] is ClassType)
 					return plugins[i];
 				i++;
 			}
 			return null;
+		}
+		
+		/**
+		 * Removes an instance of a plugin from the global plugin array.
+		 * 
+		 * @param	Plugin	The plugin instance you want to remove.
+		 * 
+		 * @return	The same <code>FlxBasic</code>-based plugin you passed in.
+		 */
+		static public function removePlugin(Plugin:FlxBasic):FlxBasic
+		{
+			//Don't add repeats
+			var pluginList:Array = FlxG.plugins;
+			var i:int = pluginList.length-1;
+			while(i >= 0)
+			{
+				if(pluginList[i] == Plugin)
+					pluginList.splice(i,1);
+				i--;
+			}
+			return Plugin;
+		}
+		
+		/**
+		 * Removes an instance of a plugin from the global plugin array.
+		 * 
+		 * @param	ClassType	The class name of the plugin type you want removed from the array.
+		 * 
+		 * @return	Whether or not at least one instance of this plugin type was removed.
+		 */
+		static public function removePluginType(ClassType:Class):Boolean
+		{
+			//Don't add repeats
+			var results:Boolean = false;
+			var pluginList:Array = FlxG.plugins;
+			var i:int = pluginList.length-1;
+			while(i >= 0)
+			{
+				if(pluginList[i] is ClassType)
+				{
+					pluginList.splice(i,1);
+					results = true;
+				}
+				i--;
+			}
+			return results;
 		}
 		
 		/**
@@ -977,6 +1076,7 @@ package org.flixel
 			FlxCamera.defaultZoom = Zoom;
 			FlxG._cameraRect = new Rectangle();
 			FlxG.cameras = new Array();
+			useBufferLocking = false;
 			
 			plugins = new Array();
 			addPlugin(new DebugPathDisplay());
@@ -1029,17 +1129,19 @@ package org.flixel
 		 */
 		static internal function lockCameras():void
 		{
-			var c:FlxCamera;
-			var b:FlxRect;
+			var cam:FlxCamera;
+			var cams:Array = FlxG.cameras;
 			var i:uint = 0;
-			var l:uint = cameras.length;
+			var l:uint = cams.length;
 			while(i < l)
 			{
-				c = cameras[i++] as FlxCamera;
-				if((c == null) || !c.exists || !c.visible)
+				cam = cams[i++] as FlxCamera;
+				if((cam == null) || !cam.exists || !cam.visible)
 					continue;
-				c.buffer.lock();
-				c.fill();
+				if(useBufferLocking)
+					cam.buffer.lock();
+				cam.fill();
+				cam.screen.dirty = true;
 			}
 		}
 		
@@ -1048,16 +1150,18 @@ package org.flixel
 		 */
 		static internal function unlockCameras():void
 		{
-			var c:FlxCamera;
+			var cam:FlxCamera;
+			var cams:Array = FlxG.cameras;
 			var i:uint = 0;
-			var l:uint = cameras.length;
+			var l:uint = cams.length;
 			while(i < l)
 			{
-				c = cameras[i++] as FlxCamera;
-				if((c == null) || !c.exists || !c.visible)
+				cam = cams[i++] as FlxCamera;
+				if((cam == null) || !cam.exists || !cam.visible)
 					continue;
-				c.drawFX();
-				c.buffer.unlock();
+				cam.drawFX();
+				if(useBufferLocking)
+					cam.buffer.unlock();
 			}
 		}
 		
@@ -1066,19 +1170,20 @@ package org.flixel
 		 */
 		static internal function updateCameras():void
 		{
-			var c:FlxCamera;
+			var cam:FlxCamera;
+			var cams:Array = FlxG.cameras;
 			var i:uint = 0;
-			var l:uint = cameras.length;
+			var l:uint = cams.length;
 			while(i < l)
 			{
-				c = cameras[i++] as FlxCamera;
-				if((c != null) && c.exists)
+				cam = cams[i++] as FlxCamera;
+				if((cam != null) && cam.exists)
 				{
-					if(c.active)
-						c.update();
-					c._flashBitmap.x = c.x;
-					c._flashBitmap.y = c.y;
-					c._flashBitmap.visible = c.exists && c.visible;
+					if(cam.active)
+						cam.update();
+					cam._flashSprite.x = cam.x + cam._flashOffsetX;
+					cam._flashSprite.y = cam.y + cam._flashOffsetY;
+					cam._flashSprite.visible = cam.visible;
 				}
 			}
 		}
@@ -1088,12 +1193,13 @@ package org.flixel
 		 */
 		static internal function updatePlugins():void
 		{
-			var i:uint = 0;
-			var l:uint = plugins.length;
 			var plugin:FlxBasic;
+			var pluginList:Array = FlxG.plugins;
+			var i:uint = 0;
+			var l:uint = pluginList.length;
 			while(i < l)
 			{
-				plugin = plugins[i++] as FlxBasic;
+				plugin = pluginList[i++] as FlxBasic;
 				if(plugin.exists && plugin.active)
 					plugin.update();
 			}
@@ -1104,12 +1210,13 @@ package org.flixel
 		 */
 		static internal function drawPlugins():void
 		{
-			var i:uint = 0;
-			var l:uint = plugins.length;
 			var plugin:FlxBasic;
+			var pluginList:Array = FlxG.plugins;
+			var i:uint = 0;
+			var l:uint = pluginList.length;
 			while(i < l)
 			{
-				plugin = plugins[i++] as FlxBasic;
+				plugin = pluginList[i++] as FlxBasic;
 				if(plugin.exists && plugin.visible)
 					plugin.draw();
 			}

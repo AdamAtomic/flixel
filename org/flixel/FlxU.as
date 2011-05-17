@@ -40,8 +40,8 @@ package org.flixel
 		 */
 		static public function floor(Value:Number):Number
 		{
-			var n:Number = int(Value);
-			return (Value>0)?(n):((n!=Value)?(n-1):(n));
+			var number:Number = int(Value);
+			return (Value>0)?(number):((number!=Value)?(number-1):(number));
 		}
 		
 		/**
@@ -53,8 +53,8 @@ package org.flixel
 		 */
 		static public function ceil(Value:Number):Number
 		{
-			var n:Number = int(Value);
-			return (Value>0)?((n!=Value)?(n+1):(n)):(n);
+			var number:Number = int(Value);
+			return (Value>0)?((number!=Value)?(number+1):(number)):(number);
 		}
 		
 		/**
@@ -66,8 +66,8 @@ package org.flixel
 		 */
 		static public function round(Value:Number):Number
 		{
-			var n:Number = int(Value+((Value>0)?0.5:-0.5));
-			return (Value>0)?(n):((n!=Value)?(n-1):(n));
+			var number:Number = int(Value+((Value>0)?0.5:-0.5));
+			return (Value>0)?(number):((number!=Value)?(number-1):(number));
 		}
 		
 		/**
@@ -109,8 +109,8 @@ package org.flixel
 		 */
 		static public function bound(Value:Number,Min:Number,Max:Number):Number
 		{
-			var lb:Number = (Value<Min)?Min:Value;
-			return (lb>Max)?Max:lb;
+			var lowerBound:Number = (Value<Min)?Min:Value;
+			return (lowerBound>Max)?Max:lowerBound;
 		}
 		
 		/**
@@ -123,6 +123,55 @@ package org.flixel
 		static public function srand(Seed:Number):Number
 		{
 			return ((69621 * int(Seed * 0x7FFFFFFF)) % 0x7FFFFFFF) / 0x7FFFFFFF;
+		}
+		
+		/**
+		 * Shuffles the entries in an array into a new random order.
+		 * <code>FlxG.shuffle()</code> is deterministic and safe for use with replays/recordings.
+		 * HOWEVER, <code>FlxU.shuffle()</code> is NOT deterministic and unsafe for use with replays/recordings.
+		 * 
+		 * @param	A				A Flash <code>Array</code> object containing...stuff.
+		 * @param	HowManyTimes	How many swaps to perform during the shuffle operation.  Good rule of thumb is 2-4 times as many objects are in the list.
+		 * 
+		 * @return	The same Flash <code>Array</code> object that you passed in in the first place.
+		 */
+		static public function shuffle(Objects:Array,HowManyTimes:uint):Array
+		{
+			var i:uint = 0;
+			var index1:uint;
+			var index2:uint;
+			var object:Object;
+			while(i < HowManyTimes)
+			{
+				index1 = Math.random()*Objects.length;
+				index2 = Math.random()*Objects.length;
+				object = Objects[index2];
+				Objects[index2] = Objects[index1];
+				Objects[index1] = object;
+				i++;
+			}
+			return Objects;
+		}
+		
+		/**
+		 * Fetch a random entry from the given array.
+		 * Will return null if random selection is missing, or array has no entries.
+		 * <code>FlxG.getRandom()</code> is deterministic and safe for use with replays/recordings.
+		 * HOWEVER, <code>FlxU.getRandom()</code> is NOT deterministic and unsafe for use with replays/recordings.
+		 * 
+		 * @param	Objects		A Flash array of objects.
+		 * 
+		 * @return	The random object that was selected.
+		 */
+		static public function getRandom(Objects:Array):Object
+		{
+			if(Objects != null)
+			{
+				var l:uint = Objects.length;
+				if(l > 0)
+					return Objects[uint(Math.random()*l)];
+			}
+			return null;
 		}
 		
 		/**
@@ -288,20 +337,20 @@ package org.flixel
 		 */
 		static public function formatTime(Seconds:Number,ShowMS:Boolean=false):String
 		{
-			var ts:String = int(Seconds/60) + ":";
-			var dts:int = int(Seconds)%60;
-			if(dts < 10)
-				ts += "0";
-			ts += dts;
+			var timeString:String = int(Seconds/60) + ":";
+			var timeStringHelper:int = int(Seconds)%60;
+			if(timeStringHelper < 10)
+				timeString += "0";
+			timeString += timeStringHelper;
 			if(ShowMS)
 			{
-				ts += ".";
-				dts = (Seconds-int(Seconds))*100;
-				if(dts < 10)
-					ts += "0";
-				ts += dts;
+				timeString += ".";
+				timeStringHelper = (Seconds-int(Seconds))*100;
+				if(timeStringHelper < 10)
+					timeString += "0";
+				timeString += timeStringHelper;
 			}
-			return ts;
+			return timeString;
 		}
 		
 		/**
@@ -316,12 +365,12 @@ package org.flixel
 		{
 			if((AnyArray == null) || (AnyArray.length <= 0))
 				return "";
-			var s:String = AnyArray[0].toString();
+			var string:String = AnyArray[0].toString();
 			var i:uint = 0;
 			var l:uint = AnyArray.length;
 			while(i < l)
-				s += ", " + AnyArray[i++].toString();
-			return s;
+				string += ", " + AnyArray[i++].toString();
+			return string;
 		}
 		
 		/**
@@ -338,14 +387,14 @@ package org.flixel
 		 */
 		static public function formatMoney(Amount:Number,ShowDecimal:Boolean=true,EnglishStyle:Boolean=true):String
 		{
-			var h:int;
-			var a:int = Amount;
-			var s:String = "";
+			var helper:int;
+			var amount:int = Amount;
+			var string:String = "";
 			var comma:String = "";
 			var zeroes:String = "";
-			while(a > 0)
+			while(amount > 0)
 			{
-				if((s.length > 0) && comma.length <= 0)
+				if((string.length > 0) && comma.length <= 0)
 				{
 					if(EnglishStyle)
 						comma = ",";
@@ -353,25 +402,25 @@ package org.flixel
 						comma = ".";
 				}
 				zeroes = "";
-				h = a - int(a/1000)*1000;
-				a /= 1000;
-				if(a > 0)
+				helper = amount - int(amount/1000)*1000;
+				amount /= 1000;
+				if(amount > 0)
 				{
-					if(h < 100)
+					if(helper < 100)
 						zeroes += "0";
-					if(h < 10)
+					if(helper < 10)
 						zeroes += "0";
 				}
-				s = zeroes + h + comma + s;
+				string = zeroes + helper + comma + string;
 			}
 			if(ShowDecimal)
 			{
-				a = int(Amount*100)-(int(Amount)*100);
-				s += (EnglishStyle?".":",") + a;
-				if(a < 10)
-					s += "0";
+				amount = int(Amount*100)-(int(Amount)*100);
+				string += (EnglishStyle?".":",") + amount;
+				if(amount < 10)
+					string += "0";
 			}
-			return s;
+			return string;
 		}
 		
 		/**
@@ -384,12 +433,25 @@ package org.flixel
 		 */
 		static public function getClassName(Obj:Object,Simple:Boolean=false):String
 		{
-			var s:String = getQualifiedClassName(Obj);
-			s = s.replace("::",".");
+			var string:String = getQualifiedClassName(Obj);
+			string = string.replace("::",".");
 			if(Simple)
-				s = s.substr(s.lastIndexOf(".")+1);
-			return s;
-		};
+				string = string.substr(string.lastIndexOf(".")+1);
+			return string;
+		}
+		
+		/**
+		 * Check to see if two objects have the same class name.
+		 * 
+		 * @param	Object1		The first object you want to check.
+		 * @param	Object2		The second object you want to check.
+		 * 
+		 * @return	Whether they have the same class name or not.
+		 */
+		static public function compareClassNames(Object1:Object,Object2:Object):Boolean
+		{
+			return getQualifiedClassName(Object1) == getQualifiedClassName(Object2);
+		}
 		
 		/**
 		 * Look up a <code>Class</code> object by its string name.
@@ -420,11 +482,11 @@ package org.flixel
 				Velocity += Acceleration*FlxG.elapsed;
 			else if(Drag != 0)
 			{
-				var d:Number = Drag*FlxG.elapsed;
-				if(Velocity - d > 0)
-					Velocity = Velocity - d;
-				else if(Velocity + d < 0)
-					Velocity += d;
+				var drag:Number = Drag*FlxG.elapsed;
+				if(Velocity - drag > 0)
+					Velocity = Velocity - drag;
+				else if(Velocity + drag < 0)
+					Velocity += drag;
 				else
 					Velocity = 0;
 			}

@@ -89,21 +89,21 @@ package org.flixel.system.debug
 		public function add(AnyObject:Object,VariableName:String,DisplayName:String=null):void
 		{
 			//Don't add repeats
-			var w:WatchEntry;
+			var watchEntry:WatchEntry;
 			var i:int = 0;
 			var l:uint = _watching.length;
 			while(i < l)
 			{
-				w = _watching[i++] as WatchEntry;
-				if((w.object == AnyObject) && (w.field == VariableName))
+				watchEntry = _watching[i++] as WatchEntry;
+				if((watchEntry.object == AnyObject) && (watchEntry.field == VariableName))
 					return;
 			}
 			
 			//Good, no repeats, add away!
-			w = new WatchEntry(_watching.length*LINE_HEIGHT,_width/2,_width/2-10,AnyObject,VariableName,DisplayName);
-			_names.addChild(w.nameDisplay);
-			_values.addChild(w.valueDisplay);
-			_watching.push(w);
+			watchEntry = new WatchEntry(_watching.length*LINE_HEIGHT,_width/2,_width/2-10,AnyObject,VariableName,DisplayName);
+			_names.addChild(watchEntry.nameDisplay);
+			_values.addChild(watchEntry.valueDisplay);
+			_watching.push(watchEntry);
 		}
 		
 		/**
@@ -115,21 +115,21 @@ package org.flixel.system.debug
 		public function remove(AnyObject:Object,VariableName:String=null):void
 		{
 			//splice out the requested object
-			var w:WatchEntry;
+			var watchEntry:WatchEntry;
 			var i:int = _watching.length-1;
 			while(i >= 0)
 			{
-				w = _watching[i];
-				if((w.object == AnyObject) && ((VariableName == null) || (w.field == VariableName)))
+				watchEntry = _watching[i];
+				if((watchEntry.object == AnyObject) && ((VariableName == null) || (watchEntry.field == VariableName)))
 				{
 					_watching.splice(i,1);
-					_names.removeChild(w.nameDisplay);
-					_values.removeChild(w.valueDisplay);
-					w.destroy();
+					_names.removeChild(watchEntry.nameDisplay);
+					_values.removeChild(watchEntry.valueDisplay);
+					watchEntry.destroy();
 				}
 				i--;
 			}
-			w = null;
+			watchEntry = null;
 			
 			//reset the display heights of the remaining objects
 			i = 0;
@@ -146,15 +146,15 @@ package org.flixel.system.debug
 		 */
 		public function removeAll():void
 		{
-			var w:WatchEntry;
+			var watchEntry:WatchEntry;
 			var i:int = 0;
 			var l:uint = _watching.length;
 			while(i < l)
 			{
-				w = _watching.pop();
-				_names.removeChild(w.nameDisplay);
-				_values.removeChild(w.valueDisplay);
-				w.destroy();
+				watchEntry = _watching.pop();
+				_names.removeChild(watchEntry.nameDisplay);
+				_values.removeChild(watchEntry.valueDisplay);
+				watchEntry.destroy();
 				i++
 			}
 			_watching.length = 0;
@@ -182,12 +182,12 @@ package org.flixel.system.debug
 		{
 			var i:uint = 0;
 			var l:uint = _watching.length;
-			var w:WatchEntry;
+			var watchEntry:WatchEntry;
 			while(i < l)
 			{
-				w = _watching[i++] as WatchEntry;
-				if(w.editing)
-					w.submit();
+				watchEntry = _watching[i++] as WatchEntry;
+				if(watchEntry.editing)
+					watchEntry.submit();
 			}
 			editing = false;
 		}

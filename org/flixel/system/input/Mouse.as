@@ -266,9 +266,9 @@ package org.flixel.system.input
 		/**
 		 * Event handler so FlxGame can update the mouse.
 		 * 
-		 * @param	event	A <code>MouseEvent</code> object.
+		 * @param	FlashEvent	A <code>MouseEvent</code> object.
 		 */
-		public function handleMouseDown(event:MouseEvent):void
+		public function handleMouseDown(FlashEvent:MouseEvent):void
 		{
 			if(_current > 0) _current = 1;
 			else _current = 2;
@@ -277,9 +277,9 @@ package org.flixel.system.input
 		/**
 		 * Event handler so FlxGame can update the mouse.
 		 * 
-		 * @param	event	A <code>MouseEvent</code> object.
+		 * @param	FlashEvent	A <code>MouseEvent</code> object.
 		 */
-		public function handleMouseUp(event:MouseEvent):void
+		public function handleMouseUp(FlashEvent:MouseEvent):void
 		{
 			if(_current > 0) _current = -1;
 			else _current = 0;
@@ -288,11 +288,11 @@ package org.flixel.system.input
 		/**
 		 * Event handler so FlxGame can update the mouse.
 		 * 
-		 * @param	event	A <code>MouseEvent</code> object.
+		 * @param	FlashEvent	A <code>MouseEvent</code> object.
 		 */
-		public function handleMouseWheel(event:MouseEvent):void
+		public function handleMouseWheel(FlashEvent:MouseEvent):void
 		{
-			wheel = event.delta;
+			wheel = FlashEvent.delta;
 		}
 		
 		/**

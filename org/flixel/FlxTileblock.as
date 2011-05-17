@@ -41,21 +41,21 @@ package org.flixel
 				return this;
 			
 			//First create a tile brush
-			var s:FlxSprite = new FlxSprite().loadGraphic(TileGraphic,true,false,TileWidth,TileHeight);
-			var sw:uint = s.width;
-			var sh:uint = s.height;
-			var total:uint = s.frames + Empties;
+			var sprite:FlxSprite = new FlxSprite().loadGraphic(TileGraphic,true,false,TileWidth,TileHeight);
+			var spriteWidth:uint = sprite.width;
+			var spriteHeight:uint = sprite.height;
+			var total:uint = sprite.frames + Empties;
 			
 			//Then prep the "canvas" as it were (just doublechecking that the size is on tile boundaries)
 			var regen:Boolean = false;
-			if(width % s.width != 0)
+			if(width % sprite.width != 0)
 			{
-				width = uint(width/sw+1)*sw;
+				width = uint(width/spriteWidth+1)*spriteWidth;
 				regen = true;
 			}
-			if(height % s.height != 0)
+			if(height % sprite.height != 0)
 			{
-				height = uint(height/sh+1)*sh;
+				height = uint(height/spriteHeight+1)*spriteHeight;
 				regen = true;
 			}
 			if(regen)
@@ -64,29 +64,29 @@ package org.flixel
 				this.fill(0);
 			
 			//Stamp random tiles onto the canvas
-			var r:uint = 0;
-			var c:uint;
-			var ox:uint;
-			var oy:uint = 0;
-			var widthInTiles:uint = width/sw;
-			var heightInTiles:uint = height/sh;
-			while(r < heightInTiles)
+			var row:uint = 0;
+			var column:uint;
+			var destinationX:uint;
+			var destinationY:uint = 0;
+			var widthInTiles:uint = width/spriteWidth;
+			var heightInTiles:uint = height/spriteHeight;
+			while(row < heightInTiles)
 			{
-				ox = 0;
-				c = 0;
-				while(c < widthInTiles)
+				destinationX = 0;
+				column = 0;
+				while(column < widthInTiles)
 				{
 					if(FlxG.random()*total > Empties)
 					{
-						s.randomFrame();
-						s.drawFrame();
-						stamp(s,ox,oy);
+						sprite.randomFrame();
+						sprite.drawFrame();
+						stamp(sprite,destinationX,destinationY);
 					}
-					ox += sw;
-					c++;
+					destinationX += spriteWidth;
+					column++;
 				}
-				oy += sh;
-				r++;
+				destinationY += spriteHeight;
+				row++;
 			}
 			
 			return this;

@@ -34,53 +34,154 @@ package org.flixel.system
 		protected var _canSubdivide:Boolean;
 		
 		/**
-		 * These variables refer to the internal A and B linked lists,
+		 * Refers to the internal A and B linked lists,
 		 * which are used to store objects in the leaves.
 		 */
 		protected var _headA:FlxList;
+		/**
+		 * Refers to the internal A and B linked lists,
+		 * which are used to store objects in the leaves.
+		 */
 		protected var _tailA:FlxList;
+		/**
+		 * Refers to the internal A and B linked lists,
+		 * which are used to store objects in the leaves.
+		 */
 		protected var _headB:FlxList;
+		/**
+		 * Refers to the internal A and B linked lists,
+		 * which are used to store objects in the leaves.
+		 */
 		protected var _tailB:FlxList;
 
 		/**
-		 * These variables refer to the potential child quadrants for this node.
+		 * Internal, governs and assists with the formation of the tree.
 		 */
 		static protected var _min:uint;
-		protected var _nw:FlxQuadTree;
-		protected var _ne:FlxQuadTree;
-		protected var _se:FlxQuadTree;
-		protected var _sw:FlxQuadTree;		
-		protected var _l:Number;
-		protected var _r:Number;
-		protected var _t:Number;
-		protected var _b:Number;
-		protected var _hw:Number;
-		protected var _hh:Number;
-		protected var _mx:Number;
-		protected var _my:Number;
+		/**
+		 * Internal, governs and assists with the formation of the tree.
+		 */
+		protected var _northWestTree:FlxQuadTree;
+		/**
+		 * Internal, governs and assists with the formation of the tree.
+		 */
+		protected var _northEastTree:FlxQuadTree;
+		/**
+		 * Internal, governs and assists with the formation of the tree.
+		 */
+		protected var _southEastTree:FlxQuadTree;
+		/**
+		 * Internal, governs and assists with the formation of the tree.
+		 */
+		protected var _southWestTree:FlxQuadTree;
+		/**
+		 * Internal, governs and assists with the formation of the tree.
+		 */
+		protected var _leftEdge:Number;
+		/**
+		 * Internal, governs and assists with the formation of the tree.
+		 */
+		protected var _rightEdge:Number;
+		/**
+		 * Internal, governs and assists with the formation of the tree.
+		 */
+		protected var _topEdge:Number;
+		/**
+		 * Internal, governs and assists with the formation of the tree.
+		 */
+		protected var _bottomEdge:Number;
+		/**
+		 * Internal, governs and assists with the formation of the tree.
+		 */
+		protected var _halfWidth:Number;
+		/**
+		 * Internal, governs and assists with the formation of the tree.
+		 */
+		protected var _halfHeight:Number;
+		/**
+		 * Internal, governs and assists with the formation of the tree.
+		 */
+		protected var _midpointX:Number;
+		/**
+		 * Internal, governs and assists with the formation of the tree.
+		 */
+		protected var _midpointY:Number;
 		
 		/**
-		 * These objects are used to reduce recursive parameters internally.
+		 * Internal, used to reduce recursive method parameters during object placement and tree formation.
 		 */
-		static protected var _o:FlxObject;
-		static protected var _ol:Number;
-		static protected var _ot:Number;
-		static protected var _or:Number;
-		static protected var _ob:Number;
-		static protected var _oa:uint;
-		static protected var _om:Boolean;
-		static protected var _op:Function;
-		static protected var _on:Function;
+		static protected var _object:FlxObject;
+		/**
+		 * Internal, used to reduce recursive method parameters during object placement and tree formation.
+		 */
+		static protected var _objectLeftEdge:Number;
+		/**
+		 * Internal, used to reduce recursive method parameters during object placement and tree formation.
+		 */
+		static protected var _objectTopEdge:Number;
+		/**
+		 * Internal, used to reduce recursive method parameters during object placement and tree formation.
+		 */
+		static protected var _objectRightEdge:Number;
+		/**
+		 * Internal, used to reduce recursive method parameters during object placement and tree formation.
+		 */
+		static protected var _objectBottomEdge:Number;
 		
-		static protected var _ohx:Number;
-		static protected var _ohy:Number;
-		static protected var _ohw:Number;
-		static protected var _ohh:Number;
+		/**
+		 * Internal, used during tree processing and overlap checks.
+		 */
+		static protected var _list:uint;
+		/**
+		 * Internal, used during tree processing and overlap checks.
+		 */
+		static protected var _useBothLists:Boolean;
+		/**
+		 * Internal, used during tree processing and overlap checks.
+		 */
+		static protected var _processingCallback:Function;
+		/**
+		 * Internal, used during tree processing and overlap checks.
+		 */
+		static protected var _notifyCallback:Function;
+		/**
+		 * Internal, used during tree processing and overlap checks.
+		 */
+		static protected var _iterator:FlxList;
 		
-		static protected var _cox:Number;
-		static protected var _coy:Number;
-		static protected var _cow:Number;
-		static protected var _coh:Number;
+		/**
+		 * Internal, helpers for comparing actual object-to-object overlap - see <code>overlapNode()</code>.
+		 */
+		static protected var _objectHullX:Number;
+		/**
+		 * Internal, helpers for comparing actual object-to-object overlap - see <code>overlapNode()</code>.
+		 */
+		static protected var _objectHullY:Number;
+		/**
+		 * Internal, helpers for comparing actual object-to-object overlap - see <code>overlapNode()</code>.
+		 */
+		static protected var _objectHullWidth:Number;
+		/**
+		 * Internal, helpers for comparing actual object-to-object overlap - see <code>overlapNode()</code>.
+		 */
+		static protected var _objectHullHeight:Number;
+		
+		/**
+		 * Internal, helpers for comparing actual object-to-object overlap - see <code>overlapNode()</code>.
+		 */
+		static protected var _checkObjectHullX:Number;
+		/**
+		 * Internal, helpers for comparing actual object-to-object overlap - see <code>overlapNode()</code>.
+		 */
+		static protected var _checkObjectHullY:Number;
+		/**
+		 * Internal, helpers for comparing actual object-to-object overlap - see <code>overlapNode()</code>.
+		 */
+		static protected var _checkObjectHullWidth:Number;
+		/**
+		 * Internal, helpers for comparing actual object-to-object overlap - see <code>overlapNode()</code>.
+		 */
+		static protected var _checkObjectHullHeight:Number;
 		
 		/**
 		 * Instantiate a new Quad Tree node.
@@ -100,12 +201,12 @@ package org.flixel.system
 			//Copy the parent's children (if there are any)
 			if(Parent != null)
 			{
-				var itr:FlxList;
+				var iterator:FlxList;
 				var ot:FlxList;
 				if(Parent._headA.object != null)
 				{
-					itr = Parent._headA;
-					while(itr != null)
+					iterator = Parent._headA;
+					while(iterator != null)
 					{
 						if(_tailA.object != null)
 						{
@@ -113,14 +214,14 @@ package org.flixel.system
 							_tailA = new FlxList();
 							ot.next = _tailA;
 						}
-						_tailA.object = itr.object;
-						itr = itr.next;
+						_tailA.object = iterator.object;
+						iterator = iterator.next;
 					}
 				}
 				if(Parent._headB.object != null)
 				{
-					itr = Parent._headB;
-					while(itr != null)
+					iterator = Parent._headB;
+					while(iterator != null)
 					{
 						if(_tailB.object != null)
 						{
@@ -128,8 +229,8 @@ package org.flixel.system
 							_tailB = new FlxList();
 							ot.next = _tailB;
 						}
-						_tailB.object = itr.object;
-						itr = itr.next;
+						_tailB.object = iterator.object;
+						iterator = iterator.next;
 					}
 				}
 			}
@@ -138,18 +239,18 @@ package org.flixel.system
 			_canSubdivide = (width > _min) || (height > _min);
 			
 			//Set up comparison/sort helpers
-			_nw = null;
-			_ne = null;
-			_se = null;
-			_sw = null;
-			_l = x;
-			_r = x+width;
-			_hw = width/2;
-			_mx = _l+_hw;
-			_t = y;
-			_b = y+height;
-			_hh = height/2;
-			_my = _t+_hh;
+			_northWestTree = null;
+			_northEastTree = null;
+			_southEastTree = null;
+			_southWestTree = null;
+			_leftEdge = x;
+			_rightEdge = x+width;
+			_halfWidth = width/2;
+			_midpointX = _leftEdge+_halfWidth;
+			_topEdge = y;
+			_bottomEdge = y+height;
+			_halfHeight = height/2;
+			_midpointY = _topEdge+_halfHeight;
 		}
 		
 		/**
@@ -166,22 +267,22 @@ package org.flixel.system
 			_tailB.destroy();
 			_tailB = null;
 
-			if(_nw != null)
-				_nw.destroy();
-			_nw = null;
-			if(_ne != null)
-				_ne.destroy();
-			_ne = null;
-			if(_se != null)
-				_se.destroy();
-			_se = null;
-			if(_sw != null)
-				_sw.destroy();
-			_sw = null;
+			if(_northWestTree != null)
+				_northWestTree.destroy();
+			_northWestTree = null;
+			if(_northEastTree != null)
+				_northEastTree.destroy();
+			_northEastTree = null;
+			if(_southEastTree != null)
+				_southEastTree.destroy();
+			_southEastTree = null;
+			if(_southWestTree != null)
+				_southWestTree.destroy();
+			_southWestTree = null;
 
-			_o = null;
-			_op = null;
-			_on = null;
+			_object = null;
+			_processingCallback = null;
+			_notifyCallback = null;
 		}
 
 		/**
@@ -198,12 +299,12 @@ package org.flixel.system
 			if(ObjectOrGroup2 != null)
 			{
 				add(ObjectOrGroup2, B_LIST);
-				_om = true;
+				_useBothLists = true;
 			}
 			else
-				_om = false;
-			_on = NotifyCallback;
-			_op = ProcessCallback;
+				_useBothLists = false;
+			_notifyCallback = NotifyCallback;
+			_processingCallback = ProcessCallback;
 		}
 		
 		/**
@@ -216,29 +317,29 @@ package org.flixel.system
 		 */
 		public function add(ObjectOrGroup:FlxBasic, List:uint):void
 		{
-			_oa = List;
+			_list = List;
 			if(ObjectOrGroup is FlxGroup)
 			{
 				var i:uint = 0;
-				var m:FlxBasic;
+				var basic:FlxBasic;
 				var members:Array = (ObjectOrGroup as FlxGroup).members;
 				var l:uint = members.length;
 				while(i < l)
 				{
-					m = members[i++] as FlxBasic;
-					if((m != null) && m.exists)
+					basic = members[i++] as FlxBasic;
+					if((basic != null) && basic.exists)
 					{
-						if(m is FlxGroup)
-							add(m,List);
-						else if(m is FlxObject)
+						if(basic is FlxGroup)
+							add(basic,List);
+						else if(basic is FlxObject)
 						{
-							_o = m as FlxObject;
-							if(_o.exists && _o.allowCollisions)
+							_object = basic as FlxObject;
+							if(_object.exists && _object.allowCollisions)
 							{
-								_ol = _o.x;
-								_ot = _o.y;
-								_or = _o.x + _o.width;
-								_ob = _o.y + _o.height;
+								_objectLeftEdge = _object.x;
+								_objectTopEdge = _object.y;
+								_objectRightEdge = _object.x + _object.width;
+								_objectBottomEdge = _object.y + _object.height;
 								addObject();
 							}
 						}
@@ -247,13 +348,13 @@ package org.flixel.system
 			}
 			else
 			{
-				_o = ObjectOrGroup as FlxObject;
-				if(_o.exists && _o.allowCollisions)
+				_object = ObjectOrGroup as FlxObject;
+				if(_object.exists && _object.allowCollisions)
 				{
-					_ol = _o.x;
-					_ot = _o.y;
-					_or = _o.x + _o.width;
-					_ob = _o.y + _o.height;
+					_objectLeftEdge = _object.x;
+					_objectTopEdge = _object.y;
+					_objectRightEdge = _object.x + _object.width;
+					_objectBottomEdge = _object.y + _object.height;
 					addObject();
 				}
 			}
@@ -266,72 +367,72 @@ package org.flixel.system
 		protected function addObject():void
 		{
 			//If this quad (not its children) lies entirely inside this object, add it here
-			if(!_canSubdivide || ((_l >= _ol) && (_r <= _or) && (_t >= _ot) && (_b <= _ob)))
+			if(!_canSubdivide || ((_leftEdge >= _objectLeftEdge) && (_rightEdge <= _objectRightEdge) && (_topEdge >= _objectTopEdge) && (_bottomEdge <= _objectBottomEdge)))
 			{
 				addToList();
 				return;
 			}
 			
 			//See if the selected object fits completely inside any of the quadrants
-			if((_ol > _l) && (_or < _mx))
+			if((_objectLeftEdge > _leftEdge) && (_objectRightEdge < _midpointX))
 			{
-				if((_ot > _t) && (_ob < _my))
+				if((_objectTopEdge > _topEdge) && (_objectBottomEdge < _midpointY))
 				{
-					if(_nw == null)
-						_nw = new FlxQuadTree(_l,_t,_hw,_hh,this);
-					_nw.addObject();
+					if(_northWestTree == null)
+						_northWestTree = new FlxQuadTree(_leftEdge,_topEdge,_halfWidth,_halfHeight,this);
+					_northWestTree.addObject();
 					return;
 				}
-				if((_ot > _my) && (_ob < _b))
+				if((_objectTopEdge > _midpointY) && (_objectBottomEdge < _bottomEdge))
 				{
-					if(_sw == null)
-						_sw = new FlxQuadTree(_l,_my,_hw,_hh,this);
-					_sw.addObject();
+					if(_southWestTree == null)
+						_southWestTree = new FlxQuadTree(_leftEdge,_midpointY,_halfWidth,_halfHeight,this);
+					_southWestTree.addObject();
 					return;
 				}
 			}
-			if((_ol > _mx) && (_or < _r))
+			if((_objectLeftEdge > _midpointX) && (_objectRightEdge < _rightEdge))
 			{
-				if((_ot > _t) && (_ob < _my))
+				if((_objectTopEdge > _topEdge) && (_objectBottomEdge < _midpointY))
 				{
-					if(_ne == null)
-						_ne = new FlxQuadTree(_mx,_t,_hw,_hh,this);
-					_ne.addObject();
+					if(_northEastTree == null)
+						_northEastTree = new FlxQuadTree(_midpointX,_topEdge,_halfWidth,_halfHeight,this);
+					_northEastTree.addObject();
 					return;
 				}
-				if((_ot > _my) && (_ob < _b))
+				if((_objectTopEdge > _midpointY) && (_objectBottomEdge < _bottomEdge))
 				{
-					if(_se == null)
-						_se = new FlxQuadTree(_mx,_my,_hw,_hh,this);
-					_se.addObject();
+					if(_southEastTree == null)
+						_southEastTree = new FlxQuadTree(_midpointX,_midpointY,_halfWidth,_halfHeight,this);
+					_southEastTree.addObject();
 					return;
 				}
 			}
 			
 			//If it wasn't completely contained we have to check out the partial overlaps
-			if((_or > _l) && (_ol < _mx) && (_ob > _t) && (_ot < _my))
+			if((_objectRightEdge > _leftEdge) && (_objectLeftEdge < _midpointX) && (_objectBottomEdge > _topEdge) && (_objectTopEdge < _midpointY))
 			{
-				if(_nw == null)
-					_nw = new FlxQuadTree(_l,_t,_hw,_hh,this);
-				_nw.addObject();
+				if(_northWestTree == null)
+					_northWestTree = new FlxQuadTree(_leftEdge,_topEdge,_halfWidth,_halfHeight,this);
+				_northWestTree.addObject();
 			}
-			if((_or > _mx) && (_ol < _r) && (_ob > _t) && (_ot < _my))
+			if((_objectRightEdge > _midpointX) && (_objectLeftEdge < _rightEdge) && (_objectBottomEdge > _topEdge) && (_objectTopEdge < _midpointY))
 			{
-				if(_ne == null)
-					_ne = new FlxQuadTree(_mx,_t,_hw,_hh,this);
-				_ne.addObject();
+				if(_northEastTree == null)
+					_northEastTree = new FlxQuadTree(_midpointX,_topEdge,_halfWidth,_halfHeight,this);
+				_northEastTree.addObject();
 			}
-			if((_or > _mx) && (_ol < _r) && (_ob > _my) && (_ot < _b))
+			if((_objectRightEdge > _midpointX) && (_objectLeftEdge < _rightEdge) && (_objectBottomEdge > _midpointY) && (_objectTopEdge < _bottomEdge))
 			{
-				if(_se == null)
-					_se = new FlxQuadTree(_mx,_my,_hw,_hh,this);
-				_se.addObject();
+				if(_southEastTree == null)
+					_southEastTree = new FlxQuadTree(_midpointX,_midpointY,_halfWidth,_halfHeight,this);
+				_southEastTree.addObject();
 			}
-			if((_or > _l) && (_ol < _mx) && (_ob > _my) && (_ot < _b))
+			if((_objectRightEdge > _leftEdge) && (_objectLeftEdge < _midpointX) && (_objectBottomEdge > _midpointY) && (_objectTopEdge < _bottomEdge))
 			{
-				if(_sw == null)
-					_sw = new FlxQuadTree(_l,_my,_hw,_hh,this);
-				_sw.addObject();
+				if(_southWestTree == null)
+					_southWestTree = new FlxQuadTree(_leftEdge,_midpointY,_halfWidth,_halfHeight,this);
+				_southWestTree.addObject();
 			}
 		}
 		
@@ -341,7 +442,7 @@ package org.flixel.system
 		protected function addToList():void
 		{
 			var ot:FlxList;
-			if(_oa == A_LIST)
+			if(_list == A_LIST)
 			{
 				if(_tailA.object != null)
 				{
@@ -349,7 +450,7 @@ package org.flixel.system
 					_tailA = new FlxList();
 					ot.next = _tailA;
 				}
-				_tailA.object = _o;
+				_tailA.object = _object;
 			}
 			else
 			{
@@ -359,160 +460,118 @@ package org.flixel.system
 					_tailB = new FlxList();
 					ot.next = _tailB;
 				}
-				_tailB.object = _o;
+				_tailB.object = _object;
 			}
 			if(!_canSubdivide)
 				return;
-			if(_nw != null)
-				_nw.addToList();
-			if(_ne != null)
-				_ne.addToList();
-			if(_se != null)
-				_se.addToList();
-			if(_sw != null)
-				_sw.addToList();
+			if(_northWestTree != null)
+				_northWestTree.addToList();
+			if(_northEastTree != null)
+				_northEastTree.addToList();
+			if(_southEastTree != null)
+				_southEastTree.addToList();
+			if(_southWestTree != null)
+				_southWestTree.addToList();
 		}
 		
 		/**
 		 * <code>FlxQuadTree</code>'s other main function.  Call this after adding objects
-		 * using <code>FlxQuadTree.add()</code> to compare the objects that you loaded.
-		 * 
-		 * @param	BothLists	Whether you are doing an A-B list comparison, or comparing A against itself.
-		 * @param	Callback	A function with two <code>FlxObject</code> parameters - e.g. <code>myOverlapFunction(Object1:FlxObject,Object2:FlxObject);</code>  If no function is provided, <code>FlxQuadTree</code> will call <code>kill()</code> on both objects.
+		 * using <code>FlxQuadTree.load()</code> to compare the objects that you loaded.
 		 *
 		 * @return	Whether or not any overlaps were found.
 		 */
 		public function execute():Boolean
 		{
-			var c:Boolean = false;
-			var itr:FlxList;
-			if(_om)
+			var overlapProcessed:Boolean = false;
+			var iterator:FlxList;
+			
+			if(_headA.object != null)
 			{
-				//An A-B list comparison
-				_oa = B_LIST;
-				if(_headA.object != null)
+				iterator = _headA;
+				while(iterator != null)
 				{
-					itr = _headA;
-					while(itr != null)
+					_object = iterator.object;
+					if(_useBothLists)
+						_iterator = _headB;
+					else
+						_iterator = iterator.next;
+					if(	_object.exists && (_object.allowCollisions > 0) &&
+						(_iterator != null) && (_iterator.object != null) &&
+						_iterator.object.exists &&overlapNode())
 					{
-						_o = itr.object;
-						if(_o.exists && _o.allowCollisions && overlapNode())
-							c = true;
-						itr = itr.next;
+						overlapProcessed = true;
 					}
-				}
-				_oa = A_LIST;
-				if(_headB.object != null)
-				{
-					itr = _headB;
-					while(itr != null)
-					{
-						_o = itr.object;
-						if(_o.exists && _o.allowCollisions)
-						{
-							if((_nw != null) && _nw.overlapNode())
-								c = true;
-							if((_ne != null) && _ne.overlapNode())
-								c = true;
-							if((_se != null) && _se.overlapNode())
-								c = true;
-							if((_sw != null) && _sw.overlapNode())
-								c = true;
-						}
-						itr = itr.next;
-					}
-				}
-			}
-			else
-			{
-				//Just checking the A list against itself
-				if(_headA.object != null)
-				{
-					itr = _headA;
-					while(itr != null)
-					{
-						_o = itr.object;
-						if(_o.exists && _o.allowCollisions && overlapNode(itr.next))
-							c = true;
-						itr = itr.next;
-					}
+					iterator = iterator.next;
 				}
 			}
 			
 			//Advance through the tree by calling overlap on each child
-			if((_nw != null) && _nw.execute())
-				c = true;
-			if((_ne != null) && _ne.execute())
-				c = true;
-			if((_se != null) && _se.execute())
-				c = true;
-			if((_sw != null) && _sw.execute())
-				c = true;
+			if((_northWestTree != null) && _northWestTree.execute())
+				overlapProcessed = true;
+			if((_northEastTree != null) && _northEastTree.execute())
+				overlapProcessed = true;
+			if((_southEastTree != null) && _southEastTree.execute())
+				overlapProcessed = true;
+			if((_southWestTree != null) && _southWestTree.execute())
+				overlapProcessed = true;
 			
-			return c;
+			return overlapProcessed;
 		}
 		
 		/**
 		 * An internal function for comparing an object against the contents of a node.
 		 * 
-		 * @param	Iterator	An optional pointer to a linked list entry (for comparing A against itself).
-		 * 
 		 * @return	Whether or not any overlaps were found.
 		 */
-		protected function overlapNode(Iterator:FlxList=null):Boolean
+		protected function overlapNode():Boolean
 		{
-			//Get a valid iterator if we don't have one yet
-			if(Iterator == null)
-			{
-				if(_oa == A_LIST)
-					Iterator = _headA;
-				else
-					Iterator = _headB;
-			}
-			if(Iterator.object == null)
-				return false;
-
 			//Walk the list and check for overlaps
-			var c:Boolean = false;
-			var co:FlxObject;
-			while(Iterator != null)
+			var overlapProcessed:Boolean = false;
+			var checkObject:FlxObject;
+			while(_iterator != null)
 			{
-				co = Iterator.object;
-				if((_o === co) || !co.exists || !co.allowCollisions)
+				if(!_object.exists || (_object.allowCollisions <= 0))
+					break;
+				
+				checkObject = _iterator.object;
+				if((_object === checkObject) || !checkObject.exists || (checkObject.allowCollisions <= 0))
 				{
-					Iterator = Iterator.next;
+					_iterator = _iterator.next;
 					continue;
 				}
 				
-				//calculate bulk hull for _o
-				_ohx = (_o.x < _o.last.x)?_o.x:_o.last.x;
-				_ohy = (_o.y < _o.last.y)?_o.y:_o.last.y;
-				_ohw = _o.x - _o.last.x;
-				_ohw = _o.width + ((_ohw>0)?_ohw:-_ohw);
-				_ohh = _o.y - _o.last.y;
-				_ohh = _o.height + ((_ohh>0)?_ohh:-_ohh);
+				//calculate bulk hull for _object
+				_objectHullX = (_object.x < _object.last.x)?_object.x:_object.last.x;
+				_objectHullY = (_object.y < _object.last.y)?_object.y:_object.last.y;
+				_objectHullWidth = _object.x - _object.last.x;
+				_objectHullWidth = _object.width + ((_objectHullWidth>0)?_objectHullWidth:-_objectHullWidth);
+				_objectHullHeight = _object.y - _object.last.y;
+				_objectHullHeight = _object.height + ((_objectHullHeight>0)?_objectHullHeight:-_objectHullHeight);
 				
-				//calculate bulk hull for co
-				_cox = (co.x < co.last.x)?co.x:co.last.x;
-				_coy = (co.y < co.last.y)?co.y:co.last.y;
-				_cow = co.x - co.last.x;
-				_cow = co.width + ((_cow>0)?_cow:-_cow);
-				_coh = co.y - co.last.y;
-				_coh = co.height + ((_coh>0)?_coh:-_coh);
+				//calculate bulk hull for checkObject
+				_checkObjectHullX = (checkObject.x < checkObject.last.x)?checkObject.x:checkObject.last.x;
+				_checkObjectHullY = (checkObject.y < checkObject.last.y)?checkObject.y:checkObject.last.y;
+				_checkObjectHullWidth = checkObject.x - checkObject.last.x;
+				_checkObjectHullWidth = checkObject.width + ((_checkObjectHullWidth>0)?_checkObjectHullWidth:-_checkObjectHullWidth);
+				_checkObjectHullHeight = checkObject.y - checkObject.last.y;
+				_checkObjectHullHeight = checkObject.height + ((_checkObjectHullHeight>0)?_checkObjectHullHeight:-_checkObjectHullHeight);
 				
 				//check for intersection of the two hulls
-				if((_ohx + _ohw > _cox) && (_ohx < _cox + _cow) && (_ohy + _ohh > _coy) && (_ohy < _coy + _coh))
+				if(	(_objectHullX + _objectHullWidth > _checkObjectHullX) &&
+					(_objectHullX < _checkObjectHullX + _checkObjectHullWidth) &&
+					(_objectHullY + _objectHullHeight > _checkObjectHullY) &&
+					(_objectHullY < _checkObjectHullY + _checkObjectHullHeight) )
 				{
 					//Execute callback functions if they exist
-					if((_op == null) || _op(_o,co))
-						c = true;
-					if(c && (_on != null))
-						_on(_o,co);
+					if((_processingCallback == null) || _processingCallback(_object,checkObject))
+						overlapProcessed = true;
+					if(overlapProcessed && (_notifyCallback != null))
+						_notifyCallback(_object,checkObject);
 				}
-				Iterator = Iterator.next;
+				_iterator = _iterator.next;
 			}
 			
-			return c;
+			return overlapProcessed;
 		}
 	}
 }

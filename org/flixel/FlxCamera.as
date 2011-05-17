@@ -2,6 +2,7 @@ package org.flixel
 {
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.display.Sprite;
 	import flash.geom.ColorTransform;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -100,6 +101,12 @@ package org.flixel
 		 * NOTE: can be transparent for crazy FX!
 		 */
 		public var bgColor:uint;
+		/**
+		 * Sometimes it's easier to just work with a <code>FlxSprite</code> than it is to work
+		 * directly with the <code>BitmapData</code> buffer.  This sprite reference will
+		 * allow you to do exactly that.
+		 */
+		public var screen:FlxSprite;
 		
 		/**
 		 * Indicates how far the camera is zoomed in.
@@ -117,30 +124,78 @@ package org.flixel
 		/**
 		 * Internal, used to render buffer to screen space.
 		 */
-		internal var _flashBitmap:Bitmap;
+		protected var _flashBitmap:Bitmap;
+		/**
+		 * Internal, used to render buffer to screen space.
+		 */
+		internal var _flashSprite:Sprite;
+		/**
+		 * Internal, used to render buffer to screen space.
+		 */
+		internal var _flashOffsetX:Number;
+		/**
+		 * Internal, used to render buffer to screen space.
+		 */
+		internal var _flashOffsetY:Number;
+		/**
+		 * Internal, used to render buffer to screen space.
+		 */
 		protected var _flashRect:Rectangle;
+		/**
+		 * Internal, used to render buffer to screen space.
+		 */
 		protected var _flashPoint:Point;
 		/**
 		 * Internal, used to control the "flash" special effect.
 		 */
 		protected var _fxFlashColor:uint;
+		/**
+		 * Internal, used to control the "flash" special effect.
+		 */
 		protected var _fxFlashDuration:Number;
+		/**
+		 * Internal, used to control the "flash" special effect.
+		 */
 		protected var _fxFlashComplete:Function;
+		/**
+		 * Internal, used to control the "flash" special effect.
+		 */
 		protected var _fxFlashAlpha:Number;
 		/**
 		 * Internal, used to control the "fade" special effect.
 		 */
 		protected var _fxFadeColor:uint;
+		/**
+		 * Internal, used to control the "fade" special effect.
+		 */
 		protected var _fxFadeDuration:Number;
+		/**
+		 * Internal, used to control the "fade" special effect.
+		 */
 		protected var _fxFadeComplete:Function;
+		/**
+		 * Internal, used to control the "fade" special effect.
+		 */
 		protected var _fxFadeAlpha:Number;
 		/**
 		 * Internal, used to control the "shake" special effect.
 		 */
 		protected var _fxShakeIntensity:Number;
+		/**
+		 * Internal, used to control the "shake" special effect.
+		 */
 		protected var _fxShakeDuration:Number;
+		/**
+		 * Internal, used to control the "shake" special effect.
+		 */
 		protected var _fxShakeComplete:Function;
+		/**
+		 * Internal, used to control the "shake" special effect.
+		 */
 		protected var _fxShakeOffset:FlxPoint;
+		/**
+		 * Internal, used to control the "shake" special effect.
+		 */
 		protected var _fxShakeDirection:uint;
 		/**
 		 * Internal helper variable for doing better wipes/fills between renders.
@@ -167,14 +222,23 @@ package org.flixel
 			scroll = new FlxPoint();
 			_point = new FlxPoint();
 			bounds = null;
+			screen = new FlxSprite();
+			screen.makeGraphic(width,height,0,true);
+			screen.setOriginToCorner();
+			buffer = screen.pixels;
 			bgColor = FlxG.bgColor;
-			buffer = new BitmapData(width,height,true,0);
 			_color = 0xffffff;
 
 			_flashBitmap = new Bitmap(buffer);
-			_flashBitmap.x = x;
-			_flashBitmap.y = y;
-			zoom = Zoom; //requires flashbitmap in order to work
+			_flashBitmap.x = -width*0.5;
+			_flashBitmap.y = -height*0.5;
+			_flashSprite = new Sprite();
+			zoom = Zoom; //sets the scale of flash sprite, which in turn loads flashoffset values
+			_flashOffsetX = width*0.5*zoom;
+			_flashOffsetY = height*0.5*zoom;
+			_flashSprite.x = x + _flashOffsetX;
+			_flashSprite.y = y + _flashOffsetY;
+			_flashSprite.addChild(_flashBitmap);
 			_flashRect = new Rectangle(0,0,width,height);
 			_flashPoint = new Point();
 			
@@ -202,6 +266,8 @@ package org.flixel
 		 */
 		override public function destroy():void
 		{
+			screen.destroy();
+			screen = null;
 			target = null;
 			scroll = null;
 			deadzone = null;
@@ -234,19 +300,19 @@ package org.flixel
 					var targetX:Number = target.boundingX + ((target.x > 0)?0.0000001:-0.0000001);
 					var targetY:Number = target.boundingY + ((target.y > 0)?0.0000001:-0.0000001);
 					
-					t = targetX - deadzone.x;
-					if(scroll.x > t)
-						scroll.x = t;
-					t = targetX + target.width - deadzone.x - deadzone.width;
-					if(scroll.x < t)
-						scroll.x = t;
+					edge = targetX - deadzone.x;
+					if(scroll.x > edge)
+						scroll.x = edge;
+					edge = targetX + target.width - deadzone.x - deadzone.width;
+					if(scroll.x < edge)
+						scroll.x = edge;
 					
-					t = targetY - deadzone.y;
-					if(scroll.y > t)
-						scroll.y = t;
-					t = targetY + target.height - deadzone.y - deadzone.height;
-					if(scroll.y < t)
-						scroll.y = t;
+					edge = targetY - deadzone.y;
+					if(scroll.y > edge)
+						scroll.y = edge;
+					edge = targetY + target.height - deadzone.y - deadzone.height;
+					if(scroll.y < edge)
+						scroll.y = edge;
 				}
 			}
 			
@@ -312,7 +378,7 @@ package org.flixel
 		public function follow(Target:FlxObject, Style:uint=STYLE_LOCKON):void
 		{
 			target = Target;
-			var d:Number;
+			var helper:Number;
 			switch(Style)
 			{
 				case STYLE_PLATFORMER:
@@ -321,12 +387,12 @@ package org.flixel
 					deadzone = new FlxRect((width-w)/2,(height-h)/2 - h*0.25,w,h);
 					break;
 				case STYLE_TOPDOWN:
-					d = FlxU.max(width,height)/4;
-					deadzone = new FlxRect((width-d)/2,(height-d)/2,d,d);
+					helper = FlxU.max(width,height)/4;
+					deadzone = new FlxRect((width-helper)/2,(height-helper)/2,helper,helper);
 					break;
 				case STYLE_TOPDOWN_TIGHT:
-					d = FlxU.max(width,height)/8;
-					deadzone = new FlxRect((width-d)/2,(height-d)/2,d,d);
+					helper = FlxU.max(width,height)/8;
+					deadzone = new FlxRect((width-helper)/2,(height-helper)/2,helper,helper);
 					break;
 				case STYLE_LOCKON:
 				default:
@@ -394,7 +460,7 @@ package org.flixel
 		 * @param	OnComplete	A function you want to run when the fade finishes.
 		 * @param	Force		Force the effect to reset.
 		 */
-		public function fade(Color:uint=0xffffffff, Duration:Number=1, OnComplete:Function=null, Force:Boolean=false):void
+		public function fade(Color:uint=0xff000000, Duration:Number=1, OnComplete:Function=null, Force:Boolean=false):void
 		{
 			if(!Force && (_fxFadeAlpha > 0.0))
 				return;
@@ -434,8 +500,8 @@ package org.flixel
 			_fxFlashAlpha = 0.0;
 			_fxFadeAlpha = 0.0;
 			_fxShakeDuration = 0;
-			_flashBitmap.x = x;
-			_flashBitmap.y = y;
+			_flashSprite.x = x + width*0.5;
+			_flashSprite.y = y + height*0.5;
 		}
 		
 		/**
@@ -487,8 +553,7 @@ package org.flixel
 				_zoom = defaultZoom;
 			else
 				_zoom = Zoom;
-			_flashBitmap.scaleX = _zoom;
-			_flashBitmap.scaleY = _zoom;
+			setScale(_zoom,_zoom);
 		}
 		
 		/**
@@ -514,7 +579,7 @@ package org.flixel
 		 */
 		public function get angle():Number
 		{
-			return _flashBitmap.rotation;
+			return _flashSprite.rotation;
 		}
 		
 		/**
@@ -522,7 +587,7 @@ package org.flixel
 		 */
 		public function set angle(Angle:Number):void
 		{
-			_flashBitmap.rotation = Angle;
+			_flashSprite.rotation = Angle;
 		}
 		
 		/**
@@ -539,11 +604,11 @@ package org.flixel
 		public function set color(Color:uint):void
 		{
 			_color = Color;
-			var ct:ColorTransform = _flashBitmap.transform.colorTransform;
-			ct.redMultiplier = (_color>>16)*0.00392;
-			ct.greenMultiplier = (_color>>8&0xff)*0.00392;
-			ct.blueMultiplier = (_color&0xff)*0.00392;
-			_flashBitmap.transform.colorTransform = ct;
+			var colorTransform:ColorTransform = _flashBitmap.transform.colorTransform;
+			colorTransform.redMultiplier = (_color>>16)*0.00392;
+			colorTransform.greenMultiplier = (_color>>8&0xff)*0.00392;
+			colorTransform.blueMultiplier = (_color&0xff)*0.00392;
+			_flashBitmap.transform.colorTransform = colorTransform;
 		}
 		
 		/**
@@ -570,7 +635,7 @@ package org.flixel
 		 */
 		public function getScale():FlxPoint
 		{
-			return _point.make(_flashBitmap.scaleX,_flashBitmap.scaleY);
+			return _point.make(_flashSprite.scaleX,_flashSprite.scaleY);
 		}
 		
 		/**
@@ -578,8 +643,8 @@ package org.flixel
 		 */
 		public function setScale(X:Number,Y:Number):void
 		{
-			_flashBitmap.scaleX = X;
-			_flashBitmap.scaleY = Y;
+			_flashSprite.scaleX = X;
+			_flashSprite.scaleY = Y;
 		}
 		
 		/**
@@ -619,8 +684,8 @@ package org.flixel
 			
 			if((_fxShakeOffset.x != 0) || (_fxShakeOffset.y != 0))
 			{
-				_flashBitmap.x = x + _fxShakeOffset.x;
-				_flashBitmap.y = y + _fxShakeOffset.y;
+				_flashSprite.x = x + _flashOffsetX + _fxShakeOffset.x;
+				_flashSprite.y = y + _flashOffsetY + _fxShakeOffset.y;
 			}
 		}
 	}

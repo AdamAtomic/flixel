@@ -31,7 +31,7 @@ package org.flixel.plugin
 		
 		/**
 		 * Called by <code>FlxG.updatePlugins()</code> before the game state has been updated.
-		 * Cycles through cameras and calls <code>drawDebug()</code> on each one.
+		 * Cycles through timers and calls <code>update()</code> on each one.
 		 */
 		override public function update():void
 		{
@@ -40,7 +40,7 @@ package org.flixel.plugin
 			while(i >= 0)
 			{
 				timer = _timers[i--] as FlxTimer;
-				if((timer != null) && !timer.paused && !timer.finished)
+				if((timer != null) && !timer.paused && !timer.finished && (timer.time > 0))
 					timer.update();
 			}
 		}

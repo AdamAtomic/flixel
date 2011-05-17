@@ -163,52 +163,52 @@ package org.flixel
 		{
 			maxSize = Quantity;
 			
-			var tf:uint = 1;
+			var totalFrames:uint = 1;
 			if(Multiple)
 			{ 
-				var s:FlxSprite = new FlxSprite();
-				s.loadGraphic(Graphics,true);
-				tf = s.frames;
-				s.destroy();
+				var sprite:FlxSprite = new FlxSprite();
+				sprite.loadGraphic(Graphics,true);
+				totalFrames = sprite.frames;
+				sprite.destroy();
 			}
 
-			var r:uint;
-			var p:FlxParticle;
+			var randomFrame:uint;
+			var particle:FlxParticle;
 			var i:uint = 0;
 			while(i < Quantity)
 			{
 				if(particleClass == null)
-					p = new FlxParticle();
+					particle = new FlxParticle();
 				else
-					p = new particleClass();
+					particle = new particleClass();
 				if(Multiple)
 				{
-					r = FlxG.random()*tf;
+					randomFrame = FlxG.random()*totalFrames;
 					if(BakedRotations > 0)
-						p.loadRotatedGraphic(Graphics,BakedRotations,r);
+						particle.loadRotatedGraphic(Graphics,BakedRotations,randomFrame);
 					else
 					{
-						p.loadGraphic(Graphics,true);
-						p.frame = r;
+						particle.loadGraphic(Graphics,true);
+						particle.frame = randomFrame;
 					}
 				}
 				else
 				{
 					if(BakedRotations > 0)
-						p.loadRotatedGraphic(Graphics,BakedRotations);
+						particle.loadRotatedGraphic(Graphics,BakedRotations);
 					else
-						p.loadGraphic(Graphics);
+						particle.loadGraphic(Graphics);
 				}
 				if(Collide > 0)
 				{
-					p.width *= Collide;
-					p.height *= Collide;
-					p.centerOffsets();
+					particle.width *= Collide;
+					particle.height *= Collide;
+					particle.centerOffsets();
 				}
 				else
-					p.allowCollisions = FlxObject.NONE;
-				p.exists = false;
-				add(p);
+					particle.allowCollisions = FlxObject.NONE;
+				particle.exists = false;
+				add(particle);
 				i++;
 			}
 			return this;
@@ -290,32 +290,32 @@ package org.flixel
 		 */
 		public function emitParticle():void
 		{
-			var p:FlxParticle = recycle(FlxParticle) as FlxParticle;
-			p.lifespan = lifespan;
-			p.elasticity = bounce;
-			p.reset(x - (p.width>>1) + FlxG.random()*width, y - (p.height>>1) + FlxG.random()*height);
-			p.visible = true;
+			var particle:FlxParticle = recycle(FlxParticle) as FlxParticle;
+			particle.lifespan = lifespan;
+			particle.elasticity = bounce;
+			particle.reset(x - (particle.width>>1) + FlxG.random()*width, y - (particle.height>>1) + FlxG.random()*height);
+			particle.visible = true;
 			
 			if(minParticleSpeed.x != maxParticleSpeed.x)
-				p.velocity.x = minParticleSpeed.x + FlxG.random()*(maxParticleSpeed.x-minParticleSpeed.x);
+				particle.velocity.x = minParticleSpeed.x + FlxG.random()*(maxParticleSpeed.x-minParticleSpeed.x);
 			else
-				p.velocity.x = minParticleSpeed.x;
+				particle.velocity.x = minParticleSpeed.x;
 			if(minParticleSpeed.y != maxParticleSpeed.y)
-				p.velocity.y = minParticleSpeed.y + FlxG.random()*(maxParticleSpeed.y-minParticleSpeed.y);
+				particle.velocity.y = minParticleSpeed.y + FlxG.random()*(maxParticleSpeed.y-minParticleSpeed.y);
 			else
-				p.velocity.y = minParticleSpeed.y;
-			p.acceleration.y = gravity;
+				particle.velocity.y = minParticleSpeed.y;
+			particle.acceleration.y = gravity;
 			
 			if(minRotation != maxRotation)
-				p.angularVelocity = minRotation + FlxG.random()*(maxRotation-minRotation);
+				particle.angularVelocity = minRotation + FlxG.random()*(maxRotation-minRotation);
 			else
-				p.angularVelocity = minRotation;
-			if(p.angularVelocity != 0)
-				p.angle = FlxG.random()*360-180;
+				particle.angularVelocity = minRotation;
+			if(particle.angularVelocity != 0)
+				particle.angle = FlxG.random()*360-180;
 			
-			p.drag.x = particleDrag.x;
-			p.drag.y = particleDrag.y;
-			p.onEmit();
+			particle.drag.x = particleDrag.x;
+			particle.drag.y = particleDrag.y;
+			particle.onEmit();
 		}
 		
 		/**
