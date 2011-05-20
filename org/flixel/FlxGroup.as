@@ -518,11 +518,16 @@ package org.flixel
 		/**
 		 * Returns a member at random from the group.
 		 * 
+		 * @param	StartIndex	Optional offset off the front of the array. Default value is 0, or the beginning of the array.
+		 * @param	Length		Optional restriction on the number of values you want to randomly select from.
+		 * 
 		 * @return	A <code>FlxBasic</code> from the members list.
 		 */
-		public function getRandom():FlxBasic
+		public function getRandom(StartIndex:uint=0,Length:uint=0):FlxBasic
 		{
-			return FlxG.getRandom(members) as FlxBasic;
+			if(Length == 0)
+				Length = length;
+			return FlxG.getRandom(members,StartIndex,Length) as FlxBasic;
 		}
 		
 		/**

@@ -368,16 +368,20 @@ package org.flixel
 		 * HOWEVER, <code>FlxU.getRandom()</code> is NOT deterministic and unsafe for use with replays/recordings.
 		 * 
 		 * @param	Objects		A Flash array of objects.
+		 * @param	StartIndex	Optional offset off the front of the array. Default value is 0, or the beginning of the array.
+		 * @param	Length		Optional restriction on the number of values you want to randomly select from.
 		 * 
 		 * @return	The random object that was selected.
 		 */
-		static public function getRandom(Objects:Array):Object
+		static public function getRandom(Objects:Array,StartIndex:uint=0,Length:uint=0):Object
 		{
 			if(Objects != null)
 			{
-				var l:uint = Objects.length;
+				var l:uint = Length;
+				if((l == 0) || (l > Objects.length - StartIndex))
+					l = Objects.length - StartIndex;
 				if(l > 0)
-					return Objects[uint(FlxG.random()*l)];
+					return Objects[StartIndex + uint(FlxG.random()*l)];
 			}
 			return null;
 		}
@@ -629,7 +633,7 @@ package org.flixel
 				music.pause();
 			var i:uint = 0;
 			var sound:FlxSound;
-			var l:uint = sounds.members.length;
+			var l:uint = sounds.length;
 			while(i < l)
 			{
 				sound = sounds.members[i++] as FlxSound;
@@ -647,7 +651,7 @@ package org.flixel
 				music.play();
 			var i:uint = 0;
 			var sound:FlxSound;
-			var l:uint = sounds.members.length;
+			var l:uint = sounds.length;
 			while(i < l)
 			{
 				sound = sounds.members[i++] as FlxSound;

@@ -258,7 +258,6 @@ package org.flixel
 			{
 				label.x = x;
 				label.y = y;
-				label.scrollFactor = scrollFactor;
 			}
 			if(labelOffset != null)
 			{
@@ -280,7 +279,11 @@ package org.flixel
 		{
 			super.draw();
 			if(label != null)
+			{
+				label.scrollFactor = scrollFactor;
+				label.cameras = cameras;
 				label.draw();
+			}
 		}
 		
 		/**
