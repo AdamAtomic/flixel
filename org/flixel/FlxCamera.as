@@ -648,6 +648,22 @@ package org.flixel
 		}
 		
 		/**
+		 * Fetches a reference to the Flash <code>Sprite</code> object
+		 * that contains the camera display in the Flash display list.
+		 * Uses include 3D projection, advanced display list modification, and more.
+		 * NOTE: We don't recommend modifying this directly unless you are
+		 * fairly experienced.  For simple changes to the camera display,
+		 * like scaling, rotation, and color tinting, we recommend
+		 * using the existing <code>FlxCamera</code> variables.
+		 * 
+		 * @return	A Flash <code>Sprite</code> object containing the camera display.
+		 */
+		public function getContainerSprite():Sprite
+		{
+			return _flashSprite;
+		}
+		
+		/**
 		 * Fill the camera with the specified color.
 		 * 
 		 * @param	Color		The color to fill with in 0xAARRGGBB hex format.

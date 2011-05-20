@@ -47,6 +47,10 @@ package org.flixel
 		 * Just the amplitude of the left stereo channel
 		 */
 		public var amplitudeRight:Number;
+		/**
+		 * Whether to call destroy() when the sound has finished.
+		 */
+		public var autoDestroy:Boolean;
 
 		/**
 		 * Internal tracker for a Flash sound object.
@@ -150,6 +154,7 @@ package org.flixel
 			amplitude = 0;
 			amplitudeLeft = 0;
 			amplitudeRight = 0;
+			autoDestroy = false;
 		}
 		
 		/**
@@ -157,10 +162,11 @@ package org.flixel
 		 */
 		override public function destroy():void
 		{
-			stop();
+			kill();
 
 			_transform = null;
 			_sound = null;
+			_channel = null;
 			_target = null;
 			name = null;
 			artist = null;
@@ -228,15 +234,23 @@ package org.flixel
 			}
 		}
 		
+		override public function kill():void
+		{
+			super.kill();
+			if(_channel != null)
+				stop();
+		}
+		
 		/**
 		 * One of two main setup functions for sounds, this function loads a sound from an embedded MP3.
 		 * 
 		 * @param	EmbeddedSound	An embedded Class object representing an MP3 file.
 		 * @param	Looped			Whether or not this sound should loop endlessly.
+		 * @param	AutoDestroy		Whether or not this <code>FlxSound</code> instance should be destroyed when the sound finishes playing.  Default value is false, but FlxG.play() and FlxG.stream() will set it to true by default.
 		 * 
 		 * @return	This <code>FlxSound</code> instance (nice for chaining stuff together, if you're into that).
 		 */
-		public function loadEmbedded(EmbeddedSound:Class, Looped:Boolean=false):FlxSound
+		public function loadEmbedded(EmbeddedSound:Class, Looped:Boolean=false, AutoDestroy:Boolean=false):FlxSound
 		{
 			stop();
 			createSound();
@@ -253,10 +267,11 @@ package org.flixel
 		 * 
 		 * @param	EmbeddedSound	A string representing the URL of the MP3 file you want to play.
 		 * @param	Looped			Whether or not this sound should loop endlessly.
+		 * @param	AutoDestroy		Whether or not this <code>FlxSound</code> instance should be destroyed when the sound finishes playing.  Default value is false, but FlxG.play() and FlxG.stream() will set it to true by default.
 		 * 
 		 * @return	This <code>FlxSound</code> instance (nice for chaining stuff together, if you're into that).
 		 */
-		public function loadStream(SoundURL:String, Looped:Boolean=false):FlxSound
+		public function loadStream(SoundURL:String, Looped:Boolean=false, AutoDestroy:Boolean=false):FlxSound
 		{
 			stop();
 			createSound();
@@ -293,11 +308,20 @@ package org.flixel
 		
 		/**
 		 * Call this function to play the sound.
+		 * 
+		 * @param	ForceRestart	Whether to start the sound over or not.  Default value is false, meaning if the sound is already playing or was paused when you call <code>play()</code>, it will continue playing from its current position, NOT start again from the beginning.
 		 */
-		public function play():void
+		public function play(ForceRestart:Boolean=false):void
 		{
 			if(_position < 0)
 				return;
+			if(ForceRestart)
+			{
+				var oldAutoDestroy:Boolean = autoDestroy;
+				autoDestroy = false;
+				stop();
+				autoDestroy = oldAutoDestroy;
+			}
 			if(_looped)
 			{
 				if(_position == 0)
@@ -469,8 +493,9 @@ package org.flixel
 	        else
 	        	_channel.removeEventListener(Event.SOUND_COMPLETE,looped);
 	        _channel = null;
-			exists = false;
-	        active = false;
+			active = false;
+			if(autoDestroy)
+				destroy();
 		}
 		
 		/**

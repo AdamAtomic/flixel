@@ -38,7 +38,7 @@ package org.flixel
 		 * Assign a minor version to your library.
 		 * Appears after the decimal in the console.
 		 */
-		static public var LIBRARY_MINOR_VERSION:uint = 53;
+		static public var LIBRARY_MINOR_VERSION:uint = 54;
 		
 		/**
 		 * Debugger overlay layout preset: Wide but low windows at the bottom of the screen.
@@ -501,39 +501,65 @@ package org.flixel
 		}
 		
 		/**
-		 * Creates a new sound object from an embedded <code>Class</code> object.
+		 * Creates a new sound object.
 		 * 
-		 * @param	EmbeddedSound	The sound you want to play.
+		 * @param	EmbeddedSound	The embedded sound resource you want to play.  To stream, use the optional URL parameter instead.
 		 * @param	Volume			How loud to play it (0 to 1).
-		 * @param	Looped			Whether or not to loop this sound.
+		 * @param	Looped			Whether to loop this sound.
+		 * @param	AutoDestroy		Whether to destroy this sound when it finishes playing.  Leave this value set to "false" if you want to re-use this <code>FlxSound</code> instance.
+		 * @param	AutoPlay		Whether to play the sound.
+		 * @param	URL				Load a sound from an external web resource instead.  Only used if EmbeddedSound = null.
 		 * 
 		 * @return	A <code>FlxSound</code> object.
 		 */
-		static public function play(EmbeddedSound:Class,Volume:Number=1.0,Looped:Boolean=false):FlxSound
+		static public function loadSound(EmbeddedSound:Class=null,Volume:Number=1.0,Looped:Boolean=false,AutoDestroy:Boolean=false,AutoPlay:Boolean=false,URL:String=null):FlxSound
 		{
+			if((EmbeddedSound == null) && (URL == null))
+			{
+				FlxG.log("WARNING: FlxG.loadSound() requires either\nan embedded sound or a URL to work.");
+				return null;
+			}
 			var sound:FlxSound = sounds.recycle(FlxSound) as FlxSound;
-			sound.loadEmbedded(EmbeddedSound,Looped);
+			if(EmbeddedSound != null)
+				sound.loadEmbedded(EmbeddedSound,Looped,AutoDestroy);
+			else
+				sound.loadStream(URL,Looped,AutoDestroy);
 			sound.volume = Volume;
-			sound.play();
+			if(AutoPlay)
+				sound.play();
 			return sound;
 		}
 		
 		/**
+		 * Creates a new sound object from an embedded <code>Class</code> object.
+		 * NOTE: Just calls FlxG.loadSound() with AutoPlay == true.
+		 * 
+		 * @param	EmbeddedSound	The sound you want to play.
+		 * @param	Volume			How loud to play it (0 to 1).
+		 * @param	Looped			Whether to loop this sound.
+		 * @param	AutoDestroy		Whether to destroy this sound when it finishes playing.  Leave this value set to "false" if you want to re-use this <code>FlxSound</code> instance.
+		 * 
+		 * @return	A <code>FlxSound</code> object.
+		 */
+		static public function play(EmbeddedSound:Class,Volume:Number=1.0,Looped:Boolean=false,AutoDestroy:Boolean=true):FlxSound
+		{
+			return FlxG.loadSound(EmbeddedSound,Volume,Looped,AutoDestroy,true);
+		}
+		
+		/**
 		 * Creates a new sound object from a URL.
+		 * NOTE: Just calls FlxG.loadSound() with AutoPlay == true.
 		 * 
 		 * @param	URL		The URL of the sound you want to play.
 		 * @param	Volume	How loud to play it (0 to 1).
 		 * @param	Looped	Whether or not to loop this sound.
+		 * @param	AutoDestroy		Whether to destroy this sound when it finishes playing.  Leave this value set to "false" if you want to re-use this <code>FlxSound</code> instance.
 		 * 
 		 * @return	A FlxSound object.
 		 */
-		static public function stream(URL:String,Volume:Number=1.0,Looped:Boolean=false):FlxSound
+		static public function stream(URL:String,Volume:Number=1.0,Looped:Boolean=false,AutoDestroy:Boolean=true):FlxSound
 		{
-			var sound:FlxSound = sounds.recycle(FlxSound) as FlxSound;
-			sound.loadStream(URL,Looped);
-			sound.volume = Volume;
-			sound.play();
-			return sound;
+			return FlxG.loadSound(null,Volume,Looped,AutoDestroy,true,URL);
 		}
 		
 		/**
@@ -721,6 +747,7 @@ package org.flixel
 				mtx.translate(newPixels.width,0);
 				newPixels.draw(pixels,mtx);
 				pixels = newPixels;
+				_cache[Key] = pixels;
 			}
 			return pixels;
 		}
@@ -863,7 +890,7 @@ package org.flixel
 		 * @param	OnComplete	A function you want to run when the fade finishes.
 		 * @param	Force		Force the effect to reset.
 		 */
-		static public function fade(Color:uint=0xffffffff, Duration:Number=1, OnComplete:Function=null, Force:Boolean=false):void
+		static public function fade(Color:uint=0xff000000, Duration:Number=1, OnComplete:Function=null, Force:Boolean=false):void
 		{
 			var i:uint = 0;
 			var l:uint = FlxG.cameras.length;
