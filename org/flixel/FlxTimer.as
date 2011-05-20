@@ -149,6 +149,17 @@ package org.flixel
 			return loops-_loopsCounter;
 		}
 		
+		/**
+		 * Read-only: how far along the timer is, on a scale of 0.0 to 1.0.
+		 */
+		public function get progress():Number
+		{
+			if(time > 0)
+				return _timeCounter/time;
+			else
+				return 0;
+		}
+		
 		static public function get manager():TimerManager
 		{
 			return FlxG.getPlugin(TimerManager) as TimerManager;
