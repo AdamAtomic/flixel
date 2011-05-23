@@ -174,10 +174,8 @@ package org.flixel.system.input
 		 */
 		public function update(X:int,Y:int):void
 		{
-			_globalScreenPosition.make(X,Y);
-			getScreenPosition(null,_point);
-			screenX = _point.x;
-			screenY = _point.y;
+			_globalScreenPosition.x = X;
+			_globalScreenPosition.y = Y;
 			updateCursor();
 			if((_last == -1) && (_current == -1))
 				_current = 0;
@@ -191,9 +189,17 @@ package org.flixel.system.input
 		 */
 		protected function updateCursor():void
 		{
-			getWorldPosition(null,this);
+			//actually position the flixel mouse cursor graphic
 			_cursorContainer.x = _globalScreenPosition.x;
 			_cursorContainer.y = _globalScreenPosition.y;
+			
+			//update the x, y, screenX, and screenY variables based on the default camera
+			var camera:FlxCamera = FlxG.camera;
+			getScreenPosition(camera,_point);
+			screenX = (_point.x - camera.x)/camera.zoom;
+			screenY = (_point.y - camera.y)/camera.zoom;
+			x = screenX + camera.scroll.x;
+			y = screenY + camera.scroll.y;
 		}
 		
 		/**
@@ -212,7 +218,9 @@ package org.flixel.system.input
 			if(Point == null)
 				Point = new FlxPoint();
 			getScreenPosition(Camera,_point);
-			return Point.make(_point.x + Camera.scroll.x, _point.y + Camera.scroll.y);
+			Point.x = _point.x + Camera.scroll.x;
+			Point.y = _point.y + Camera.scroll.y;
+			return Point;
 		}
 		
 		/**
@@ -230,7 +238,9 @@ package org.flixel.system.input
 				Camera = FlxG.camera;
 			if(Point == null)
 				Point = new FlxPoint();
-			return Point.make((_globalScreenPosition.x - Camera.x)/Camera.zoom,(_globalScreenPosition.y - Camera.y)/Camera.zoom);
+			Point.x = (_globalScreenPosition.x - Camera.x)/Camera.zoom;
+			Point.y = (_globalScreenPosition.y - Camera.y)/Camera.zoom;
+			return Point;
 		}
 		
 		/**
@@ -302,12 +312,12 @@ package org.flixel.system.input
 		 */
 		public function record():MouseRecord
 		{
-			if((_lastX == screenX) && (_lastY == screenY) && (_current == 0) && (_lastWheel == wheel))
+			if((_lastX == _globalScreenPosition.x) && (_lastY == _globalScreenPosition.y) && (_current == 0) && (_lastWheel == wheel))
 				return null;
-			_lastX = screenX;
-			_lastY = screenY;
+			_lastX = _globalScreenPosition.x;
+			_lastY = _globalScreenPosition.y;
 			_lastWheel = wheel;
-			return new MouseRecord(screenX,screenY,_current,wheel);
+			return new MouseRecord(_lastX,_lastY,_current,_lastWheel);
 		}
 		
 		/**
@@ -318,10 +328,10 @@ package org.flixel.system.input
 		 */
 		public function playback(Record:MouseRecord):void
 		{
-			screenX = Record.x;
-			screenY = Record.y;
 			_current = Record.button;
 			wheel = Record.wheel;
+			_globalScreenPosition.x = Record.x;
+			_globalScreenPosition.y = Record.y;
 			updateCursor();
 		}
 	}

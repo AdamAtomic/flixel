@@ -38,7 +38,7 @@ package org.flixel
 		 * Assign a minor version to your library.
 		 * Appears after the decimal in the console.
 		 */
-		static public var LIBRARY_MINOR_VERSION:uint = 54;
+		static public var LIBRARY_MINOR_VERSION:uint = 55;
 		
 		/**
 		 * Debugger overlay layout preset: Wide but low windows at the bottom of the screen.
@@ -645,7 +645,7 @@ package org.flixel
 		/**
 		 * Resume playing existing sounds.
 		 */
-		static public function playSounds():void
+		static public function resumeSounds():void
 		{
 			if((music != null) && music.exists)
 				music.play();
@@ -656,7 +656,7 @@ package org.flixel
 			{
 				sound = sounds.members[i++] as FlxSound;
 				if((sound != null) && sound.exists)
-					sound.play();
+					sound.resume();
 			}
 		}
 		

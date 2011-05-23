@@ -307,7 +307,7 @@ package org.flixel
 		}
 		
 		/**
-		 * Call this function to play the sound.
+		 * Call this function to play the sound - also works on paused sounds.
 		 * 
 		 * @param	ForceRestart	Whether to start the sound over or not.  Default value is false, meaning if the sound is already playing or was paused when you call <code>play()</code>, it will continue playing from its current position, NOT start again from the beginning.
 		 */
@@ -365,6 +365,30 @@ package org.flixel
 		}
 		
 		/**
+		 * Unpause a sound.  Only works on sounds that have been paused.
+		 */
+		public function resume():void
+		{
+			if(_position <= 0)
+				return;
+			if(_looped)
+			{
+				_channel = _sound.play(_position,0,_transform);
+				if(_channel == null)
+					exists = false;
+				else
+					_channel.addEventListener(Event.SOUND_COMPLETE, looped);
+			}
+			else
+			{
+				_channel = _sound.play(_position,0,_transform);
+				if(_channel == null)
+					exists = false;
+			}
+			active = (_channel != null);
+		}
+		
+		/**
 		 * Call this function to pause this sound.
 		 */
 		public function pause():void
@@ -381,6 +405,8 @@ package org.flixel
 				while(_position >= _sound.length)
 					_position -= _sound.length;
 			}
+			if(_position <= 0)
+				_position = 1;
 			_channel = null;
 			active = false;
 		}
