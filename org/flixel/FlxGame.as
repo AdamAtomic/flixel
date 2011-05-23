@@ -401,7 +401,7 @@ package org.flixel
 			FlxG.resetInput();
 			_lostFocus = _focus.visible = false;
 			stage.frameRate = _flashFramerate;
-			FlxG.playSounds();
+			FlxG.resumeSounds();
 		}
 		
 		/**
