@@ -689,6 +689,36 @@ package org.flixel
 			}
 		}
 		
+		public function replaceColor(Color:uint,NewColor:uint,FetchPositions:Boolean=false):Array
+		{
+			var positions:Array = null;
+			if(FetchPositions)
+				positions = new Array();
+			
+			var row:uint = 0;
+			var column:uint;
+			var rows:uint = _pixels.height;
+			var columns:uint = _pixels.width;
+			while(row < rows)
+			{
+				column = 0;
+				while(column < columns)
+				{
+					if(_pixels.getPixel32(column,row) == Color)
+					{
+						_pixels.setPixel32(column,row,NewColor);
+						if(FetchPositions)
+							positions.push(new FlxPoint(column,row));
+						dirty = true;
+					}
+					column++;
+				}
+				row++;
+			}
+			
+			return positions;
+		}
+		
 		/**
 		 * Set <code>pixels</code> to any <code>BitmapData</code> object.
 		 * Automatically adjust graphic size and render helpers.

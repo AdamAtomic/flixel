@@ -80,7 +80,6 @@ package org.flixel
 				else
 					drag.x = 0;
 			}
-			return;
 		}
 		
 		/**

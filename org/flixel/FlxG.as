@@ -38,7 +38,7 @@ package org.flixel
 		 * Assign a minor version to your library.
 		 * Appears after the decimal in the console.
 		 */
-		static public var LIBRARY_MINOR_VERSION:uint = 50;
+		static public var LIBRARY_MINOR_VERSION:uint = 54;
 		
 		/**
 		 * Debugger overlay layout preset: Wide but low windows at the bottom of the screen.
@@ -102,7 +102,7 @@ package org.flixel
 		static public var paused:Boolean;
 		/**
 		 * Whether you are running in Debug or Release mode.
-		 * Set automatically by <code>FlxFactory</code> during startup.
+		 * Set automatically by <code>FlxPreloader</code> during startup.
 		 */
 		static public var debug:Boolean;
 		
@@ -368,16 +368,20 @@ package org.flixel
 		 * HOWEVER, <code>FlxU.getRandom()</code> is NOT deterministic and unsafe for use with replays/recordings.
 		 * 
 		 * @param	Objects		A Flash array of objects.
+		 * @param	StartIndex	Optional offset off the front of the array. Default value is 0, or the beginning of the array.
+		 * @param	Length		Optional restriction on the number of values you want to randomly select from.
 		 * 
 		 * @return	The random object that was selected.
 		 */
-		static public function getRandom(Objects:Array):Object
+		static public function getRandom(Objects:Array,StartIndex:uint=0,Length:uint=0):Object
 		{
 			if(Objects != null)
 			{
-				var l:uint = Objects.length;
+				var l:uint = Length;
+				if((l == 0) || (l > Objects.length - StartIndex))
+					l = Objects.length - StartIndex;
 				if(l > 0)
-					return Objects[uint(FlxG.random()*l)];
+					return Objects[StartIndex + uint(FlxG.random()*l)];
 			}
 			return null;
 		}
@@ -501,39 +505,65 @@ package org.flixel
 		}
 		
 		/**
-		 * Creates a new sound object from an embedded <code>Class</code> object.
+		 * Creates a new sound object.
 		 * 
-		 * @param	EmbeddedSound	The sound you want to play.
+		 * @param	EmbeddedSound	The embedded sound resource you want to play.  To stream, use the optional URL parameter instead.
 		 * @param	Volume			How loud to play it (0 to 1).
-		 * @param	Looped			Whether or not to loop this sound.
+		 * @param	Looped			Whether to loop this sound.
+		 * @param	AutoDestroy		Whether to destroy this sound when it finishes playing.  Leave this value set to "false" if you want to re-use this <code>FlxSound</code> instance.
+		 * @param	AutoPlay		Whether to play the sound.
+		 * @param	URL				Load a sound from an external web resource instead.  Only used if EmbeddedSound = null.
 		 * 
 		 * @return	A <code>FlxSound</code> object.
 		 */
-		static public function play(EmbeddedSound:Class,Volume:Number=1.0,Looped:Boolean=false):FlxSound
+		static public function loadSound(EmbeddedSound:Class=null,Volume:Number=1.0,Looped:Boolean=false,AutoDestroy:Boolean=false,AutoPlay:Boolean=false,URL:String=null):FlxSound
 		{
+			if((EmbeddedSound == null) && (URL == null))
+			{
+				FlxG.log("WARNING: FlxG.loadSound() requires either\nan embedded sound or a URL to work.");
+				return null;
+			}
 			var sound:FlxSound = sounds.recycle(FlxSound) as FlxSound;
-			sound.loadEmbedded(EmbeddedSound,Looped);
+			if(EmbeddedSound != null)
+				sound.loadEmbedded(EmbeddedSound,Looped,AutoDestroy);
+			else
+				sound.loadStream(URL,Looped,AutoDestroy);
 			sound.volume = Volume;
-			sound.play();
+			if(AutoPlay)
+				sound.play();
 			return sound;
 		}
 		
 		/**
+		 * Creates a new sound object from an embedded <code>Class</code> object.
+		 * NOTE: Just calls FlxG.loadSound() with AutoPlay == true.
+		 * 
+		 * @param	EmbeddedSound	The sound you want to play.
+		 * @param	Volume			How loud to play it (0 to 1).
+		 * @param	Looped			Whether to loop this sound.
+		 * @param	AutoDestroy		Whether to destroy this sound when it finishes playing.  Leave this value set to "false" if you want to re-use this <code>FlxSound</code> instance.
+		 * 
+		 * @return	A <code>FlxSound</code> object.
+		 */
+		static public function play(EmbeddedSound:Class,Volume:Number=1.0,Looped:Boolean=false,AutoDestroy:Boolean=true):FlxSound
+		{
+			return FlxG.loadSound(EmbeddedSound,Volume,Looped,AutoDestroy,true);
+		}
+		
+		/**
 		 * Creates a new sound object from a URL.
+		 * NOTE: Just calls FlxG.loadSound() with AutoPlay == true.
 		 * 
 		 * @param	URL		The URL of the sound you want to play.
 		 * @param	Volume	How loud to play it (0 to 1).
 		 * @param	Looped	Whether or not to loop this sound.
+		 * @param	AutoDestroy		Whether to destroy this sound when it finishes playing.  Leave this value set to "false" if you want to re-use this <code>FlxSound</code> instance.
 		 * 
 		 * @return	A FlxSound object.
 		 */
-		static public function stream(URL:String,Volume:Number=1.0,Looped:Boolean=false):FlxSound
+		static public function stream(URL:String,Volume:Number=1.0,Looped:Boolean=false,AutoDestroy:Boolean=true):FlxSound
 		{
-			var sound:FlxSound = sounds.recycle(FlxSound) as FlxSound;
-			sound.loadStream(URL,Looped);
-			sound.volume = Volume;
-			sound.play();
-			return sound;
+			return FlxG.loadSound(null,Volume,Looped,AutoDestroy,true,URL);
 		}
 		
 		/**
@@ -603,7 +633,7 @@ package org.flixel
 				music.pause();
 			var i:uint = 0;
 			var sound:FlxSound;
-			var l:uint = sounds.members.length;
+			var l:uint = sounds.length;
 			while(i < l)
 			{
 				sound = sounds.members[i++] as FlxSound;
@@ -621,7 +651,7 @@ package org.flixel
 				music.play();
 			var i:uint = 0;
 			var sound:FlxSound;
-			var l:uint = sounds.members.length;
+			var l:uint = sounds.length;
 			while(i < l)
 			{
 				sound = sounds.members[i++] as FlxSound;
@@ -706,7 +736,8 @@ package org.flixel
 			if(!checkBitmapCache(Key))
 			{
 				_cache[Key] = (new Graphic).bitmapData;
-				if(Reverse) needReverse = true;
+				if(Reverse)
+					needReverse = true;
 			}
 			var pixels:BitmapData = _cache[Key];
 			if(!needReverse && Reverse && (pixels.width == (new Graphic).bitmapData.width))
@@ -720,6 +751,7 @@ package org.flixel
 				mtx.translate(newPixels.width,0);
 				newPixels.draw(pixels,mtx);
 				pixels = newPixels;
+				_cache[Key] = pixels;
 			}
 			return pixels;
 		}
@@ -789,9 +821,29 @@ package org.flixel
 		 */
 		static public function addCamera(NewCamera:FlxCamera):FlxCamera
 		{
-			FlxG._game.addChildAt(NewCamera._flashBitmap,FlxG._game.getChildIndex(FlxG._game._mouse));
+			FlxG._game.addChildAt(NewCamera._flashSprite,FlxG._game.getChildIndex(FlxG._game._mouse));
 			FlxG.cameras.push(NewCamera);
 			return NewCamera;
+		}
+		
+		/**
+		 * Remove a camera from the game.
+		 * 
+		 * @param	Camera	The camera you want to remove.
+		 * @param	Destroy	Whether to call destroy() on the camera, default value is true.
+		 */
+		static public function removeCamera(Camera:FlxCamera,Destroy:Boolean=true):void
+		{
+			try
+			{
+				FlxG._game.removeChild(Camera._flashSprite);
+			}
+			catch(E:Error)
+			{
+				FlxG.log("Error removing camera, not part of game.");
+			}
+			if(Destroy)
+				Camera.destroy();
 		}
 		
 		/**
@@ -808,7 +860,7 @@ package org.flixel
 			while(i < l)
 			{
 				cam = FlxG.cameras[i++] as FlxCamera;
-				FlxG._game.removeChild(cam._flashBitmap);
+				FlxG._game.removeChild(cam._flashSprite);
 				cam.destroy();
 			}
 			FlxG.cameras.length = 0;
@@ -842,7 +894,7 @@ package org.flixel
 		 * @param	OnComplete	A function you want to run when the fade finishes.
 		 * @param	Force		Force the effect to reset.
 		 */
-		static public function fade(Color:uint=0xffffffff, Duration:Number=1, OnComplete:Function=null, Force:Boolean=false):void
+		static public function fade(Color:uint=0xff000000, Duration:Number=1, OnComplete:Function=null, Force:Boolean=false):void
 		{
 			var i:uint = 0;
 			var l:uint = FlxG.cameras.length;
@@ -977,7 +1029,7 @@ package org.flixel
 			var l:uint = pluginList.length;
 			while(i < l)
 			{
-				if(pluginList[i++] is ClassType)
+				if(pluginList[i] is ClassType)
 					return plugins[i];
 				i++;
 			}
@@ -1160,9 +1212,9 @@ package org.flixel
 				{
 					if(cam.active)
 						cam.update();
-					cam._flashBitmap.x = cam.x;
-					cam._flashBitmap.y = cam.y;
-					cam._flashBitmap.visible = cam.exists && cam.visible;
+					cam._flashSprite.x = cam.x + cam._flashOffsetX;
+					cam._flashSprite.y = cam.y + cam._flashOffsetY;
+					cam._flashSprite.visible = cam.visible;
 				}
 			}
 		}

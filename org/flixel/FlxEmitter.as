@@ -226,8 +226,8 @@ package org.flixel
 					on = false;
 					var i:uint = 0;
 					var l:uint = _quantity;
-					if((l <= 0) || (l > members.length))
-						l = members.length;
+					if((l <= 0) || (l > length))
+						l = length;
 					while(i < l)
 					{
 						emitParticle();

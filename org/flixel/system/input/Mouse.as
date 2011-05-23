@@ -58,7 +58,7 @@ package org.flixel.system.input
 		protected var _lastY:int;
 		protected var _lastWheel:int;
 		protected var _point:FlxPoint;
-		protected var _screenPosition:FlxPoint;
+		protected var _globalScreenPosition:FlxPoint;
 		
 		/**
 		 * Constructor.
@@ -74,7 +74,7 @@ package org.flixel.system.input
 			_last = 0;
 			_cursor = null;
 			_point = new FlxPoint();
-			_screenPosition = new FlxPoint();
+			_globalScreenPosition = new FlxPoint();
 		}
 		
 		/**
@@ -85,7 +85,7 @@ package org.flixel.system.input
 			_cursorContainer = null;
 			_cursor = null;
 			_point = null;
-			_screenPosition = null;
+			_globalScreenPosition = null;
 		}
 		
 		/**
@@ -174,7 +174,7 @@ package org.flixel.system.input
 		 */
 		public function update(X:int,Y:int):void
 		{
-			_screenPosition.make(X,Y);
+			_globalScreenPosition.make(X,Y);
 			getScreenPosition(null,_point);
 			screenX = _point.x;
 			screenY = _point.y;
@@ -192,8 +192,8 @@ package org.flixel.system.input
 		protected function updateCursor():void
 		{
 			getWorldPosition(null,this);
-			_cursorContainer.x = _screenPosition.x;
-			_cursorContainer.y = _screenPosition.y;
+			_cursorContainer.x = _globalScreenPosition.x;
+			_cursorContainer.y = _globalScreenPosition.y;
 		}
 		
 		/**
@@ -230,7 +230,7 @@ package org.flixel.system.input
 				Camera = FlxG.camera;
 			if(Point == null)
 				Point = new FlxPoint();
-			return Point.make(_screenPosition.x/Camera.zoom,_screenPosition.y/Camera.zoom);
+			return Point.make((_globalScreenPosition.x - Camera.x)/Camera.zoom,(_globalScreenPosition.y - Camera.y)/Camera.zoom);
 		}
 		
 		/**

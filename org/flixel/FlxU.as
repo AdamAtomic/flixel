@@ -160,16 +160,20 @@ package org.flixel
 		 * HOWEVER, <code>FlxU.getRandom()</code> is NOT deterministic and unsafe for use with replays/recordings.
 		 * 
 		 * @param	Objects		A Flash array of objects.
+		 * @param	StartIndex	Optional offset off the front of the array. Default value is 0, or the beginning of the array.
+		 * @param	Length		Optional restriction on the number of values you want to randomly select from.
 		 * 
 		 * @return	The random object that was selected.
 		 */
-		static public function getRandom(Objects:Array):Object
+		static public function getRandom(Objects:Array,StartIndex:uint=0,Length:uint=0):Object
 		{
 			if(Objects != null)
 			{
-				var l:uint = Objects.length;
+				var l:uint = Length;
+				if((l == 0) || (l > Objects.length - StartIndex))
+					l = Objects.length - StartIndex;
 				if(l > 0)
-					return Objects[uint(Math.random()*l)];
+					return Objects[StartIndex + uint(Math.random()*l)];
 			}
 			return null;
 		}
@@ -438,7 +442,20 @@ package org.flixel
 			if(Simple)
 				string = string.substr(string.lastIndexOf(".")+1);
 			return string;
-		};
+		}
+		
+		/**
+		 * Check to see if two objects have the same class name.
+		 * 
+		 * @param	Object1		The first object you want to check.
+		 * @param	Object2		The second object you want to check.
+		 * 
+		 * @return	Whether they have the same class name or not.
+		 */
+		static public function compareClassNames(Object1:Object,Object2:Object):Boolean
+		{
+			return getQualifiedClassName(Object1) == getQualifiedClassName(Object2);
+		}
 		
 		/**
 		 * Look up a <code>Class</code> object by its string name.

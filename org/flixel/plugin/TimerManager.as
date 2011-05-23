@@ -40,7 +40,7 @@ package org.flixel.plugin
 			while(i >= 0)
 			{
 				timer = _timers[i--] as FlxTimer;
-				if((timer != null) && !timer.paused && !timer.finished)
+				if((timer != null) && !timer.paused && !timer.finished && (timer.time > 0))
 					timer.update();
 			}
 		}

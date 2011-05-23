@@ -16,9 +16,9 @@ package org.flixel
 	import flash.utils.Timer;
 	import flash.utils.getTimer;
 	
+	import org.flixel.plugin.TimerManager;
 	import org.flixel.system.FlxDebugger;
 	import org.flixel.system.FlxReplay;
-	import org.flixel.plugin.TimerManager;
 
 	/**
 	 * FlxGame is the heart of all flixel games, and contains a bunch of basic game loops and things.
@@ -40,7 +40,13 @@ package org.flixel
 		 */
 		public var useSoundHotKeys:Boolean;
 		/**
+		 * Tells flixel to use the default system mouse cursor instead of custom Flixel mouse cursors.
+		 * @default false
+		 */
+		public var useSystemCursor:Boolean;
+		/**
 		 * Initialize and allow the flixel debugger overlay even in release mode.
+		 * Also useful if you don't use FlxPreloader!
 		 * @default false
 		 */
 		public var forceDebugger:Boolean;
@@ -166,11 +172,11 @@ package org.flixel
 		 * @param	Zoom			The default level of zoom for the game's cameras (e.g. 2 = all pixels are now drawn at 2x).  Default = 1.
 		 * @param	GameFramerate	How frequently the game should update (default is 60 times per second).
 		 * @param	FlashFramerate	Sets the actual display framerate for Flash player (default is 30 times per second).
+		 * @param	UseSystemCursor	Whether to use the default OS mouse pointer, or to use custom flixel ones.
 		 */
-		public function FlxGame(GameSizeX:uint,GameSizeY:uint,InitialState:Class,Zoom:Number=1,GameFramerate:uint=60,FlashFramerate:uint=30)
+		public function FlxGame(GameSizeX:uint,GameSizeY:uint,InitialState:Class,Zoom:Number=1,GameFramerate:uint=60,FlashFramerate:uint=30,UseSystemCursor:Boolean=false)
 		{
 			//super high priority init stuff (focus, mouse, etc)
-			flash.ui.Mouse.hide();
 			_lostFocus = false;
 			_focus = new Sprite();
 			_focus.visible = false;
@@ -185,6 +191,9 @@ package org.flixel
 			_total = 0;
 			_state = null;
 			useSoundHotKeys = true;
+			useSystemCursor = UseSystemCursor;
+			if(!useSystemCursor)
+				flash.ui.Mouse.hide();
 			forceDebugger = false;
 			_debuggerUp = false;
 			
@@ -242,7 +251,7 @@ package org.flixel
 					_debuggerUp = _debugger.visible;
 					if(_debugger.visible)
 						flash.ui.Mouse.show();
-					else
+					else if(!useSystemCursor)
 						flash.ui.Mouse.hide();
 					//_console.toggle();
 					return;
@@ -387,7 +396,7 @@ package org.flixel
 		 */
 		protected function onFocus(FlashEvent:Event=null):void
 		{
-			if(!_debuggerUp)
+			if(!_debuggerUp && !useSystemCursor)
 				flash.ui.Mouse.hide();
 			FlxG.resetInput();
 			_lostFocus = _focus.visible = false;
@@ -470,19 +479,20 @@ package org.flixel
 			FlxG.resetCameras();
 			FlxG.resetInput();
 			FlxG.destroySounds();
+			FlxG.clearBitmapCache();
+			
+			//Clear the debugger overlay's Watch window
 			if(_debugger != null)
 				_debugger.watch.removeAll();
+			
+			//Clear any timers left in the timer manager
 			var timerManager:TimerManager = FlxTimer.manager;
 			if(timerManager != null)
 				timerManager.clear();
 			
 			//Destroy the old state (if there is an old state)
 			if(_state != null)
-			{
 				_state.destroy();
-				if(FlxU.getClassName(_state) != FlxU.getClassName(_requestedState))
-					FlxG.clearBitmapCache();
-			}
 			
 			//Finally assign and create the new state
 			_state = _requestedState;
@@ -561,14 +571,16 @@ package org.flixel
 						_replayCallback = null;
 					}
 				}
-				_debugger.vcr.updateRuntime(_step);
+				if(_debugger != null)
+					_debugger.vcr.updateRuntime(_step);
 			}
 			else
 				FlxG.updateInput();
 			if(_recording)
 			{
 				_replay.recordFrame();
-				_debugger.vcr.updateRuntime(_step);
+				if(_debugger != null)
+					_debugger.vcr.updateRuntime(_step);
 			}
 			update();
 			FlxG.mouse.wheel = 0;

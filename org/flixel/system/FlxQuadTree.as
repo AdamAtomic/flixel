@@ -144,6 +144,10 @@ package org.flixel.system
 		 * Internal, used during tree processing and overlap checks.
 		 */
 		static protected var _notifyCallback:Function;
+		/**
+		 * Internal, used during tree processing and overlap checks.
+		 */
+		static protected var _iterator:FlxList;
 		
 		/**
 		 * Internal, helpers for comparing actual object-to-object overlap - see <code>overlapNode()</code>.
@@ -319,7 +323,7 @@ package org.flixel.system
 				var i:uint = 0;
 				var basic:FlxBasic;
 				var members:Array = (ObjectOrGroup as FlxGroup).members;
-				var l:uint = members.length;
+				var l:uint = (ObjectOrGroup as FlxGroup).length;
 				while(i < l)
 				{
 					basic = members[i++] as FlxBasic;
@@ -472,10 +476,7 @@ package org.flixel.system
 		
 		/**
 		 * <code>FlxQuadTree</code>'s other main function.  Call this after adding objects
-		 * using <code>FlxQuadTree.add()</code> to compare the objects that you loaded.
-		 * 
-		 * @param	BothLists	Whether you are doing an A-B list comparison, or comparing A against itself.
-		 * @param	Callback	A function with two <code>FlxObject</code> parameters - e.g. <code>myOverlapFunction(Object1:FlxObject,Object2:FlxObject);</code>  If no function is provided, <code>FlxQuadTree</code> will call <code>kill()</code> on both objects.
+		 * using <code>FlxQuadTree.load()</code> to compare the objects that you loaded.
 		 *
 		 * @return	Whether or not any overlaps were found.
 		 */
@@ -483,56 +484,24 @@ package org.flixel.system
 		{
 			var overlapProcessed:Boolean = false;
 			var iterator:FlxList;
-			if(_useBothLists)
+			
+			if(_headA.object != null)
 			{
-				//An A-B list comparison
-				_list = B_LIST;
-				if(_headA.object != null)
+				iterator = _headA;
+				while(iterator != null)
 				{
-					iterator = _headA;
-					while(iterator != null)
+					_object = iterator.object;
+					if(_useBothLists)
+						_iterator = _headB;
+					else
+						_iterator = iterator.next;
+					if(	_object.exists && (_object.allowCollisions > 0) &&
+						(_iterator != null) && (_iterator.object != null) &&
+						_iterator.object.exists &&overlapNode())
 					{
-						_object = iterator.object;
-						if(_object.exists && (_object.allowCollisions > 0) && overlapNode())
-							overlapProcessed = true;
-						iterator = iterator.next;
+						overlapProcessed = true;
 					}
-				}
-				_list = A_LIST;
-				if(_headB.object != null)
-				{
-					iterator = _headB;
-					while(iterator != null)
-					{
-						_object = iterator.object;
-						if(_object.exists && (_object.allowCollisions > 0))
-						{
-							if((_northWestTree != null) && _northWestTree.overlapNode())
-								overlapProcessed = true;
-							if((_northEastTree != null) && _northEastTree.overlapNode())
-								overlapProcessed = true;
-							if((_southEastTree != null) && _southEastTree.overlapNode())
-								overlapProcessed = true;
-							if((_southWestTree != null) && _southWestTree.overlapNode())
-								overlapProcessed = true;
-						}
-						iterator = iterator.next;
-					}
-				}
-			}
-			else
-			{
-				//Just checking the A list against itself
-				if(_headA.object != null)
-				{
-					iterator = _headA;
-					while(iterator != null)
-					{
-						_object = iterator.object;
-						if(_object.exists && (_object.allowCollisions > 0) && overlapNode(iterator.next))
-							overlapProcessed = true;
-						iterator = iterator.next;
-					}
+					iterator = iterator.next;
 				}
 			}
 			
@@ -552,35 +521,22 @@ package org.flixel.system
 		/**
 		 * An internal function for comparing an object against the contents of a node.
 		 * 
-		 * @param	Iterator	An optional pointer to a linked list entry (for comparing A against itself).
-		 * 
 		 * @return	Whether or not any overlaps were found.
 		 */
-		protected function overlapNode(Iterator:FlxList=null):Boolean
+		protected function overlapNode():Boolean
 		{
-			//Get a valid iterator if we don't have one yet
-			if(Iterator == null)
-			{
-				if(_list == A_LIST)
-					Iterator = _headA;
-				else
-					Iterator = _headB;
-			}
-			if(Iterator.object == null)
-				return false;
-
 			//Walk the list and check for overlaps
 			var overlapProcessed:Boolean = false;
 			var checkObject:FlxObject;
-			while(Iterator != null)
+			while(_iterator != null)
 			{
 				if(!_object.exists || (_object.allowCollisions <= 0))
 					break;
 				
-				checkObject = Iterator.object;
+				checkObject = _iterator.object;
 				if((_object === checkObject) || !checkObject.exists || (checkObject.allowCollisions <= 0))
 				{
-					Iterator = Iterator.next;
+					_iterator = _iterator.next;
 					continue;
 				}
 				
@@ -612,7 +568,7 @@ package org.flixel.system
 					if(overlapProcessed && (_notifyCallback != null))
 						_notifyCallback(_object,checkObject);
 				}
-				Iterator = Iterator.next;
+				_iterator = _iterator.next;
 			}
 			
 			return overlapProcessed;

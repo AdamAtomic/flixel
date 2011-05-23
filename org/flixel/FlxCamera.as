@@ -2,6 +2,7 @@ package org.flixel
 {
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.display.Sprite;
 	import flash.geom.ColorTransform;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -123,7 +124,19 @@ package org.flixel
 		/**
 		 * Internal, used to render buffer to screen space.
 		 */
-		internal var _flashBitmap:Bitmap;
+		protected var _flashBitmap:Bitmap;
+		/**
+		 * Internal, used to render buffer to screen space.
+		 */
+		internal var _flashSprite:Sprite;
+		/**
+		 * Internal, used to render buffer to screen space.
+		 */
+		internal var _flashOffsetX:Number;
+		/**
+		 * Internal, used to render buffer to screen space.
+		 */
+		internal var _flashOffsetY:Number;
 		/**
 		 * Internal, used to render buffer to screen space.
 		 */
@@ -217,9 +230,15 @@ package org.flixel
 			_color = 0xffffff;
 
 			_flashBitmap = new Bitmap(buffer);
-			_flashBitmap.x = x;
-			_flashBitmap.y = y;
-			zoom = Zoom; //requires flashbitmap in order to work
+			_flashBitmap.x = -width*0.5;
+			_flashBitmap.y = -height*0.5;
+			_flashSprite = new Sprite();
+			zoom = Zoom; //sets the scale of flash sprite, which in turn loads flashoffset values
+			_flashOffsetX = width*0.5*zoom;
+			_flashOffsetY = height*0.5*zoom;
+			_flashSprite.x = x + _flashOffsetX;
+			_flashSprite.y = y + _flashOffsetY;
+			_flashSprite.addChild(_flashBitmap);
 			_flashRect = new Rectangle(0,0,width,height);
 			_flashPoint = new Point();
 			
@@ -441,7 +460,7 @@ package org.flixel
 		 * @param	OnComplete	A function you want to run when the fade finishes.
 		 * @param	Force		Force the effect to reset.
 		 */
-		public function fade(Color:uint=0xffffffff, Duration:Number=1, OnComplete:Function=null, Force:Boolean=false):void
+		public function fade(Color:uint=0xff000000, Duration:Number=1, OnComplete:Function=null, Force:Boolean=false):void
 		{
 			if(!Force && (_fxFadeAlpha > 0.0))
 				return;
@@ -481,8 +500,8 @@ package org.flixel
 			_fxFlashAlpha = 0.0;
 			_fxFadeAlpha = 0.0;
 			_fxShakeDuration = 0;
-			_flashBitmap.x = x;
-			_flashBitmap.y = y;
+			_flashSprite.x = x + width*0.5;
+			_flashSprite.y = y + height*0.5;
 		}
 		
 		/**
@@ -534,8 +553,7 @@ package org.flixel
 				_zoom = defaultZoom;
 			else
 				_zoom = Zoom;
-			_flashBitmap.scaleX = _zoom;
-			_flashBitmap.scaleY = _zoom;
+			setScale(_zoom,_zoom);
 		}
 		
 		/**
@@ -561,7 +579,7 @@ package org.flixel
 		 */
 		public function get angle():Number
 		{
-			return _flashBitmap.rotation;
+			return _flashSprite.rotation;
 		}
 		
 		/**
@@ -569,7 +587,7 @@ package org.flixel
 		 */
 		public function set angle(Angle:Number):void
 		{
-			_flashBitmap.rotation = Angle;
+			_flashSprite.rotation = Angle;
 		}
 		
 		/**
@@ -617,7 +635,7 @@ package org.flixel
 		 */
 		public function getScale():FlxPoint
 		{
-			return _point.make(_flashBitmap.scaleX,_flashBitmap.scaleY);
+			return _point.make(_flashSprite.scaleX,_flashSprite.scaleY);
 		}
 		
 		/**
@@ -625,8 +643,24 @@ package org.flixel
 		 */
 		public function setScale(X:Number,Y:Number):void
 		{
-			_flashBitmap.scaleX = X;
-			_flashBitmap.scaleY = Y;
+			_flashSprite.scaleX = X;
+			_flashSprite.scaleY = Y;
+		}
+		
+		/**
+		 * Fetches a reference to the Flash <code>Sprite</code> object
+		 * that contains the camera display in the Flash display list.
+		 * Uses include 3D projection, advanced display list modification, and more.
+		 * NOTE: We don't recommend modifying this directly unless you are
+		 * fairly experienced.  For simple changes to the camera display,
+		 * like scaling, rotation, and color tinting, we recommend
+		 * using the existing <code>FlxCamera</code> variables.
+		 * 
+		 * @return	A Flash <code>Sprite</code> object containing the camera display.
+		 */
+		public function getContainerSprite():Sprite
+		{
+			return _flashSprite;
 		}
 		
 		/**
@@ -666,8 +700,8 @@ package org.flixel
 			
 			if((_fxShakeOffset.x != 0) || (_fxShakeOffset.y != 0))
 			{
-				_flashBitmap.x = x + _fxShakeOffset.x;
-				_flashBitmap.y = y + _fxShakeOffset.y;
+				_flashSprite.x = x + _flashOffsetX + _fxShakeOffset.x;
+				_flashSprite.y = y + _flashOffsetY + _fxShakeOffset.y;
 			}
 		}
 	}

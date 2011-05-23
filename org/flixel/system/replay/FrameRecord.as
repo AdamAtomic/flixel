@@ -65,7 +65,7 @@ package org.flixel.system.replay
 		 */
 		public function save():String
 		{
-			var output:String = frame+"keyPair";
+			var output:String = frame+"k";
 			
 			if(keys != null)
 			{
