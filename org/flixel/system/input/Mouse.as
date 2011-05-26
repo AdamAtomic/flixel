@@ -193,11 +193,11 @@ package org.flixel.system.input
 			_cursorContainer.x = _globalScreenPosition.x;
 			_cursorContainer.y = _globalScreenPosition.y;
 			
-			//update the x, y, screenX, and screenY variables based on the default camera
+			//update the x, y, screenX, and screenY variables based on the default camera.
+			//This is basically a combination of getWorldPosition() and getScreenPosition()
 			var camera:FlxCamera = FlxG.camera;
-			getScreenPosition(camera,_point);
-			screenX = (_point.x - camera.x)/camera.zoom;
-			screenY = (_point.y - camera.y)/camera.zoom;
+			screenX = (_globalScreenPosition.x - camera.x)/camera.zoom;
+			screenY = (_globalScreenPosition.y - camera.y)/camera.zoom;
 			x = screenX + camera.scroll.x;
 			y = screenY + camera.scroll.y;
 		}
