@@ -359,10 +359,7 @@ package org.flixel
 					if(_channel == null)
 						exists = false;
 					else
-					{
 						_channel.addEventListener(Event.SOUND_COMPLETE, stopped);
-						trace("Channel not null this time. added vent listener sound complete");
-					}
 				}
 			}
 			active = (_channel != null);
