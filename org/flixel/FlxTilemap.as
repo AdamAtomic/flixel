@@ -736,49 +736,73 @@ package org.flixel
 			{
 				i = Start - widthInTiles;
 				if((Data[i] >= 0) && (Data[i] < current))
-					return walkPath(Data,i,Points);
+				{
+					walkPath(Data,i,Points);
+					return;
+				}
 			}
 			if(right)
 			{
 				i = Start + 1;
 				if((Data[i] >= 0) && (Data[i] < current))
-					return walkPath(Data,i,Points);
+				{
+					walkPath(Data,i,Points);
+					return;
+				}
 			}
 			if(down)
 			{
 				i = Start + widthInTiles;
 				if((Data[i] >= 0) && (Data[i] < current))
-					return walkPath(Data,i,Points);
+				{
+					walkPath(Data,i,Points);
+					return;
+				}
 			}
 			if(left)
 			{
 				i = Start - 1;
 				if((Data[i] >= 0) && (Data[i] < current))
-					return walkPath(Data,i,Points);
+				{
+					walkPath(Data,i,Points);
+					return;
+				}
 			}
 			if(up && right)
 			{
 				i = Start - widthInTiles + 1;
 				if((Data[i] >= 0) && (Data[i] < current))
-					return walkPath(Data,i,Points);
+				{
+					walkPath(Data,i,Points);
+					return;
+				}
 			}
 			if(right && down)
 			{
 				i = Start + widthInTiles + 1;
 				if((Data[i] >= 0) && (Data[i] < current))
-					return walkPath(Data,i,Points);
+				{
+					walkPath(Data,i,Points);
+					return;
+				}
 			}
 			if(left && down)
 			{
 				i = Start + widthInTiles - 1;
 				if((Data[i] >= 0) && (Data[i] < current))
-					return walkPath(Data,i,Points);
+				{
+					walkPath(Data,i,Points);
+					return;
+				}
 			}
 			if(up && left)
 			{
 				i = Start - widthInTiles - 1;
 				if((Data[i] >= 0) && (Data[i] < current))
-					return walkPath(Data,i,Points);
+				{
+					walkPath(Data,i,Points);
+					return;
+				}
 			}
 		}
 		

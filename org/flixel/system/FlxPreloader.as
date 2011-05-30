@@ -127,7 +127,7 @@ package org.flixel.system
 				tmp.addEventListener(MouseEvent.CLICK,goToMyURL);
 				return;
 			}
-			_init = false;
+			this._init = false;
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
 		
@@ -138,12 +138,12 @@ package org.flixel.system
 		
 		private function onEnterFrame(event:Event):void
         {
-			if(!_init)
+			if(!this._init)
 			{
 				if((stage.stageWidth <= 0) || (stage.stageHeight <= 0))
 					return;
 				create();
-				_init = true;
+				this._init = true;
 			}
             graphics.clear();
 			var time:uint = getTimer();

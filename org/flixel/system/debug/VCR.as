@@ -266,7 +266,10 @@ package org.flixel.system.debug
 				fileContents = data.readUTFBytes(data.bytesAvailable);
 			_file = null;
 			if((fileContents == null) || (fileContents.length <= 0))
-				return FlxG.log("ERROR: Empty flixel gameplay record.");
+			{
+				FlxG.log("ERROR: Empty flixel gameplay record.");
+				return;
+			}
 			
 			FlxG.loadReplay(fileContents);
 		}
