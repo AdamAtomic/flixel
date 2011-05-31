@@ -169,9 +169,9 @@ package org.flixel.system.debug
 			removeChild(_step);
 			_step = null;
 			
-			stage.removeEventListener(MouseEvent.MOUSE_MOVE,onMouseMove);
-			stage.removeEventListener(MouseEvent.MOUSE_DOWN,onMouseDown);
-			stage.removeEventListener(MouseEvent.MOUSE_UP,onMouseUp);
+			parent.removeEventListener(MouseEvent.MOUSE_MOVE,onMouseMove);
+			parent.removeEventListener(MouseEvent.MOUSE_DOWN,onMouseDown);
+			parent.removeEventListener(MouseEvent.MOUSE_UP,onMouseUp);
 		}
 		
 		/**
@@ -444,10 +444,10 @@ package org.flixel.system.debug
 			if(root == null)
 				return;
 			removeEventListener(Event.ENTER_FRAME,init);
-			
-			stage.addEventListener(MouseEvent.MOUSE_MOVE,onMouseMove);
-			stage.addEventListener(MouseEvent.MOUSE_DOWN,onMouseDown);
-			stage.addEventListener(MouseEvent.MOUSE_UP,onMouseUp);
+
+			parent.addEventListener(MouseEvent.MOUSE_MOVE,onMouseMove);
+			parent.addEventListener(MouseEvent.MOUSE_DOWN,onMouseDown);
+			parent.addEventListener(MouseEvent.MOUSE_UP,onMouseUp);
 		}
 		
 		/**
