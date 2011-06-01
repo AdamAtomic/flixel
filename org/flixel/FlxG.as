@@ -1171,7 +1171,7 @@ package org.flixel
 					continue;
 				if(useBufferLocking)
 					cam.buffer.lock();
-				cam.fill();
+				cam.fill(cam.bgColor);
 				cam.screen.dirty = true;
 			}
 		}

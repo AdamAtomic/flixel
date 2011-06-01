@@ -161,7 +161,10 @@ package org.flixel.system
 		 * 
 		 * @param	E	Flash mouse event.
 		 */
-		protected function onMouseOut(E:MouseEvent=null):void { hasMouse = false; }
+		protected function onMouseOut(E:MouseEvent=null):void
+		{
+			hasMouse = false;
+		}
 		
 		/**
 		 * Rearrange the debugger windows using one of the constants specified in FlxG.

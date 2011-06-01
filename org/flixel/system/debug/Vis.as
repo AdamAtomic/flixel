@@ -49,9 +49,9 @@ package org.flixel.system.debug
 			removeChild(_bounds);
 			_bounds = null;
 			
-			stage.removeEventListener(MouseEvent.MOUSE_MOVE,onMouseMove);
-			stage.removeEventListener(MouseEvent.MOUSE_DOWN,onMouseDown);
-			stage.removeEventListener(MouseEvent.MOUSE_UP,onMouseUp);
+			parent.removeEventListener(MouseEvent.MOUSE_MOVE,onMouseMove);
+			parent.removeEventListener(MouseEvent.MOUSE_DOWN,onMouseDown);
+			parent.removeEventListener(MouseEvent.MOUSE_UP,onMouseUp);
 		}
 		
 		//***ACTUAL BUTTON BEHAVIORS***//
@@ -77,9 +77,9 @@ package org.flixel.system.debug
 				return;
 			removeEventListener(Event.ENTER_FRAME,init);
 			
-			stage.addEventListener(MouseEvent.MOUSE_MOVE,onMouseMove);
-			stage.addEventListener(MouseEvent.MOUSE_DOWN,onMouseDown);
-			stage.addEventListener(MouseEvent.MOUSE_UP,onMouseUp);
+			parent.addEventListener(MouseEvent.MOUSE_MOVE,onMouseMove);
+			parent.addEventListener(MouseEvent.MOUSE_DOWN,onMouseDown);
+			parent.addEventListener(MouseEvent.MOUSE_UP,onMouseUp);
 		}
 		
 		/**
