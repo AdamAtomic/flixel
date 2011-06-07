@@ -99,12 +99,12 @@ package org.flixel
 		 * @param	Label		The text that you want to appear on the button.
 		 * @param	OnClick		The function to call whenever the button is clicked.
 		 */
-		public function FlxButton(X:Number=0,Y:Number=0,Label:String=null,OnClick:Function=null)
+		public function FlxButton(X:Number=0,Y:Number=0,Label:String=null,OnClick:Function=null, EmbeddedFont:Boolean=true)
 		{
 			super(X,Y);
 			if(Label != null)
 			{
-				label = new FlxText(0,0,80,Label);
+				label = new FlxText(0,0,80,Label,EmbeddedFont);
 				label.setFormat(null,8,0x333333,"center");
 				labelOffset = new FlxPoint(-1,3);
 			}
