@@ -1361,10 +1361,11 @@ package org.flixel
 		 * @param	bitmapData	A Flash <code>BitmapData</code> object, preferably black and white.
 		 * @param	Invert		Load white pixels as solid instead.
 		 * @param	Scale		Default is 1.  Scale of 2 means each pixel forms a 2x2 block of tiles, and so on.
+		 * @param	ColorMap	An array of color values (uint 0xAARRGGBB) in the order they're intended to be assigned as indices
 		 * 
 		 * @return	A comma-separated string containing the level data in a <code>FlxTilemap</code>-friendly format.
 		 */
-		static public function bitmapToCSV(bitmapData:BitmapData,Invert:Boolean=false,Scale:uint=1):String
+		static public function bitmapToCSV(bitmapData:BitmapData,Invert:Boolean=false,Scale:uint=1,ColorMap:Array=null):String
 		{
 			//Import and scale image if necessary
 			if(Scale > 1)
@@ -1390,7 +1391,9 @@ package org.flixel
 				{
 					//Decide if this pixel/tile is solid (1) or not (0)
 					pixel = bitmapData.getPixel(column,row);
-					if((Invert && (pixel > 0)) || (!Invert && (pixel == 0)))
+					if(ColorMap != null)
+						pixel = ColorMap.indexOf(pixel);
+					else if((Invert && (pixel > 0)) || (!Invert && (pixel == 0)))
 						pixel = 1;
 					else
 						pixel = 0;
