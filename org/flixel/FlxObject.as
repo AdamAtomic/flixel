@@ -275,6 +275,8 @@ package org.flixel
 			height = Height;
 			mass = 1.0;
 			elasticity = 0.0;
+			
+			health = 1;
 
 			immovable = false;
 			moves = true;
