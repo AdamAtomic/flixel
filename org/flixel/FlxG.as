@@ -323,6 +323,18 @@ package org.flixel
 		}
 		
 		/**
+		 * Switch to full-screen display.
+		 */
+		static public function fullscreen():void
+		{
+			FlxG.stage.displayState = "fullScreen";
+			var fsw:uint = FlxG.width*FlxG.camera.zoom;
+			var fsh:uint = FlxG.height*FlxG.camera.zoom;
+			FlxG.camera.x = (FlxG.stage.fullScreenWidth - fsw)/2;
+			FlxG.camera.y = (FlxG.stage.fullScreenHeight - fsh)/2;
+		}
+		
+		/**
 		 * Generates a random number.  Deterministic, meaning safe
 		 * to use if you want to record replays in random environments.
 		 * 
