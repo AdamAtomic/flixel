@@ -8,6 +8,12 @@ package org.flixel.system.input
 	 */
 	public class Input
 	{
+		// Values of "key.current" (for reference)
+		//	 0 - Not pressed
+		//	 2 - Just pressed
+		//	 1 - Pressing
+		//	-1 - Just released
+		
 		/**
 		 * @private
 		 */
@@ -147,6 +153,19 @@ package org.flixel.system.input
 		}
 		
 		/**
+		 * Look up the key's name for a given key code. Useful for "change controls" menus.
+		 * 
+		 * @param	KeyCode		The KeyCode for the key.
+		 * 
+		 * @return	The name of that key.
+		 */
+		public function getKeyName(KeyCode:uint):String
+		{
+			var key:Object = _map[KeyCode];
+			return (key) ? key.name : "[key #" + KeyCode + "]";
+		}
+		
+		/**
 		 * Check to see if any keys are pressed right now.
 		 * 
 		 * @return	Whether any keys are currently pressed.
@@ -158,6 +177,40 @@ package org.flixel.system.input
 			{
 				var o:Object = _map[i++];
 				if((o != null) && (o.current > 0))
+					return true;
+			}
+			return false;
+		}
+		
+		/**
+		 * Check to see if any keys were just pressed.
+		 * 
+		 * @return	Whether any keys were just pressed.
+		 */
+		public function justPressedAny():Boolean
+		{
+			var i:uint = 0;
+			while(i < _total)
+			{
+				var o:Object = _map[i++];
+				if((o != null) && (o.current == 2))
+					return true;
+			}
+			return false;
+		}
+		
+		/**
+		 * Check to see if any keys were just released.
+		 * 
+		 * @return	Whether any keys were just released.
+		 */
+		public function justReleasedAny():Boolean
+		{
+			var i:uint = 0;
+			while(i < _total)
+			{
+				var o:Object = _map[i++];
+				if((o != null) && (o.current == -1))
 					return true;
 			}
 			return false;
