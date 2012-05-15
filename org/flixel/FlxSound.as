@@ -223,7 +223,7 @@ package org.flixel
 				fade = 1 - fade;
 			}
 			
-			_volumeAdjust = radial*fade;
+			_volumeAdjust = (1 - radial) * fade;
 			updateTransform();
 			
 			if((_transform.volume > 0) && (_channel != null))
