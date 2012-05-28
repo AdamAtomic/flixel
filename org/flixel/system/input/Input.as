@@ -145,6 +145,19 @@ package org.flixel.system.input
 		{
 			return _lookup[KeyName];
 		}
+
+		
+		/**
+		 * Look up the string name for any given key code of the key or button.
+		 * 
+		 * @param	KeyCode		The <code>int</code>key code of the key or button.
+		 * 
+		 * @return	The <code>String</code> name for that key.
+		 */
+		public function getKeyName(KeyCode:int):String
+		{
+			return _map[KeyCode].name;
+		}
 		
 		/**
 		 * Check to see if any keys are pressed right now.
