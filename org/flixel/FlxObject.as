@@ -325,6 +325,7 @@ package org.flixel
 			if(path != null)
 				path.destroy();
 			path = null;
+			super.destroy();
 		}
 		
 		/**

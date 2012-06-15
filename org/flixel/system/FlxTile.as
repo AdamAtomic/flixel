@@ -73,9 +73,9 @@ package org.flixel.system
 		 */
 		override public function destroy():void
 		{
-			super.destroy();
 			callback = null;
 			tilemap = null;
+			super.destroy();
 		}
 	}
 }
