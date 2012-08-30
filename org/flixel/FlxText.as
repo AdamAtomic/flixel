@@ -64,6 +64,7 @@ package org.flixel
 			_regen = true;
 			_shadow = 0;
 			allowCollisions = NONE;
+			moves = false;
 			calcFrame();
 		}
 		

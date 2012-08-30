@@ -25,6 +25,7 @@ package org.flixel
 			makeGraphic(Width,Height,0,true);
 			active = false;
 			immovable = true;
+			moves = false;
 		}
 		
 		/**

@@ -139,6 +139,7 @@ package org.flixel
 			_tiles = null;
 			_tileObjects = null;
 			immovable = true;
+			moves = false;
 			cameras = null;
 			_debugTileNotSolid = null;
 			_debugTilePartial = null;
