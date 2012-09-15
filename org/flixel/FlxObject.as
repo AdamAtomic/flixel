@@ -196,7 +196,7 @@ package org.flixel
 		/**
 		 * Set this to false if you want to skip the automatic motion/movement stuff (see <code>updateMotion()</code>).
 		 * FlxObject and FlxSprite default to true.
-		 * FlxText, FlxTileblock, FlxTilemap and FlxSound default to false.
+		 * FlxText, FlxTileblock, and FlxTilemap default to false.
 		 */
 		public var moves:Boolean;
 		/**
@@ -275,6 +275,8 @@ package org.flixel
 			height = Height;
 			mass = 1.0;
 			elasticity = 0.0;
+			
+			health = 1;
 
 			immovable = false;
 			moves = true;

@@ -166,8 +166,6 @@ package org.flixel
 		public function FlxSprite(X:Number=0,Y:Number=0,SimpleGraphic:Class=null)
 		{
 			super(X,Y);
-			
-			health = 1;
 
 			_flashPoint = new Point();
 			_flashRect = new Rectangle();
