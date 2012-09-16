@@ -81,6 +81,7 @@ package org.flixel
 				members = null;
 			}
 			_sortIndex = null;
+			super.destroy();
 		}
 		
 		/**

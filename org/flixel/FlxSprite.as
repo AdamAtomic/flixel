@@ -228,6 +228,8 @@ package org.flixel
 			_matrix = null;
 			_callback = null;
 			framePixels = null;
+			
+			super.destroy();
 		}
 		
 		/**
