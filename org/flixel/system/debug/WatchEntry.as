@@ -81,8 +81,8 @@ package org.flixel.system.debug
 			valueDisplay.multiline = false;
 			valueDisplay.selectable = true;
 			valueDisplay.doubleClickEnabled = true;
-			valueDisplay.addEventListener(KeyboardEvent.KEY_UP,onKeyUp);
-			valueDisplay.addEventListener(MouseEvent.MOUSE_UP,onMouseUp);
+			valueDisplay.addEventListener(KeyboardEvent.KEY_UP,handleKeyUp);
+			valueDisplay.addEventListener(MouseEvent.MOUSE_UP,handleMouseUp);
 			valueDisplay.background = false;
 			valueDisplay.backgroundColor = 0xffffff;
 			valueDisplay.defaultTextFormat = _whiteText;
@@ -100,8 +100,8 @@ package org.flixel.system.debug
 			nameDisplay = null;
 			field = null;
 			custom = null;
-			valueDisplay.removeEventListener(MouseEvent.MOUSE_UP,onMouseUp);
-			valueDisplay.removeEventListener(KeyboardEvent.KEY_UP,onKeyUp);
+			valueDisplay.removeEventListener(MouseEvent.MOUSE_UP,handleMouseUp);
+			valueDisplay.removeEventListener(KeyboardEvent.KEY_UP,handleKeyUp);
 			valueDisplay = null;
 		}
 		
@@ -148,7 +148,7 @@ package org.flixel.system.debug
 		 * 
 		 * @param	FlashEvent	Flash mouse event.
 		 */
-		public function onMouseUp(FlashEvent:MouseEvent):void
+		public function handleMouseUp(FlashEvent:MouseEvent):void
 		{
 			editing = true;
 			oldValue = object[field];
@@ -164,7 +164,7 @@ package org.flixel.system.debug
 		 * 
 		 * @param	FlashEvent	Flash keyboard event.
 		 */
-		public function onKeyUp(FlashEvent:KeyboardEvent):void
+		public function handleKeyUp(FlashEvent:KeyboardEvent):void
 		{
 			if((FlashEvent.keyCode == 13) || (FlashEvent.keyCode == 9) || (FlashEvent.keyCode == 27)) //enter or tab or escape
 			{

@@ -27,6 +27,7 @@ package org.flixel.plugin
 		{
 			clear();
 			_timers = null;
+			super.destroy();
 		}
 		
 		/**

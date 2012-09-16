@@ -246,7 +246,7 @@ package org.flixel
 		static public function log(Data:Object):void
 		{
 			if((_game != null) && (_game._debugger != null))
-				_game._debugger.log.add((Data == null)?"ERROR: null object":Data.toString());
+				_game._debugger.log.add((Data == null)?"ERROR: null object":((Data is Array)?FlxU.formatArray(Data as Array):Data.toString()));
 		}
 		
 		/**
@@ -320,6 +320,18 @@ package org.flixel
 			_game._maxAccumulation = 2000/_game._flashFramerate - 1;
 			if(_game._maxAccumulation < _game._step)
 				_game._maxAccumulation = _game._step;
+		}
+		
+		/**
+		 * Switch to full-screen display.
+		 */
+		static public function fullscreen():void
+		{
+			FlxG.stage.displayState = "fullScreen";
+			var fsw:uint = FlxG.width*FlxG.camera.zoom;
+			var fsh:uint = FlxG.height*FlxG.camera.zoom;
+			FlxG.camera.x = (FlxG.stage.fullScreenWidth - fsw)/2;
+			FlxG.camera.y = (FlxG.stage.fullScreenHeight - fsh)/2;
 		}
 		
 		/**

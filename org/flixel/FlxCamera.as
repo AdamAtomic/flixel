@@ -281,6 +281,7 @@ package org.flixel
 			_fxShakeComplete = null;
 			_fxShakeOffset = null;
 			_fill = null;
+			super.destroy();
 		}
 		
 		/**

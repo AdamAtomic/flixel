@@ -66,8 +66,7 @@ package org.flixel
 		 */
 		static public function round(Value:Number):Number
 		{
-			var number:Number = int(Value+((Value>0)?0.5:-0.5));
-			return (Value>0)?(number):((number!=Value)?(number-1):(number));
+			return int(Value+((Value>0)?0.5:-0.5));
 		}
 		
 		/**
@@ -370,7 +369,7 @@ package org.flixel
 			if((AnyArray == null) || (AnyArray.length <= 0))
 				return "";
 			var string:String = AnyArray[0].toString();
-			var i:uint = 0;
+			var i:uint = 1;
 			var l:uint = AnyArray.length;
 			while(i < l)
 				string += ", " + AnyArray[i++].toString();
