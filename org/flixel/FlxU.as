@@ -369,7 +369,7 @@ package org.flixel
 			if((AnyArray == null) || (AnyArray.length <= 0))
 				return "";
 			var string:String = AnyArray[0].toString();
-			var i:uint = 0;
+			var i:uint = 1;
 			var l:uint = AnyArray.length;
 			while(i < l)
 				string += ", " + AnyArray[i++].toString();
