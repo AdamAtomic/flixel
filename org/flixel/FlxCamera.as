@@ -671,8 +671,16 @@ package org.flixel
 		 */
 		public function fill(Color:uint,BlendAlpha:Boolean=true):void
 		{
-			_fill.fillRect(_flashRect,Color);
-			buffer.copyPixels(_fill,_flashRect,_flashPoint,null,null,BlendAlpha);
+			var alpha:uint = Color >>> 24;
+			if(alpha == 255 || !BlendAlpha)
+			{
+				buffer.fillRect(_flashRect,Color);
+			}
+			else
+			{
+				_fill.fillRect(_flashRect,Color);
+				buffer.copyPixels(_fill,_flashRect,_flashPoint,null,null,BlendAlpha);
+			}
 		}
 		
 		/**
