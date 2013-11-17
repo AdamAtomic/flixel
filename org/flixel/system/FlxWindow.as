@@ -205,9 +205,9 @@ package org.flixel.system
 				return;
 			removeEventListener(Event.ENTER_FRAME,init);
 			
-			stage.addEventListener(MouseEvent.MOUSE_MOVE,onMouseMove);
-			stage.addEventListener(MouseEvent.MOUSE_DOWN,onMouseDown);
-			stage.addEventListener(MouseEvent.MOUSE_UP,onMouseUp);
+			stage.addEventListener(MouseEvent.MOUSE_MOVE,handleMouseMove);
+			stage.addEventListener(MouseEvent.MOUSE_DOWN,handleMouseDown);
+			stage.addEventListener(MouseEvent.MOUSE_UP,handleMouseUp);
 		}
 		
 		/**
@@ -215,7 +215,7 @@ package org.flixel.system
 		 * 
 		 * @param E		Flash mouse event.
 		 */
-		protected function onMouseMove(E:MouseEvent=null):void
+		protected function handleMouseMove(E:MouseEvent=null):void
 		{
 			if(_dragging) //user is moving the window around
 			{
@@ -246,7 +246,7 @@ package org.flixel.system
 		 * 
 		 * @param E		Flash mouse event.
 		 */
-		protected function onMouseDown(E:MouseEvent=null):void
+		protected function handleMouseDown(E:MouseEvent=null):void
 		{
 			if(_overHeader)
 			{
@@ -267,7 +267,7 @@ package org.flixel.system
 		 * 
 		 * @param E		Flash mouse event.
 		 */
-		protected function onMouseUp(E:MouseEvent=null):void
+		protected function handleMouseUp(E:MouseEvent=null):void
 		{
 			_dragging = false;
 			_resizing = false;

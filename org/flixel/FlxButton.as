@@ -132,7 +132,7 @@ package org.flixel
 		override public function destroy():void
 		{
 			if(FlxG.stage != null)
-				FlxG.stage.removeEventListener(MouseEvent.MOUSE_UP, onMouseUp);
+				FlxG.stage.removeEventListener(MouseEvent.MOUSE_UP, handleMouseUp);
 			if(label != null)
 			{
 				label.destroy();
@@ -166,7 +166,7 @@ package org.flixel
 			{
 				if(FlxG.stage != null)
 				{
-					FlxG.stage.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
+					FlxG.stage.addEventListener(MouseEvent.MOUSE_UP, handleMouseUp);
 					_initialized = true;
 				}
 			}
@@ -342,7 +342,7 @@ package org.flixel
 		/**
 		 * Internal function for handling the actual callback call (for UI thread dependent calls like <code>FlxU.openURL()</code>).
 		 */
-		protected function onMouseUp(event:MouseEvent):void
+		protected function handleMouseUp(event:MouseEvent):void
 		{
 			if(!exists || !visible || !active || (status != PRESSED))
 				return;

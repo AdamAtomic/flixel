@@ -239,7 +239,7 @@ package org.flixel
 		 * 
 		 * @param	FlashEvent	Flash keyboard event.
 		 */
-		protected function onKeyUp(FlashEvent:KeyboardEvent):void
+		protected function handleKeyUp(FlashEvent:KeyboardEvent):void
 		{
 			if(_debuggerUp && _debugger.watch.editing)
 				return;
@@ -296,7 +296,7 @@ package org.flixel
 		 * 
 		 * @param	FlashEvent	Flash keyboard event.
 		 */
-		protected function onKeyDown(FlashEvent:KeyboardEvent):void
+		protected function handleKeyDown(FlashEvent:KeyboardEvent):void
 		{
 			if(_debuggerUp && _debugger.watch.editing)
 				return;
@@ -331,7 +331,7 @@ package org.flixel
 		 * 
 		 * @param	FlashEvent	Flash mouse event.
 		 */
-		protected function onMouseDown(FlashEvent:MouseEvent):void
+		protected function handleMouseDown(FlashEvent:MouseEvent):void
 		{
 			if(_debuggerUp)
 			{
@@ -370,7 +370,7 @@ package org.flixel
 		 * 
 		 * @param	FlashEvent	Flash mouse event.
 		 */
-		protected function onMouseUp(FlashEvent:MouseEvent):void
+		protected function handleMouseUp(FlashEvent:MouseEvent):void
 		{
 			if((_debuggerUp && _debugger.hasMouse) || _replaying)
 				return;
@@ -382,7 +382,7 @@ package org.flixel
 		 * 
 		 * @param	FlashEvent	Flash mouse event.
 		 */
-		protected function onMouseWheel(FlashEvent:MouseEvent):void
+		protected function handleMouseWheel(FlashEvent:MouseEvent):void
 		{
 			if((_debuggerUp && _debugger.hasMouse) || _replaying)
 				return;
@@ -671,11 +671,11 @@ package org.flixel
             stage.frameRate = _flashFramerate;
 			
 			//Add basic input event listeners and mouse container
-			stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
-			stage.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
-			stage.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel);
-			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
-			stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+			stage.addEventListener(MouseEvent.MOUSE_DOWN, handleMouseDown);
+			stage.addEventListener(MouseEvent.MOUSE_UP, handleMouseUp);
+			stage.addEventListener(MouseEvent.MOUSE_WHEEL, handleMouseWheel);
+			stage.addEventListener(KeyboardEvent.KEY_DOWN, handleKeyDown);
+			stage.addEventListener(KeyboardEvent.KEY_UP, handleKeyUp);
 			addChild(_mouse);
 			
 			//Let mobile devs opt out of unnecessary overlays.
