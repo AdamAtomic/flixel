@@ -149,6 +149,24 @@ package org.flixel
 		}
 		
 		/**
+		 * The width of the textfield being displayed.
+		 */
+		 public function get textfieldWidth():Number
+		{
+			return _textField.width as Number;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set textfieldWidth(Width:Number):void
+		{
+			_textField.width = Width;
+			_regen = true;
+			calcFrame();
+		}
+		
+		/**
 		 * The color of the text being displayed.
 		 */
 		override public function get color():uint

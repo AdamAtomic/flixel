@@ -358,6 +358,8 @@ package org.flixel
 					_channel = _sound.play(_position,0,_transform);
 					if(_channel == null)
 						exists = false;
+					else
+						_channel.addEventListener(Event.SOUND_COMPLETE, stopped);
 				}
 			}
 			active = (_channel != null);
