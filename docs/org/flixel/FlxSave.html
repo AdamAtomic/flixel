@@ -1,348 +1,87 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" href="../../style.css" type="text/css" media="screen">
-<link rel="stylesheet" href="../../print.css" type="text/css" media="print">
-<meta content="FlxSave,org.flixel.FlxSave,_so,data,name,bind,erase,forceSave,read,write" name="keywords">
-<title>org.flixel.FlxSave</title>
-</head>
-<body>
-<script type="text/javascript" language="javascript" src="../../asdoc.js"></script><script type="text/javascript" language="javascript" src="../../cookies.js"></script><script type="text/javascript" language="javascript">
-<!--
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><!-- saved from url=(0014)about:internet --><html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="stylesheet" href="../../style.css" type="text/css" media="screen"><link rel="stylesheet" href="../../print.css" type="text/css" media="print"><link rel="stylesheet" href="../../override.css" type="text/css"><meta name="keywords" content="FlxSave,org.flixel.FlxSave,ALT,ANY,ASCENDING,AUTO,BLACK,BLUE,CEILING,DEBUGGER_BIG,DEBUGGER_LEFT,DEBUGGER_MICRO,DEBUGGER_RIGHT,DEBUGGER_STANDARD,DEBUGGER_TOP,DESCENDING,DOWN,ERROR,FLOOR,GREEN,HIGHLIGHT,ID,ImgAuto,ImgAutoAlt,ImgDefault,ImgDefaultButton,ImgLogo,LEFT,LIBRARY_MAJOR_VERSION,LIBRARY_MINOR_VERSION,LIBRARY_NAME,NONE,NORMAL,OFF,OVERLAP_BIAS,PATH_BACKWARD,PATH_FORWARD,PATH_HORIZONTAL_ONLY,PATH_LOOP_BACKWARD,PATH_LOOP_FORWARD,PATH_VERTICAL_ONLY,PATH_YOYO,PENDING,PINK,PRESSED,RED,RIGHT,SHAKE_BOTH_AXES,SHAKE_HORIZONTAL_ONLY,SHAKE_VERTICAL_ONLY,STYLE_LOCKON,STYLE_PLATFORMER,STYLE_TOPDOWN,STYLE_TOPDOWN_TIGHT,SUCCESS,SndBeep,SndBeep,UP,WALL,WHITE,_ACTIVECOUNT,_VISIBLECOUNT,_accumulator,_alpha,_animations,_bakedRotation,_buffers,_cache,_callback,_callback,_cameraRect,_channel,_closeRequested,_color,_color,_colorTransform,_counter,_created,_curAnim,_curFrame,_curIndex,_data,_debugRect,_debugTileNotSolid,_debugTilePartial,_debugTileSolid,_debugger,_debuggerUp,_explode,_facing,_fadeInTimer,_fadeInTotal,_fadeOutTimer,_fadeOutTotal,_fill,_flashBitmap,_flashFramerate,_flashOffsetX,_flashOffsetY,_flashPoint,_flashPoint,_flashPoint,_flashPointZero,_flashRect,_flashRect,_flashRect,_flashRect2,_flashSprite,_flicker,_flickerTimer,_flipped,_focus,_frameTimer,_fxFadeAlpha,_fxFadeColor,_fxFadeComplete,_fxFadeDuration,_fxFlashAlpha,_fxFlashColor,_fxFlashComplete,_fxFlashDuration,_fxShakeComplete,_fxShakeDirection,_fxShakeDuration,_fxShakeIntensity,_fxShakeOffset,_game,_iState,_initialized,_lastVisualDebug,_looped,_loopsCounter,_lostFocus,_marker,_matrix,_maxAccumulation,_maxSize,_mouse,_onComplete,_onToggle,_pZero,_pan,_pathInc,_pathMode,_pathNodeIndex,_pathRotate,_pauseOnFadeOut,_pixels,_point,_point,_point,_point,_position,_pressed,_quantity,_radius,_recording,_recordingRequested,_rect,_rects,_regen,_replay,_replayCallback,_replayCancelKeys,_replayRequested,_replayTimer,_replaying,_requestedReset,_requestedState,_shadow,_sharedObject,_sortIndex,_sortOrder,_sound,_soundTray,_soundTrayBars,_soundTrayTimer,_startingIndex,_state,_step,_target,_textField,_tileHeight,_tileObjects,_tileWidth,_tiles,_timeCounter,_timer,_total,_transform,_volume,_volume,_volumeAdjust,_zoom,acceleration,active,alignment,alive,allowCollisions,alpha,alpha,amplitude,amplitudeLeft,amplitudeRight,angle,angle,angularAcceleration,angularDrag,angularVelocity,antialiasing,antialiasing,artist,auto,autoDestroy,bgColor,bgColor,blend,bottom,bounce,bounds,buffer,camera,cameras,cameras,color,color,color,data,deadzone,debug,debugColor,debugScrollFactor,defaultZoom,dirty,drag,elapsed,elasticity,exists,facing,finished,finished,flashFramerate,flashGfx,flashGfxSprite,flickering,font,forceDebugger,frame,frameHeight,framePixels,frameWidth,framerate,frames,frequency,friction,globalSeed,gravity,health,height,height,height,height,height,heightInTiles,ignoreDrawDebug,ignoreDrawDebug,immovable,junk,keys,label,labelOffset,last,left,length,level,levels,lifespan,lifespan,loops,loopsLeft,manager,manager,mass,maxAngular,maxParticleSpeed,maxRotation,maxSize,maxVelocity,members,minParticleSpeed,minRotation,mobile,mouse,moves,music,mute,name,name,nodes,offset,on,on,onDown,onOut,onOver,onUp,origin,particleClass,particleDrag,path,pathAngle,pathSpeed,paused,paused,pixels,plugins,progress,right,save,saves,scale,score,scores,screen,scroll,scrollFactor,shadow,size,solid,soundDown,soundOut,soundOver,soundUp,sounds,stage,state,status,survive,target,text,time,timeLeft,timeScale,top,totalTiles,touching,useBufferLocking,useSoundHotKeys,useSystemCursor,velocity,visible,visualDebug,volume,volume,volumeHandler,wasTouching,width,width,width,width,width,widthInTiles,worldBounds,worldDivisions,x,x,x,x,x,x,y,y,y,y,y,y,zoom,abs,add,add,addAnimation,addAnimationCallback,addAt,addBitmap,addCamera,addPlugin,addPoint,addPointAt,advancePath,arrayToCSV,at,autoTile,bind,bitmapToCSV,bound,calcFrame,calcFrame,callAll,ceil,centerOffsets,checkBinding,checkBitmapCache,clear,clearBitmapCache,close,collide,compareClassNames,computePathDistance,computeVelocity,copyFrom,copyFrom,copyFrom,copyFromFlash,copyFromFlash,copyTo,copyTo,copyToFlash,copyToFlash,countDead,countLiving,create,create,createBitmap,createFocusScreen,createSound,createSoundTray,destroy,destroy,destroy,destroy,destroy,destroy,destroy,destroy,destroy,destroy,destroy,destroy,destroy,destroySounds,draw,draw,draw,draw,draw,draw,draw,drawDebug,drawDebug,drawDebug,drawFX,drawFrame,drawLine,drawPlugins,drawTilemap,dtfCopy,emitParticle,erase,fade,fade,fadeIn,fadeOut,fill,fill,findPath,flash,flash,flicker,floor,flush,focusOn,follow,follow,followPath,formatArray,formatMoney,formatTicks,formatTime,getActualVolume,getAngle,getBounds,getClass,getClassName,getContainerSprite,getData,getDistance,getFirstAlive,getFirstAvailable,getFirstDead,getFirstExtant,getFirstNull,getHSB,getLibraryName,getMidpoint,getPlugin,getRGBA,getRandom,getRandom,getRandom,getScale,getScreenXY,getTicks,getTile,getTileByIndex,getTileCoords,getTileInstances,gotID3,head,hurt,imageToCSV,init,isTouching,justTouched,kill,kill,kill,kill,loadEmbedded,loadGraphic,loadMap,loadReplay,loadRotatedGraphic,loadSound,loadStream,loadTiles,lockCameras,log,looped,make,make,makeColor,makeColorFromHSB,makeDebugTile,makeGraphic,makeParticles,max,min,onDone,onEmit,onEnterFrame,onFlushStatus,onFocus,onFocusLost,onKeyDown,onKeyUp,onMouseDown,onMouseUp,onMouseUp,onMouseWheel,onScreen,onScreen,openURL,overlap,overlaps,overlaps,overlaps,overlapsAt,overlapsAt,overlapsPoint,overlapsPoint,overlapsWithCallback,pause,pauseSounds,pixelsOverlapPoint,play,play,play,playMusic,postUpdate,postUpdate,postUpdate,preUpdate,preUpdate,preUpdate,preUpdate,proximity,random,randomFrame,ray,raySimplifyPath,recordReplay,recycle,reloadReplay,remove,remove,removeAt,removeCamera,removePlugin,removePluginType,replace,replaceColor,reset,reset,resetCameras,resetDebuggerLayout,resetGame,resetHelpers,resetHelpers,resetInput,resetState,resume,resumeSounds,revive,rotatePoint,round,separate,separateX,separateY,setAll,setBounds,setDebuggerLayout,setDirty,setFormat,setOriginToCorner,setRotation,setSize,setSounds,setTile,setTileByIndex,setTileProperties,setXSpeed,setYSpeed,shake,shake,showSoundTray,shuffle,shuffle,simplifyPath,sort,sortHandler,srand,stamp,start,start,step,stop,stop,stopFX,stopFollowingPath,stopRecording,stopReplay,stopped,stream,switchState,switchState,tail,toString,unlockCameras,unwatch,update,update,update,update,update,update,update,update,update,update,updateAnimation,updateButton,updateCameras,updateInput,updateMotion,updatePathMotion,updatePlugins,updateSoundTray,updateSounds,updateTile,updateTransform,walkPath,watch"><title>org.flixel.FlxSave</title></head><body><script language="javascript" type="text/javascript" src="../../asdoc.js"></script><script language="javascript" type="text/javascript" src="../../help.js"></script><script language="javascript" type="text/javascript" src="../../cookies.js"></script><script language="javascript" type="text/javascript"><!--
 				asdocTitle = 'FlxSave - API Documentation';
 				var baseRef = '../../';
 				window.onload = configPage;
 			--></script>
-<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" class="titleTable">
-<tr>
-<td align="left" class="titleTableTitle">API Documentation</td><td align="right" class="titleTableTopNav"><a onclick="loadClassListFrame('../../all-classes.html')" href="../../package-summary.html">All&nbsp;Packages</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../all-classes.html')" href="../../class-summary.html">All&nbsp;Classes</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../index-list.html')" href="../../all-index-A.html">Index</a>&nbsp;|&nbsp;<a href="../../index.html?org/flixel/FlxSave.html&amp;org/flixel/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></td><td rowspan="3" align="right" class="titleTableLogo"><img alt="Adobe Logo" title="Adobe Logo" class="logoImage" src="../../images/logo.jpg"></td>
-</tr>
-<tr class="titleTableRow2">
-<td align="left" id="subTitle" class="titleTableSubTitle">Class&nbsp;FlxSave</td><td align="right" id="subNav" class="titleTableSubNav"><a href="#propertySummary">Properties</a>&nbsp;| <a href="#methodSummary">Methods</a></td>
-</tr>
-<tr class="titleTableRow3">
-<td colspan="2">&nbsp;</td>
-</tr>
-</table>
-<script type="text/javascript" language="javascript">
-<!--
-if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Class FlxSave"); titleBar_setSubNav(false,true,false,false,false,false,true,false,false,false,false,false,false,false);}
---></script>
-<div class="MainContent">
-<table cellspacing="0" cellpadding="0" class="classHeaderTable">
-<tr>
-<td class="classHeaderTableLabel">Package</td><td><a onclick="javascript:loadClassListFrame('class-list.html')" href="package-detail.html">org.flixel</a></td>
-</tr>
-<tr>
-<td class="classHeaderTableLabel">Class</td><td class="classSignature">public class FlxSave</td>
-</tr>
-</table>
-<p></p>
-  A class to help automate and simplify save game functionality.
-  <p></p>
-<br>
-<hr>
-</div>
-<a name="propertySummary"></a>
-<div class="summarySection">
-<div class="summaryTableTitle">Public Properties</div>
-<table id="summaryTableProperty" class="summaryTable " cellpadding="3" cellspacing="0">
-<tr>
-<th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#data">data</a> : Object<div class="summaryTableDescription">
-   Allows you to directly access the data container in the local shared object.</div>
-</td><td class="summaryTableOwnerCol">FlxSave</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#name">name</a> : String<div class="summaryTableDescription">
-   The name of the local shared object.</div>
-</td><td class="summaryTableOwnerCol">FlxSave</td>
-</tr>
-</table>
-</div>
-<a name="protectedPropertySummary"></a>
-<div class="summarySection">
-<div class="summaryTableTitle">Protected Properties</div>
-<table id="summaryTableProtectedProperty" class="summaryTable " cellpadding="3" cellspacing="0">
-<tr>
-<th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_so">_so</a> : SharedObject<div class="summaryTableDescription">
-   The local shared object itself.</div>
-</td><td class="summaryTableOwnerCol">FlxSave</td>
-</tr>
-</table>
-</div>
-<a name="methodSummary"></a>
-<div class="summarySection">
-<div class="summaryTableTitle">Public Methods</div>
-<table id="summaryTableMethod" class="summaryTable " cellpadding="3" cellspacing="0">
-<tr>
-<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#FlxSave()">FlxSave</a>()</div>
-<div class="summaryTableDescription">
-   Blanks out the containers.</div>
-</td><td class="summaryTableOwnerCol">FlxSave</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#bind()">bind</a>(Name:String):Boolean</div>
-<div class="summaryTableDescription">
-   Automatically creates or reconnects to locally saved data.</div>
-</td><td class="summaryTableOwnerCol">FlxSave</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#erase()">erase</a>(MinFileSize:uint = 0):Boolean</div>
-<div class="summaryTableDescription">
-   Erases everything stored in the local shared object.</div>
-</td><td class="summaryTableOwnerCol">FlxSave</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#forceSave()">forceSave</a>(MinFileSize:uint = 0):Boolean</div>
-<div class="summaryTableDescription">
-   Writes the local shared object to disk immediately.</div>
-</td><td class="summaryTableOwnerCol">FlxSave</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#read()">read</a>(FieldName:String):Object</div>
-<div class="summaryTableDescription">
-   If you don't like to access the data object directly, you can use this to read from it.</div>
-</td><td class="summaryTableOwnerCol">FlxSave</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#write()">write</a>(FieldName:String, FieldValue:Object, MinFileSize:uint = 0):Boolean</div>
-<div class="summaryTableDescription">
-   If you don't like to access the data object directly, you can use this to write to it.</div>
-</td><td class="summaryTableOwnerCol">FlxSave</td>
-</tr>
-</table>
-</div>
-<script type="text/javascript" language="javascript">
-<!--
-showHideInherited();
---></script>
-<div class="MainContent">
-<a name="propertyDetail"></a>
-<div class="detailSectionHeader">Property detail</div>
-<a name="data"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">data</td><td class="detailHeaderType">property</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public var data:Object</code><p>
-   Allows you to directly access the data container in the local shared object.
-   </p><p>The default value is <code>null</code>.</p>
-</div>
-<a name="name"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">name</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public var name:String</code><p>
-   The name of the local shared object.
-   </p><p>The default value is <code>null</code>.</p>
-</div>
-<a name="_so"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">_so</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>protected var _so:SharedObject</code><p>
-   The local shared object itself.
-   </p><p>The default value is <code>null</code>.</p>
-</div>
-<a name="constructorDetail"></a>
-<div class="detailSectionHeader">Constructor detail</div>
-<a name="FlxSave()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">FlxSave</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">constructor</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public function FlxSave()</code><p>
-   Blanks out the containers.
-   </p></div>
-<a name="methodDetail"></a>
-<div class="detailSectionHeader">Method detail</div>
-<a name="bind()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">bind</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public function bind(Name:String):Boolean</code><p>
-   Automatically creates or reconnects to locally saved data.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">Name</span>:String</code> &mdash; The name of the object (should be the same each time to access old data).
-   
-   </td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>Boolean</code> &mdash; Whether or not you successfully connected to the save data.
-   </td>
-</tr>
-</table>
-</div>
-<a name="erase()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">erase</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public function erase(MinFileSize:uint = 0):Boolean</code><p>
-   Erases everything stored in the local shared object.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">MinFileSize</span>:uint</code> (default = <code>0</code>)<code></code> &mdash;  If you need X amount of space for your save, specify it here.
-   
-   </td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>Boolean</code> &mdash; Whether or not the clear and flush was successful.
-   </td>
-</tr>
-</table>
-</div>
-<a name="forceSave()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">forceSave</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public function forceSave(MinFileSize:uint = 0):Boolean</code><p>
-   Writes the local shared object to disk immediately.
-      </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">MinFileSize</span>:uint</code> (default = <code>0</code>)<code></code> &mdash;  If you need X amount of space for your save, specify it here.
-      </td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>Boolean</code> &mdash; Whether or not the flush was successful.
-   </td>
-</tr>
-</table>
-</div>
-<a name="read()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">read</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public function read(FieldName:String):Object</code><p>
-   If you don't like to access the data object directly, you can use this to read from it.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">FieldName</span>:String</code> &mdash;  The name of the data field you want to read
-   
-   </td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>Object</code> &mdash; The value of the data field you are reading (null if it doesn't exist).
-   </td>
-</tr>
-</table>
-</div>
-<a name="write()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">write</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public function write(FieldName:String, FieldValue:Object, MinFileSize:uint = 0):Boolean</code><p>
-   If you don't like to access the data object directly, you can use this to write to it.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">FieldName</span>:String</code> &mdash;  The name of the data field you want to create or overwrite.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">FieldValue</span>:Object</code> &mdash;  The data you want to store.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">MinFileSize</span>:uint</code> (default = <code>0</code>)<code></code> &mdash;  If you need X amount of space for your save, specify it here.
-   
-   </td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>Boolean</code> &mdash; Whether or not the write and flush were successful.
-   </td>
-</tr>
-</table>
-</div>
-<br>
-<br>
-<hr>
-<br>
-<p></p>
-<center class="copyright"> 
-</center>
-</div>
-</body>
-</html>
-<!-- -->
+<script type="text/javascript">
+			scrollToNameAnchor();
+		</script><table class="titleTable" cellpadding="0" cellspacing="0" id="titleTable" style="display:none"><tr><td class="titleTableTitle" align="left">API Documentation</td><td class="titleTableTopNav" align="right"><a href="../../package-summary.html" onclick="loadClassListFrame('../../all-classes.html')">All Packages</a>&nbsp;|&nbsp;<a href="../../class-summary.html" onclick="loadClassListFrame('../../all-classes.html')">All Classes</a>&nbsp;|&nbsp;<a href="../../all-index-A.html" onclick="loadClassListFrame('../../index-list.html')">Index</a>&nbsp;|&nbsp;<a id="framesLink1" href="../../index.html?org/flixel/FlxSave.html&amp;org/flixel/class-list.html">Frames</a><a id="noFramesLink1" style="display:none" href="" onclick="parent.location=document.location"> No Frames </a></td><td class="titleTableLogo" align="right" rowspan="3"><img src="../../images/logo.jpg" class="logoImage" alt=" Adobe Logo " title=" Adobe Logo "></td></tr><tr class="titleTableRow2"><td class="titleTableSubTitle" id="subTitle" align="left">FlxSave</td><td class="titleTableSubNav" id="subNav" align="right"><a href="#propertySummary">Properties</a>&nbsp;| <a href="#methodSummary">Methods</a></td></tr><tr class="titleTableRow3"><td colspan="3">&nbsp;</td></tr></table><script language="javascript" type="text/javascript" xml:space="preserve">
+				<!--
+				
+					if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("FlxSave"); titleBar_setSubNav(false,true,false,false,false,false,false,false,true,false,false	,false,false,false,false,false);}	
+				-->
+			</script><div xmlns:fn="http://www.w3.org/2005/xpath-functions" class="MainContent"><table class="classHeaderTable" cellpadding="0" cellspacing="0"><tr><td class="classHeaderTableLabel">Package</td><td><a href="package-detail.html" onclick="javascript:loadClassListFrame('class-list.html')">org.flixel</a></td></tr><tr><td class="classHeaderTableLabel">Class</td><td class="classSignature">public  class  FlxSave</td></tr><tr><td class="classHeaderTableLabel">Inheritance</td><td class="inheritanceList">FlxSave  <img src="../../images/inherit-arrow.gif" title="Inheritance" alt="Inheritance" class="inheritArrow"> Object</td></tr></table><p></p><p></p><p></p>
+	 A class to help automate and simplify save game functionality.
+	 Basicaly a wrapper for the Flash SharedObject thing, but
+	 handles some annoying storage request stuff too.
+	 
+	 <p></p><br/><hr></div><a name="propertySummary"></a><div class="summarySection"><div class="summaryTableTitle">Public Properties</div><table cellspacing="0" cellpadding="3" class="summaryTable " id="summaryTableProperty"><tr><th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined By</th></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#data" class="signatureLink">data</a> : Object<div class="summaryTableDescription">
+		 Allows you to directly access the data container in the local shared object.</div></td><td class="summaryTableOwnerCol">FlxSave</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#name" class="signatureLink">name</a> : String<div class="summaryTableDescription">
+		 The name of the local shared object.</div></td><td class="summaryTableOwnerCol">FlxSave</td></tr></table></div><a name="protectedPropertySummary"></a><div class="summarySection"><div class="summaryTableTitle">Protected Properties</div><table cellspacing="0" cellpadding="3" class="summaryTable " id="summaryTableProtectedProperty"><tr><th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined By</th></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#_closeRequested" class="signatureLink">_closeRequested</a> : Boolean<div class="summaryTableDescription">
+		 Internal tracker for save object close request.</div></td><td class="summaryTableOwnerCol">FlxSave</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#ERROR" class="signatureLink">ERROR</a> : uint = 2<div class="summaryTableDescription">[static] </div></td><td class="summaryTableOwnerCol">FlxSave</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#_onComplete" class="signatureLink">_onComplete</a> : Function<div class="summaryTableDescription">
+		 Internal tracker for callback function in case save takes too long.</div></td><td class="summaryTableOwnerCol">FlxSave</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#PENDING" class="signatureLink">PENDING</a> : uint = 1<div class="summaryTableDescription">[static] </div></td><td class="summaryTableOwnerCol">FlxSave</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#_sharedObject" class="signatureLink">_sharedObject</a> : SharedObject<div class="summaryTableDescription">
+		 The local shared object itself.</div></td><td class="summaryTableOwnerCol">FlxSave</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#SUCCESS" class="signatureLink">SUCCESS</a> : uint = 0<div class="summaryTableDescription">[static] </div></td><td class="summaryTableOwnerCol">FlxSave</td></tr></table></div><a name="methodSummary"></a><div class="summarySection"><div class="summaryTableTitle">Public Methods </div><table cellspacing="0" cellpadding="3" class="summaryTable " id="summaryTableMethod"><tr><th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined By</th></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#FlxSave()" class="signatureLink">FlxSave</a>()</div><div class="summaryTableDescription">
+		 Blanks out the containers.</div></td><td class="summaryTableOwnerCol">FlxSave</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#bind()" class="signatureLink">bind</a>(Name:String):Boolean</div><div class="summaryTableDescription">
+		 Automatically creates or reconnects to locally saved data.</div></td><td class="summaryTableOwnerCol">FlxSave</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#close()" class="signatureLink">close</a>(MinFileSize:uint = 0, OnComplete:Function = null):Boolean</div><div class="summaryTableDescription">
+		 A way to safely call flush() and destroy() on your save file.</div></td><td class="summaryTableOwnerCol">FlxSave</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#destroy()" class="signatureLink">destroy</a>():void</div><div class="summaryTableDescription">
+		 Clean up memory.</div></td><td class="summaryTableOwnerCol">FlxSave</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#erase()" class="signatureLink">erase</a>():Boolean</div><div class="summaryTableDescription">
+		 Erases everything stored in the local shared object.</div></td><td class="summaryTableOwnerCol">FlxSave</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#flush()" class="signatureLink">flush</a>(MinFileSize:uint = 0, OnComplete:Function = null):Boolean</div><div class="summaryTableDescription">
+		 Writes the local shared object to disk immediately.</div></td><td class="summaryTableOwnerCol">FlxSave</td></tr></table></div><a name="protectedMethodSummary"></a><div class="summarySection"><div class="summaryTableTitle">Protected Methods </div><table cellspacing="0" cellpadding="3" class="summaryTable " id="summaryTableProtectedMethod"><tr><th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined By</th></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#checkBinding()" class="signatureLink">checkBinding</a>():Boolean</div><div class="summaryTableDescription">
+		 Handy utility function for checking and warning if the shared object is bound yet or not.</div></td><td class="summaryTableOwnerCol">FlxSave</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#onDone()" class="signatureLink">onDone</a>(Result:uint):Boolean</div><div class="summaryTableDescription">
+		 Event handler for special case storage requests.</div></td><td class="summaryTableOwnerCol">FlxSave</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#onFlushStatus()" class="signatureLink">onFlushStatus</a>(E:NetStatusEvent):void</div><div class="summaryTableDescription">
+		 Event handler for special case storage requests.</div></td><td class="summaryTableOwnerCol">FlxSave</td></tr></table></div><script language="javascript" type="text/javascript"><!--
+										showHideInherited();
+										--></script><div class="MainContent"><div class="detailSectionHeader">Property Detail</div><a name="propertyDetail"></a><a name="_closeRequested"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">_closeRequested</td><td class="detailHeaderType">property</td></tr></table><div class="detailBody"><code>protected var _closeRequested:Boolean</code><p></p><p></p><p>
+		 Internal tracker for save object close request.
+		 </p></div><a name="propertyDetail"></a><a name="_onComplete"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">_onComplete</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>protected var _onComplete:Function</code><p></p><p></p><p>
+		 Internal tracker for callback function in case save takes too long.
+		 </p></div><a name="propertyDetail"></a><a name="_sharedObject"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">_sharedObject</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>protected var _sharedObject:SharedObject</code><p></p><p></p><p>
+		 The local shared object itself.
+		 </p><p> The default value is <code>null</code>.</p></div><a name="propertyDetail"></a><a name="data"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">data</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>public var data:Object</code><p></p><p></p><p>
+		 Allows you to directly access the data container in the local shared object.
+		 </p><p> The default value is <code>null</code>.</p></div><a name="propertyDetail"></a><a name="ERROR"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">ERROR</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>protected static var ERROR:uint = 2</code><p></p></div><a name="propertyDetail"></a><a name="name"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">name</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>public var name:String</code><p></p><p></p><p>
+		 The name of the local shared object.
+		 </p><p> The default value is <code>null</code>.</p></div><a name="propertyDetail"></a><a name="PENDING"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">PENDING</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>protected static var PENDING:uint = 1</code><p></p></div><a name="propertyDetail"></a><a name="SUCCESS"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">SUCCESS</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>protected static var SUCCESS:uint = 0</code><p></p></div><a name="constructorDetail"></a><div class="detailSectionHeader">Constructor Detail</div><a name="FlxSave()"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">FlxSave</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">Constructor</td></tr></table><div class="detailBody"><code>public function FlxSave()</code><p></p><p>
+		 Blanks out the containers.
+		 </p></div><a name="methodDetail"></a><div class="detailSectionHeader">Method Detail</div><a name="bind()"></a><a name="bind(String)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">bind</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td></tr></table><div class="detailBody"><code> public function bind(Name:String):Boolean</code><p></p><p></p><p>
+		 Automatically creates or reconnects to locally saved data.
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">Name</span>:String</code> &mdash; The name of the object (should be the same each time to access old data).
+		 
+		 </td></tr></table></p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code>Boolean</code> &mdash; Whether or not you successfully connected to the save data.
+		 </td></tr></table></div><a name="checkBinding()"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">checkBinding</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> protected function checkBinding():Boolean</code><p></p><p></p><p>
+		 Handy utility function for checking and warning if the shared object is bound yet or not.
+		 
+		 </p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code>Boolean</code> &mdash; Whether the shared object was bound yet.
+		 </td></tr></table></div><a name="close()"></a><a name="close(uint,Function)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">close</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public function close(MinFileSize:uint = 0, OnComplete:Function = null):Boolean</code><p></p><p></p><p>
+		 A way to safely call <code>flush()</code> and <code>destroy()</code> on your save file.
+		 Will correctly handle storage size popups and all that good stuff.
+		 If you don't want to save your changes first, just call <code>destroy()</code> instead.
+		 		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">MinFileSize</span>:uint</code> (default = <code>0</code>)<code></code> &mdash; 	If you need X amount of space for your save, specify it here.
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">OnComplete</span>:Function</code> (default = <code>null</code>)<code></code> &mdash; 	This callback will be triggered when the data is written successfully.
+		 		 </td></tr></table></p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code>Boolean</code> &mdash; The result of result of the <code>flush()</code> call (see below for more details).
+		 </td></tr></table></div><a name="destroy()"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">destroy</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public function destroy():void</code><p></p><p></p><p>
+		 Clean up memory.
+		 </p></div><a name="erase()"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">erase</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public function erase():Boolean</code><p></p><p></p><p>
+		 Erases everything stored in the local shared object.
+		 Data is immediately erased and the object is saved that way,
+		 so use with caution!
+		 
+		 </p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code>Boolean</code> &mdash; Returns false if the save object is not bound yet.
+		 </td></tr></table></div><a name="flush()"></a><a name="flush(uint,Function)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">flush</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public function flush(MinFileSize:uint = 0, OnComplete:Function = null):Boolean</code><p></p><p></p><p>
+		 Writes the local shared object to disk immediately.  Leaves the object open in memory.
+		 		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">MinFileSize</span>:uint</code> (default = <code>0</code>)<code></code> &mdash; 	If you need X amount of space for your save, specify it here.
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">OnComplete</span>:Function</code> (default = <code>null</code>)<code></code> &mdash; 	This callback will be triggered when the data is written successfully.
+		 		 </td></tr></table></p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code>Boolean</code> &mdash; Whether or not the data was written immediately.  False could be an error OR a storage request popup.
+		 </td></tr></table></div><a name="onDone()"></a><a name="onDone(uint)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">onDone</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> protected function onDone(Result:uint):Boolean</code><p></p><p></p><p>
+		 Event handler for special case storage requests.
+		 Handles logging of errors and calling of callback.
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">Result</span>:uint</code> &mdash; 	One of the result codes (PENDING, ERROR, or SUCCESS).
+		 
+		 </td></tr></table></p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code>Boolean</code> &mdash; Whether the operation was a success or not.
+		 </td></tr></table></div><a name="onFlushStatus()"></a><a name="onFlushStatus(flash.events.NetStatusEvent)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">onFlushStatus</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> protected function onFlushStatus(E:NetStatusEvent):void</code><p></p><p></p><p>
+		 Event handler for special case storage requests.
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">E</span>:NetStatusEvent</code> &mdash; Flash net status event.
+		 </td></tr></table></p></div><br/><br/><hr><br/><p></p><center class="copyright"><footer></footer><br/>Wed May 25 2011, 09:29 AM -05:00  </center></div></body></html><!--<br/>Wed May 25 2011, 09:29 AM -05:00  -->

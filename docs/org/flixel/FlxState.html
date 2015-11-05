@@ -1,345 +1,72 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" href="../../style.css" type="text/css" media="screen">
-<link rel="stylesheet" href="../../print.css" type="text/css" media="print">
-<meta content="FlxState,org.flixel.FlxState,bgColor,defaultGroup,screen,add,collide,create,destroy,postProcess,preProcess,render,update" name="keywords">
-<title>org.flixel.FlxState</title>
-</head>
-<body>
-<script type="text/javascript" language="javascript" src="../../asdoc.js"></script><script type="text/javascript" language="javascript" src="../../cookies.js"></script><script type="text/javascript" language="javascript">
-<!--
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><!-- saved from url=(0014)about:internet --><html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="stylesheet" href="../../style.css" type="text/css" media="screen"><link rel="stylesheet" href="../../print.css" type="text/css" media="print"><link rel="stylesheet" href="../../override.css" type="text/css"><meta name="keywords" content="FlxState,org.flixel.FlxState,abs,add,add,addAnimation,addAnimationCallback,addAt,addBitmap,addCamera,addPlugin,addPoint,addPointAt,advancePath,arrayToCSV,at,autoTile,bind,bitmapToCSV,bound,calcFrame,calcFrame,callAll,ceil,centerOffsets,checkBinding,checkBitmapCache,clear,clearBitmapCache,close,collide,compareClassNames,computePathDistance,computeVelocity,copyFrom,copyFrom,copyFrom,copyFromFlash,copyFromFlash,copyTo,copyTo,copyToFlash,copyToFlash,countDead,countLiving,create,create,createBitmap,createFocusScreen,createSound,createSoundTray,destroy,destroy,destroy,destroy,destroy,destroy,destroy,destroy,destroy,destroy,destroy,destroy,destroy,destroySounds,draw,draw,draw,draw,draw,draw,draw,drawDebug,drawDebug,drawDebug,drawFX,drawFrame,drawLine,drawPlugins,drawTilemap,dtfCopy,emitParticle,erase,fade,fade,fadeIn,fadeOut,fill,fill,findPath,flash,flash,flicker,floor,flush,focusOn,follow,follow,followPath,formatArray,formatMoney,formatTicks,formatTime,getActualVolume,getAngle,getBounds,getClass,getClassName,getContainerSprite,getData,getDistance,getFirstAlive,getFirstAvailable,getFirstDead,getFirstExtant,getFirstNull,getHSB,getLibraryName,getMidpoint,getPlugin,getRGBA,getRandom,getRandom,getRandom,getScale,getScreenXY,getTicks,getTile,getTileByIndex,getTileCoords,getTileInstances,gotID3,head,hurt,imageToCSV,init,isTouching,justTouched,kill,kill,kill,kill,loadEmbedded,loadGraphic,loadMap,loadReplay,loadRotatedGraphic,loadSound,loadStream,loadTiles,lockCameras,log,looped,make,make,makeColor,makeColorFromHSB,makeDebugTile,makeGraphic,makeParticles,max,min,onDone,onEmit,onEnterFrame,onFlushStatus,onFocus,onFocusLost,onKeyDown,onKeyUp,onMouseDown,onMouseUp,onMouseUp,onMouseWheel,onScreen,onScreen,openURL,overlap,overlaps,overlaps,overlaps,overlapsAt,overlapsAt,overlapsPoint,overlapsPoint,overlapsWithCallback,pause,pauseSounds,pixelsOverlapPoint,play,play,play,playMusic,postUpdate,postUpdate,postUpdate,preUpdate,preUpdate,preUpdate,preUpdate,proximity,random,randomFrame,ray,raySimplifyPath,recordReplay,recycle,reloadReplay,remove,remove,removeAt,removeCamera,removePlugin,removePluginType,replace,replaceColor,reset,reset,resetCameras,resetDebuggerLayout,resetGame,resetHelpers,resetHelpers,resetInput,resetState,resume,resumeSounds,revive,rotatePoint,round,separate,separateX,separateY,setAll,setBounds,setDebuggerLayout,setDirty,setFormat,setOriginToCorner,setRotation,setSize,setSounds,setTile,setTileByIndex,setTileProperties,setXSpeed,setYSpeed,shake,shake,showSoundTray,shuffle,shuffle,simplifyPath,sort,sortHandler,srand,stamp,start,start,step,stop,stop,stopFX,stopFollowingPath,stopRecording,stopReplay,stopped,stream,switchState,switchState,tail,toString,unlockCameras,unwatch,update,update,update,update,update,update,update,update,update,update,updateAnimation,updateButton,updateCameras,updateInput,updateMotion,updatePathMotion,updatePlugins,updateSoundTray,updateSounds,updateTile,updateTransform,walkPath,watch"><title>org.flixel.FlxState</title></head><body><script language="javascript" type="text/javascript" src="../../asdoc.js"></script><script language="javascript" type="text/javascript" src="../../help.js"></script><script language="javascript" type="text/javascript" src="../../cookies.js"></script><script language="javascript" type="text/javascript"><!--
 				asdocTitle = 'FlxState - API Documentation';
 				var baseRef = '../../';
 				window.onload = configPage;
 			--></script>
-<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" class="titleTable">
-<tr>
-<td align="left" class="titleTableTitle">API Documentation</td><td align="right" class="titleTableTopNav"><a onclick="loadClassListFrame('../../all-classes.html')" href="../../package-summary.html">All&nbsp;Packages</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../all-classes.html')" href="../../class-summary.html">All&nbsp;Classes</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../index-list.html')" href="../../all-index-A.html">Index</a>&nbsp;|&nbsp;<a href="../../index.html?org/flixel/FlxState.html&amp;org/flixel/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></td><td rowspan="3" align="right" class="titleTableLogo"><img alt="Adobe Logo" title="Adobe Logo" class="logoImage" src="../../images/logo.jpg"></td>
-</tr>
-<tr class="titleTableRow2">
-<td align="left" id="subTitle" class="titleTableSubTitle">Class&nbsp;FlxState</td><td align="right" id="subNav" class="titleTableSubNav"><a href="#propertySummary">Properties</a>&nbsp;| <a href="#methodSummary">Methods</a></td>
-</tr>
-<tr class="titleTableRow3">
-<td colspan="2">&nbsp;</td>
-</tr>
-</table>
-<script type="text/javascript" language="javascript">
-<!--
-if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Class FlxState"); titleBar_setSubNav(false,true,false,false,false,false,true,false,false,false,false,false,false,false);}
---></script>
-<div class="MainContent">
-<table cellspacing="0" cellpadding="0" class="classHeaderTable">
-<tr>
-<td class="classHeaderTableLabel">Package</td><td><a onclick="javascript:loadClassListFrame('class-list.html')" href="package-detail.html">org.flixel</a></td>
-</tr>
-<tr>
-<td class="classHeaderTableLabel">Class</td><td class="classSignature">public class FlxState</td>
-</tr>
-<tr>
-<td class="classHeaderTableLabel">Inheritance</td><td class="inheritanceList">FlxState <img class="inheritArrow" alt="Inheritance" title="Inheritance" src="../../images/inherit-arrow.gif"> flash.display.Sprite</td>
-</tr>
-</table>
-<p></p>
-  This is the basic game "state" object - e.g. in a simple game
-  you might have a menu state and a play state.
-  It acts as a kind of container for all your game objects.
-  You can also access the game's background color
-  and screen buffer through this object.
-  FlxState is kind of a funny class from the technical side,
-  it is just a regular Flash Sprite display object,
-  with one member variable: a flixel <code>FlxGroup</code>.
-  This means you can load it up with regular Flash stuff
-  or with flixel elements, whatever works!
-  <p></p>
-<br>
-<hr>
-</div>
-<a name="propertySummary"></a>
-<div class="summarySection">
-<div class="summaryTableTitle">Public Properties</div>
-<table id="summaryTableProperty" class="summaryTable " cellpadding="3" cellspacing="0">
-<tr>
-<th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#bgColor">bgColor</a> : uint<div class="summaryTableDescription">[static]
-   This static variable indicates the "clear color"
-   or default background color of the game.</div>
-</td><td class="summaryTableOwnerCol">FlxState</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#defaultGroup">defaultGroup</a> : <a href="../flixel/FlxGroup.html">FlxGroup</a>
-<div class="summaryTableDescription">
-   Internal group used to organize and display objects you add to this state.</div>
-</td><td class="summaryTableOwnerCol">FlxState</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#screen">screen</a> : <a href="../flixel/FlxSprite.html">FlxSprite</a>
-<div class="summaryTableDescription">[static]
-   This static variable holds the screen buffer,
-   so you can draw to it directly if you want.</div>
-</td><td class="summaryTableOwnerCol">FlxState</td>
-</tr>
-</table>
-</div>
-<a name="methodSummary"></a>
-<div class="summarySection">
-<div class="summaryTableTitle">Public Methods</div>
-<table id="summaryTableMethod" class="summaryTable " cellpadding="3" cellspacing="0">
-<tr>
-<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#FlxState()">FlxState</a>()</div>
-<div class="summaryTableDescription">
-   Creates a new <code>FlxState</code> object,
-   instantiating <code>screen</code> if necessary.</div>
-</td><td class="summaryTableOwnerCol">FlxState</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#add()">add</a>(Core:<a href="FlxObject.html">FlxObject</a>):<a href="../flixel/FlxObject.html">FlxObject</a>
-</div>
-<div class="summaryTableDescription">
-   Adds a new FlxCore subclass (FlxSprite, FlxBlock, etc) to the game loop.</div>
-</td><td class="summaryTableOwnerCol">FlxState</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#collide()">collide</a>():void</div>
-<div class="summaryTableDescription">
-   This function collides <code>defaultGroup</code> against <code>defaultGroup</code>
-   (basically everything you added to this state).</div>
-</td><td class="summaryTableOwnerCol">FlxState</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#create()">create</a>():void</div>
-<div class="summaryTableDescription">
-   Override this function to set up your game state.</div>
-</td><td class="summaryTableOwnerCol">FlxState</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#destroy()">destroy</a>():void</div>
-<div class="summaryTableDescription">
-   Override this function to handle any deleting or "shutdown" type operations you
-   might need (such as removing traditional Flash children like Sprite objects).</div>
-</td><td class="summaryTableOwnerCol">FlxState</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#postProcess()">postProcess</a>():void</div>
-<div class="summaryTableDescription">
-   Override this function to do special pre-processing FX like light bloom.</div>
-</td><td class="summaryTableOwnerCol">FlxState</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#preProcess()">preProcess</a>():void</div>
-<div class="summaryTableDescription">
-   Override this function to do special pre-processing FX like motion blur.</div>
-</td><td class="summaryTableOwnerCol">FlxState</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#render()">render</a>():void</div>
-<div class="summaryTableDescription">
-   Automatically goes through and calls render on everything you added to the game loop,
-   override this loop to manually control the rendering process.</div>
-</td><td class="summaryTableOwnerCol">FlxState</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#update()">update</a>():void</div>
-<div class="summaryTableDescription">
-   Automatically goes through and calls update on everything you added to the game loop,
-   override this function to handle custom input and perform collisions/
-   </div>
-</td><td class="summaryTableOwnerCol">FlxState</td>
-</tr>
-</table>
-</div>
-<script type="text/javascript" language="javascript">
-<!--
-showHideInherited();
---></script>
-<div class="MainContent">
-<a name="propertyDetail"></a>
-<div class="detailSectionHeader">Property detail</div>
-<a name="bgColor"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">bgColor</td><td class="detailHeaderType">property</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static var bgColor:uint</code><p>
-   This static variable indicates the "clear color"
-   or default background color of the game.
-   Change it at ANY time using <code>FlxState.bgColor</code>.
-   </p></div>
-<a name="defaultGroup"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">defaultGroup</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public var defaultGroup:<a href="../flixel/FlxGroup.html">FlxGroup</a></code><p>
-   Internal group used to organize and display objects you add to this state.
-   </p></div>
-<a name="screen"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">screen</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static var screen:<a href="../flixel/FlxSprite.html">FlxSprite</a></code><p>
-   This static variable holds the screen buffer,
-   so you can draw to it directly if you want.
-   </p></div>
-<a name="constructorDetail"></a>
-<div class="detailSectionHeader">Constructor detail</div>
-<a name="FlxState()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">FlxState</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">constructor</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public function FlxState()</code><p>
-   Creates a new <code>FlxState</code> object,
-   instantiating <code>screen</code> if necessary.
-   </p></div>
-<a name="methodDetail"></a>
-<div class="detailSectionHeader">Method detail</div>
-<a name="add()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">add</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public function add(Core:<a href="FlxObject.html">FlxObject</a>):<a href="../flixel/FlxObject.html">FlxObject</a></code><p>
-   Adds a new FlxCore subclass (FlxSprite, FlxBlock, etc) to the game loop.
-   FlxState is adding this object to its built-in FlxGroup to automate updating and rendering.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">Core</span>:<a href="FlxObject.html">FlxObject</a></code> &mdash; The object you want to add to the game loop.
-   </td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code><a href="../flixel/FlxObject.html">FlxObject</a></code></td>
-</tr>
-</table>
-</div>
-<a name="collide()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">collide</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public function collide():void</code><p>
-   This function collides <code>defaultGroup</code> against <code>defaultGroup</code>
-   (basically everything you added to this state).
-   </p></div>
-<a name="create()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">create</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public function create():void</code><p>
-   Override this function to set up your game state.
-   This is where you create your groups and game objects and all that good stuff.
-   </p></div>
-<a name="destroy()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">destroy</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public function destroy():void</code><p>
-   Override this function to handle any deleting or "shutdown" type operations you
-   might need (such as removing traditional Flash children like Sprite objects).
-   </p></div>
-<a name="postProcess()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">postProcess</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public function postProcess():void</code><p>
-   Override this function to do special pre-processing FX like light bloom.
-   You can use scaling or blending modes or whatever you want against
-   <code>FlxState.screen</code> to achieve all sorts of cool FX.
-   </p></div>
-<a name="preProcess()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">preProcess</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public function preProcess():void</code><p>
-   Override this function to do special pre-processing FX like motion blur.
-   You can use scaling or blending modes or whatever you want against
-   <code>FlxState.screen</code> to achieve all sorts of cool FX.
-   </p></div>
-<a name="render()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">render</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public function render():void</code><p>
-   Automatically goes through and calls render on everything you added to the game loop,
-   override this loop to manually control the rendering process.
-   </p></div>
-<a name="update()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">update</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public function update():void</code><p>
-   Automatically goes through and calls update on everything you added to the game loop,
-   override this function to handle custom input and perform collisions/
-   </p></div>
-<br>
-<br>
-<hr>
-<br>
-<p></p>
-<center class="copyright"> 
-</center>
-</div>
-</body>
-</html>
-<!-- -->
+<script type="text/javascript">
+			scrollToNameAnchor();
+		</script><table class="titleTable" cellpadding="0" cellspacing="0" id="titleTable" style="display:none"><tr><td class="titleTableTitle" align="left">API Documentation</td><td class="titleTableTopNav" align="right"><a href="../../package-summary.html" onclick="loadClassListFrame('../../all-classes.html')">All Packages</a>&nbsp;|&nbsp;<a href="../../class-summary.html" onclick="loadClassListFrame('../../all-classes.html')">All Classes</a>&nbsp;|&nbsp;<a href="../../all-index-A.html" onclick="loadClassListFrame('../../index-list.html')">Index</a>&nbsp;|&nbsp;<a id="framesLink1" href="../../index.html?org/flixel/FlxState.html&amp;org/flixel/class-list.html">Frames</a><a id="noFramesLink1" style="display:none" href="" onclick="parent.location=document.location"> No Frames </a></td><td class="titleTableLogo" align="right" rowspan="3"><img src="../../images/logo.jpg" class="logoImage" alt=" Adobe Logo " title=" Adobe Logo "></td></tr><tr class="titleTableRow2"><td class="titleTableSubTitle" id="subTitle" align="left">FlxState</td><td class="titleTableSubNav" id="subNav" align="right"><a href="#propertySummary">Properties</a>&nbsp;| <a href="#methodSummary">Methods</a>&nbsp;| <a href="#constantSummary">Constants</a></td></tr><tr class="titleTableRow3"><td colspan="3">&nbsp;</td></tr></table><script language="javascript" type="text/javascript" xml:space="preserve">
+				<!--
+				
+					if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("FlxState"); titleBar_setSubNav(true,true,false,false,false,false,false,false,true,false,false	,false,false,false,false,false);}	
+				-->
+			</script><div xmlns:fn="http://www.w3.org/2005/xpath-functions" class="MainContent"><table class="classHeaderTable" cellpadding="0" cellspacing="0"><tr><td class="classHeaderTableLabel">Package</td><td><a href="package-detail.html" onclick="javascript:loadClassListFrame('class-list.html')">org.flixel</a></td></tr><tr><td class="classHeaderTableLabel">Class</td><td class="classSignature">public  class  FlxState</td></tr><tr><td class="classHeaderTableLabel">Inheritance</td><td class="inheritanceList">FlxState  <img src="../../images/inherit-arrow.gif" title="Inheritance" alt="Inheritance" class="inheritArrow"> <a href="../../org/flixel/FlxGroup.html">FlxGroup</a> <img src="../../images/inherit-arrow.gif" title="Inheritance" alt="Inheritance" class="inheritArrow"> <a href="../../org/flixel/FlxBasic.html">FlxBasic</a> <img src="../../images/inherit-arrow.gif" title="Inheritance" alt="Inheritance" class="inheritArrow"> Object</td></tr></table><p></p><p></p><p></p>
+	 This is the basic game "state" object - e.g. in a simple game
+	 you might have a menu state and a play state.
+	 It is for all intents and purpose a fancy FlxGroup.
+	 And really, it's not even that fancy.
+	 
+	 <p></p><br/><hr></div><a name="propertySummary"></a><div class="summarySection"><div class="summaryTableTitle">Public Properties</div><div class="showHideLinks"><div id="hideInheritedProperty" class="hideInheritedProperty"><a class="showHideLink" href="#propertySummary" onclick="javascript:setInheritedVisible(false,'Property');"><img class="showHideLinkImage" src="../../images/expanded.gif"> Hide Inherited Public Properties</a></div><div id="showInheritedProperty" class="showInheritedProperty"><a class="showHideLink" href="#propertySummary" onclick="javascript:setInheritedVisible(true,'Property');"><img class="showHideLinkImage" src="../../images/collapsed.gif"> Show Inherited Public Properties</a></div></div><table cellspacing="0" cellpadding="3" class="summaryTable hideInheritedProperty" id="summaryTableProperty"><tr><th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined By</th></tr><tr class="hideInheritedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../org/flixel/FlxBasic.html#active" class="signatureLink">active</a> : Boolean<div class="summaryTableDescription">
+		 Controls whether update() is automatically called by FlxState/FlxGroup.</div></td><td class="summaryTableOwnerCol"><a href="../../org/flixel/FlxBasic.html">FlxBasic</a></td></tr><tr class="hideInheritedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../org/flixel/FlxBasic.html#_ACTIVECOUNT" class="signatureLink">_ACTIVECOUNT</a> : uint<div class="summaryTableDescription">[static] </div></td><td class="summaryTableOwnerCol"><a href="../../org/flixel/FlxBasic.html">FlxBasic</a></td></tr><tr class="hideInheritedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../org/flixel/FlxBasic.html#alive" class="signatureLink">alive</a> : Boolean<div class="summaryTableDescription">
+		 Useful state for many game objects - "dead" (!alive) vs alive.</div></td><td class="summaryTableOwnerCol"><a href="../../org/flixel/FlxBasic.html">FlxBasic</a></td></tr><tr class="hideInheritedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../org/flixel/FlxBasic.html#cameras" class="signatureLink">cameras</a> : Array<div class="summaryTableDescription">
+		 An array of camera objects that this object will use during draw().</div></td><td class="summaryTableOwnerCol"><a href="../../org/flixel/FlxBasic.html">FlxBasic</a></td></tr><tr class="hideInheritedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../org/flixel/FlxBasic.html#exists" class="signatureLink">exists</a> : Boolean<div class="summaryTableDescription">
+		 Controls whether update() and draw() are automatically called by FlxState/FlxGroup.</div></td><td class="summaryTableOwnerCol"><a href="../../org/flixel/FlxBasic.html">FlxBasic</a></td></tr><tr class="hideInheritedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../org/flixel/FlxBasic.html#ID" class="signatureLink">ID</a> : int<div class="summaryTableDescription">
+		 IDs seem like they could be pretty useful, huh?
+		 They're not actually used for anything yet though.</div></td><td class="summaryTableOwnerCol"><a href="../../org/flixel/FlxBasic.html">FlxBasic</a></td></tr><tr class="hideInheritedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../org/flixel/FlxBasic.html#ignoreDrawDebug" class="signatureLink">ignoreDrawDebug</a> : Boolean<div class="summaryTableDescription">
+		 Setting this to true will prevent the object from appearing
+		 when the visual debug mode in the debugger overlay is toggled on.</div></td><td class="summaryTableOwnerCol"><a href="../../org/flixel/FlxBasic.html">FlxBasic</a></td></tr><tr class="hideInheritedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../org/flixel/FlxGroup.html#length" class="signatureLink">length</a> : Number<div class="summaryTableDescription">
+		 The number of entries in the members array.</div></td><td class="summaryTableOwnerCol"><a href="../../org/flixel/FlxGroup.html">FlxGroup</a></td></tr><tr class="hideInheritedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../org/flixel/FlxGroup.html#maxSize" class="signatureLink">maxSize</a> : uint<div class="summaryTableDescription">
+		 The maximum capacity of this group.</div></td><td class="summaryTableOwnerCol"><a href="../../org/flixel/FlxGroup.html">FlxGroup</a></td></tr><tr class="hideInheritedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../org/flixel/FlxGroup.html#members" class="signatureLink">members</a> : Array<div class="summaryTableDescription">
+		 Array of all the FlxBasics that exist in this group.</div></td><td class="summaryTableOwnerCol"><a href="../../org/flixel/FlxGroup.html">FlxGroup</a></td></tr><tr class="hideInheritedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../org/flixel/FlxBasic.html#visible" class="signatureLink">visible</a> : Boolean<div class="summaryTableDescription">
+		 Controls whether draw() is automatically called by FlxState/FlxGroup.</div></td><td class="summaryTableOwnerCol"><a href="../../org/flixel/FlxBasic.html">FlxBasic</a></td></tr><tr class="hideInheritedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../org/flixel/FlxBasic.html#_VISIBLECOUNT" class="signatureLink">_VISIBLECOUNT</a> : uint<div class="summaryTableDescription">[static] </div></td><td class="summaryTableOwnerCol"><a href="../../org/flixel/FlxBasic.html">FlxBasic</a></td></tr></table></div><a name="protectedPropertySummary"></a><div class="summarySection"><div class="summaryTableTitle">Protected Properties</div><div class="showHideLinks"><div id="hideInheritedProtectedProperty" class="hideInheritedProtectedProperty"><a class="showHideLink" href="#protectedPropertySummary" onclick="javascript:setInheritedVisible(false,'ProtectedProperty');"><img class="showHideLinkImage" src="../../images/expanded.gif"> Hide Inherited Protected Properties</a></div><div id="showInheritedProtectedProperty" class="showInheritedProtectedProperty"><a class="showHideLink" href="#protectedPropertySummary" onclick="javascript:setInheritedVisible(true,'ProtectedProperty');"><img class="showHideLinkImage" src="../../images/collapsed.gif"> Show Inherited Protected Properties</a></div></div><table cellspacing="0" cellpadding="3" class="summaryTable hideInheritedProtectedProperty" id="summaryTableProtectedProperty"><tr><th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined By</th></tr><tr class="hideInheritedProtectedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../org/flixel/FlxGroup.html#_marker" class="signatureLink">_marker</a> : uint<div class="summaryTableDescription">
+		 Internal helper variable for recycling objects a la FlxEmitter.</div></td><td class="summaryTableOwnerCol"><a href="../../org/flixel/FlxGroup.html">FlxGroup</a></td></tr><tr class="hideInheritedProtectedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../org/flixel/FlxGroup.html#_maxSize" class="signatureLink">_maxSize</a> : uint<div class="summaryTableDescription">
+		 Internal tracker for the maximum capacity of the group.</div></td><td class="summaryTableOwnerCol"><a href="../../org/flixel/FlxGroup.html">FlxGroup</a></td></tr><tr class="hideInheritedProtectedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../org/flixel/FlxGroup.html#_sortIndex" class="signatureLink">_sortIndex</a> : String<div class="summaryTableDescription">
+		 Helper for sort.</div></td><td class="summaryTableOwnerCol"><a href="../../org/flixel/FlxGroup.html">FlxGroup</a></td></tr><tr class="hideInheritedProtectedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../org/flixel/FlxGroup.html#_sortOrder" class="signatureLink">_sortOrder</a> : int<div class="summaryTableDescription">
+		 Helper for sort.</div></td><td class="summaryTableOwnerCol"><a href="../../org/flixel/FlxGroup.html">FlxGroup</a></td></tr></table></div><a name="methodSummary"></a><div class="summarySection"><div class="summaryTableTitle">Public Methods </div><div class="showHideLinks"><div id="hideInheritedMethod" class="hideInheritedMethod"><a class="showHideLink" href="#methodSummary" onclick="javascript:setInheritedVisible(false,'Method');"><img class="showHideLinkImage" src="../../images/expanded.gif"> Hide Inherited Public Methods</a></div><div id="showInheritedMethod" class="showInheritedMethod"><a class="showHideLink" href="#methodSummary" onclick="javascript:setInheritedVisible(true,'Method');"><img class="showHideLinkImage" src="../../images/collapsed.gif"> Show Inherited Public Methods</a></div></div><table cellspacing="0" cellpadding="3" class="summaryTable " id="summaryTableMethod"><tr><th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined By</th></tr><tr class="hideInheritedMethod"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="../../org/flixel/FlxGroup.html#add()" class="signatureLink">add</a>(Object:<a href="../../org/flixel/FlxBasic.html">FlxBasic</a>):<a href="../../org/flixel/FlxBasic.html">FlxBasic</a></div><div class="summaryTableDescription">
+		 Adds a new FlxBasic subclass (FlxBasic, FlxSprite, Enemy, etc) to the group.</div></td><td class="summaryTableOwnerCol"><a href="../../org/flixel/FlxGroup.html">FlxGroup</a></td></tr><tr class="hideInheritedMethod"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="../../org/flixel/FlxGroup.html#callAll()" class="signatureLink">callAll</a>(FunctionName:String, Recurse:Boolean = true):void</div><div class="summaryTableDescription">
+		 Go through and call the specified function on all members of the group.</div></td><td class="summaryTableOwnerCol"><a href="../../org/flixel/FlxGroup.html">FlxGroup</a></td></tr><tr class="hideInheritedMethod"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="../../org/flixel/FlxGroup.html#clear()" class="signatureLink">clear</a>():void</div><div class="summaryTableDescription">
+		 Remove all instances of FlxBasic subclass (FlxSprite, FlxBlock, etc) from the list.</div></td><td class="summaryTableOwnerCol"><a href="../../org/flixel/FlxGroup.html">FlxGroup</a></td></tr><tr class="hideInheritedMethod"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="../../org/flixel/FlxGroup.html#countDead()" class="signatureLink">countDead</a>():int</div><div class="summaryTableDescription">
+		 Call this function to find out how many members of the group are dead.</div></td><td class="summaryTableOwnerCol"><a href="../../org/flixel/FlxGroup.html">FlxGroup</a></td></tr><tr class="hideInheritedMethod"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="../../org/flixel/FlxGroup.html#countLiving()" class="signatureLink">countLiving</a>():int</div><div class="summaryTableDescription">
+		 Call this function to find out how many members of the group are not dead.</div></td><td class="summaryTableOwnerCol"><a href="../../org/flixel/FlxGroup.html">FlxGroup</a></td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#create()" class="signatureLink">create</a>():void</div><div class="summaryTableDescription">
+		 This function is called after the game engine successfully switches states.</div></td><td class="summaryTableOwnerCol">FlxState</td></tr><tr class="hideInheritedMethod"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="../../org/flixel/FlxGroup.html#destroy()" class="signatureLink">destroy</a>():void</div><div class="summaryTableDescription">[override] 
+		 Override this function to handle any deleting or "shutdown" type operations you might need,
+		 such as removing traditional Flash children like Sprite objects.</div></td><td class="summaryTableOwnerCol"><a href="../../org/flixel/FlxGroup.html">FlxGroup</a></td></tr><tr class="hideInheritedMethod"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="../../org/flixel/FlxGroup.html#draw()" class="signatureLink">draw</a>():void</div><div class="summaryTableDescription">[override] 
+		 Automatically goes through and calls render on everything you added.</div></td><td class="summaryTableOwnerCol"><a href="../../org/flixel/FlxGroup.html">FlxGroup</a></td></tr><tr class="hideInheritedMethod"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="../../org/flixel/FlxBasic.html#drawDebug()" class="signatureLink">drawDebug</a>(Camera:<a href="../../org/flixel/FlxCamera.html">FlxCamera</a> = null):void</div><div class="summaryTableDescription">
+		 Override this function to draw custom "debug mode" graphics to the
+		 specified camera while the debugger's visual mode is toggled on.</div></td><td class="summaryTableOwnerCol"><a href="../../org/flixel/FlxBasic.html">FlxBasic</a></td></tr><tr class="hideInheritedMethod"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="../../org/flixel/FlxGroup.html#getFirstAlive()" class="signatureLink">getFirstAlive</a>():<a href="../../org/flixel/FlxBasic.html">FlxBasic</a></div><div class="summaryTableDescription">
+		 Call this function to retrieve the first object with dead == false in the group.</div></td><td class="summaryTableOwnerCol"><a href="../../org/flixel/FlxGroup.html">FlxGroup</a></td></tr><tr class="hideInheritedMethod"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="../../org/flixel/FlxGroup.html#getFirstAvailable()" class="signatureLink">getFirstAvailable</a>(ObjectClass:Class = null):<a href="../../org/flixel/FlxBasic.html">FlxBasic</a></div><div class="summaryTableDescription">
+		 Call this function to retrieve the first object with exists == false in the group.</div></td><td class="summaryTableOwnerCol"><a href="../../org/flixel/FlxGroup.html">FlxGroup</a></td></tr><tr class="hideInheritedMethod"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="../../org/flixel/FlxGroup.html#getFirstDead()" class="signatureLink">getFirstDead</a>():<a href="../../org/flixel/FlxBasic.html">FlxBasic</a></div><div class="summaryTableDescription">
+		 Call this function to retrieve the first object with dead == true in the group.</div></td><td class="summaryTableOwnerCol"><a href="../../org/flixel/FlxGroup.html">FlxGroup</a></td></tr><tr class="hideInheritedMethod"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="../../org/flixel/FlxGroup.html#getFirstExtant()" class="signatureLink">getFirstExtant</a>():<a href="../../org/flixel/FlxBasic.html">FlxBasic</a></div><div class="summaryTableDescription">
+		 Call this function to retrieve the first object with exists == true in the group.</div></td><td class="summaryTableOwnerCol"><a href="../../org/flixel/FlxGroup.html">FlxGroup</a></td></tr><tr class="hideInheritedMethod"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="../../org/flixel/FlxGroup.html#getFirstNull()" class="signatureLink">getFirstNull</a>():int</div><div class="summaryTableDescription">
+		 Call this function to retrieve the first index set to 'null'.</div></td><td class="summaryTableOwnerCol"><a href="../../org/flixel/FlxGroup.html">FlxGroup</a></td></tr><tr class="hideInheritedMethod"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="../../org/flixel/FlxGroup.html#getRandom()" class="signatureLink">getRandom</a>(StartIndex:uint = 0, Length:uint = 0):<a href="../../org/flixel/FlxBasic.html">FlxBasic</a></div><div class="summaryTableDescription">
+		 Returns a member at random from the group.</div></td><td class="summaryTableOwnerCol"><a href="../../org/flixel/FlxGroup.html">FlxGroup</a></td></tr><tr class="hideInheritedMethod"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="../../org/flixel/FlxGroup.html#kill()" class="signatureLink">kill</a>():void</div><div class="summaryTableDescription">[override] 
+		 Calls kill on the group's members and then on the group itself.</div></td><td class="summaryTableOwnerCol"><a href="../../org/flixel/FlxGroup.html">FlxGroup</a></td></tr><tr class="hideInheritedMethod"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="../../org/flixel/FlxBasic.html#postUpdate()" class="signatureLink">postUpdate</a>():void</div><div class="summaryTableDescription">
+		 Post-update is called right after update() on each object in the game loop.</div></td><td class="summaryTableOwnerCol"><a href="../../org/flixel/FlxBasic.html">FlxBasic</a></td></tr><tr class="hideInheritedMethod"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="../../org/flixel/FlxGroup.html#preUpdate()" class="signatureLink">preUpdate</a>():void</div><div class="summaryTableDescription">[override] 
+		 Just making sure we don't increment the active objects count.</div></td><td class="summaryTableOwnerCol"><a href="../../org/flixel/FlxGroup.html">FlxGroup</a></td></tr><tr class="hideInheritedMethod"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="../../org/flixel/FlxGroup.html#recycle()" class="signatureLink">recycle</a>(ObjectClass:Class = null):<a href="../../org/flixel/FlxBasic.html">FlxBasic</a></div><div class="summaryTableDescription">
+		 Recycling is designed to help you reuse game objects without always re-allocating or "newing" them.</div></td><td class="summaryTableOwnerCol"><a href="../../org/flixel/FlxGroup.html">FlxGroup</a></td></tr><tr class="hideInheritedMethod"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="../../org/flixel/FlxGroup.html#remove()" class="signatureLink">remove</a>(Object:<a href="../../org/flixel/FlxBasic.html">FlxBasic</a>, Splice:Boolean = false):<a href="../../org/flixel/FlxBasic.html">FlxBasic</a></div><div class="summaryTableDescription">
+		 Removes an object from the group.</div></td><td class="summaryTableOwnerCol"><a href="../../org/flixel/FlxGroup.html">FlxGroup</a></td></tr><tr class="hideInheritedMethod"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="../../org/flixel/FlxGroup.html#replace()" class="signatureLink">replace</a>(OldObject:<a href="../../org/flixel/FlxBasic.html">FlxBasic</a>, NewObject:<a href="../../org/flixel/FlxBasic.html">FlxBasic</a>):<a href="../../org/flixel/FlxBasic.html">FlxBasic</a></div><div class="summaryTableDescription">
+		 Replaces an existing FlxBasic with a new one.</div></td><td class="summaryTableOwnerCol"><a href="../../org/flixel/FlxGroup.html">FlxGroup</a></td></tr><tr class="hideInheritedMethod"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="../../org/flixel/FlxBasic.html#revive()" class="signatureLink">revive</a>():void</div><div class="summaryTableDescription">
+		 Handy function for bringing game objects "back to life".</div></td><td class="summaryTableOwnerCol"><a href="../../org/flixel/FlxBasic.html">FlxBasic</a></td></tr><tr class="hideInheritedMethod"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="../../org/flixel/FlxGroup.html#setAll()" class="signatureLink">setAll</a>(VariableName:String, Value:Object, Recurse:Boolean = true):void</div><div class="summaryTableDescription">
+		 Go through and set the specified variable to the specified value on all members of the group.</div></td><td class="summaryTableOwnerCol"><a href="../../org/flixel/FlxGroup.html">FlxGroup</a></td></tr><tr class="hideInheritedMethod"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="../../org/flixel/FlxGroup.html#sort()" class="signatureLink">sort</a>(Index:String = y, Order:int):void</div><div class="summaryTableDescription">
+		 Call this function to sort the group according to a particular value and order.</div></td><td class="summaryTableOwnerCol"><a href="../../org/flixel/FlxGroup.html">FlxGroup</a></td></tr><tr class="hideInheritedMethod"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="../../org/flixel/FlxBasic.html#toString()" class="signatureLink">toString</a>():String</div><div class="summaryTableDescription">
+		 Convert object to readable string name.</div></td><td class="summaryTableOwnerCol"><a href="../../org/flixel/FlxBasic.html">FlxBasic</a></td></tr><tr class="hideInheritedMethod"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="../../org/flixel/FlxGroup.html#update()" class="signatureLink">update</a>():void</div><div class="summaryTableDescription">[override] 
+		 Automatically goes through and calls update on everything you added.</div></td><td class="summaryTableOwnerCol"><a href="../../org/flixel/FlxGroup.html">FlxGroup</a></td></tr></table></div><a name="protectedMethodSummary"></a><div class="summarySection"><div class="summaryTableTitle">Protected Methods </div><div class="showHideLinks"><div id="hideInheritedProtectedMethod" class="hideInheritedProtectedMethod"><a class="showHideLink" href="#protectedMethodSummary" onclick="javascript:setInheritedVisible(false,'ProtectedMethod');"><img class="showHideLinkImage" src="../../images/expanded.gif"> Show Inherited Protected Methods</a></div><div id="showInheritedProtectedMethod" class="showInheritedProtectedMethod"><a class="showHideLink" href="#protectedMethodSummary" onclick="javascript:setInheritedVisible(true,'ProtectedMethod');"><img class="showHideLinkImage" src="../../images/collapsed.gif"> Show Inherited Protected Methods</a></div></div><table cellspacing="0" cellpadding="3" class="summaryTable hideInheritedProtectedMethod" id="summaryTableProtectedMethod"><tr><th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined By</th></tr><tr class="hideInheritedProtectedMethod"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="../../org/flixel/FlxGroup.html#sortHandler()" class="signatureLink">sortHandler</a>(Obj1:<a href="../../org/flixel/FlxBasic.html">FlxBasic</a>, Obj2:<a href="../../org/flixel/FlxBasic.html">FlxBasic</a>):int</div><div class="summaryTableDescription">
+		 Helper function for the sort process.</div></td><td class="summaryTableOwnerCol"><a href="../../org/flixel/FlxGroup.html">FlxGroup</a></td></tr></table></div><a name="constantSummary"></a><div class="summarySection"><div class="summaryTableTitle">Public Constants</div><div class="showHideLinks"><div id="hideInheritedConstant" class="hideInheritedConstant"><a class="showHideLink" href="#constantSummary" onclick="javascript:setInheritedVisible(false,'Constant');"><img class="showHideLinkImage" src="../../images/expanded.gif"> Hide Inherited Public Constants</a></div><div id="showInheritedConstant" class="showInheritedConstant"><a class="showHideLink" href="#constantSummary" onclick="javascript:setInheritedVisible(true,'Constant');"><img class="showHideLinkImage" src="../../images/collapsed.gif"> Show Inherited Public Constants</a></div></div><table cellspacing="0" cellpadding="3" class="summaryTable hideInheritedConstant" id="summaryTableConstant"><tr><th>&nbsp;</th><th colspan="2">Constant</th><th class="summaryTableOwnerCol">Defined By</th></tr><tr class="hideInheritedConstant"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../org/flixel/FlxGroup.html#ASCENDING" class="signatureLink">ASCENDING</a> : int = -1<div class="summaryTableDescription">[static] 
+		 Use with sort() to sort in ascending order.</div></td><td class="summaryTableOwnerCol"><a href="../../org/flixel/FlxGroup.html">FlxGroup</a></td></tr><tr class="hideInheritedConstant"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../org/flixel/FlxGroup.html#DESCENDING" class="signatureLink">DESCENDING</a> : int = 1<div class="summaryTableDescription">[static] 
+		 Use with sort() to sort in descending order.</div></td><td class="summaryTableOwnerCol"><a href="../../org/flixel/FlxGroup.html">FlxGroup</a></td></tr></table></div><script language="javascript" type="text/javascript"><!--
+										showHideInherited();
+										--></script><div class="MainContent"><a name="methodDetail"></a><div class="detailSectionHeader">Method Detail</div><a name="create()"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">create</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td></tr></table><div class="detailBody"><code> public function create():void</code><p></p><p></p><p>
+		 This function is called after the game engine successfully switches states.
+		 Override this function, NOT the constructor, to initialize or set up your game state.
+		 We do NOT recommend overriding the constructor, unless you want some crazy unpredictable things to happen!
+		 </p></div><br/><br/><hr><br/><p></p><center class="copyright"><footer></footer><br/>Wed May 25 2011, 09:29 AM -05:00  </center></div></body></html><!--<br/>Wed May 25 2011, 09:29 AM -05:00  -->

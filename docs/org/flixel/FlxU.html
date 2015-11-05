@@ -1,1093 +1,250 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" href="../../style.css" type="text/css" media="screen">
-<link rel="stylesheet" href="../../print.css" type="text/css" media="print">
-<meta content="FlxU,org.flixel.FlxU,quadTree,roundingError,abs,ceil,collide,computeVelocity,endProfile,floor,getAngle,getClass,getClassName,getColor,getColorHSB,getHSB,getRGBA,max,min,openURL,overlap,random,rotatePoint,setWorldBounds,solveXCollision,solveYCollision,startProfile" name="keywords">
-<title>org.flixel.FlxU</title>
-</head>
-<body>
-<script type="text/javascript" language="javascript" src="../../asdoc.js"></script><script type="text/javascript" language="javascript" src="../../cookies.js"></script><script type="text/javascript" language="javascript">
-<!--
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><!-- saved from url=(0014)about:internet --><html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="stylesheet" href="../../style.css" type="text/css" media="screen"><link rel="stylesheet" href="../../print.css" type="text/css" media="print"><link rel="stylesheet" href="../../override.css" type="text/css"><meta name="keywords" content="FlxU,org.flixel.FlxU,abs,add,add,addAnimation,addAnimationCallback,addAt,addBitmap,addCamera,addPlugin,addPoint,addPointAt,advancePath,arrayToCSV,at,autoTile,bind,bitmapToCSV,bound,calcFrame,calcFrame,callAll,ceil,centerOffsets,checkBinding,checkBitmapCache,clear,clearBitmapCache,close,collide,compareClassNames,computePathDistance,computeVelocity,copyFrom,copyFrom,copyFrom,copyFromFlash,copyFromFlash,copyTo,copyTo,copyToFlash,copyToFlash,countDead,countLiving,create,create,createBitmap,createFocusScreen,createSound,createSoundTray,destroy,destroy,destroy,destroy,destroy,destroy,destroy,destroy,destroy,destroy,destroy,destroy,destroy,destroySounds,draw,draw,draw,draw,draw,draw,draw,drawDebug,drawDebug,drawDebug,drawFX,drawFrame,drawLine,drawPlugins,drawTilemap,dtfCopy,emitParticle,erase,fade,fade,fadeIn,fadeOut,fill,fill,findPath,flash,flash,flicker,floor,flush,focusOn,follow,follow,followPath,formatArray,formatMoney,formatTicks,formatTime,getActualVolume,getAngle,getBounds,getClass,getClassName,getContainerSprite,getData,getDistance,getFirstAlive,getFirstAvailable,getFirstDead,getFirstExtant,getFirstNull,getHSB,getLibraryName,getMidpoint,getPlugin,getRGBA,getRandom,getRandom,getRandom,getScale,getScreenXY,getTicks,getTile,getTileByIndex,getTileCoords,getTileInstances,gotID3,head,hurt,imageToCSV,init,isTouching,justTouched,kill,kill,kill,kill,loadEmbedded,loadGraphic,loadMap,loadReplay,loadRotatedGraphic,loadSound,loadStream,loadTiles,lockCameras,log,looped,make,make,makeColor,makeColorFromHSB,makeDebugTile,makeGraphic,makeParticles,max,min,onDone,onEmit,onEnterFrame,onFlushStatus,onFocus,onFocusLost,onKeyDown,onKeyUp,onMouseDown,onMouseUp,onMouseUp,onMouseWheel,onScreen,onScreen,openURL,overlap,overlaps,overlaps,overlaps,overlapsAt,overlapsAt,overlapsPoint,overlapsPoint,overlapsWithCallback,pause,pauseSounds,pixelsOverlapPoint,play,play,play,playMusic,postUpdate,postUpdate,postUpdate,preUpdate,preUpdate,preUpdate,preUpdate,proximity,random,randomFrame,ray,raySimplifyPath,recordReplay,recycle,reloadReplay,remove,remove,removeAt,removeCamera,removePlugin,removePluginType,replace,replaceColor,reset,reset,resetCameras,resetDebuggerLayout,resetGame,resetHelpers,resetHelpers,resetInput,resetState,resume,resumeSounds,revive,rotatePoint,round,separate,separateX,separateY,setAll,setBounds,setDebuggerLayout,setDirty,setFormat,setOriginToCorner,setRotation,setSize,setSounds,setTile,setTileByIndex,setTileProperties,setXSpeed,setYSpeed,shake,shake,showSoundTray,shuffle,shuffle,simplifyPath,sort,sortHandler,srand,stamp,start,start,step,stop,stop,stopFX,stopFollowingPath,stopRecording,stopReplay,stopped,stream,switchState,switchState,tail,toString,unlockCameras,unwatch,update,update,update,update,update,update,update,update,update,update,updateAnimation,updateButton,updateCameras,updateInput,updateMotion,updatePathMotion,updatePlugins,updateSoundTray,updateSounds,updateTile,updateTransform,walkPath,watch"><title>org.flixel.FlxU</title></head><body><script language="javascript" type="text/javascript" src="../../asdoc.js"></script><script language="javascript" type="text/javascript" src="../../help.js"></script><script language="javascript" type="text/javascript" src="../../cookies.js"></script><script language="javascript" type="text/javascript"><!--
 				asdocTitle = 'FlxU - API Documentation';
 				var baseRef = '../../';
 				window.onload = configPage;
 			--></script>
-<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" class="titleTable">
-<tr>
-<td align="left" class="titleTableTitle">API Documentation</td><td align="right" class="titleTableTopNav"><a onclick="loadClassListFrame('../../all-classes.html')" href="../../package-summary.html">All&nbsp;Packages</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../all-classes.html')" href="../../class-summary.html">All&nbsp;Classes</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../index-list.html')" href="../../all-index-A.html">Index</a>&nbsp;|&nbsp;<a href="../../index.html?org/flixel/FlxU.html&amp;org/flixel/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></td><td rowspan="3" align="right" class="titleTableLogo"><img alt="Adobe Logo" title="Adobe Logo" class="logoImage" src="../../images/logo.jpg"></td>
-</tr>
-<tr class="titleTableRow2">
-<td align="left" id="subTitle" class="titleTableSubTitle">Class&nbsp;FlxU</td><td align="right" id="subNav" class="titleTableSubNav"><a href="#propertySummary">Properties</a>&nbsp;| <a href="#methodSummary">Methods</a></td>
-</tr>
-<tr class="titleTableRow3">
-<td colspan="2">&nbsp;</td>
-</tr>
-</table>
-<script type="text/javascript" language="javascript">
-<!--
-if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Class FlxU"); titleBar_setSubNav(false,true,false,false,false,false,true,false,false,false,false,false,false,false);}
---></script>
-<div class="MainContent">
-<table cellspacing="0" cellpadding="0" class="classHeaderTable">
-<tr>
-<td class="classHeaderTableLabel">Package</td><td><a onclick="javascript:loadClassListFrame('class-list.html')" href="package-detail.html">org.flixel</a></td>
-</tr>
-<tr>
-<td class="classHeaderTableLabel">Class</td><td class="classSignature">public class FlxU</td>
-</tr>
-</table>
-<p></p>
-<p></p>
-<br>
-<hr>
-</div>
-<a name="propertySummary"></a>
-<div class="summarySection">
-<div class="summaryTableTitle">Public Properties</div>
-<table id="summaryTableProperty" class="summaryTable " cellpadding="3" cellspacing="0">
-<tr>
-<th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#quadTree">quadTree</a> : <a href="../flixel/FlxQuadTree.html">FlxQuadTree</a>
-<div class="summaryTableDescription">[static]
-   The last quad tree you generated will be stored here for reference or whatever.</div>
-</td><td class="summaryTableOwnerCol">FlxU</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#roundingError">roundingError</a> : Number = 0.0000001<div class="summaryTableDescription">[static]
-   Helps to eliminate false collisions and/or rendering glitches caused by rounding errors
-   </div>
-</td><td class="summaryTableOwnerCol">FlxU</td>
-</tr>
-</table>
-</div>
-<a name="methodSummary"></a>
-<div class="summarySection">
-<div class="summaryTableTitle">Public Methods</div>
-<table id="summaryTableMethod" class="summaryTable " cellpadding="3" cellspacing="0">
-<tr>
-<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#abs()">abs</a>(N:Number):Number</div>
-<div class="summaryTableDescription">[static]</div>
-</td><td class="summaryTableOwnerCol">FlxU</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#ceil()">ceil</a>(N:Number):Number</div>
-<div class="summaryTableDescription">[static]</div>
-</td><td class="summaryTableOwnerCol">FlxU</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#collide()">collide</a>(Object1:<a href="FlxObject.html">FlxObject</a>, Object2:<a href="FlxObject.html">FlxObject</a>):Boolean</div>
-<div class="summaryTableDescription">[static]
-   Call this function to see if one <code>FlxObject</code> collides with another.</div>
-</td><td class="summaryTableOwnerCol">FlxU</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#computeVelocity()">computeVelocity</a>(Velocity:Number, Acceleration:Number = 0, Drag:Number = 0, Max:Number = 10000):Number</div>
-<div class="summaryTableDescription">[static]
-   A tween-like function that takes a starting velocity
-   and some other factors and returns an altered velocity.</div>
-</td><td class="summaryTableOwnerCol">FlxU</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#endProfile()">endProfile</a>(Start:uint, Name:String = "Profiler", Log:Boolean = true):uint</div>
-<div class="summaryTableDescription">[static]
-   Useful for finding out how long it takes to execute specific blocks of code.</div>
-</td><td class="summaryTableOwnerCol">FlxU</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#floor()">floor</a>(N:Number):Number</div>
-<div class="summaryTableDescription">[static]</div>
-</td><td class="summaryTableOwnerCol">FlxU</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#getAngle()">getAngle</a>(X:Number, Y:Number):Number</div>
-<div class="summaryTableDescription">[static]
-   Calculates the angle between a point and the origin (0,0).</div>
-</td><td class="summaryTableOwnerCol">FlxU</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#getClass()">getClass</a>(Name:String):Class</div>
-<div class="summaryTableDescription">[static]
-   Look up a <code>Class</code> object by its string name.</div>
-</td><td class="summaryTableOwnerCol">FlxU</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#getClassName()">getClassName</a>(Obj:Object, Simple:Boolean = false):String</div>
-<div class="summaryTableDescription">[static]
-   Get the <code>String</code> name of any <code>Object</code>.</div>
-</td><td class="summaryTableOwnerCol">FlxU</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#getColor()">getColor</a>(Red:uint, Green:uint, Blue:uint, Alpha:Number = 1.0):uint</div>
-<div class="summaryTableDescription">[static]
-   Generate a Flash <code>uint</code> color from RGBA components.</div>
-</td><td class="summaryTableOwnerCol">FlxU</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#getColorHSB()">getColorHSB</a>(Hue:Number, Saturation:Number, Brightness:Number, Alpha:Number = 1.0):uint</div>
-<div class="summaryTableDescription">[static]
-   Generate a Flash <code>uint</code> color from HSB components.</div>
-</td><td class="summaryTableOwnerCol">FlxU</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#getHSB()">getHSB</a>(Color:uint, Results:Array = null):Array</div>
-<div class="summaryTableDescription">[static]
-   Loads an array with the HSB values of a Flash <code>uint</code> color.</div>
-</td><td class="summaryTableOwnerCol">FlxU</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#getRGBA()">getRGBA</a>(Color:uint, Results:Array = null):Array</div>
-<div class="summaryTableDescription">[static]
-   Loads an array with the RGBA values of a Flash <code>uint</code> color.</div>
-</td><td class="summaryTableOwnerCol">FlxU</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#max()">max</a>(N1:Number, N2:Number):Number</div>
-<div class="summaryTableDescription">[static]</div>
-</td><td class="summaryTableOwnerCol">FlxU</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#min()">min</a>(N1:Number, N2:Number):Number</div>
-<div class="summaryTableDescription">[static]</div>
-</td><td class="summaryTableOwnerCol">FlxU</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#openURL()">openURL</a>(URL:String):void</div>
-<div class="summaryTableDescription">[static]
-   Opens a web page in a new tab or window.</div>
-</td><td class="summaryTableOwnerCol">FlxU</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#overlap()">overlap</a>(Object1:<a href="FlxObject.html">FlxObject</a>, Object2:<a href="FlxObject.html">FlxObject</a>, Callback:Function = null):Boolean</div>
-<div class="summaryTableDescription">[static]
-   Call this function to see if one <code>FlxObject</code> overlaps another.</div>
-</td><td class="summaryTableOwnerCol">FlxU</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#random()">random</a>(Seed:Number):Number</div>
-<div class="summaryTableDescription">[static]
-   Generates a random number.</div>
-</td><td class="summaryTableOwnerCol">FlxU</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#rotatePoint()">rotatePoint</a>(X:Number, Y:Number, PivotX:Number, PivotY:Number, Angle:Number, P:<a href="FlxPoint.html">FlxPoint</a> = null):<a href="../flixel/FlxPoint.html">FlxPoint</a>
-</div>
-<div class="summaryTableDescription">[static]
-   Rotates a point in 2D space around another point by the given angle.</div>
-</td><td class="summaryTableOwnerCol">FlxU</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#setWorldBounds()">setWorldBounds</a>(X:Number = 0, Y:Number = 0, Width:Number = 0, Height:Number = 0, Divisions:uint = 3):void</div>
-<div class="summaryTableDescription">[static]
-   Call this function to specify a more efficient boundary for your game world.</div>
-</td><td class="summaryTableOwnerCol">FlxU</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#solveXCollision()">solveXCollision</a>(Object1:<a href="FlxObject.html">FlxObject</a>, Object2:<a href="FlxObject.html">FlxObject</a>):Boolean</div>
-<div class="summaryTableDescription">[static]
-   This quad tree callback function can be used externally as well.</div>
-</td><td class="summaryTableOwnerCol">FlxU</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#solveYCollision()">solveYCollision</a>(Object1:<a href="FlxObject.html">FlxObject</a>, Object2:<a href="FlxObject.html">FlxObject</a>):Boolean</div>
-<div class="summaryTableDescription">[static]
-   This quad tree callback function can be used externally as well.</div>
-</td><td class="summaryTableOwnerCol">FlxU</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#startProfile()">startProfile</a>():uint</div>
-<div class="summaryTableDescription">[static]
-   Useful for finding out how long it takes to execute specific blocks of code.</div>
-</td><td class="summaryTableOwnerCol">FlxU</td>
-</tr>
-</table>
-</div>
-<script type="text/javascript" language="javascript">
-<!--
-showHideInherited();
---></script>
-<div class="MainContent">
-<a name="propertyDetail"></a>
-<div class="detailSectionHeader">Property detail</div>
-<a name="quadTree"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">quadTree</td><td class="detailHeaderType">property</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static var quadTree:<a href="../flixel/FlxQuadTree.html">FlxQuadTree</a></code><p>
-   The last quad tree you generated will be stored here for reference or whatever.
-   </p></div>
-<a name="roundingError"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">roundingError</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static var roundingError:Number = 0.0000001</code><p>
-   Helps to eliminate false collisions and/or rendering glitches caused by rounding errors
-   </p></div>
-<a name="methodDetail"></a>
-<div class="detailSectionHeader">Method detail</div>
-<a name="abs()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">abs</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function abs(N:Number):Number</code><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">N</span>:Number</code></td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>Number</code></td>
-</tr>
-</table>
-</div>
-<a name="ceil()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">ceil</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function ceil(N:Number):Number</code><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">N</span>:Number</code></td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>Number</code></td>
-</tr>
-</table>
-</div>
-<a name="collide()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">collide</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function collide(Object1:<a href="FlxObject.html">FlxObject</a>, Object2:<a href="FlxObject.html">FlxObject</a>):Boolean</code><p>
-   Call this function to see if one <code>FlxObject</code> collides with another.
-   Can be called with one object and one group, or two groups, or two objects,
-   whatever floats your boat!  It will put everything into a quad tree and then
-   check for collisions.  For maximum performance try bundling a lot of objects
-   together using a <code>FlxGroup</code> (even bundling groups together!)
-   NOTE: does NOT take objects' scrollfactor into account.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">Object1</span>:<a href="FlxObject.html">FlxObject</a></code> &mdash;  The first object or group you want to check.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Object2</span>:<a href="FlxObject.html">FlxObject</a></code> &mdash;  The second object or group you want to check.  If it is the same as the first, flixel knows to just do a comparison within that group.
-   </td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>Boolean</code></td>
-</tr>
-</table>
-</div>
-<a name="computeVelocity()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">computeVelocity</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function computeVelocity(Velocity:Number, Acceleration:Number = 0, Drag:Number = 0, Max:Number = 10000):Number</code><p>
-   A tween-like function that takes a starting velocity
-   and some other factors and returns an altered velocity.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">Velocity</span>:Number</code> &mdash;  Any component of velocity (e.g. 20).
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Acceleration</span>:Number</code> (default = <code>0</code>)<code></code> &mdash; Rate at which the velocity is changing.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Drag</span>:Number</code> (default = <code>0</code>)<code></code> &mdash;   Really kind of a deceleration, this is how much the velocity changes if Acceleration is not set.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Max</span>:Number</code> (default = <code>10000</code>)<code></code> &mdash;    An absolute value cap for the velocity.
-   
-   </td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>Number</code> &mdash; The altered Velocity value.
-   </td>
-</tr>
-</table>
-</div>
-<a name="endProfile()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">endProfile</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function endProfile(Start:uint, Name:String = "Profiler", Log:Boolean = true):uint</code><p>
-   Useful for finding out how long it takes to execute specific blocks of code.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">Start</span>:uint</code> &mdash; A <code>uint</code> created by <code>FlxU.startProfile()</code>.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Name</span>:String</code> (default = "<code>Profiler</code>")<code></code> &mdash; Optional tag (for debug console display).  Default value is "Profiler".
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Log</span>:Boolean</code> (default = <code>true</code>)<code></code> &mdash;  Whether or not to log this elapsed time in the debug console.
-   
-   </td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>uint</code> &mdash; A <code>uint</code> to be passed to <code>FlxU.endProfile()</code>.
-   </td>
-</tr>
-</table>
-</div>
-<a name="floor()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">floor</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function floor(N:Number):Number</code><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">N</span>:Number</code></td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>Number</code></td>
-</tr>
-</table>
-</div>
-<a name="getAngle()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">getAngle</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function getAngle(X:Number, Y:Number):Number</code><p>
-   Calculates the angle between a point and the origin (0,0).
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">X</span>:Number</code> &mdash;  The X coordinate of the point.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Y</span>:Number</code> &mdash;  The Y coordinate of the point.
-   
-   </td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>Number</code> &mdash; The angle in degrees.
-   </td>
-</tr>
-</table>
-</div>
-<a name="getClass()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">getClass</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function getClass(Name:String):Class</code><p>
-   Look up a <code>Class</code> object by its string name.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">Name</span>:String</code> &mdash; The <code>String</code> name of the <code>Class</code> you are interested in.
-   
-   </td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>Class</code> &mdash; A <code>Class</code> object.
-   </td>
-</tr>
-</table>
-</div>
-<a name="getClassName()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">getClassName</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function getClassName(Obj:Object, Simple:Boolean = false):String</code><p>
-   Get the <code>String</code> name of any <code>Object</code>.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">Obj</span>:Object</code> &mdash;  The <code>Object</code> object in question.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Simple</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash; Returns only the class name, not the package or packages.
-   
-   </td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>String</code> &mdash; The name of the <code>Class</code> as a <code>String</code> object.
-   </td>
-</tr>
-</table>
-</div>
-<a name="getColor()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">getColor</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function getColor(Red:uint, Green:uint, Blue:uint, Alpha:Number = 1.0):uint</code><p>
-   Generate a Flash <code>uint</code> color from RGBA components.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">Red</span>:uint</code> &mdash;  Red     The red component, between 0 and 255.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Green</span>:uint</code> &mdash;  Green   The green component, between 0 and 255.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Blue</span>:uint</code> &mdash;  Blue    The blue component, between 0 and 255.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Alpha</span>:Number</code> (default = <code>1.0</code>)<code></code> &mdash;  Alpha   How opaque the color should be, either between 0 and 1 or 0 and 255.
-   
-   </td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>uint</code> &mdash;  The color as a <code>uint</code>.
-   </td>
-</tr>
-</table>
-</div>
-<a name="getColorHSB()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">getColorHSB</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function getColorHSB(Hue:Number, Saturation:Number, Brightness:Number, Alpha:Number = 1.0):uint</code><p>
-   Generate a Flash <code>uint</code> color from HSB components.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">Hue</span>:Number</code> &mdash;   A number between 0 and 360, indicating position on a color strip or wheel.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Saturation</span>:Number</code> &mdash; A number between 0 and 1, indicating how colorful or gray the color should be.  0 is gray, 1 is vibrant.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Brightness</span>:Number</code> &mdash; A number between 0 and 1, indicating how bright the color should be.  0 is black, 1 is full bright.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Alpha</span>:Number</code> (default = <code>1.0</code>)<code></code> &mdash;  Alpha    How opaque the color should be, either between 0 and 1 or 0 and 255.
-   
-   </td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>uint</code> &mdash; The color as a <code>uint</code>.
-   </td>
-</tr>
-</table>
-</div>
-<a name="getHSB()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">getHSB</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function getHSB(Color:uint, Results:Array = null):Array</code><p>
-   Loads an array with the HSB values of a Flash <code>uint</code> color.
-   Hue is a value between 0 and 360.  Saturation, Brightness and Alpha
-   are as floating point numbers between 0 and 1.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">Color</span>:uint</code> &mdash; The color you want to break into components.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Results</span>:Array</code> (default = <code>null</code>)<code></code> &mdash; An optional parameter, allows you to use an array that already exists in memory to store the result.
-   
-   </td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>Array</code> &mdash; An <code>Array</code> object containing the Red, Green, Blue and Alpha values of the given color.
-   </td>
-</tr>
-</table>
-</div>
-<a name="getRGBA()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">getRGBA</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function getRGBA(Color:uint, Results:Array = null):Array</code><p>
-   Loads an array with the RGBA values of a Flash <code>uint</code> color.
-   RGB values are stored 0-255.  Alpha is stored as a floating point number between 0 and 1.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">Color</span>:uint</code> &mdash; The color you want to break into components.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Results</span>:Array</code> (default = <code>null</code>)<code></code> &mdash; An optional parameter, allows you to use an array that already exists in memory to store the result.
-   
-   </td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>Array</code> &mdash; An <code>Array</code> object containing the Red, Green, Blue and Alpha values of the given color.
-   </td>
-</tr>
-</table>
-</div>
-<a name="max()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">max</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function max(N1:Number, N2:Number):Number</code><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">N1</span>:Number</code></td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">N2</span>:Number</code></td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>Number</code></td>
-</tr>
-</table>
-</div>
-<a name="min()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">min</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function min(N1:Number, N2:Number):Number</code><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">N1</span>:Number</code></td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">N2</span>:Number</code></td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>Number</code></td>
-</tr>
-</table>
-</div>
-<a name="openURL()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">openURL</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function openURL(URL:String):void</code><p>
-   Opens a web page in a new tab or window.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">URL</span>:String</code> &mdash;  The address of the web page.
-   </td>
-</tr>
-</table>
-</div>
-<a name="overlap()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">overlap</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function overlap(Object1:<a href="FlxObject.html">FlxObject</a>, Object2:<a href="FlxObject.html">FlxObject</a>, Callback:Function = null):Boolean</code><p>
-   Call this function to see if one <code>FlxObject</code> overlaps another.
-   Can be called with one object and one group, or two groups, or two objects,
-   whatever floats your boat!  It will put everything into a quad tree and then
-   check for overlaps.  For maximum performance try bundling a lot of objects
-   together using a <code>FlxGroup</code> (even bundling groups together!)
-   NOTE: does NOT take objects' scrollfactor into account.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">Object1</span>:<a href="FlxObject.html">FlxObject</a></code> &mdash;  The first object or group you want to check.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Object2</span>:<a href="FlxObject.html">FlxObject</a></code> &mdash;  The second object or group you want to check.  If it is the same as the first, flixel knows to just do a comparison within that group.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Callback</span>:Function</code> (default = <code>null</code>)<code></code> &mdash; A function with two <code>FlxObject</code> parameters - e.g. <code>myOverlapFunction(Object1:FlxObject,Object2:FlxObject);</code>  If no function is provided, <code>FlxQuadTree</code> will call <code>kill()</code> on both objects.
-   </td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>Boolean</code></td>
-</tr>
-</table>
-</div>
-<a name="random()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">random</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function random(Seed:Number):Number</code><p>
-   Generates a random number.  NOTE: To create a series of predictable
-   random numbers, add the random number you generate each time
-   to the <code>Seed</code> value before calling <code>random()</code> again.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">Seed</span>:Number</code> &mdash; A user-provided value used to calculate a predictable random number.
-   
-   </td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>Number</code> &mdash; A <code>Number</code> between 0 and 1.
-   </td>
-</tr>
-</table>
-</div>
-<a name="rotatePoint()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">rotatePoint</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function rotatePoint(X:Number, Y:Number, PivotX:Number, PivotY:Number, Angle:Number, P:<a href="FlxPoint.html">FlxPoint</a> = null):<a href="../flixel/FlxPoint.html">FlxPoint</a></code><p>
-   Rotates a point in 2D space around another point by the given angle.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">X</span>:Number</code> &mdash;  The X coordinate of the point you want to rotate.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Y</span>:Number</code> &mdash;  The Y coordinate of the point you want to rotate.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">PivotX</span>:Number</code> &mdash; The X coordinate of the point you want to rotate around.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">PivotY</span>:Number</code> &mdash; The Y coordinate of the point you want to rotate around.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Angle</span>:Number</code> &mdash; Rotate the point by this many degrees.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">P</span>:<a href="FlxPoint.html">FlxPoint</a></code> (default = <code>null</code>)<code></code> &mdash;  Optional <code>FlxPoint</code> to store the results in.
-   
-   </td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code><a href="../flixel/FlxPoint.html">FlxPoint</a></code> &mdash; 
-                        A <code>FlxPoint</code> containing the coordinates of the rotated point.
-   
-                        
-                     </td>
-</tr>
-</table>
-</div>
-<a name="setWorldBounds()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">setWorldBounds</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function setWorldBounds(X:Number = 0, Y:Number = 0, Width:Number = 0, Height:Number = 0, Divisions:uint = 3):void</code><p>
-   Call this function to specify a more efficient boundary for your game world.
-   This boundary is used by <code>overlap()</code> and <code>collide()</code>, so it
-   can't hurt to have it be the right size!  Flixel will invent a size for you, but
-   it's pretty huge - 256x the size of the screen, whatever that may be.
-   Leave width and height empty if you want to just update the game world's position.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">X</span>:Number</code> (default = <code>0</code>)<code></code> &mdash;   The X-coordinate of the left side of the game world.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Y</span>:Number</code> (default = <code>0</code>)<code></code> &mdash;   The Y-coordinate of the top of the game world.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Width</span>:Number</code> (default = <code>0</code>)<code></code> &mdash;  Desired width of the game world.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Height</span>:Number</code> (default = <code>0</code>)<code></code> &mdash;  Desired height of the game world.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Divisions</span>:uint</code> (default = <code>3</code>)<code></code> &mdash; Pass a non-zero value to set <code>quadTreeDivisions</code>.  Default value is 3.
-   </td>
-</tr>
-</table>
-</div>
-<a name="solveXCollision()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">solveXCollision</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function solveXCollision(Object1:<a href="FlxObject.html">FlxObject</a>, Object2:<a href="FlxObject.html">FlxObject</a>):Boolean</code><p>
-   This quad tree callback function can be used externally as well.
-   Takes two objects and separates them along their X axis (if possible/reasonable).
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">Object1</span>:<a href="FlxObject.html">FlxObject</a></code> &mdash;  The first object or group you want to check.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Object2</span>:<a href="FlxObject.html">FlxObject</a></code> &mdash;  The second object or group you want to check.
-   </td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>Boolean</code></td>
-</tr>
-</table>
-</div>
-<a name="solveYCollision()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">solveYCollision</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function solveYCollision(Object1:<a href="FlxObject.html">FlxObject</a>, Object2:<a href="FlxObject.html">FlxObject</a>):Boolean</code><p>
-   This quad tree callback function can be used externally as well.
-   Takes two objects and separates them along their Y axis (if possible/reasonable).
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">Object1</span>:<a href="FlxObject.html">FlxObject</a></code> &mdash;  The first object or group you want to check.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Object2</span>:<a href="FlxObject.html">FlxObject</a></code> &mdash;  The second object or group you want to check.
-   </td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>Boolean</code></td>
-</tr>
-</table>
-</div>
-<a name="startProfile()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">startProfile</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function startProfile():uint</code><p>
-   Useful for finding out how long it takes to execute specific blocks of code.
-   
-   </p><p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>uint</code> &mdash; A <code>uint</code> to be passed to <code>FlxU.endProfile()</code>.
-   </td>
-</tr>
-</table>
-</div>
-<br>
-<br>
-<hr>
-<br>
-<p></p>
-<center class="copyright"> 
-</center>
-</div>
-</body>
-</html>
-<!-- -->
+<script type="text/javascript">
+			scrollToNameAnchor();
+		</script><table class="titleTable" cellpadding="0" cellspacing="0" id="titleTable" style="display:none"><tr><td class="titleTableTitle" align="left">API Documentation</td><td class="titleTableTopNav" align="right"><a href="../../package-summary.html" onclick="loadClassListFrame('../../all-classes.html')">All Packages</a>&nbsp;|&nbsp;<a href="../../class-summary.html" onclick="loadClassListFrame('../../all-classes.html')">All Classes</a>&nbsp;|&nbsp;<a href="../../all-index-A.html" onclick="loadClassListFrame('../../index-list.html')">Index</a>&nbsp;|&nbsp;<a id="framesLink1" href="../../index.html?org/flixel/FlxU.html&amp;org/flixel/class-list.html">Frames</a><a id="noFramesLink1" style="display:none" href="" onclick="parent.location=document.location"> No Frames </a></td><td class="titleTableLogo" align="right" rowspan="3"><img src="../../images/logo.jpg" class="logoImage" alt=" Adobe Logo " title=" Adobe Logo "></td></tr><tr class="titleTableRow2"><td class="titleTableSubTitle" id="subTitle" align="left">FlxU</td><td class="titleTableSubNav" id="subNav" align="right"><a href="#methodSummary">Methods</a></td></tr><tr class="titleTableRow3"><td colspan="3">&nbsp;</td></tr></table><script language="javascript" type="text/javascript" xml:space="preserve">
+				<!--
+				
+					if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("FlxU"); titleBar_setSubNav(false,false,false,false,false,false,false,false,true,false,false	,false,false,false,false,false);}	
+				-->
+			</script><div xmlns:fn="http://www.w3.org/2005/xpath-functions" class="MainContent"><table class="classHeaderTable" cellpadding="0" cellspacing="0"><tr><td class="classHeaderTableLabel">Package</td><td><a href="package-detail.html" onclick="javascript:loadClassListFrame('class-list.html')">org.flixel</a></td></tr><tr><td class="classHeaderTableLabel">Class</td><td class="classSignature">public  class  FlxU</td></tr><tr><td class="classHeaderTableLabel">Inheritance</td><td class="inheritanceList">FlxU  <img src="../../images/inherit-arrow.gif" title="Inheritance" alt="Inheritance" class="inheritArrow"> Object</td></tr></table><p></p><p></p><p></p><br/><hr></div><a name="methodSummary"></a><div class="summarySection"><div class="summaryTableTitle">Public Methods </div><table cellspacing="0" cellpadding="3" class="summaryTable " id="summaryTableMethod"><tr><th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined By</th></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#abs()" class="signatureLink">abs</a>(Value:Number):Number</div><div class="summaryTableDescription">[static] 
+		 Calculate the absolute value of a number.</div></td><td class="summaryTableOwnerCol">FlxU</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#bound()" class="signatureLink">bound</a>(Value:Number, Min:Number, Max:Number):Number</div><div class="summaryTableDescription">[static] 
+		 Bound a number by a minimum and maximum.</div></td><td class="summaryTableOwnerCol">FlxU</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#ceil()" class="signatureLink">ceil</a>(Value:Number):Number</div><div class="summaryTableDescription">[static] 
+		 Round up to the next whole number.</div></td><td class="summaryTableOwnerCol">FlxU</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#compareClassNames()" class="signatureLink">compareClassNames</a>(Object1:Object, Object2:Object):Boolean</div><div class="summaryTableDescription">[static] 
+		 Check to see if two objects have the same class name.</div></td><td class="summaryTableOwnerCol">FlxU</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#computeVelocity()" class="signatureLink">computeVelocity</a>(Velocity:Number, Acceleration:Number = 0, Drag:Number = 0, Max:Number = 10000):Number</div><div class="summaryTableDescription">[static] 
+		 A tween-like function that takes a starting velocity
+		 and some other factors and returns an altered velocity.</div></td><td class="summaryTableOwnerCol">FlxU</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#floor()" class="signatureLink">floor</a>(Value:Number):Number</div><div class="summaryTableDescription">[static] 
+		 Round down to the next whole number.</div></td><td class="summaryTableOwnerCol">FlxU</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#formatArray()" class="signatureLink">formatArray</a>(AnyArray:Array):String</div><div class="summaryTableDescription">[static] 
+		 Generate a comma-separated string from an array.</div></td><td class="summaryTableOwnerCol">FlxU</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#formatMoney()" class="signatureLink">formatMoney</a>(Amount:Number, ShowDecimal:Boolean = true, EnglishStyle:Boolean = true):String</div><div class="summaryTableDescription">[static] 
+		 Automatically commas and decimals in the right places for displaying money amounts.</div></td><td class="summaryTableOwnerCol">FlxU</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#formatTicks()" class="signatureLink">formatTicks</a>(StartTicks:uint, EndTicks:uint):String</div><div class="summaryTableDescription">[static] 
+		 Takes two "ticks" timestamps and formats them into the number of seconds that passed as a String.</div></td><td class="summaryTableOwnerCol">FlxU</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#formatTime()" class="signatureLink">formatTime</a>(Seconds:Number, ShowMS:Boolean = false):String</div><div class="summaryTableDescription">[static] 
+		 Format seconds as minutes with a colon, an optionally with milliseconds too.</div></td><td class="summaryTableOwnerCol">FlxU</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#getAngle()" class="signatureLink">getAngle</a>(Point1:<a href="../../org/flixel/FlxPoint.html">FlxPoint</a>, Point2:<a href="../../org/flixel/FlxPoint.html">FlxPoint</a>):Number</div><div class="summaryTableDescription">[static] 
+		 Calculates the angle between two points.</div></td><td class="summaryTableOwnerCol">FlxU</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#getClass()" class="signatureLink">getClass</a>(Name:String):Class</div><div class="summaryTableDescription">[static] 
+		 Look up a Class object by its string name.</div></td><td class="summaryTableOwnerCol">FlxU</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#getClassName()" class="signatureLink">getClassName</a>(Obj:Object, Simple:Boolean = false):String</div><div class="summaryTableDescription">[static] 
+		 Get the String name of any Object.</div></td><td class="summaryTableOwnerCol">FlxU</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#getDistance()" class="signatureLink">getDistance</a>(Point1:<a href="../../org/flixel/FlxPoint.html">FlxPoint</a>, Point2:<a href="../../org/flixel/FlxPoint.html">FlxPoint</a>):Number</div><div class="summaryTableDescription">[static] 
+		 Calculate the distance between two points.</div></td><td class="summaryTableOwnerCol">FlxU</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#getHSB()" class="signatureLink">getHSB</a>(Color:uint, Results:Array = null):Array</div><div class="summaryTableDescription">[static] 
+		 Loads an array with the HSB values of a Flash uint color.</div></td><td class="summaryTableOwnerCol">FlxU</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#getRandom()" class="signatureLink">getRandom</a>(Objects:Array, StartIndex:uint = 0, Length:uint = 0):Object</div><div class="summaryTableDescription">[static] 
+		 Fetch a random entry from the given array.</div></td><td class="summaryTableOwnerCol">FlxU</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#getRGBA()" class="signatureLink">getRGBA</a>(Color:uint, Results:Array = null):Array</div><div class="summaryTableDescription">[static] 
+		 Loads an array with the RGBA values of a Flash uint color.</div></td><td class="summaryTableOwnerCol">FlxU</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#getTicks()" class="signatureLink">getTicks</a>():uint</div><div class="summaryTableDescription">[static] 
+		 Just grabs the current "ticks" or time in milliseconds that has passed since Flash Player started up.</div></td><td class="summaryTableOwnerCol">FlxU</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#makeColor()" class="signatureLink">makeColor</a>(Red:uint, Green:uint, Blue:uint, Alpha:Number = 1.0):uint</div><div class="summaryTableDescription">[static] 
+		 Generate a Flash uint color from RGBA components.</div></td><td class="summaryTableOwnerCol">FlxU</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#makeColorFromHSB()" class="signatureLink">makeColorFromHSB</a>(Hue:Number, Saturation:Number, Brightness:Number, Alpha:Number = 1.0):uint</div><div class="summaryTableDescription">[static] 
+		 Generate a Flash uint color from HSB components.</div></td><td class="summaryTableOwnerCol">FlxU</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#max()" class="signatureLink">max</a>(Number1:Number, Number2:Number):Number</div><div class="summaryTableDescription">[static] 
+		 Figure out which number is larger.</div></td><td class="summaryTableOwnerCol">FlxU</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#min()" class="signatureLink">min</a>(Number1:Number, Number2:Number):Number</div><div class="summaryTableDescription">[static] 
+		 Figure out which number is smaller.</div></td><td class="summaryTableOwnerCol">FlxU</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#openURL()" class="signatureLink">openURL</a>(URL:String):void</div><div class="summaryTableDescription">[static] 
+		 Opens a web page in a new tab or window.</div></td><td class="summaryTableOwnerCol">FlxU</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#rotatePoint()" class="signatureLink">rotatePoint</a>(X:Number, Y:Number, PivotX:Number, PivotY:Number, Angle:Number, Point:<a href="../../org/flixel/FlxPoint.html">FlxPoint</a> = null):<a href="../../org/flixel/FlxPoint.html">FlxPoint</a></div><div class="summaryTableDescription">[static] 
+		 Rotates a point in 2D space around another point by the given angle.</div></td><td class="summaryTableOwnerCol">FlxU</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#round()" class="signatureLink">round</a>(Value:Number):Number</div><div class="summaryTableDescription">[static] 
+		 Round to the closest whole number.</div></td><td class="summaryTableOwnerCol">FlxU</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#shuffle()" class="signatureLink">shuffle</a>(Objects:Array, HowManyTimes:uint):Array</div><div class="summaryTableDescription">[static] 
+		 Shuffles the entries in an array into a new random order.</div></td><td class="summaryTableOwnerCol">FlxU</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#srand()" class="signatureLink">srand</a>(Seed:Number):Number</div><div class="summaryTableDescription">[static] 
+		 Generates a random number based on the seed provided.</div></td><td class="summaryTableOwnerCol">FlxU</td></tr></table></div><script language="javascript" type="text/javascript"><!--
+										showHideInherited();
+										--></script><div class="MainContent"><a name="methodDetail"></a><div class="detailSectionHeader">Method Detail</div><a name="abs()"></a><a name="abs(Number)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">abs</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td></tr></table><div class="detailBody"><code> public static function abs(Value:Number):Number</code><p></p><p></p><p>
+		 Calculate the absolute value of a number.
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">Value</span>:Number</code> &mdash; Any number.
+		 
+		 </td></tr></table></p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code>Number</code> &mdash; The absolute value of that number.
+		 </td></tr></table></div><a name="bound()"></a><a name="bound(Number,Number,Number)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">bound</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public static function bound(Value:Number, Min:Number, Max:Number):Number</code><p></p><p></p><p>
+		 Bound a number by a minimum and maximum.
+		 Ensures that this number is no smaller than the minimum,
+		 and no larger than the maximum.
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">Value</span>:Number</code> &mdash; Any number.
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">Min</span>:Number</code> &mdash; 	Any number.
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">Max</span>:Number</code> &mdash; 	Any number.
+		 
+		 </td></tr></table></p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code>Number</code> &mdash; The bounded value of the number.
+		 </td></tr></table></div><a name="ceil()"></a><a name="ceil(Number)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">ceil</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public static function ceil(Value:Number):Number</code><p></p><p></p><p>
+		 Round up to the next whole number.  E.g. ceil(1.3) == 2, and ceil(-2.3) == -3.
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">Value</span>:Number</code> &mdash; Any number.
+		 
+		 </td></tr></table></p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code>Number</code> &mdash; The rounded value of that number.
+		 </td></tr></table></div><a name="compareClassNames()"></a><a name="compareClassNames(Object,Object)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">compareClassNames</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public static function compareClassNames(Object1:Object, Object2:Object):Boolean</code><p></p><p></p><p>
+		 Check to see if two objects have the same class name.
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">Object1</span>:Object</code> &mdash; 	The first object you want to check.
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">Object2</span>:Object</code> &mdash; 	The second object you want to check.
+		 
+		 </td></tr></table></p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code>Boolean</code> &mdash; Whether they have the same class name or not.
+		 </td></tr></table></div><a name="computeVelocity()"></a><a name="computeVelocity(Number,Number,Number,Number)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">computeVelocity</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public static function computeVelocity(Velocity:Number, Acceleration:Number = 0, Drag:Number = 0, Max:Number = 10000):Number</code><p></p><p></p><p>
+		 A tween-like function that takes a starting velocity
+		 and some other factors and returns an altered velocity.
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">Velocity</span>:Number</code> &mdash; 	Any component of velocity (e.g. 20).
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">Acceleration</span>:Number</code> (default = <code>0</code>)<code></code> &mdash; Rate at which the velocity is changing.
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">Drag</span>:Number</code> (default = <code>0</code>)<code></code> &mdash; 		Really kind of a deceleration, this is how much the velocity changes if Acceleration is not set.
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">Max</span>:Number</code> (default = <code>10000</code>)<code></code> &mdash; 			An absolute value cap for the velocity.
+		 
+		 </td></tr></table></p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code>Number</code> &mdash; The altered Velocity value.
+		 </td></tr></table></div><a name="floor()"></a><a name="floor(Number)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">floor</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public static function floor(Value:Number):Number</code><p></p><p></p><p>
+		 Round down to the next whole number. E.g. floor(1.7) == 1, and floor(-2.7) == -2.
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">Value</span>:Number</code> &mdash; Any number.
+		 
+		 </td></tr></table></p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code>Number</code> &mdash; The rounded value of that number.
+		 </td></tr></table></div><a name="formatArray()"></a><a name="formatArray(Array)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">formatArray</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public static function formatArray(AnyArray:Array):String</code><p></p><p></p><p>
+		 Generate a comma-separated string from an array.
+		 Especially useful for tracing or other debug output.
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">AnyArray</span>:Array</code> &mdash; Any <code>Array</code> object.
+		 
+		 </td></tr></table></p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code>String</code> &mdash; A comma-separated <code>String</code> containing the <code>.toString()</code> output of each element in the array.
+		 </td></tr></table></div><a name="formatMoney()"></a><a name="formatMoney(Number,Boolean,Boolean)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">formatMoney</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public static function formatMoney(Amount:Number, ShowDecimal:Boolean = true, EnglishStyle:Boolean = true):String</code><p></p><p></p><p>
+		 Automatically commas and decimals in the right places for displaying money amounts.
+		 Does not include a dollar sign or anything, so doesn't really do much
+		 if you call say <code>var results:String = FlxU.formatMoney(10,false);</code>
+		 However, very handy for displaying large sums or decimal money values.
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">Amount</span>:Number</code> &mdash; 		How much moneys (in dollars, or the equivalent "main" currency - i.e. not cents).
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">ShowDecimal</span>:Boolean</code> (default = <code>true</code>)<code></code> &mdash; 	Whether to show the decimals/cents component. Default value is true.
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">EnglishStyle</span>:Boolean</code> (default = <code>true</code>)<code></code> &mdash; Major quantities (thousands, millions, etc) separated by commas, and decimal by a period.  Default value is true.
+		 
+		 </td></tr></table></p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code>String</code> &mdash; A nicely formatted <code>String</code>.  Does not include a dollar sign or anything!
+		 </td></tr></table></div><a name="formatTicks()"></a><a name="formatTicks(uint,uint)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">formatTicks</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public static function formatTicks(StartTicks:uint, EndTicks:uint):String</code><p></p><p></p><p>
+		 Takes two "ticks" timestamps and formats them into the number of seconds that passed as a String.
+		 Useful for logging, debugging, the watch window, or whatever else.
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">StartTicks</span>:uint</code> &mdash; The first timestamp from the system.
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">EndTicks</span>:uint</code> &mdash; The second timestamp from the system.
+		 
+		 </td></tr></table></p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code>String</code> &mdash; A <code>String</code> containing the formatted time elapsed information.
+		 </td></tr></table></div><a name="formatTime()"></a><a name="formatTime(Number,Boolean)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">formatTime</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public static function formatTime(Seconds:Number, ShowMS:Boolean = false):String</code><p></p><p></p><p>
+		 Format seconds as minutes with a colon, an optionally with milliseconds too.
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">Seconds</span>:Number</code> &mdash; 	The number of seconds (for example, time remaining, time spent, etc).
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">ShowMS</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash; 	Whether to show milliseconds after a "." as well.  Default value is false.
+		 
+		 </td></tr></table></p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code>String</code> &mdash; A nicely formatted <code>String</code>, like "1:03".
+		 </td></tr></table></div><a name="getAngle()"></a><a name="getAngle(org.flixel.FlxPoint,org.flixel.FlxPoint)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">getAngle</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public static function getAngle(Point1:<a href="../../org/flixel/FlxPoint.html">FlxPoint</a>, Point2:<a href="../../org/flixel/FlxPoint.html">FlxPoint</a>):Number</code><p></p><p></p><p>
+		 Calculates the angle between two points.  0 degrees points straight up.
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">Point1</span>:<a href="../../org/flixel/FlxPoint.html">FlxPoint</a></code> &mdash; 	The X coordinate of the point.
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">Point2</span>:<a href="../../org/flixel/FlxPoint.html">FlxPoint</a></code> &mdash; 	The Y coordinate of the point.
+		 
+		 </td></tr></table></p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code>Number</code> &mdash; The angle in degrees, between -180 and 180.
+		 </td></tr></table></div><a name="getClass()"></a><a name="getClass(String)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">getClass</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public static function getClass(Name:String):Class</code><p></p><p></p><p>
+		 Look up a <code>Class</code> object by its string name.
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">Name</span>:String</code> &mdash; The <code>String</code> name of the <code>Class</code> you are interested in.
+		 
+		 </td></tr></table></p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code>Class</code> &mdash; A <code>Class</code> object.
+		 </td></tr></table></div><a name="getClassName()"></a><a name="getClassName(Object,Boolean)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">getClassName</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public static function getClassName(Obj:Object, Simple:Boolean = false):String</code><p></p><p></p><p>
+		 Get the <code>String</code> name of any <code>Object</code>.
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">Obj</span>:Object</code> &mdash; 	The <code>Object</code> object in question.
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">Simple</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash; Returns only the class name, not the package or packages.
+		 
+		 </td></tr></table></p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code>String</code> &mdash; The name of the <code>Class</code> as a <code>String</code> object.
+		 </td></tr></table></div><a name="getDistance()"></a><a name="getDistance(org.flixel.FlxPoint,org.flixel.FlxPoint)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">getDistance</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public static function getDistance(Point1:<a href="../../org/flixel/FlxPoint.html">FlxPoint</a>, Point2:<a href="../../org/flixel/FlxPoint.html">FlxPoint</a>):Number</code><p></p><p></p><p>
+		 Calculate the distance between two points.
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">Point1</span>:<a href="../../org/flixel/FlxPoint.html">FlxPoint</a></code> &mdash; A <code>FlxPoint</code> object referring to the first location.
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">Point2</span>:<a href="../../org/flixel/FlxPoint.html">FlxPoint</a></code> &mdash; A <code>FlxPoint</code> object referring to the second location.
+		 
+		 </td></tr></table></p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code>Number</code> &mdash; The distance between the two points as a floating point <code>Number</code> object.
+		 </td></tr></table></div><a name="getHSB()"></a><a name="getHSB(uint,Array)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">getHSB</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public static function getHSB(Color:uint, Results:Array = null):Array</code><p></p><p></p><p>
+		 Loads an array with the HSB values of a Flash <code>uint</code> color.
+		 Hue is a value between 0 and 360.  Saturation, Brightness and Alpha
+		 are as floating point numbers between 0 and 1.
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">Color</span>:uint</code> &mdash; The color you want to break into components.
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">Results</span>:Array</code> (default = <code>null</code>)<code></code> &mdash; An optional parameter, allows you to use an array that already exists in memory to store the result.
+		 
+		 </td></tr></table></p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code>Array</code> &mdash; An <code>Array</code> object containing the Red, Green, Blue and Alpha values of the given color.
+		 </td></tr></table></div><a name="getRandom()"></a><a name="getRandom(Array,uint,uint)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">getRandom</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public static function getRandom(Objects:Array, StartIndex:uint = 0, Length:uint = 0):Object</code><p></p><p></p><p>
+		 Fetch a random entry from the given array.
+		 Will return null if random selection is missing, or array has no entries.
+		 <code>FlxG.getRandom()</code> is deterministic and safe for use with replays/recordings.
+		 HOWEVER, <code>FlxU.getRandom()</code> is NOT deterministic and unsafe for use with replays/recordings.
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">Objects</span>:Array</code> &mdash; 	A Flash array of objects.
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">StartIndex</span>:uint</code> (default = <code>0</code>)<code></code> &mdash; Optional offset off the front of the array. Default value is 0, or the beginning of the array.
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">Length</span>:uint</code> (default = <code>0</code>)<code></code> &mdash; 	Optional restriction on the number of values you want to randomly select from.
+		 
+		 </td></tr></table></p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code>Object</code> &mdash; The random object that was selected.
+		 </td></tr></table></div><a name="getRGBA()"></a><a name="getRGBA(uint,Array)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">getRGBA</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public static function getRGBA(Color:uint, Results:Array = null):Array</code><p></p><p></p><p>
+		 Loads an array with the RGBA values of a Flash <code>uint</code> color.
+		 RGB values are stored 0-255.  Alpha is stored as a floating point number between 0 and 1.
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">Color</span>:uint</code> &mdash; The color you want to break into components.
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">Results</span>:Array</code> (default = <code>null</code>)<code></code> &mdash; An optional parameter, allows you to use an array that already exists in memory to store the result.
+		 
+		 </td></tr></table></p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code>Array</code> &mdash; An <code>Array</code> object containing the Red, Green, Blue and Alpha values of the given color.
+		 </td></tr></table></div><a name="getTicks()"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">getTicks</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public static function getTicks():uint</code><p></p><p></p><p>
+		 Just grabs the current "ticks" or time in milliseconds that has passed since Flash Player started up.
+		 Useful for finding out how long it takes to execute specific blocks of code.
+		 
+		 </p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code>uint</code> &mdash; A <code>uint</code> to be passed to <code>FlxU.endProfile()</code>.
+		 </td></tr></table></div><a name="makeColor()"></a><a name="makeColor(uint,uint,uint,Number)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">makeColor</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public static function makeColor(Red:uint, Green:uint, Blue:uint, Alpha:Number = 1.0):uint</code><p></p><p></p><p>
+		 Generate a Flash <code>uint</code> color from RGBA components.
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">Red</span>:uint</code> &mdash;     The red component, between 0 and 255.
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">Green</span>:uint</code> &mdash;   The green component, between 0 and 255.
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">Blue</span>:uint</code> &mdash;    The blue component, between 0 and 255.
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">Alpha</span>:Number</code> (default = <code>1.0</code>)<code></code> &mdash;   How opaque the color should be, either between 0 and 1 or 0 and 255.
+		 
+		 </td></tr></table></p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code>uint</code> &mdash; The color as a <code>uint</code>.
+		 </td></tr></table></div><a name="makeColorFromHSB()"></a><a name="makeColorFromHSB(Number,Number,Number,Number)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">makeColorFromHSB</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public static function makeColorFromHSB(Hue:Number, Saturation:Number, Brightness:Number, Alpha:Number = 1.0):uint</code><p></p><p></p><p>
+		 Generate a Flash <code>uint</code> color from HSB components.
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">Hue</span>:Number</code> &mdash; 		A number between 0 and 360, indicating position on a color strip or wheel.
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">Saturation</span>:Number</code> &mdash; A number between 0 and 1, indicating how colorful or gray the color should be.  0 is gray, 1 is vibrant.
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">Brightness</span>:Number</code> &mdash; A number between 0 and 1, indicating how bright the color should be.  0 is black, 1 is full bright.
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">Alpha</span>:Number</code> (default = <code>1.0</code>)<code></code> &mdash;   	How opaque the color should be, either between 0 and 1 or 0 and 255.
+		 
+		 </td></tr></table></p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code>uint</code> &mdash; The color as a <code>uint</code>.
+		 </td></tr></table></div><a name="max()"></a><a name="max(Number,Number)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">max</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public static function max(Number1:Number, Number2:Number):Number</code><p></p><p></p><p>
+		 Figure out which number is larger.
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">Number1</span>:Number</code> &mdash; 	Any number.
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">Number2</span>:Number</code> &mdash; 	Any number.
+		 
+		 </td></tr></table></p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code>Number</code> &mdash; The larger of the two numbers.
+		 </td></tr></table></div><a name="min()"></a><a name="min(Number,Number)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">min</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public static function min(Number1:Number, Number2:Number):Number</code><p></p><p></p><p>
+		 Figure out which number is smaller.
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">Number1</span>:Number</code> &mdash; 	Any number.
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">Number2</span>:Number</code> &mdash; 	Any number.
+		 
+		 </td></tr></table></p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code>Number</code> &mdash; The smaller of the two numbers.
+		 </td></tr></table></div><a name="openURL()"></a><a name="openURL(String)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">openURL</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public static function openURL(URL:String):void</code><p></p><p></p><p>
+		 Opens a web page in a new tab or window.
+		 MUST be called from the UI thread or else badness.
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">URL</span>:String</code> &mdash; 	The address of the web page.
+		 </td></tr></table></p></div><a name="rotatePoint()"></a><a name="rotatePoint(Number,Number,Number,Number,Number,org.flixel.FlxPoint)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">rotatePoint</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public static function rotatePoint(X:Number, Y:Number, PivotX:Number, PivotY:Number, Angle:Number, Point:<a href="../../org/flixel/FlxPoint.html">FlxPoint</a> = null):<a href="../../org/flixel/FlxPoint.html">FlxPoint</a></code><p></p><p></p><p>
+		 Rotates a point in 2D space around another point by the given angle.
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">X</span>:Number</code> &mdash; 	The X coordinate of the point you want to rotate.
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">Y</span>:Number</code> &mdash; 	The Y coordinate of the point you want to rotate.
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">PivotX</span>:Number</code> &mdash; The X coordinate of the point you want to rotate around.
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">PivotY</span>:Number</code> &mdash; The Y coordinate of the point you want to rotate around.
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">Angle</span>:Number</code> &mdash; Rotate the point by this many degrees.
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">Point</span>:<a href="../../org/flixel/FlxPoint.html">FlxPoint</a></code> (default = <code>null</code>)<code></code> &mdash; Optional <code>FlxPoint</code> to store the results in.
+		 
+		 </td></tr></table></p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code><a href="../../org/flixel/FlxPoint.html">FlxPoint</a></code> &mdash; A <code>FlxPoint</code> containing the coordinates of the rotated point.
+		 </td></tr></table></div><a name="round()"></a><a name="round(Number)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">round</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public static function round(Value:Number):Number</code><p></p><p></p><p>
+		 Round to the closest whole number. E.g. round(1.7) == 2, and round(-2.3) == -2.
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">Value</span>:Number</code> &mdash; Any number.
+		 
+		 </td></tr></table></p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code>Number</code> &mdash; The rounded value of that number.
+		 </td></tr></table></div><a name="shuffle()"></a><a name="shuffle(Array,uint)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">shuffle</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public static function shuffle(Objects:Array, HowManyTimes:uint):Array</code><p></p><p></p><p>
+		 Shuffles the entries in an array into a new random order.
+		 <code>FlxG.shuffle()</code> is deterministic and safe for use with replays/recordings.
+		 HOWEVER, <code>FlxU.shuffle()</code> is NOT deterministic and unsafe for use with replays/recordings.
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">Objects</span>:Array</code> &mdash; 			A Flash <code>Array</code> object containing...stuff.
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">HowManyTimes</span>:uint</code> &mdash; How many swaps to perform during the shuffle operation.  Good rule of thumb is 2-4 times as many objects are in the list.
+		 
+		 </td></tr></table></p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code>Array</code> &mdash; The same Flash <code>Array</code> object that you passed in in the first place.
+		 </td></tr></table></div><a name="srand()"></a><a name="srand(Number)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">srand</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public static function srand(Seed:Number):Number</code><p></p><p></p><p>
+		 Generates a random number based on the seed provided.
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">Seed</span>:Number</code> &mdash; A number between 0 and 1, used to generate a predictable random number (very optional).
+		 
+		 </td></tr></table></p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code>Number</code> &mdash; A <code>Number</code> between 0 and 1.
+		 </td></tr></table></div><br/><br/><hr><br/><p></p><center class="copyright"><footer></footer><br/>Wed May 25 2011, 09:29 AM -05:00  </center></div></body></html><!--<br/>Wed May 25 2011, 09:29 AM -05:00  -->

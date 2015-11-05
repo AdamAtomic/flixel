@@ -1,2 +1,2 @@
 #! /bin/sh
-/Applications/Adobe\ Flex\ Builder\ 3\ Plug-in/sdks/3.1.0/bin/asdoc -source-path . -doc-sources . -output docs
+/Applications/Adobe\ Flash\ Builder\ 4\ Plug-in/sdks/4.0.0/bin/asdoc -source-path . -doc-sources . -output docs

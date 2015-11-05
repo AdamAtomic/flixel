@@ -1,765 +1,202 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" href="../../style.css" type="text/css" media="screen">
-<link rel="stylesheet" href="../../print.css" type="text/css" media="print">
-<meta content="FlxGame,org.flixel.FlxGame,SndBeep,SndFlixel,_buffer,_console,_created,_elapsed,_frame,_framerate,_frameratePaused,_gameXOffset,_gameYOffset,_iState,_paused,_screen,_soundTray,_soundTrayBars,_soundTrayTimer,_state,_total,_zeroPoint,_zoom,junk,pause,useDefaultHotKeys,addFrame,create,onFocus,onFocusLost,onKeyDown,onKeyUp,pauseGame,showSoundTray,switchState,unpauseGame,update" name="keywords">
-<title>org.flixel.FlxGame</title>
-</head>
-<body>
-<script type="text/javascript" language="javascript" src="../../asdoc.js"></script><script type="text/javascript" language="javascript" src="../../cookies.js"></script><script type="text/javascript" language="javascript">
-<!--
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><!-- saved from url=(0014)about:internet --><html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="stylesheet" href="../../style.css" type="text/css" media="screen"><link rel="stylesheet" href="../../print.css" type="text/css" media="print"><link rel="stylesheet" href="../../override.css" type="text/css"><meta name="keywords" content="FlxGame,org.flixel.FlxGame,ALT,ANY,ASCENDING,AUTO,BLACK,BLUE,CEILING,DEBUGGER_BIG,DEBUGGER_LEFT,DEBUGGER_MICRO,DEBUGGER_RIGHT,DEBUGGER_STANDARD,DEBUGGER_TOP,DESCENDING,DOWN,ERROR,FLOOR,GREEN,HIGHLIGHT,ID,ImgAuto,ImgAutoAlt,ImgDefault,ImgDefaultButton,ImgLogo,LEFT,LIBRARY_MAJOR_VERSION,LIBRARY_MINOR_VERSION,LIBRARY_NAME,NONE,NORMAL,OFF,OVERLAP_BIAS,PATH_BACKWARD,PATH_FORWARD,PATH_HORIZONTAL_ONLY,PATH_LOOP_BACKWARD,PATH_LOOP_FORWARD,PATH_VERTICAL_ONLY,PATH_YOYO,PENDING,PINK,PRESSED,RED,RIGHT,SHAKE_BOTH_AXES,SHAKE_HORIZONTAL_ONLY,SHAKE_VERTICAL_ONLY,STYLE_LOCKON,STYLE_PLATFORMER,STYLE_TOPDOWN,STYLE_TOPDOWN_TIGHT,SUCCESS,SndBeep,SndBeep,UP,WALL,WHITE,_ACTIVECOUNT,_VISIBLECOUNT,_accumulator,_alpha,_animations,_bakedRotation,_buffers,_cache,_callback,_callback,_cameraRect,_channel,_closeRequested,_color,_color,_colorTransform,_counter,_created,_curAnim,_curFrame,_curIndex,_data,_debugRect,_debugTileNotSolid,_debugTilePartial,_debugTileSolid,_debugger,_debuggerUp,_explode,_facing,_fadeInTimer,_fadeInTotal,_fadeOutTimer,_fadeOutTotal,_fill,_flashBitmap,_flashFramerate,_flashOffsetX,_flashOffsetY,_flashPoint,_flashPoint,_flashPoint,_flashPointZero,_flashRect,_flashRect,_flashRect,_flashRect2,_flashSprite,_flicker,_flickerTimer,_flipped,_focus,_frameTimer,_fxFadeAlpha,_fxFadeColor,_fxFadeComplete,_fxFadeDuration,_fxFlashAlpha,_fxFlashColor,_fxFlashComplete,_fxFlashDuration,_fxShakeComplete,_fxShakeDirection,_fxShakeDuration,_fxShakeIntensity,_fxShakeOffset,_game,_iState,_initialized,_lastVisualDebug,_looped,_loopsCounter,_lostFocus,_marker,_matrix,_maxAccumulation,_maxSize,_mouse,_onComplete,_onToggle,_pZero,_pan,_pathInc,_pathMode,_pathNodeIndex,_pathRotate,_pauseOnFadeOut,_pixels,_point,_point,_point,_point,_position,_pressed,_quantity,_radius,_recording,_recordingRequested,_rect,_rects,_regen,_replay,_replayCallback,_replayCancelKeys,_replayRequested,_replayTimer,_replaying,_requestedReset,_requestedState,_shadow,_sharedObject,_sortIndex,_sortOrder,_sound,_soundTray,_soundTrayBars,_soundTrayTimer,_startingIndex,_state,_step,_target,_textField,_tileHeight,_tileObjects,_tileWidth,_tiles,_timeCounter,_timer,_total,_transform,_volume,_volume,_volumeAdjust,_zoom,acceleration,active,alignment,alive,allowCollisions,alpha,alpha,amplitude,amplitudeLeft,amplitudeRight,angle,angle,angularAcceleration,angularDrag,angularVelocity,antialiasing,antialiasing,artist,auto,autoDestroy,bgColor,bgColor,blend,bottom,bounce,bounds,buffer,camera,cameras,cameras,color,color,color,data,deadzone,debug,debugColor,debugScrollFactor,defaultZoom,dirty,drag,elapsed,elasticity,exists,facing,finished,finished,flashFramerate,flashGfx,flashGfxSprite,flickering,font,forceDebugger,frame,frameHeight,framePixels,frameWidth,framerate,frames,frequency,friction,globalSeed,gravity,health,height,height,height,height,height,heightInTiles,ignoreDrawDebug,ignoreDrawDebug,immovable,junk,keys,label,labelOffset,last,left,length,level,levels,lifespan,lifespan,loops,loopsLeft,manager,manager,mass,maxAngular,maxParticleSpeed,maxRotation,maxSize,maxVelocity,members,minParticleSpeed,minRotation,mobile,mouse,moves,music,mute,name,name,nodes,offset,on,on,onDown,onOut,onOver,onUp,origin,particleClass,particleDrag,path,pathAngle,pathSpeed,paused,paused,pixels,plugins,progress,right,save,saves,scale,score,scores,screen,scroll,scrollFactor,shadow,size,solid,soundDown,soundOut,soundOver,soundUp,sounds,stage,state,status,survive,target,text,time,timeLeft,timeScale,top,totalTiles,touching,useBufferLocking,useSoundHotKeys,useSystemCursor,velocity,visible,visualDebug,volume,volume,volumeHandler,wasTouching,width,width,width,width,width,widthInTiles,worldBounds,worldDivisions,x,x,x,x,x,x,y,y,y,y,y,y,zoom,abs,add,add,addAnimation,addAnimationCallback,addAt,addBitmap,addCamera,addPlugin,addPoint,addPointAt,advancePath,arrayToCSV,at,autoTile,bind,bitmapToCSV,bound,calcFrame,calcFrame,callAll,ceil,centerOffsets,checkBinding,checkBitmapCache,clear,clearBitmapCache,close,collide,compareClassNames,computePathDistance,computeVelocity,copyFrom,copyFrom,copyFrom,copyFromFlash,copyFromFlash,copyTo,copyTo,copyToFlash,copyToFlash,countDead,countLiving,create,create,createBitmap,createFocusScreen,createSound,createSoundTray,destroy,destroy,destroy,destroy,destroy,destroy,destroy,destroy,destroy,destroy,destroy,destroy,destroy,destroySounds,draw,draw,draw,draw,draw,draw,draw,drawDebug,drawDebug,drawDebug,drawFX,drawFrame,drawLine,drawPlugins,drawTilemap,dtfCopy,emitParticle,erase,fade,fade,fadeIn,fadeOut,fill,fill,findPath,flash,flash,flicker,floor,flush,focusOn,follow,follow,followPath,formatArray,formatMoney,formatTicks,formatTime,getActualVolume,getAngle,getBounds,getClass,getClassName,getContainerSprite,getData,getDistance,getFirstAlive,getFirstAvailable,getFirstDead,getFirstExtant,getFirstNull,getHSB,getLibraryName,getMidpoint,getPlugin,getRGBA,getRandom,getRandom,getRandom,getScale,getScreenXY,getTicks,getTile,getTileByIndex,getTileCoords,getTileInstances,gotID3,head,hurt,imageToCSV,init,isTouching,justTouched,kill,kill,kill,kill,loadEmbedded,loadGraphic,loadMap,loadReplay,loadRotatedGraphic,loadSound,loadStream,loadTiles,lockCameras,log,looped,make,make,makeColor,makeColorFromHSB,makeDebugTile,makeGraphic,makeParticles,max,min,onDone,onEmit,onEnterFrame,onFlushStatus,onFocus,onFocusLost,onKeyDown,onKeyUp,onMouseDown,onMouseUp,onMouseUp,onMouseWheel,onScreen,onScreen,openURL,overlap,overlaps,overlaps,overlaps,overlapsAt,overlapsAt,overlapsPoint,overlapsPoint,overlapsWithCallback,pause,pauseSounds,pixelsOverlapPoint,play,play,play,playMusic,postUpdate,postUpdate,postUpdate,preUpdate,preUpdate,preUpdate,preUpdate,proximity,random,randomFrame,ray,raySimplifyPath,recordReplay,recycle,reloadReplay,remove,remove,removeAt,removeCamera,removePlugin,removePluginType,replace,replaceColor,reset,reset,resetCameras,resetDebuggerLayout,resetGame,resetHelpers,resetHelpers,resetInput,resetState,resume,resumeSounds,revive,rotatePoint,round,separate,separateX,separateY,setAll,setBounds,setDebuggerLayout,setDirty,setFormat,setOriginToCorner,setRotation,setSize,setSounds,setTile,setTileByIndex,setTileProperties,setXSpeed,setYSpeed,shake,shake,showSoundTray,shuffle,shuffle,simplifyPath,sort,sortHandler,srand,stamp,start,start,step,stop,stop,stopFX,stopFollowingPath,stopRecording,stopReplay,stopped,stream,switchState,switchState,tail,toString,unlockCameras,unwatch,update,update,update,update,update,update,update,update,update,update,updateAnimation,updateButton,updateCameras,updateInput,updateMotion,updatePathMotion,updatePlugins,updateSoundTray,updateSounds,updateTile,updateTransform,walkPath,watch"><title>org.flixel.FlxGame</title></head><body><script language="javascript" type="text/javascript" src="../../asdoc.js"></script><script language="javascript" type="text/javascript" src="../../help.js"></script><script language="javascript" type="text/javascript" src="../../cookies.js"></script><script language="javascript" type="text/javascript"><!--
 				asdocTitle = 'FlxGame - API Documentation';
 				var baseRef = '../../';
 				window.onload = configPage;
 			--></script>
-<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" class="titleTable">
-<tr>
-<td align="left" class="titleTableTitle">API Documentation</td><td align="right" class="titleTableTopNav"><a onclick="loadClassListFrame('../../all-classes.html')" href="../../package-summary.html">All&nbsp;Packages</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../all-classes.html')" href="../../class-summary.html">All&nbsp;Classes</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../index-list.html')" href="../../all-index-A.html">Index</a>&nbsp;|&nbsp;<a href="../../index.html?org/flixel/FlxGame.html&amp;org/flixel/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></td><td rowspan="3" align="right" class="titleTableLogo"><img alt="Adobe Logo" title="Adobe Logo" class="logoImage" src="../../images/logo.jpg"></td>
-</tr>
-<tr class="titleTableRow2">
-<td align="left" id="subTitle" class="titleTableSubTitle">Class&nbsp;FlxGame</td><td align="right" id="subNav" class="titleTableSubNav"><a href="#propertySummary">Properties</a>&nbsp;| <a href="#methodSummary">Methods</a></td>
-</tr>
-<tr class="titleTableRow3">
-<td colspan="2">&nbsp;</td>
-</tr>
-</table>
-<script type="text/javascript" language="javascript">
-<!--
-if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Class FlxGame"); titleBar_setSubNav(false,true,false,false,false,false,true,false,false,false,false,false,false,false);}
---></script>
-<div class="MainContent">
-<table cellspacing="0" cellpadding="0" class="classHeaderTable">
-<tr>
-<td class="classHeaderTableLabel">Package</td><td><a onclick="javascript:loadClassListFrame('class-list.html')" href="package-detail.html">org.flixel</a></td>
-</tr>
-<tr>
-<td class="classHeaderTableLabel">Class</td><td class="classSignature">public class FlxGame</td>
-</tr>
-<tr>
-<td class="classHeaderTableLabel">Inheritance</td><td class="inheritanceList">FlxGame <img class="inheritArrow" alt="Inheritance" title="Inheritance" src="../../images/inherit-arrow.gif"> flash.display.Sprite</td>
-</tr>
-</table>
-<p></p>
-  FlxGame is the heart of all flixel games, and contains a bunch of basic game loops and things.
-  It is a long and sloppy file that you shouldn't have to worry about too much!
-  It is basically only used to create your game object in the first place,
-  after that FlxG and FlxState have all the useful stuff you actually need.
-  <p></p>
-<br>
-<hr>
-</div>
-<a name="propertySummary"></a>
-<div class="summarySection">
-<div class="summaryTableTitle">Public Properties</div>
-<table id="summaryTableProperty" class="summaryTable " cellpadding="3" cellspacing="0">
-<tr>
-<th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_buffer">_buffer</a> : Bitmap<div class="summaryTableDescription"></div>
-</td><td class="summaryTableOwnerCol">FlxGame</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_console">_console</a> : <a href="data/FlxConsole.html">FlxConsole</a>
-<div class="summaryTableDescription"></div>
-</td><td class="summaryTableOwnerCol">FlxGame</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_created">_created</a> : Boolean<div class="summaryTableDescription"></div>
-</td><td class="summaryTableOwnerCol">FlxGame</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_elapsed">_elapsed</a> : Number<div class="summaryTableDescription"></div>
-</td><td class="summaryTableOwnerCol">FlxGame</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_frame">_frame</a> : Class<div class="summaryTableDescription"></div>
-</td><td class="summaryTableOwnerCol">FlxGame</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_framerate">_framerate</a> : uint<div class="summaryTableDescription"></div>
-</td><td class="summaryTableOwnerCol">FlxGame</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_frameratePaused">_frameratePaused</a> : uint<div class="summaryTableDescription"></div>
-</td><td class="summaryTableOwnerCol">FlxGame</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_gameXOffset">_gameXOffset</a> : int<div class="summaryTableDescription"></div>
-</td><td class="summaryTableOwnerCol">FlxGame</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_gameYOffset">_gameYOffset</a> : int<div class="summaryTableDescription"></div>
-</td><td class="summaryTableOwnerCol">FlxGame</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_iState">_iState</a> : Class<div class="summaryTableDescription"></div>
-</td><td class="summaryTableOwnerCol">FlxGame</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#pause">pause</a> : <a href="../flixel/FlxGroup.html">FlxGroup</a>
-<div class="summaryTableDescription">
-   Displayed whenever the game is paused.</div>
-</td><td class="summaryTableOwnerCol">FlxGame</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_paused">_paused</a> : Boolean<div class="summaryTableDescription"></div>
-</td><td class="summaryTableOwnerCol">FlxGame</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_screen">_screen</a> : Sprite<div class="summaryTableDescription"></div>
-</td><td class="summaryTableOwnerCol">FlxGame</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_soundTray">_soundTray</a> : Sprite<div class="summaryTableDescription"></div>
-</td><td class="summaryTableOwnerCol">FlxGame</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_soundTrayBars">_soundTrayBars</a> : Array<div class="summaryTableDescription"></div>
-</td><td class="summaryTableOwnerCol">FlxGame</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_soundTrayTimer">_soundTrayTimer</a> : Number<div class="summaryTableDescription"></div>
-</td><td class="summaryTableOwnerCol">FlxGame</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_state">_state</a> : <a href="../flixel/FlxState.html">FlxState</a>
-<div class="summaryTableDescription"></div>
-</td><td class="summaryTableOwnerCol">FlxGame</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_total">_total</a> : uint<div class="summaryTableDescription"></div>
-</td><td class="summaryTableOwnerCol">FlxGame</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#useDefaultHotKeys">useDefaultHotKeys</a> : Boolean<div class="summaryTableDescription">
-   Sets 0, -, and + to control the global volume and P to pause.</div>
-</td><td class="summaryTableOwnerCol">FlxGame</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_zeroPoint">_zeroPoint</a> : Point<div class="summaryTableDescription"></div>
-</td><td class="summaryTableOwnerCol">FlxGame</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_zoom">_zoom</a> : uint<div class="summaryTableDescription"></div>
-</td><td class="summaryTableOwnerCol">FlxGame</td>
-</tr>
-</table>
-</div>
-<a name="protectedPropertySummary"></a>
-<div class="summarySection">
-<div class="summaryTableTitle">Protected Properties</div>
-<table id="summaryTableProtectedProperty" class="summaryTable " cellpadding="3" cellspacing="0">
-<tr>
-<th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#junk">junk</a> : String<div class="summaryTableDescription"></div>
-</td><td class="summaryTableOwnerCol">FlxGame</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#SndBeep">SndBeep</a> : Class<div class="summaryTableDescription"></div>
-</td><td class="summaryTableOwnerCol">FlxGame</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#SndFlixel">SndFlixel</a> : Class<div class="summaryTableDescription"></div>
-</td><td class="summaryTableOwnerCol">FlxGame</td>
-</tr>
-</table>
-</div>
-<a name="methodSummary"></a>
-<div class="summarySection">
-<div class="summaryTableTitle">Public Methods</div>
-<table id="summaryTableMethod" class="summaryTable " cellpadding="3" cellspacing="0">
-<tr>
-<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#FlxGame()">FlxGame</a>(GameSizeX:uint, GameSizeY:uint, InitialState:Class, Zoom:uint = 2)</div>
-<div class="summaryTableDescription">
-   Game object constructor - sets up the basic properties of your game.</div>
-</td><td class="summaryTableOwnerCol">FlxGame</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#create()">create</a>(event:Event):void</div>
-<div class="summaryTableDescription">
-   Used to instantiate the guts of flixel once we have a valid pointer to the root.</div>
-</td><td class="summaryTableOwnerCol">FlxGame</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#pauseGame()">pauseGame</a>():void</div>
-<div class="summaryTableDescription">
-   Internal function to help with basic pause game functionality.</div>
-</td><td class="summaryTableOwnerCol">FlxGame</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#showSoundTray()">showSoundTray</a>(Silent:Boolean = false):void</div>
-<div class="summaryTableDescription">
-   Makes the little volume tray slide out.</div>
-</td><td class="summaryTableOwnerCol">FlxGame</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#switchState()">switchState</a>(State:<a href="FlxState.html">FlxState</a>):void</div>
-<div class="summaryTableDescription">
-   Switch from one <code>FlxState</code> to another.</div>
-</td><td class="summaryTableOwnerCol">FlxGame</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#unpauseGame()">unpauseGame</a>():void</div>
-<div class="summaryTableDescription">
-   Internal function to help with basic pause game functionality.</div>
-</td><td class="summaryTableOwnerCol">FlxGame</td>
-</tr>
-</table>
-</div>
-<a name="protectedMethodSummary"></a>
-<div class="summarySection">
-<div class="summaryTableTitle">Protected Methods</div>
-<table id="summaryTableProtectedMethod" class="summaryTable " cellpadding="3" cellspacing="0">
-<tr>
-<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#addFrame()">addFrame</a>(Frame:Class, ScreenOffsetX:uint, ScreenOffsetY:uint):<a href="../flixel/FlxGame.html">FlxGame</a>
-</div>
-<div class="summaryTableDescription">
-   Adds a frame around your game for presentation purposes (see Canabalt, Gravity Hook).</div>
-</td><td class="summaryTableOwnerCol">FlxGame</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#onFocus()">onFocus</a>(event:Event = null):void</div>
-<div class="summaryTableDescription">
-   Internal event handler for input and focus.</div>
-</td><td class="summaryTableOwnerCol">FlxGame</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#onFocusLost()">onFocusLost</a>(event:Event = null):void</div>
-<div class="summaryTableDescription">
-   Internal event handler for input and focus.</div>
-</td><td class="summaryTableOwnerCol">FlxGame</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#onKeyDown()">onKeyDown</a>(event:KeyboardEvent):void</div>
-<div class="summaryTableDescription">
-   Internal event handler for input and focus.</div>
-</td><td class="summaryTableOwnerCol">FlxGame</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#onKeyUp()">onKeyUp</a>(event:KeyboardEvent):void</div>
-<div class="summaryTableDescription">
-   Internal event handler for input and focus.</div>
-</td><td class="summaryTableOwnerCol">FlxGame</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#update()">update</a>(event:Event):void</div>
-<div class="summaryTableDescription">
-   This is the main game loop.</div>
-</td><td class="summaryTableOwnerCol">FlxGame</td>
-</tr>
-</table>
-</div>
-<script type="text/javascript" language="javascript">
-<!--
-showHideInherited();
---></script>
-<div class="MainContent">
-<a name="propertyDetail"></a>
-<div class="detailSectionHeader">Property detail</div>
-<a name="_buffer"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">_buffer</td><td class="detailHeaderType">property</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public var _buffer:Bitmap</code>
-</div>
-<a name="_console"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">_console</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public var _console:<a href="data/FlxConsole.html">FlxConsole</a></code>
-</div>
-<a name="_created"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">_created</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public var _created:Boolean</code>
-</div>
-<a name="_elapsed"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">_elapsed</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public var _elapsed:Number</code>
-</div>
-<a name="_frame"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">_frame</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public var _frame:Class</code>
-</div>
-<a name="_framerate"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">_framerate</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public var _framerate:uint</code>
-</div>
-<a name="_frameratePaused"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">_frameratePaused</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public var _frameratePaused:uint</code>
-</div>
-<a name="_gameXOffset"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">_gameXOffset</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public var _gameXOffset:int</code>
-</div>
-<a name="_gameYOffset"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">_gameYOffset</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public var _gameYOffset:int</code>
-</div>
-<a name="_iState"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">_iState</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public var _iState:Class</code>
-</div>
-<a name="junk"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">junk</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>protected var junk:String</code>
-</div>
-<a name="pause"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">pause</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public var pause:<a href="../flixel/FlxGroup.html">FlxGroup</a></code><p>
-   Displayed whenever the game is paused.
-   Override with your own <code>FlxLayer</code> for hot custom pause action!
-   Defaults to <code>data.FlxPause</code>.
-   </p></div>
-<a name="_paused"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">_paused</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public var _paused:Boolean</code>
-</div>
-<a name="_screen"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">_screen</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public var _screen:Sprite</code>
-</div>
-<a name="SndBeep"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">SndBeep</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>protected var SndBeep:Class</code>
-</div>
-<a name="SndFlixel"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">SndFlixel</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>protected var SndFlixel:Class</code>
-</div>
-<a name="_soundTray"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">_soundTray</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public var _soundTray:Sprite</code>
-</div>
-<a name="_soundTrayBars"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">_soundTrayBars</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public var _soundTrayBars:Array</code>
-</div>
-<a name="_soundTrayTimer"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">_soundTrayTimer</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public var _soundTrayTimer:Number</code>
-</div>
-<a name="_state"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">_state</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public var _state:<a href="../flixel/FlxState.html">FlxState</a></code>
-</div>
-<a name="_total"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">_total</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public var _total:uint</code>
-</div>
-<a name="useDefaultHotKeys"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">useDefaultHotKeys</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public var useDefaultHotKeys:Boolean</code><p>
-   Sets 0, -, and + to control the global volume and P to pause.
-   </p><p>The default value is <code>true</code>.</p>
-</div>
-<a name="_zeroPoint"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">_zeroPoint</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public var _zeroPoint:Point</code>
-</div>
-<a name="_zoom"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">_zoom</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public var _zoom:uint</code>
-</div>
-<a name="constructorDetail"></a>
-<div class="detailSectionHeader">Constructor detail</div>
-<a name="FlxGame()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">FlxGame</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">constructor</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public function FlxGame(GameSizeX:uint, GameSizeY:uint, InitialState:Class, Zoom:uint = 2)</code><p>
-   Game object constructor - sets up the basic properties of your game.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">GameSizeX</span>:uint</code> &mdash;  The width of your game in pixels (e.g. 320).
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">GameSizeY</span>:uint</code> &mdash;  The height of your game in pixels (e.g. 240).
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">InitialState</span>:Class</code> &mdash; The class name of the state you want to create and switch to first (e.g. MenuState).
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">Zoom</span>:uint</code> (default = <code>2</code>)<code></code> &mdash;   The level of zoom (e.g. 2 means all pixels are now rendered twice as big).
-   </td>
-</tr>
-</table>
-</div>
-<a name="methodDetail"></a>
-<div class="detailSectionHeader">Method detail</div>
-<a name="addFrame()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">addFrame</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>protected function addFrame(Frame:Class, ScreenOffsetX:uint, ScreenOffsetY:uint):<a href="../flixel/FlxGame.html">FlxGame</a></code><p>
-   Adds a frame around your game for presentation purposes (see Canabalt, Gravity Hook).
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">Frame</span>:Class</code> &mdash;   If you want you can add a little graphical frame to the outside edges of your game.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">ScreenOffsetX</span>:uint</code> &mdash; Width in pixels of left side of frame.
-   </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">ScreenOffsetY</span>:uint</code> &mdash; Height in pixels of top of frame.
-   
-   </td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code><a href="../flixel/FlxGame.html">FlxGame</a></code> &mdash; 
-                        This <code>FlxGame</code> instance.
-   
-                        
-                     </td>
-</tr>
-</table>
-</div>
-<a name="create()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">create</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public function create(event:Event):void</code><p>
-   Used to instantiate the guts of flixel once we have a valid pointer to the root.
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">event</span>:Event</code></td>
-</tr>
-</table>
-</div>
-<a name="onFocus()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">onFocus</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>protected function onFocus(event:Event = null):void</code><p>
-   Internal event handler for input and focus.
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">event</span>:Event</code> (default = <code>null</code>)<code></code></td>
-</tr>
-</table>
-</div>
-<a name="onFocusLost()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">onFocusLost</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>protected function onFocusLost(event:Event = null):void</code><p>
-   Internal event handler for input and focus.
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">event</span>:Event</code> (default = <code>null</code>)<code></code></td>
-</tr>
-</table>
-</div>
-<a name="onKeyDown()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">onKeyDown</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>protected function onKeyDown(event:KeyboardEvent):void</code><p>
-   Internal event handler for input and focus.
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">event</span>:KeyboardEvent</code></td>
-</tr>
-</table>
-</div>
-<a name="onKeyUp()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">onKeyUp</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>protected function onKeyUp(event:KeyboardEvent):void</code><p>
-   Internal event handler for input and focus.
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">event</span>:KeyboardEvent</code></td>
-</tr>
-</table>
-</div>
-<a name="pauseGame()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">pauseGame</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public function pauseGame():void</code><p>
-   Internal function to help with basic pause game functionality.
-   </p></div>
-<a name="showSoundTray()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">showSoundTray</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public function showSoundTray(Silent:Boolean = false):void</code><p>
-   Makes the little volume tray slide out.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">Silent</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash; Whether or not it should beep.
-   </td>
-</tr>
-</table>
-</div>
-<a name="switchState()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">switchState</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public function switchState(State:<a href="FlxState.html">FlxState</a>):void</code><p>
-   Switch from one <code>FlxState</code> to another.
-   Usually called from <code>FlxG</code>.
-   
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">State</span>:<a href="FlxState.html">FlxState</a></code> &mdash;  The class name of the state you want (e.g. PlayState)
-   </td>
-</tr>
-</table>
-</div>
-<a name="unpauseGame()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">unpauseGame</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public function unpauseGame():void</code><p>
-   Internal function to help with basic pause game functionality.
-   </p></div>
-<a name="update()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">update</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>protected function update(event:Event):void</code><p>
-   This is the main game loop.  It controls all the updating and rendering.
-   </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">event</span>:Event</code></td>
-</tr>
-</table>
-</div>
-<br>
-<br>
-<hr>
-<br>
-<p></p>
-<center class="copyright"> 
-</center>
-</div>
-</body>
-</html>
-<!-- -->
+<script type="text/javascript">
+			scrollToNameAnchor();
+		</script><table class="titleTable" cellpadding="0" cellspacing="0" id="titleTable" style="display:none"><tr><td class="titleTableTitle" align="left">API Documentation</td><td class="titleTableTopNav" align="right"><a href="../../package-summary.html" onclick="loadClassListFrame('../../all-classes.html')">All Packages</a>&nbsp;|&nbsp;<a href="../../class-summary.html" onclick="loadClassListFrame('../../all-classes.html')">All Classes</a>&nbsp;|&nbsp;<a href="../../all-index-A.html" onclick="loadClassListFrame('../../index-list.html')">Index</a>&nbsp;|&nbsp;<a id="framesLink1" href="../../index.html?org/flixel/FlxGame.html&amp;org/flixel/class-list.html">Frames</a><a id="noFramesLink1" style="display:none" href="" onclick="parent.location=document.location"> No Frames </a></td><td class="titleTableLogo" align="right" rowspan="3"><img src="../../images/logo.jpg" class="logoImage" alt=" Adobe Logo " title=" Adobe Logo "></td></tr><tr class="titleTableRow2"><td class="titleTableSubTitle" id="subTitle" align="left">FlxGame</td><td class="titleTableSubNav" id="subNav" align="right"><a href="#propertySummary">Properties</a>&nbsp;| <a href="#methodSummary">Methods</a></td></tr><tr class="titleTableRow3"><td colspan="3">&nbsp;</td></tr></table><script language="javascript" type="text/javascript" xml:space="preserve">
+				<!--
+				
+					if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("FlxGame"); titleBar_setSubNav(false,true,false,false,false,false,false,false,true,false,false	,false,false,false,false,false);}	
+				-->
+			</script><div xmlns:fn="http://www.w3.org/2005/xpath-functions" class="MainContent"><table class="classHeaderTable" cellpadding="0" cellspacing="0"><tr><td class="classHeaderTableLabel">Package</td><td><a href="package-detail.html" onclick="javascript:loadClassListFrame('class-list.html')">org.flixel</a></td></tr><tr><td class="classHeaderTableLabel">Class</td><td class="classSignature">public  class  FlxGame</td></tr><tr><td class="classHeaderTableLabel">Inheritance</td><td class="inheritanceList">FlxGame  <img src="../../images/inherit-arrow.gif" title="Inheritance" alt="Inheritance" class="inheritArrow"> flash.display.Sprite</td></tr></table><p></p><p></p><p></p>
+	 FlxGame is the heart of all flixel games, and contains a bunch of basic game loops and things.
+	 It is a long and sloppy file that you shouldn't have to worry about too much!
+	 It is basically only used to create your game object in the first place,
+	 after that FlxG and FlxState have all the useful stuff you actually need.
+	 
+	 <p></p><br/><hr></div><a name="propertySummary"></a><div class="summarySection"><div class="summaryTableTitle">Public Properties</div><table cellspacing="0" cellpadding="3" class="summaryTable " id="summaryTableProperty"><tr><th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined By</th></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#_debugger" class="signatureLink">_debugger</a> : <a href="../../org/flixel/system/FlxDebugger.html">FlxDebugger</a><div class="summaryTableDescription">
+		 The debugger overlay object.</div></td><td class="summaryTableOwnerCol">FlxGame</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#_debuggerUp" class="signatureLink">_debuggerUp</a> : Boolean<div class="summaryTableDescription">
+		 A handy boolean that keeps track of whether the debugger exists and is currently visible.</div></td><td class="summaryTableOwnerCol">FlxGame</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#_flashFramerate" class="signatureLink">_flashFramerate</a> : uint<div class="summaryTableDescription">
+		 Framerate of the Flash player (NOT the game loop).</div></td><td class="summaryTableOwnerCol">FlxGame</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#forceDebugger" class="signatureLink">forceDebugger</a> : Boolean<div class="summaryTableDescription">
+		 Initialize and allow the flixel debugger overlay even in release mode.</div></td><td class="summaryTableOwnerCol">FlxGame</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#_maxAccumulation" class="signatureLink">_maxAccumulation</a> : uint<div class="summaryTableDescription">
+		 Max allowable accumulation (see _accumulator).</div></td><td class="summaryTableOwnerCol">FlxGame</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#_mouse" class="signatureLink">_mouse</a> : Sprite<div class="summaryTableDescription">
+		 Mouse cursor.</div></td><td class="summaryTableOwnerCol">FlxGame</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#_recording" class="signatureLink">_recording</a> : Boolean<div class="summaryTableDescription">
+		 Flag for whether a new recording is being made.</div></td><td class="summaryTableOwnerCol">FlxGame</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#_recordingRequested" class="signatureLink">_recordingRequested</a> : Boolean<div class="summaryTableDescription">
+		 Flag for whether a new recording was requested.</div></td><td class="summaryTableOwnerCol">FlxGame</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#_replay" class="signatureLink">_replay</a> : <a href="../../org/flixel/system/FlxReplay.html">FlxReplay</a><div class="summaryTableDescription">
+		 Container for a game replay object.</div></td><td class="summaryTableOwnerCol">FlxGame</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#_replayCallback" class="signatureLink">_replayCallback</a> : Function<div class="summaryTableDescription">
+		 This function, if set, is triggered when the callback stops playing.</div></td><td class="summaryTableOwnerCol">FlxGame</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#_replayCancelKeys" class="signatureLink">_replayCancelKeys</a> : Array<div class="summaryTableDescription">
+		 Array that keeps track of keypresses that can cancel a replay.</div></td><td class="summaryTableOwnerCol">FlxGame</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#_replaying" class="signatureLink">_replaying</a> : Boolean<div class="summaryTableDescription">
+		 Flag for whether a replay is currently playing.</div></td><td class="summaryTableOwnerCol">FlxGame</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#_replayRequested" class="signatureLink">_replayRequested</a> : Boolean<div class="summaryTableDescription">
+		 Flag for whether a playback of a recording was requested.</div></td><td class="summaryTableOwnerCol">FlxGame</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#_replayTimer" class="signatureLink">_replayTimer</a> : int<div class="summaryTableDescription">
+		 Helps time out a replay if necessary.</div></td><td class="summaryTableOwnerCol">FlxGame</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#_requestedReset" class="signatureLink">_requestedReset</a> : Boolean<div class="summaryTableDescription">
+		 A flag for keeping track of whether a game reset was requested or not.</div></td><td class="summaryTableOwnerCol">FlxGame</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#_requestedState" class="signatureLink">_requestedState</a> : <a href="../../org/flixel/FlxState.html">FlxState</a><div class="summaryTableDescription">
+		 If a state change was requested, the new state object is stored here until we switch to it.</div></td><td class="summaryTableOwnerCol">FlxGame</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#_state" class="signatureLink">_state</a> : <a href="../../org/flixel/FlxState.html">FlxState</a><div class="summaryTableDescription">
+		 Current game state.</div></td><td class="summaryTableOwnerCol">FlxGame</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#_step" class="signatureLink">_step</a> : uint<div class="summaryTableDescription">
+		 Milliseconds of time per step of the game loop.</div></td><td class="summaryTableOwnerCol">FlxGame</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#useSoundHotKeys" class="signatureLink">useSoundHotKeys</a> : Boolean<div class="summaryTableDescription">
+		 Sets 0, -, and + to control the global volume sound volume.</div></td><td class="summaryTableOwnerCol">FlxGame</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#useSystemCursor" class="signatureLink">useSystemCursor</a> : Boolean<div class="summaryTableDescription">
+		 Tells flixel to use the default system mouse cursor instead of custom Flixel mouse cursors.</div></td><td class="summaryTableOwnerCol">FlxGame</td></tr></table></div><a name="protectedPropertySummary"></a><div class="summarySection"><div class="summaryTableTitle">Protected Properties</div><table cellspacing="0" cellpadding="3" class="summaryTable " id="summaryTableProtectedProperty"><tr><th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined By</th></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#_accumulator" class="signatureLink">_accumulator</a> : int<div class="summaryTableDescription">
+		 Total number of milliseconds elapsed since last update loop.</div></td><td class="summaryTableOwnerCol">FlxGame</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#_created" class="signatureLink">_created</a> : Boolean<div class="summaryTableDescription">
+		 Whether the game object's basic initialization has finished yet.</div></td><td class="summaryTableOwnerCol">FlxGame</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#_focus" class="signatureLink">_focus</a> : Sprite<div class="summaryTableDescription">
+		 The "focus lost" screen (see createFocusScreen()).</div></td><td class="summaryTableOwnerCol">FlxGame</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#ImgLogo" class="signatureLink">ImgLogo</a> : Class<div class="summaryTableDescription"></div></td><td class="summaryTableOwnerCol">FlxGame</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#_iState" class="signatureLink">_iState</a> : Class<div class="summaryTableDescription">
+		 Class type of the initial/first game state for the game, usually MenuState or something like that.</div></td><td class="summaryTableOwnerCol">FlxGame</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#junk" class="signatureLink">junk</a> : String<div class="summaryTableDescription"></div></td><td class="summaryTableOwnerCol">FlxGame</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#_lostFocus" class="signatureLink">_lostFocus</a> : Boolean<div class="summaryTableDescription">
+		 Whether the Flash player lost focus.</div></td><td class="summaryTableOwnerCol">FlxGame</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#SndBeep" class="signatureLink">SndBeep</a> : Class<div class="summaryTableDescription"></div></td><td class="summaryTableOwnerCol">FlxGame</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#_soundTray" class="signatureLink">_soundTray</a> : Sprite<div class="summaryTableDescription">
+		 The sound tray display container (see createSoundTray()).</div></td><td class="summaryTableOwnerCol">FlxGame</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#_soundTrayBars" class="signatureLink">_soundTrayBars</a> : Array<div class="summaryTableDescription">
+		 Helps display the volume bars on the sound tray.</div></td><td class="summaryTableOwnerCol">FlxGame</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#_soundTrayTimer" class="signatureLink">_soundTrayTimer</a> : Number<div class="summaryTableDescription">
+		 Helps us auto-hide the sound tray after a volume change.</div></td><td class="summaryTableOwnerCol">FlxGame</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#_total" class="signatureLink">_total</a> : uint<div class="summaryTableDescription">
+		 Total number of milliseconds elapsed since game start.</div></td><td class="summaryTableOwnerCol">FlxGame</td></tr></table></div><a name="methodSummary"></a><div class="summarySection"><div class="summaryTableTitle">Public Methods </div><table cellspacing="0" cellpadding="3" class="summaryTable " id="summaryTableMethod"><tr><th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined By</th></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#FlxGame()" class="signatureLink">FlxGame</a>(GameSizeX:uint, GameSizeY:uint, InitialState:Class, Zoom:Number = 1, GameFramerate:uint = 60, FlashFramerate:uint = 30, UseSystemCursor:Boolean = false)</div><div class="summaryTableDescription">
+		 Instantiate a new game object.</div></td><td class="summaryTableOwnerCol">FlxGame</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#showSoundTray()" class="signatureLink">showSoundTray</a>(Silent:Boolean = false):void</div><div class="summaryTableDescription">
+		 Makes the little volume tray slide out.</div></td><td class="summaryTableOwnerCol">FlxGame</td></tr></table></div><a name="protectedMethodSummary"></a><div class="summarySection"><div class="summaryTableTitle">Protected Methods </div><table cellspacing="0" cellpadding="3" class="summaryTable " id="summaryTableProtectedMethod"><tr><th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined By</th></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#create()" class="signatureLink">create</a>(FlashEvent:Event):void</div><div class="summaryTableDescription">
+		 Used to instantiate the guts of the flixel game object once we have a valid reference to the root.</div></td><td class="summaryTableOwnerCol">FlxGame</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#createFocusScreen()" class="signatureLink">createFocusScreen</a>():void</div><div class="summaryTableDescription">
+		 Sets up the darkened overlay with the big white "play" button that appears when a flixel game loses focus.</div></td><td class="summaryTableOwnerCol">FlxGame</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#createSoundTray()" class="signatureLink">createSoundTray</a>():void</div><div class="summaryTableDescription">
+		 Sets up the "sound tray", the little volume meter that pops down sometimes.</div></td><td class="summaryTableOwnerCol">FlxGame</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#draw()" class="signatureLink">draw</a>():void</div><div class="summaryTableDescription">
+		 Goes through the game state and draws all the game objects and special effects.</div></td><td class="summaryTableOwnerCol">FlxGame</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#onEnterFrame()" class="signatureLink">onEnterFrame</a>(FlashEvent:Event = null):void</div><div class="summaryTableDescription">
+		 Handles the onEnterFrame call and figures out how many updates and draw calls to do.</div></td><td class="summaryTableOwnerCol">FlxGame</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#onFocus()" class="signatureLink">onFocus</a>(FlashEvent:Event = null):void</div><div class="summaryTableDescription">
+		 Internal event handler for input and focus.</div></td><td class="summaryTableOwnerCol">FlxGame</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#onFocusLost()" class="signatureLink">onFocusLost</a>(FlashEvent:Event = null):void</div><div class="summaryTableDescription">
+		 Internal event handler for input and focus.</div></td><td class="summaryTableOwnerCol">FlxGame</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#onKeyDown()" class="signatureLink">onKeyDown</a>(FlashEvent:KeyboardEvent):void</div><div class="summaryTableDescription">
+		 Internal event handler for input and focus.</div></td><td class="summaryTableOwnerCol">FlxGame</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#onKeyUp()" class="signatureLink">onKeyUp</a>(FlashEvent:KeyboardEvent):void</div><div class="summaryTableDescription">
+		 Internal event handler for input and focus.</div></td><td class="summaryTableOwnerCol">FlxGame</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#onMouseDown()" class="signatureLink">onMouseDown</a>(FlashEvent:MouseEvent):void</div><div class="summaryTableDescription">
+		 Internal event handler for input and focus.</div></td><td class="summaryTableOwnerCol">FlxGame</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#onMouseUp()" class="signatureLink">onMouseUp</a>(FlashEvent:MouseEvent):void</div><div class="summaryTableDescription">
+		 Internal event handler for input and focus.</div></td><td class="summaryTableOwnerCol">FlxGame</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#onMouseWheel()" class="signatureLink">onMouseWheel</a>(FlashEvent:MouseEvent):void</div><div class="summaryTableDescription">
+		 Internal event handler for input and focus.</div></td><td class="summaryTableOwnerCol">FlxGame</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#step()" class="signatureLink">step</a>():void</div><div class="summaryTableDescription">
+		 This is the main game update logic section.</div></td><td class="summaryTableOwnerCol">FlxGame</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#switchState()" class="signatureLink">switchState</a>():void</div><div class="summaryTableDescription">
+		 If there is a state change requested during the update loop,
+		 this function handles actual destroying the old state and related processes,
+		 and calls creates on the new state and plugs it into the game object.</div></td><td class="summaryTableOwnerCol">FlxGame</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#update()" class="signatureLink">update</a>():void</div><div class="summaryTableDescription">
+		 This function is called by step() and updates the actual game state.</div></td><td class="summaryTableOwnerCol">FlxGame</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#updateSoundTray()" class="signatureLink">updateSoundTray</a>(MS:Number):void</div><div class="summaryTableDescription">
+		 This function just updates the soundtray object.</div></td><td class="summaryTableOwnerCol">FlxGame</td></tr></table></div><script language="javascript" type="text/javascript"><!--
+										showHideInherited();
+										--></script><div class="MainContent"><div class="detailSectionHeader">Property Detail</div><a name="propertyDetail"></a><a name="_accumulator"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">_accumulator</td><td class="detailHeaderType">property</td></tr></table><div class="detailBody"><code>protected var _accumulator:int</code><p></p><p></p><p>
+		 Total number of milliseconds elapsed since last update loop.
+		 Counts down as we step through the game loop.
+		 </p></div><a name="propertyDetail"></a><a name="_created"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">_created</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>protected var _created:Boolean</code><p></p><p></p><p>
+		 Whether the game object's basic initialization has finished yet.
+		 </p></div><a name="propertyDetail"></a><a name="_debugger"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">_debugger</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>public var _debugger:<a href="../../org/flixel/system/FlxDebugger.html">FlxDebugger</a></code><p></p><p></p><p>
+		 The debugger overlay object.
+		 </p></div><a name="propertyDetail"></a><a name="_debuggerUp"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">_debuggerUp</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>public var _debuggerUp:Boolean</code><p></p><p></p><p>
+		 A handy boolean that keeps track of whether the debugger exists and is currently visible.
+		 </p></div><a name="propertyDetail"></a><a name="_flashFramerate"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">_flashFramerate</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>public var _flashFramerate:uint</code><p></p><p></p><p>
+		 Framerate of the Flash player (NOT the game loop). Default = 30.
+		 </p></div><a name="propertyDetail"></a><a name="_focus"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">_focus</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>protected var _focus:Sprite</code><p></p><p></p><p>
+		 The "focus lost" screen (see <code>createFocusScreen()</code>).
+		 </p></div><a name="propertyDetail"></a><a name="_iState"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">_iState</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>protected var _iState:Class</code><p></p><p></p><p>
+		 Class type of the initial/first game state for the game, usually MenuState or something like that.
+		 </p></div><a name="propertyDetail"></a><a name="_lostFocus"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">_lostFocus</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>protected var _lostFocus:Boolean</code><p></p><p></p><p>
+		 Whether the Flash player lost focus.
+		 </p></div><a name="propertyDetail"></a><a name="_maxAccumulation"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">_maxAccumulation</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>public var _maxAccumulation:uint</code><p></p><p></p><p>
+		 Max allowable accumulation (see _accumulator).
+		 Should always (and automatically) be set to roughly 2x the flash player framerate.
+		 </p></div><a name="propertyDetail"></a><a name="_mouse"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">_mouse</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>public var _mouse:Sprite</code><p></p><p></p><p>
+		 Mouse cursor.
+		 </p></div><a name="propertyDetail"></a><a name="_recording"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">_recording</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>public var _recording:Boolean</code><p></p><p></p><p>
+		 Flag for whether a new recording is being made.
+		 </p></div><a name="propertyDetail"></a><a name="_recordingRequested"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">_recordingRequested</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>public var _recordingRequested:Boolean</code><p></p><p></p><p>
+		 Flag for whether a new recording was requested.
+		 </p></div><a name="propertyDetail"></a><a name="_replay"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">_replay</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>public var _replay:<a href="../../org/flixel/system/FlxReplay.html">FlxReplay</a></code><p></p><p></p><p>
+		 Container for a game replay object.
+		 </p></div><a name="propertyDetail"></a><a name="_replayCallback"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">_replayCallback</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>public var _replayCallback:Function</code><p></p><p></p><p>
+		 This function, if set, is triggered when the callback stops playing.
+		 </p></div><a name="propertyDetail"></a><a name="_replayCancelKeys"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">_replayCancelKeys</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>public var _replayCancelKeys:Array</code><p></p><p></p><p>
+		 Array that keeps track of keypresses that can cancel a replay.
+		 Handy for skipping cutscenes or getting out of attract modes!
+		 </p></div><a name="propertyDetail"></a><a name="_replaying"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">_replaying</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>public var _replaying:Boolean</code><p></p><p></p><p>
+		 Flag for whether a replay is currently playing.
+		 </p></div><a name="propertyDetail"></a><a name="_replayRequested"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">_replayRequested</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>public var _replayRequested:Boolean</code><p></p><p></p><p>
+		 Flag for whether a playback of a recording was requested.
+		 </p></div><a name="propertyDetail"></a><a name="_replayTimer"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">_replayTimer</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>public var _replayTimer:int</code><p></p><p></p><p>
+		 Helps time out a replay if necessary.
+		 </p></div><a name="propertyDetail"></a><a name="_requestedReset"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">_requestedReset</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>public var _requestedReset:Boolean</code><p></p><p></p><p>
+		 A flag for keeping track of whether a game reset was requested or not.
+		 </p></div><a name="propertyDetail"></a><a name="_requestedState"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">_requestedState</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>public var _requestedState:<a href="../../org/flixel/FlxState.html">FlxState</a></code><p></p><p></p><p>
+		 If a state change was requested, the new state object is stored here until we switch to it.
+		 </p></div><a name="propertyDetail"></a><a name="_soundTray"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">_soundTray</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>protected var _soundTray:Sprite</code><p></p><p></p><p>
+		 The sound tray display container (see <code>createSoundTray()</code>).
+		 </p></div><a name="propertyDetail"></a><a name="_soundTrayBars"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">_soundTrayBars</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>protected var _soundTrayBars:Array</code><p></p><p></p><p>
+		 Helps display the volume bars on the sound tray.
+		 </p></div><a name="propertyDetail"></a><a name="_soundTrayTimer"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">_soundTrayTimer</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>protected var _soundTrayTimer:Number</code><p></p><p></p><p>
+		 Helps us auto-hide the sound tray after a volume change.
+		 </p></div><a name="propertyDetail"></a><a name="_state"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">_state</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>public var _state:<a href="../../org/flixel/FlxState.html">FlxState</a></code><p></p><p></p><p>
+		 Current game state.
+		 </p></div><a name="propertyDetail"></a><a name="_step"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">_step</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>public var _step:uint</code><p></p><p></p><p>
+		 Milliseconds of time per step of the game loop.  FlashEvent.g. 60 fps = 16ms.
+		 </p></div><a name="propertyDetail"></a><a name="_total"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">_total</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>protected var _total:uint</code><p></p><p></p><p>
+		 Total number of milliseconds elapsed since game start.
+		 </p></div><a name="propertyDetail"></a><a name="forceDebugger"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">forceDebugger</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>public var forceDebugger:Boolean</code><p></p><p></p><p>
+		 Initialize and allow the flixel debugger overlay even in release mode.
+		 Also useful if you don't use FlxPreloader!
+		 </p><p> The default value is <code>false</code>.</p></div><a name="propertyDetail"></a><a name="ImgLogo"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">ImgLogo</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>protected var ImgLogo:Class</code><p></p></div><a name="propertyDetail"></a><a name="junk"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">junk</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>protected var junk:String</code><p></p></div><a name="propertyDetail"></a><a name="SndBeep"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">SndBeep</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>protected var SndBeep:Class</code><p></p></div><a name="propertyDetail"></a><a name="useSoundHotKeys"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">useSoundHotKeys</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>public var useSoundHotKeys:Boolean</code><p></p><p></p><p>
+		 Sets 0, -, and + to control the global volume sound volume.
+		 </p><p> The default value is <code>true</code>.</p></div><a name="propertyDetail"></a><a name="useSystemCursor"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">useSystemCursor</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>public var useSystemCursor:Boolean</code><p></p><p></p><p>
+		 Tells flixel to use the default system mouse cursor instead of custom Flixel mouse cursors.
+		 </p><p> The default value is <code>false</code>.</p></div><a name="constructorDetail"></a><div class="detailSectionHeader">Constructor Detail</div><a name="FlxGame()"></a><a name="FlxGame(uint,uint,Class,Number,uint,uint,Boolean)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">FlxGame</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">Constructor</td></tr></table><div class="detailBody"><code>public function FlxGame(GameSizeX:uint, GameSizeY:uint, InitialState:Class, Zoom:Number = 1, GameFramerate:uint = 60, FlashFramerate:uint = 30, UseSystemCursor:Boolean = false)</code><p></p><p>
+		 Instantiate a new game object.
+		 
+		 </p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">GameSizeX</span>:uint</code> &mdash; 	The width of your game in game pixels, not necessarily final display pixels (see Zoom).
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">GameSizeY</span>:uint</code> &mdash; 	The height of your game in game pixels, not necessarily final display pixels (see Zoom).
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">InitialState</span>:Class</code> &mdash; The class name of the state you want to create and switch to first (e.g. MenuState).
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">Zoom</span>:Number</code> (default = <code>1</code>)<code></code> &mdash; 		The default level of zoom for the game's cameras (e.g. 2 = all pixels are now drawn at 2x).  Default = 1.
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">GameFramerate</span>:uint</code> (default = <code>60</code>)<code></code> &mdash; How frequently the game should update (default is 60 times per second).
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">FlashFramerate</span>:uint</code> (default = <code>30</code>)<code></code> &mdash; Sets the actual display framerate for Flash player (default is 30 times per second).
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">UseSystemCursor</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash; Whether to use the default OS mouse pointer, or to use custom flixel ones.
+		 </td></tr></table></div><a name="methodDetail"></a><div class="detailSectionHeader">Method Detail</div><a name="create()"></a><a name="create(flash.events.Event)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">create</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td></tr></table><div class="detailBody"><code> protected function create(FlashEvent:Event):void</code><p></p><p></p><p>
+		 Used to instantiate the guts of the flixel game object once we have a valid reference to the root.
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">FlashEvent</span>:Event</code> &mdash; Just a Flash system event, not too important for our purposes.
+		 </td></tr></table></p></div><a name="createFocusScreen()"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">createFocusScreen</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> protected function createFocusScreen():void</code><p></p><p></p><p>
+		 Sets up the darkened overlay with the big white "play" button that appears when a flixel game loses focus.
+		 </p></div><a name="createSoundTray()"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">createSoundTray</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> protected function createSoundTray():void</code><p></p><p></p><p>
+		 Sets up the "sound tray", the little volume meter that pops down sometimes.
+		 </p></div><a name="draw()"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">draw</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> protected function draw():void</code><p></p><p></p><p>
+		 Goes through the game state and draws all the game objects and special effects.
+		 </p></div><a name="onEnterFrame()"></a><a name="onEnterFrame(flash.events.Event)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">onEnterFrame</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> protected function onEnterFrame(FlashEvent:Event = null):void</code><p></p><p></p><p>
+		 Handles the onEnterFrame call and figures out how many updates and draw calls to do.
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">FlashEvent</span>:Event</code> (default = <code>null</code>)<code></code> &mdash; Flash event.
+		 </td></tr></table></p></div><a name="onFocus()"></a><a name="onFocus(flash.events.Event)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">onFocus</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> protected function onFocus(FlashEvent:Event = null):void</code><p></p><p></p><p>
+		 Internal event handler for input and focus.
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">FlashEvent</span>:Event</code> (default = <code>null</code>)<code></code> &mdash; Flash event.
+		 </td></tr></table></p></div><a name="onFocusLost()"></a><a name="onFocusLost(flash.events.Event)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">onFocusLost</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> protected function onFocusLost(FlashEvent:Event = null):void</code><p></p><p></p><p>
+		 Internal event handler for input and focus.
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">FlashEvent</span>:Event</code> (default = <code>null</code>)<code></code> &mdash; Flash event.
+		 </td></tr></table></p></div><a name="onKeyDown()"></a><a name="onKeyDown(flash.events.KeyboardEvent)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">onKeyDown</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> protected function onKeyDown(FlashEvent:KeyboardEvent):void</code><p></p><p></p><p>
+		 Internal event handler for input and focus.
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">FlashEvent</span>:KeyboardEvent</code> &mdash; Flash keyboard event.
+		 </td></tr></table></p></div><a name="onKeyUp()"></a><a name="onKeyUp(flash.events.KeyboardEvent)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">onKeyUp</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> protected function onKeyUp(FlashEvent:KeyboardEvent):void</code><p></p><p></p><p>
+		 Internal event handler for input and focus.
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">FlashEvent</span>:KeyboardEvent</code> &mdash; Flash keyboard event.
+		 </td></tr></table></p></div><a name="onMouseDown()"></a><a name="onMouseDown(flash.events.MouseEvent)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">onMouseDown</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> protected function onMouseDown(FlashEvent:MouseEvent):void</code><p></p><p></p><p>
+		 Internal event handler for input and focus.
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">FlashEvent</span>:MouseEvent</code> &mdash; Flash mouse event.
+		 </td></tr></table></p></div><a name="onMouseUp()"></a><a name="onMouseUp(flash.events.MouseEvent)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">onMouseUp</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> protected function onMouseUp(FlashEvent:MouseEvent):void</code><p></p><p></p><p>
+		 Internal event handler for input and focus.
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">FlashEvent</span>:MouseEvent</code> &mdash; Flash mouse event.
+		 </td></tr></table></p></div><a name="onMouseWheel()"></a><a name="onMouseWheel(flash.events.MouseEvent)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">onMouseWheel</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> protected function onMouseWheel(FlashEvent:MouseEvent):void</code><p></p><p></p><p>
+		 Internal event handler for input and focus.
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">FlashEvent</span>:MouseEvent</code> &mdash; Flash mouse event.
+		 </td></tr></table></p></div><a name="showSoundTray()"></a><a name="showSoundTray(Boolean)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">showSoundTray</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public function showSoundTray(Silent:Boolean = false):void</code><p></p><p></p><p>
+		 Makes the little volume tray slide out.
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">Silent</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash; Whether or not it should beep.
+		 </td></tr></table></p></div><a name="step()"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">step</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> protected function step():void</code><p></p><p></p><p>
+		 This is the main game update logic section.
+		 The onEnterFrame() handler is in charge of calling this
+		 the appropriate number of times each frame.
+		 This block handles state changes, replays, all that good stuff.
+		 </p></div><a name="switchState()"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">switchState</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> protected function switchState():void</code><p></p><p></p><p>
+		 If there is a state change requested during the update loop,
+		 this function handles actual destroying the old state and related processes,
+		 and calls creates on the new state and plugs it into the game object.
+		 </p></div><a name="update()"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">update</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> protected function update():void</code><p></p><p></p><p>
+		 This function is called by step() and updates the actual game state.
+		 May be called multiple times per "frame" or draw call.
+		 </p></div><a name="updateSoundTray()"></a><a name="updateSoundTray(Number)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">updateSoundTray</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> protected function updateSoundTray(MS:Number):void</code><p></p><p></p><p>
+		 This function just updates the soundtray object.
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">MS</span>:Number</code></td></tr></table></p></div><br/><br/><hr><br/><p></p><center class="copyright"><footer></footer><br/>Wed May 25 2011, 09:29 AM -05:00  </center></div></body></html><!--<br/>Wed May 25 2011, 09:29 AM -05:00  -->

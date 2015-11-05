@@ -9,16 +9,8 @@ package org.flixel
 	public class FlxU
 	{
 		/**
-		 * Helps to eliminate false collisions and/or rendering glitches caused by rounding errors
-		 */
-		static internal var roundingError:Number = 0.0000001;
-		/**
-		 * The last quad tree you generated will be stored here for reference or whatever.
-		 */
-		static public var quadTree:FlxQuadTree;
-		
-		/**
 		 * Opens a web page in a new tab or window.
+		 * MUST be called from the UI thread or else badness.
 		 * 
 		 * @param	URL		The address of the web page.
 		 */
@@ -27,180 +19,189 @@ package org.flixel
 			navigateToURL(new URLRequest(URL), "_blank");
 		}
 		
-		static public function abs(N:Number):Number
+		/**
+		 * Calculate the absolute value of a number.
+		 * 
+		 * @param	Value	Any number.
+		 * 
+		 * @return	The absolute value of that number.
+		 */
+		static public function abs(Value:Number):Number
 		{
-			return (N>0)?N:-N;
-		}
-		
-		static public function floor(N:Number):Number
-		{
-			var n:Number = int(N);
-			return (N>0)?(n):((n!=N)?(n-1):(n));
-		}
-		
-		static public function ceil(N:Number):Number
-		{
-			var n:Number = int(N);
-			return (N>0)?((n!=N)?(n+1):(n)):(n);
-		}
-		
-		static public function min(N1:Number,N2:Number):Number
-		{
-			return (N1 <= N2)?N1:N2;
-		}
-		
-		static public function max(N1:Number,N2:Number):Number
-		{
-			return (N1 >= N2)?N1:N2;
+			return (Value>0)?Value:-Value;
 		}
 		
 		/**
-		 * Generates a random number.  NOTE: To create a series of predictable
-		 * random numbers, add the random number you generate each time
-		 * to the <code>Seed</code> value before calling <code>random()</code> again.
+		 * Round down to the next whole number. E.g. floor(1.7) == 1, and floor(-2.7) == -2.
 		 * 
-		 * @param	Seed	A user-provided value used to calculate a predictable random number.
+		 * @param	Value	Any number.
+		 * 
+		 * @return	The rounded value of that number.
+		 */
+		static public function floor(Value:Number):Number
+		{
+			var number:Number = int(Value);
+			return (Value>0)?(number):((number!=Value)?(number-1):(number));
+		}
+		
+		/**
+		 * Round up to the next whole number.  E.g. ceil(1.3) == 2, and ceil(-2.3) == -3.
+		 * 
+		 * @param	Value	Any number.
+		 * 
+		 * @return	The rounded value of that number.
+		 */
+		static public function ceil(Value:Number):Number
+		{
+			var number:Number = int(Value);
+			return (Value>0)?((number!=Value)?(number+1):(number)):(number);
+		}
+		
+		/**
+		 * Round to the closest whole number. E.g. round(1.7) == 2, and round(-2.3) == -2.
+		 * 
+		 * @param	Value	Any number.
+		 * 
+		 * @return	The rounded value of that number.
+		 */
+		static public function round(Value:Number):Number
+		{
+			var number:Number = int(Value+((Value>0)?0.5:-0.5));
+			return (Value>0)?(number):((number!=Value)?(number-1):(number));
+		}
+		
+		/**
+		 * Figure out which number is smaller.
+		 * 
+		 * @param	Number1		Any number.
+		 * @param	Number2		Any number.
+		 * 
+		 * @return	The smaller of the two numbers.
+		 */
+		static public function min(Number1:Number,Number2:Number):Number
+		{
+			return (Number1 <= Number2)?Number1:Number2;
+		}
+		
+		/**
+		 * Figure out which number is larger.
+		 * 
+		 * @param	Number1		Any number.
+		 * @param	Number2		Any number.
+		 * 
+		 * @return	The larger of the two numbers.
+		 */
+		static public function max(Number1:Number,Number2:Number):Number
+		{
+			return (Number1 >= Number2)?Number1:Number2;
+		}
+		
+		/**
+		 * Bound a number by a minimum and maximum.
+		 * Ensures that this number is no smaller than the minimum,
+		 * and no larger than the maximum.
+		 * 
+		 * @param	Value	Any number.
+		 * @param	Min		Any number.
+		 * @param	Max		Any number.
+		 * 
+		 * @return	The bounded value of the number.
+		 */
+		static public function bound(Value:Number,Min:Number,Max:Number):Number
+		{
+			var lowerBound:Number = (Value<Min)?Min:Value;
+			return (lowerBound>Max)?Max:lowerBound;
+		}
+		
+		/**
+		 * Generates a random number based on the seed provided.
+		 * 
+		 * @param	Seed	A number between 0 and 1, used to generate a predictable random number (very optional).
 		 * 
 		 * @return	A <code>Number</code> between 0 and 1.
 		 */
-		static public function random(Seed:Number=NaN):Number
+		static public function srand(Seed:Number):Number
 		{
-			if(isNaN(Seed))
-				return Math.random();
-			else
-			{
-				//Make sure the seed value is OK
-				if(Seed == 0)
-					Seed = Number.MIN_VALUE;
-				if(Seed >= 1)
-				{
-					if((Seed%1) == 0)
-						Seed /= Math.PI;
-					Seed %= 1;
-				}
-				else if(Seed < 0)
-					Seed = (Seed % 1) + 1;
-				
-				//Then do an LCG thing and return a predictable random number
-				return ((69621 * int(Seed * 0x7FFFFFFF)) % 0x7FFFFFFF) / 0x7FFFFFFF;
-			}
+			return ((69621 * int(Seed * 0x7FFFFFFF)) % 0x7FFFFFFF) / 0x7FFFFFFF;
 		}
 		
 		/**
+		 * Shuffles the entries in an array into a new random order.
+		 * <code>FlxG.shuffle()</code> is deterministic and safe for use with replays/recordings.
+		 * HOWEVER, <code>FlxU.shuffle()</code> is NOT deterministic and unsafe for use with replays/recordings.
+		 * 
+		 * @param	A				A Flash <code>Array</code> object containing...stuff.
+		 * @param	HowManyTimes	How many swaps to perform during the shuffle operation.  Good rule of thumb is 2-4 times as many objects are in the list.
+		 * 
+		 * @return	The same Flash <code>Array</code> object that you passed in in the first place.
+		 */
+		static public function shuffle(Objects:Array,HowManyTimes:uint):Array
+		{
+			var i:uint = 0;
+			var index1:uint;
+			var index2:uint;
+			var object:Object;
+			while(i < HowManyTimes)
+			{
+				index1 = Math.random()*Objects.length;
+				index2 = Math.random()*Objects.length;
+				object = Objects[index2];
+				Objects[index2] = Objects[index1];
+				Objects[index1] = object;
+				i++;
+			}
+			return Objects;
+		}
+		
+		/**
+		 * Fetch a random entry from the given array.
+		 * Will return null if random selection is missing, or array has no entries.
+		 * <code>FlxG.getRandom()</code> is deterministic and safe for use with replays/recordings.
+		 * HOWEVER, <code>FlxU.getRandom()</code> is NOT deterministic and unsafe for use with replays/recordings.
+		 * 
+		 * @param	Objects		A Flash array of objects.
+		 * @param	StartIndex	Optional offset off the front of the array. Default value is 0, or the beginning of the array.
+		 * @param	Length		Optional restriction on the number of values you want to randomly select from.
+		 * 
+		 * @return	The random object that was selected.
+		 */
+		static public function getRandom(Objects:Array,StartIndex:uint=0,Length:uint=0):Object
+		{
+			if(Objects != null)
+			{
+				var l:uint = Length;
+				if((l == 0) || (l > Objects.length - StartIndex))
+					l = Objects.length - StartIndex;
+				if(l > 0)
+					return Objects[StartIndex + uint(Math.random()*l)];
+			}
+			return null;
+		}
+		
+		/**
+		 * Just grabs the current "ticks" or time in milliseconds that has passed since Flash Player started up.
 		 * Useful for finding out how long it takes to execute specific blocks of code.
 		 * 
 		 * @return	A <code>uint</code> to be passed to <code>FlxU.endProfile()</code>.
 		 */
-		static public function startProfile():uint
+		static public function getTicks():uint
 		{
 			return getTimer();
 		}
 		
 		/**
-		 * Useful for finding out how long it takes to execute specific blocks of code.
+		 * Takes two "ticks" timestamps and formats them into the number of seconds that passed as a String.
+		 * Useful for logging, debugging, the watch window, or whatever else.
 		 * 
-		 * @param	Start	A <code>uint</code> created by <code>FlxU.startProfile()</code>.
-		 * @param	Name	Optional tag (for debug console display).  Default value is "Profiler".
-		 * @param	Log		Whether or not to log this elapsed time in the debug console.
+		 * @param	StartTicks	The first timestamp from the system.
+		 * @param	EndTicks	The second timestamp from the system.
 		 * 
-		 * @return	A <code>uint</code> to be passed to <code>FlxU.endProfile()</code>.
+		 * @return	A <code>String</code> containing the formatted time elapsed information.
 		 */
-		static public function endProfile(Start:uint,Name:String="Profiler",Log:Boolean=true):uint
+		static public function formatTicks(StartTicks:uint,EndTicks:uint):String
 		{
-			var t:uint = getTimer();
-			if(Log)
-				FlxG.log(Name+": "+((t-Start)/1000)+"s");
-			return t;
+			return ((EndTicks-StartTicks)/1000)+"s"
 		}
-		
-		/**
-		 * Rotates a point in 2D space around another point by the given angle.
-		 * 
-		 * @param	X		The X coordinate of the point you want to rotate.
-		 * @param	Y		The Y coordinate of the point you want to rotate.
-		 * @param	PivotX	The X coordinate of the point you want to rotate around.
-		 * @param	PivotY	The Y coordinate of the point you want to rotate around.
-		 * @param	Angle	Rotate the point by this many degrees.
-		 * @param	P		Optional <code>FlxPoint</code> to store the results in.
-		 * 
-		 * @return	A <code>FlxPoint</code> containing the coordinates of the rotated point.
-		 */
-		static public function rotatePoint(X:Number, Y:Number, PivotX:Number, PivotY:Number, Angle:Number,P:FlxPoint=null):FlxPoint
-		{
-			var sin:Number = 0;
-			var cos:Number = 0;
-			var radians:Number = Angle * -0.017453293;
-			while (radians < -3.14159265)
-				radians += 6.28318531;
-			while (radians >  3.14159265)
-				radians = radians - 6.28318531;
-
-			if (radians < 0)
-			{
-				sin = 1.27323954 * radians + .405284735 * radians * radians;
-				if (sin < 0)
-					sin = .225 * (sin *-sin - sin) + sin;
-				else
-					sin = .225 * (sin * sin - sin) + sin;
-			}
-			else
-			{
-				sin = 1.27323954 * radians - 0.405284735 * radians * radians;
-				if (sin < 0)
-					sin = .225 * (sin *-sin - sin) + sin;
-				else
-					sin = .225 * (sin * sin - sin) + sin;
-			}
-			
-			radians += 1.57079632;
-			if (radians >  3.14159265)
-				radians = radians - 6.28318531;
-			if (radians < 0)
-			{
-				cos = 1.27323954 * radians + 0.405284735 * radians * radians;
-				if (cos < 0)
-					cos = .225 * (cos *-cos - cos) + cos;
-				else
-					cos = .225 * (cos * cos - cos) + cos;
-			}
-			else
-			{
-				cos = 1.27323954 * radians - 0.405284735 * radians * radians;
-				if (cos < 0)
-					cos = .225 * (cos *-cos - cos) + cos;
-				else
-					cos = .225 * (cos * cos - cos) + cos;
-			}
-
-			var dx:Number = X-PivotX;
-			var dy:Number = PivotY-Y;
-			if(P == null) P = new FlxPoint();
-			P.x = PivotX + cos*dx - sin*dy;
-			P.y = PivotY - sin*dx - cos*dy;
-			return P;
-		};
-		
-		/**
-		 * Calculates the angle between a point and the origin (0,0).
-		 * 
-		 * @param	X		The X coordinate of the point.
-		 * @param	Y		The Y coordinate of the point.
-		 * 
-		 * @return	The angle in degrees.
-		 */
-		static public function getAngle(X:Number, Y:Number):Number
-		{
-			
-			var c1:Number = 3.14159265 / 4;
-			var c2:Number = 3 * c1;
-			var ay:Number = (Y < 0)?-Y:Y;
-			var angle:Number = 0;
-			if (X >= 0)
-				angle = c1 - c1 * ((X - ay) / (X + ay));
-			else
-				angle = c2 - c1 * ((X + ay) / (ay - X));
-			return ((Y < 0)?-angle:angle)*57.2957796;
-		};
 		
 		/**
 		 * Generate a Flash <code>uint</code> color from RGBA components.
@@ -212,7 +213,7 @@ package org.flixel
 		 * 
 		 * @return  The color as a <code>uint</code>.
 		 */
-		static public function getColor(Red:uint, Green:uint, Blue:uint, Alpha:Number=1.0):uint
+		static public function makeColor(Red:uint, Green:uint, Blue:uint, Alpha:Number=1.0):uint
 		{
 			return (((Alpha>1)?Alpha:(Alpha * 255)) & 0xFF) << 24 | (Red & 0xFF) << 16 | (Green & 0xFF) << 8 | (Blue & 0xFF);
 		}
@@ -227,7 +228,7 @@ package org.flixel
 		 * 
 		 * @return	The color as a <code>uint</code>.
 		 */
-		static public function getColorHSB(Hue:Number,Saturation:Number,Brightness:Number,Alpha:Number=1.0):uint
+		static public function makeColorFromHSB(Hue:Number,Saturation:Number,Brightness:Number,Alpha:Number=1.0):uint
 		{
 			var red:Number;
 			var green:Number;
@@ -331,6 +332,102 @@ package org.flixel
 		}
 		
 		/**
+		 * Format seconds as minutes with a colon, an optionally with milliseconds too.
+		 * 
+		 * @param	Seconds		The number of seconds (for example, time remaining, time spent, etc).
+		 * @param	ShowMS		Whether to show milliseconds after a "." as well.  Default value is false.
+		 * 
+		 * @return	A nicely formatted <code>String</code>, like "1:03".
+		 */
+		static public function formatTime(Seconds:Number,ShowMS:Boolean=false):String
+		{
+			var timeString:String = int(Seconds/60) + ":";
+			var timeStringHelper:int = int(Seconds)%60;
+			if(timeStringHelper < 10)
+				timeString += "0";
+			timeString += timeStringHelper;
+			if(ShowMS)
+			{
+				timeString += ".";
+				timeStringHelper = (Seconds-int(Seconds))*100;
+				if(timeStringHelper < 10)
+					timeString += "0";
+				timeString += timeStringHelper;
+			}
+			return timeString;
+		}
+		
+		/**
+		 * Generate a comma-separated string from an array.
+		 * Especially useful for tracing or other debug output.
+		 * 
+		 * @param	AnyArray	Any <code>Array</code> object.
+		 * 
+		 * @return	A comma-separated <code>String</code> containing the <code>.toString()</code> output of each element in the array.
+		 */
+		static public function formatArray(AnyArray:Array):String
+		{
+			if((AnyArray == null) || (AnyArray.length <= 0))
+				return "";
+			var string:String = AnyArray[0].toString();
+			var i:uint = 0;
+			var l:uint = AnyArray.length;
+			while(i < l)
+				string += ", " + AnyArray[i++].toString();
+			return string;
+		}
+		
+		/**
+		 * Automatically commas and decimals in the right places for displaying money amounts.
+		 * Does not include a dollar sign or anything, so doesn't really do much
+		 * if you call say <code>var results:String = FlxU.formatMoney(10,false);</code>
+		 * However, very handy for displaying large sums or decimal money values.
+		 * 
+		 * @param	Amount			How much moneys (in dollars, or the equivalent "main" currency - i.e. not cents).
+		 * @param	ShowDecimal		Whether to show the decimals/cents component. Default value is true.
+		 * @param	EnglishStyle	Major quantities (thousands, millions, etc) separated by commas, and decimal by a period.  Default value is true.
+		 * 
+		 * @return	A nicely formatted <code>String</code>.  Does not include a dollar sign or anything!
+		 */
+		static public function formatMoney(Amount:Number,ShowDecimal:Boolean=true,EnglishStyle:Boolean=true):String
+		{
+			var helper:int;
+			var amount:int = Amount;
+			var string:String = "";
+			var comma:String = "";
+			var zeroes:String = "";
+			while(amount > 0)
+			{
+				if((string.length > 0) && comma.length <= 0)
+				{
+					if(EnglishStyle)
+						comma = ",";
+					else
+						comma = ".";
+				}
+				zeroes = "";
+				helper = amount - int(amount/1000)*1000;
+				amount /= 1000;
+				if(amount > 0)
+				{
+					if(helper < 100)
+						zeroes += "0";
+					if(helper < 10)
+						zeroes += "0";
+				}
+				string = zeroes + helper + comma + string;
+			}
+			if(ShowDecimal)
+			{
+				amount = int(Amount*100)-(int(Amount)*100);
+				string += (EnglishStyle?".":",") + amount;
+				if(amount < 10)
+					string += "0";
+			}
+			return string;
+		}
+		
+		/**
 		 * Get the <code>String</code> name of any <code>Object</code>.
 		 * 
 		 * @param	Obj		The <code>Object</code> object in question.
@@ -340,12 +437,25 @@ package org.flixel
 		 */
 		static public function getClassName(Obj:Object,Simple:Boolean=false):String
 		{
-			var s:String = getQualifiedClassName(Obj);
-			s = s.replace("::",".");
+			var string:String = getQualifiedClassName(Obj);
+			string = string.replace("::",".");
 			if(Simple)
-				s = s.substr(s.lastIndexOf(".")+1);
-			return s;
-		};
+				string = string.substr(string.lastIndexOf(".")+1);
+			return string;
+		}
+		
+		/**
+		 * Check to see if two objects have the same class name.
+		 * 
+		 * @param	Object1		The first object you want to check.
+		 * @param	Object2		The second object you want to check.
+		 * 
+		 * @return	Whether they have the same class name or not.
+		 */
+		static public function compareClassNames(Object1:Object,Object2:Object):Boolean
+		{
+			return getQualifiedClassName(Object1) == getQualifiedClassName(Object2);
+		}
 		
 		/**
 		 * Look up a <code>Class</code> object by its string name.
@@ -376,11 +486,11 @@ package org.flixel
 				Velocity += Acceleration*FlxG.elapsed;
 			else if(Drag != 0)
 			{
-				var d:Number = Drag*FlxG.elapsed;
-				if(Velocity - d > 0)
-					Velocity = Velocity - d;
-				else if(Velocity + d < 0)
-					Velocity += d;
+				var drag:Number = Drag*FlxG.elapsed;
+				if(Velocity - drag > 0)
+					Velocity = Velocity - drag;
+				else if(Velocity + drag < 0)
+					Velocity += drag;
 				else
 					Velocity = 0;
 			}
@@ -393,527 +503,120 @@ package org.flixel
 			}
 			return Velocity;
 		}
-
-		/**
-		 * Call this function to specify a more efficient boundary for your game world.
-		 * This boundary is used by <code>overlap()</code> and <code>collide()</code>, so it
-		 * can't hurt to have it be the right size!  Flixel will invent a size for you, but
-		 * it's pretty huge - 256x the size of the screen, whatever that may be.
-		 * Leave width and height empty if you want to just update the game world's position.
-		 * 
-		 * @param	X			The X-coordinate of the left side of the game world.
-		 * @param	Y			The Y-coordinate of the top of the game world.
-		 * @param	Width		Desired width of the game world.
-		 * @param	Height		Desired height of the game world.
-		 * @param	Divisions	Pass a non-zero value to set <code>quadTreeDivisions</code>.  Default value is 3.
-		 */
-		static public function setWorldBounds(X:Number=0, Y:Number=0, Width:Number=0, Height:Number=0, Divisions:uint=3):void
-		{
-			if(FlxQuadTree.bounds == null)
-				FlxQuadTree.bounds = new FlxRect();
-			FlxQuadTree.bounds.x = X;
-			FlxQuadTree.bounds.y = Y;
-			if(Width > 0)
-				FlxQuadTree.bounds.width = Width;
-			if(Height > 0)
-				FlxQuadTree.bounds.height = Height;
-			if(Divisions > 0)
-				FlxQuadTree.divisions = Divisions;
-		}
+		
+		//*** NOTE: THESE LAST THREE FUNCTIONS REQUIRE FLXPOINT ***//
 		
 		/**
-		 * Call this function to see if one <code>FlxObject</code> overlaps another.
-		 * Can be called with one object and one group, or two groups, or two objects,
-		 * whatever floats your boat!  It will put everything into a quad tree and then
-		 * check for overlaps.  For maximum performance try bundling a lot of objects
-		 * together using a <code>FlxGroup</code> (even bundling groups together!)
-		 * NOTE: does NOT take objects' scrollfactor into account.
+		 * Rotates a point in 2D space around another point by the given angle.
 		 * 
-		 * @param	Object1		The first object or group you want to check.
-		 * @param	Object2		The second object or group you want to check.  If it is the same as the first, flixel knows to just do a comparison within that group.
-		 * @param	Callback	A function with two <code>FlxObject</code> parameters - e.g. <code>myOverlapFunction(Object1:FlxObject,Object2:FlxObject);</code>  If no function is provided, <code>FlxQuadTree</code> will call <code>kill()</code> on both objects.
-		 */
-		static public function overlap(Object1:FlxObject,Object2:FlxObject,Callback:Function=null):Boolean
-		{
-			if( (Object1 == null) || !Object1.exists ||
-				(Object2 == null) || !Object2.exists )
-				return false;
-			quadTree = new FlxQuadTree(FlxQuadTree.bounds.x,FlxQuadTree.bounds.y,FlxQuadTree.bounds.width,FlxQuadTree.bounds.height);
-			quadTree.add(Object1,FlxQuadTree.A_LIST);
-			if(Object1 === Object2)
-				return quadTree.overlap(false,Callback);
-			quadTree.add(Object2,FlxQuadTree.B_LIST);
-			return quadTree.overlap(true,Callback);
-		}
-		
-		/**
-		 * Call this function to see if one <code>FlxObject</code> collides with another.
-		 * Can be called with one object and one group, or two groups, or two objects,
-		 * whatever floats your boat!  It will put everything into a quad tree and then
-		 * check for collisions.  For maximum performance try bundling a lot of objects
-		 * together using a <code>FlxGroup</code> (even bundling groups together!)
-		 * NOTE: does NOT take objects' scrollfactor into account.
+		 * @param	X		The X coordinate of the point you want to rotate.
+		 * @param	Y		The Y coordinate of the point you want to rotate.
+		 * @param	PivotX	The X coordinate of the point you want to rotate around.
+		 * @param	PivotY	The Y coordinate of the point you want to rotate around.
+		 * @param	Angle	Rotate the point by this many degrees.
+		 * @param	Point	Optional <code>FlxPoint</code> to store the results in.
 		 * 
-		 * @param	Object1		The first object or group you want to check.
-		 * @param	Object2		The second object or group you want to check.  If it is the same as the first, flixel knows to just do a comparison within that group.
+		 * @return	A <code>FlxPoint</code> containing the coordinates of the rotated point.
 		 */
-		static public function collide(Object1:FlxObject,Object2:FlxObject):Boolean
+		static public function rotatePoint(X:Number, Y:Number, PivotX:Number, PivotY:Number, Angle:Number,Point:FlxPoint=null):FlxPoint
 		{
-			if( (Object1 == null) || !Object1.exists ||
-				(Object2 == null) || !Object2.exists )
-				return false;
-			quadTree = new FlxQuadTree(FlxQuadTree.bounds.x,FlxQuadTree.bounds.y,FlxQuadTree.bounds.width,FlxQuadTree.bounds.height);
-			quadTree.add(Object1,FlxQuadTree.A_LIST);
-			var match:Boolean = Object1 === Object2;
-			if(!match)
-				quadTree.add(Object2,FlxQuadTree.B_LIST);
-			var cx:Boolean = quadTree.overlap(!match,solveXCollision);
-			var cy:Boolean = quadTree.overlap(!match,solveYCollision);
-			return cx || cy;			
-		}
-		
-		/**
-		 * This quad tree callback function can be used externally as well.
-		 * Takes two objects and separates them along their X axis (if possible/reasonable).
-		 * 
-		 * @param	Object1		The first object or group you want to check.
-		 * @param	Object2		The second object or group you want to check.
-		 */
-		static public function solveXCollision(Object1:FlxObject, Object2:FlxObject):Boolean
-		{
-			//Avoid messed up collisions ahead of time
-			var o1:Number = Object1.colVector.x;
-			var o2:Number = Object2.colVector.x;
-			if(o1 == o2)
-				return false;
+			var sin:Number = 0;
+			var cos:Number = 0;
+			var radians:Number = Angle * -0.017453293;
+			while (radians < -3.14159265)
+				radians += 6.28318531;
+			while (radians >  3.14159265)
+				radians = radians - 6.28318531;
 			
-			//Give the objects a heads up that we're about to resolve some collisions
-			Object1.preCollide(Object2);
-			Object2.preCollide(Object1);
-
-			//Basic resolution variables
-			var f1:Boolean;
-			var f2:Boolean;
-			var overlap:Number;
-			var hit:Boolean = false;
-			var p1hn2:Boolean;
-			
-			//Directional variables
-			var obj1Stopped:Boolean = o1 == 0;
-			var obj1MoveNeg:Boolean = o1 < 0;
-			var obj1MovePos:Boolean = o1 > 0;
-			var obj2Stopped:Boolean = o2 == 0;
-			var obj2MoveNeg:Boolean = o2 < 0;
-			var obj2MovePos:Boolean = o2 > 0;
-			
-			//Offset loop variables
-			var i1:uint;
-			var i2:uint;
-			var obj1Hull:FlxRect = Object1.colHullX;
-			var obj2Hull:FlxRect = Object2.colHullX;
-			var co1:Array = Object1.colOffsets;
-			var co2:Array = Object2.colOffsets;
-			var l1:uint = co1.length;
-			var l2:uint = co2.length;
-			var ox1:Number;
-			var oy1:Number;
-			var ox2:Number;
-			var oy2:Number;
-			var r1:Number;
-			var r2:Number;
-			var sv1:Number;
-			var sv2:Number;
-			
-			//Decide based on object's movement patterns if it was a right-side or left-side collision
-			p1hn2 = ((obj1Stopped && obj2MoveNeg) || (obj1MovePos && obj2Stopped) || (obj1MovePos && obj2MoveNeg) || //the obvious cases
-					(obj1MoveNeg && obj2MoveNeg && (((o1>0)?o1:-o1) < ((o2>0)?o2:-o2))) || //both moving left, obj2 overtakes obj1
-					(obj1MovePos && obj2MovePos && (((o1>0)?o1:-o1) > ((o2>0)?o2:-o2))) ); //both moving right, obj1 overtakes obj2
-			
-			//Check to see if these objects allow these collisions
-			if(p1hn2?(!Object1.collideRight || !Object2.collideLeft):(!Object1.collideLeft || !Object2.collideRight))
-				return false;
-			
-			//this looks insane, but we're just looping through collision offsets on each object
-			i1 = 0;
-			while(i1 < l1)
+			if (radians < 0)
 			{
-				ox1 = co1[i1].x;
-				oy1 = co1[i1].y;
-				obj1Hull.x += ox1;
-				obj1Hull.y += oy1;
-				i2 = 0;
-				while(i2 < l2)
-				{
-					ox2 = co2[i2].x;
-					oy2 = co2[i2].y;
-					obj2Hull.x += ox2;
-					obj2Hull.y += oy2;
-					
-					//See if it's a actually a valid collision
-					if( (obj1Hull.x + obj1Hull.width  < obj2Hull.x + roundingError) ||
-						(obj1Hull.x + roundingError > obj2Hull.x + obj2Hull.width) ||
-						(obj1Hull.y + obj1Hull.height < obj2Hull.y + roundingError) ||
-						(obj1Hull.y + roundingError > obj2Hull.y + obj2Hull.height) )
-					{
-						obj2Hull.x = obj2Hull.x - ox2;
-						obj2Hull.y = obj2Hull.y - oy2;
-						i2++;
-						continue;
-					}
-
-					//Calculate the overlap between the objects
-					if(p1hn2)
-					{
-						if(obj1MoveNeg)
-							r1 = obj1Hull.x + Object1.colHullY.width;
-						else
-							r1 = obj1Hull.x + obj1Hull.width;
-						if(obj2MoveNeg)
-							r2 = obj2Hull.x;
-						else
-							r2 = obj2Hull.x + obj2Hull.width - Object2.colHullY.width;
-					}
-					else
-					{
-						if(obj2MoveNeg)
-							r1 = -obj2Hull.x - Object2.colHullY.width;
-						else
-							r1 = -obj2Hull.x - obj2Hull.width;
-						if(obj1MoveNeg)
-							r2 = -obj1Hull.x;
-						else
-							r2 = -obj1Hull.x - obj1Hull.width + Object1.colHullY.width;
-					}
-					overlap = r1 - r2;
-					
-					//Slightly smarter version of checking if objects are 'fixed' in space or not
-					f1 = Object1.fixed;
-					f2 = Object2.fixed;
-					if(f1 && f2)
-					{
-						f1 &&= (Object1.colVector.x == 0) && (o1 == 0);
-						f2 &&= (Object2.colVector.x == 0) && (o2 == 0);
-					}
-
-					//Last chance to skip out on a bogus collision resolution
-					if( (overlap == 0) ||
-						((!f1 && ((overlap>0)?overlap:-overlap) > obj1Hull.width*0.8)) ||
-						((!f2 && ((overlap>0)?overlap:-overlap) > obj2Hull.width*0.8)) )
-					{
-						obj2Hull.x = obj2Hull.x - ox2;
-						obj2Hull.y = obj2Hull.y - oy2;
-						i2++;
-						continue;
-					}
-					hit = true;
-					
-					//Adjust the objects according to their flags and stuff
-					sv1 = Object2.velocity.x;
-					sv2 = Object1.velocity.x;
-					if(!f1 && f2)
-					{
-						if(Object1._group)
-							Object1.reset(Object1.x - overlap,Object1.y);
-						else
-							Object1.x = Object1.x - overlap;
-					}
-					else if(f1 && !f2)
-					{
-						if(Object2._group)
-							Object2.reset(Object2.x + overlap,Object2.y);
-						else
-							Object2.x += overlap;
-					}
-					else if(!f1 && !f2)
-					{
-						overlap /= 2;
-						if(Object1._group)
-							Object1.reset(Object1.x - overlap,Object1.y);
-						else
-							Object1.x = Object1.x - overlap;
-						if(Object2._group)
-							Object2.reset(Object2.x + overlap,Object2.y);
-						else
-							Object2.x += overlap;
-						sv1 *= 0.5;
-						sv2 *= 0.5;
-					}
-					if(p1hn2)
-					{
-						Object1.hitRight(Object2,sv1);
-						Object2.hitLeft(Object1,sv2);
-					}
-					else
-					{
-						Object1.hitLeft(Object2,sv1);
-						Object2.hitRight(Object1,sv2);
-					}
-					
-					//Adjust collision hulls if necessary
-					if(!f1 && (overlap != 0))
-					{
-						if(p1hn2)
-							obj1Hull.width = obj1Hull.width - overlap;
-						else
-						{
-							obj1Hull.x = obj1Hull.x - overlap;
-							obj1Hull.width += overlap;
-						}
-						Object1.colHullY.x = Object1.colHullY.x - overlap;
-					}
-					if(!f2 && (overlap != 0))
-					{
-						if(p1hn2)
-						{
-							obj2Hull.x += overlap;
-							obj2Hull.width = obj2Hull.width - overlap;
-						}
-						else
-							obj2Hull.width += overlap;
-						Object2.colHullY.x += overlap;
-					}
-					obj2Hull.x = obj2Hull.x - ox2;
-					obj2Hull.y = obj2Hull.y - oy2;
-					i2++;
-				}
-				obj1Hull.x = obj1Hull.x - ox1;
-				obj1Hull.y = obj1Hull.y - oy1;
-				i1++;
+				sin = 1.27323954 * radians + .405284735 * radians * radians;
+				if (sin < 0)
+					sin = .225 * (sin *-sin - sin) + sin;
+				else
+					sin = .225 * (sin * sin - sin) + sin;
 			}
-
-			return hit;
-		}
-		
-		/**
-		 * This quad tree callback function can be used externally as well.
-		 * Takes two objects and separates them along their Y axis (if possible/reasonable).
-		 * 
-		 * @param	Object1		The first object or group you want to check.
-		 * @param	Object2		The second object or group you want to check.
-		 */
-		static public function solveYCollision(Object1:FlxObject, Object2:FlxObject):Boolean
-		{
-			//Avoid messed up collisions ahead of time
-			var o1:Number = Object1.colVector.y;
-			var o2:Number = Object2.colVector.y;
-			if(o1 == o2)
-				return false;
-			
-			//Give the objects a heads up that we're about to resolve some collisions
-			Object1.preCollide(Object2);
-			Object2.preCollide(Object1);
-			
-			//Basic resolution variables
-			var f1:Boolean;
-			var f2:Boolean;
-			var overlap:Number;
-			var hit:Boolean = false;
-			var p1hn2:Boolean;
-			
-			//Directional variables
-			var obj1Stopped:Boolean = o1 == 0;
-			var obj1MoveNeg:Boolean = o1 < 0;
-			var obj1MovePos:Boolean = o1 > 0;
-			var obj2Stopped:Boolean = o2 == 0;
-			var obj2MoveNeg:Boolean = o2 < 0;
-			var obj2MovePos:Boolean = o2 > 0;
-			
-			//Offset loop variables
-			var i1:uint;
-			var i2:uint;
-			var obj1Hull:FlxRect = Object1.colHullY;
-			var obj2Hull:FlxRect = Object2.colHullY;
-			var co1:Array = Object1.colOffsets;
-			var co2:Array = Object2.colOffsets;
-			var l1:uint = co1.length;
-			var l2:uint = co2.length;
-			var ox1:Number;
-			var oy1:Number;
-			var ox2:Number;
-			var oy2:Number;
-			var r1:Number;
-			var r2:Number;
-			var sv1:Number;
-			var sv2:Number;
-			
-			//Decide based on object's movement patterns if it was a top or bottom collision
-			p1hn2 = ((obj1Stopped && obj2MoveNeg) || (obj1MovePos && obj2Stopped) || (obj1MovePos && obj2MoveNeg) || //the obvious cases
-				(obj1MoveNeg && obj2MoveNeg && (((o1>0)?o1:-o1) < ((o2>0)?o2:-o2))) || //both moving up, obj2 overtakes obj1
-				(obj1MovePos && obj2MovePos && (((o1>0)?o1:-o1) > ((o2>0)?o2:-o2))) ); //both moving down, obj1 overtakes obj2
-			
-			//Check to see if these objects allow these collisions
-			if(p1hn2?(!Object1.collideBottom || !Object2.collideTop):(!Object1.collideTop || !Object2.collideBottom))
-				return false;
-			
-			//this looks insane, but we're just looping through collision offsets on each object
-			i1 = 0;
-			while(i1 < l1)
+			else
 			{
-				ox1 = co1[i1].x;
-				oy1 = co1[i1].y;
-				obj1Hull.x += ox1;
-				obj1Hull.y += oy1;
-				i2 = 0;
-				while(i2 < l2)
-				{
-					ox2 = co2[i2].x;
-					oy2 = co2[i2].y;
-					obj2Hull.x += ox2;
-					obj2Hull.y += oy2;
-					
-					//See if it's a actually a valid collision
-					if( (obj1Hull.x + obj1Hull.width  < obj2Hull.x + roundingError) ||
-						(obj1Hull.x + roundingError > obj2Hull.x + obj2Hull.width) ||
-						(obj1Hull.y + obj1Hull.height < obj2Hull.y + roundingError) ||
-						(obj1Hull.y + roundingError > obj2Hull.y + obj2Hull.height) )
-					{
-						obj2Hull.x = obj2Hull.x - ox2;
-						obj2Hull.y = obj2Hull.y - oy2;
-						i2++;
-						continue;
-					}
-					
-					//Calculate the overlap between the objects
-					if(p1hn2)
-					{
-						if(obj1MoveNeg)
-							r1 = obj1Hull.y + Object1.colHullX.height;
-						else
-							r1 = obj1Hull.y + obj1Hull.height;
-						if(obj2MoveNeg)
-							r2 = obj2Hull.y;
-						else
-							r2 = obj2Hull.y + obj2Hull.height - Object2.colHullX.height;
-					}
-					else
-					{
-						if(obj2MoveNeg)
-							r1 = -obj2Hull.y - Object2.colHullX.height;
-						else
-							r1 = -obj2Hull.y - obj2Hull.height;
-						if(obj1MoveNeg)
-							r2 = -obj1Hull.y;
-						else
-							r2 = -obj1Hull.y - obj1Hull.height + Object1.colHullX.height;
-					}
-					overlap = r1 - r2;
-					
-					//Slightly smarter version of checking if objects are 'fixed' in space or not
-					f1 = Object1.fixed;
-					f2 = Object2.fixed;
-					if(f1 && f2)
-					{
-						f1 &&= (Object1.colVector.x == 0) && (o1 == 0);
-						f2 &&= (Object2.colVector.x == 0) && (o2 == 0);
-					}
-					
-					//Last chance to skip out on a bogus collision resolution
-					if( (overlap == 0) ||
-						((!f1 && ((overlap>0)?overlap:-overlap) > obj1Hull.height*0.8)) ||
-						((!f2 && ((overlap>0)?overlap:-overlap) > obj2Hull.height*0.8)) )
-					{
-						obj2Hull.x = obj2Hull.x - ox2;
-						obj2Hull.y = obj2Hull.y - oy2;
-						i2++;
-						continue;
-					}
-					hit = true;
-					
-					//Adjust the objects according to their flags and stuff
-					sv1 = Object2.velocity.y;
-					sv2 = Object1.velocity.y;
-					if(!f1 && f2)
-					{
-						if(Object1._group)
-							Object1.reset(Object1.x, Object1.y - overlap);
-						else
-							Object1.y = Object1.y - overlap;
-					}
-					else if(f1 && !f2)
-					{
-						if(Object2._group)
-							Object2.reset(Object2.x, Object2.y + overlap);
-						else
-							Object2.y += overlap;
-					}
-					else if(!f1 && !f2)
-					{
-						overlap /= 2;
-						if(Object1._group)
-							Object1.reset(Object1.x, Object1.y - overlap);
-						else
-							Object1.y = Object1.y - overlap;
-						if(Object2._group)
-							Object2.reset(Object2.x, Object2.y + overlap);
-						else
-							Object2.y += overlap;
-						sv1 *= 0.5;
-						sv2 *= 0.5;
-					}
-					if(p1hn2)
-					{
-						Object1.hitBottom(Object2,sv1);
-						Object2.hitTop(Object1,sv2);
-					}
-					else
-					{
-						Object1.hitTop(Object2,sv1);
-						Object2.hitBottom(Object1,sv2);
-					}
-					
-					//Adjust collision hulls if necessary
-					if(!f1 && (overlap != 0))
-					{
-						if(p1hn2)
-						{
-							obj1Hull.y = obj1Hull.y - overlap;
-							
-							//This code helps stuff ride horizontally moving platforms.
-							if(f2 && Object2.moves)
-							{
-								sv1 = Object2.colVector.x;
-								Object1.x += sv1;
-								obj1Hull.x += sv1;
-								Object1.colHullX.x += sv1;
-							}
-						}
-						else
-						{
-							obj1Hull.y = obj1Hull.y - overlap;
-							obj1Hull.height += overlap;
-						}
-					}
-					if(!f2 && (overlap != 0))
-					{
-						if(p1hn2)
-						{
-							obj2Hull.y += overlap;
-							obj2Hull.height = obj2Hull.height - overlap;
-						}
-						else
-						{
-							obj2Hull.height += overlap;
-						
-							//This code helps stuff ride horizontally moving platforms.
-							if(f1 && Object1.moves)
-							{
-								sv2 = Object1.colVector.x;
-								Object2.x += sv2;
-								obj2Hull.x += sv2;
-								Object2.colHullX.x += sv2;
-							}
-						}
-					}
-					obj2Hull.x = obj2Hull.x - ox2;
-					obj2Hull.y = obj2Hull.y - oy2;
-					i2++;
-				}
-				obj1Hull.x = obj1Hull.x - ox1;
-				obj1Hull.y = obj1Hull.y - oy1;
-				i1++;
+				sin = 1.27323954 * radians - 0.405284735 * radians * radians;
+				if (sin < 0)
+					sin = .225 * (sin *-sin - sin) + sin;
+				else
+					sin = .225 * (sin * sin - sin) + sin;
 			}
 			
-			return hit;
+			radians += 1.57079632;
+			if (radians >  3.14159265)
+				radians = radians - 6.28318531;
+			if (radians < 0)
+			{
+				cos = 1.27323954 * radians + 0.405284735 * radians * radians;
+				if (cos < 0)
+					cos = .225 * (cos *-cos - cos) + cos;
+				else
+					cos = .225 * (cos * cos - cos) + cos;
+			}
+			else
+			{
+				cos = 1.27323954 * radians - 0.405284735 * radians * radians;
+				if (cos < 0)
+					cos = .225 * (cos *-cos - cos) + cos;
+				else
+					cos = .225 * (cos * cos - cos) + cos;
+			}
+			
+			var dx:Number = X-PivotX;
+			var dy:Number = PivotY+Y; //Y axis is inverted in flash, normally this would be a subtract operation
+			if(Point == null)
+				Point = new FlxPoint();
+			Point.x = PivotX + cos*dx - sin*dy;
+			Point.y = PivotY - sin*dx - cos*dy;
+			return Point;
+		};
+		
+		/**
+		 * Calculates the angle between two points.  0 degrees points straight up.
+		 * 
+		 * @param	Point1		The X coordinate of the point.
+		 * @param	Point2		The Y coordinate of the point.
+		 * 
+		 * @return	The angle in degrees, between -180 and 180.
+		 */
+		static public function getAngle(Point1:FlxPoint, Point2:FlxPoint):Number
+		{
+			var x:Number = Point2.x - Point1.x;
+			var y:Number = Point2.y - Point1.y;
+			if((x == 0) && (y == 0))
+				return 0;
+			var c1:Number = 3.14159265 * 0.25;
+			var c2:Number = 3 * c1;
+			var ay:Number = (y < 0)?-y:y;
+			var angle:Number = 0;
+			if (x >= 0)
+				angle = c1 - c1 * ((x - ay) / (x + ay));
+			else
+				angle = c2 - c1 * ((x + ay) / (ay - x));
+			angle = ((y < 0)?-angle:angle)*57.2957796;
+			if(angle > 90)
+				angle = angle - 270;
+			else
+				angle += 90;
+			return angle;
+		};
+		
+		/**
+		 * Calculate the distance between two points.
+		 * 
+		 * @param Point1	A <code>FlxPoint</code> object referring to the first location.
+		 * @param Point2	A <code>FlxPoint</code> object referring to the second location.
+		 * 
+		 * @return	The distance between the two points as a floating point <code>Number</code> object.
+		 */
+		static public function getDistance(Point1:FlxPoint,Point2:FlxPoint):Number
+		{
+			var dx:Number = Point1.x - Point2.x;
+			var dy:Number = Point1.y - Point2.y;
+			return Math.sqrt(dx * dx + dy * dy);
 		}
 	}
 }

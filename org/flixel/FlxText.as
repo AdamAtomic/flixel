@@ -10,11 +10,23 @@ package org.flixel
 	 * Doesn't really animate though, as far as I know.
 	 * Also does nice pixel-perfect centering on pixel fonts
 	 * as long as they are only one liners.
+	 * 
+	 * @author	Adam Atomic
 	 */
 	public class FlxText extends FlxSprite
 	{
-		protected var _tf:TextField;
+		/**
+		 * Internal reference to a Flash <code>TextField</code> object.
+		 */
+		protected var _textField:TextField;
+		/**
+		 * Whether the actual text field needs to be regenerated and stamped again.
+		 * This is NOT the same thing as <code>FlxSprite.dirty</code>.
+		 */
 		protected var _regen:Boolean;
+		/**
+		 * Internal tracker for the text shadow color, default is clear/transparent.
+		 */
 		protected var _shadow:uint;
 		
 		/**
@@ -29,30 +41,39 @@ package org.flixel
 		public function FlxText(X:Number, Y:Number, Width:uint, Text:String=null, EmbeddedFont:Boolean=true)
 		{
 			super(X,Y);
-			createGraphic(Width,1,0);
+			makeGraphic(Width,1,0);
 			
 			if(Text == null)
 				Text = "";
-			_tf = new TextField();
-			_tf.width = Width;
-			_tf.embedFonts = EmbeddedFont;
-			_tf.selectable = false;
-			_tf.sharpness = 100;
-			_tf.multiline = true;
-			_tf.wordWrap = true;
-			_tf.text = Text;
-			var tf:TextFormat = new TextFormat("system",8,0xffffff);
-			_tf.defaultTextFormat = tf;
-			_tf.setTextFormat(tf);
+			_textField = new TextField();
+			_textField.width = Width;
+			_textField.embedFonts = EmbeddedFont;
+			_textField.selectable = false;
+			_textField.sharpness = 100;
+			_textField.multiline = true;
+			_textField.wordWrap = true;
+			_textField.text = Text;
+			var format:TextFormat = new TextFormat("system",8,0xffffff);
+			_textField.defaultTextFormat = format;
+			_textField.setTextFormat(format);
 			if(Text.length <= 0)
-				_tf.height = 1;
+				_textField.height = 1;
 			else
-				_tf.height = 10;
+				_textField.height = 10;
 			
 			_regen = true;
 			_shadow = 0;
-			solid = false;
+			allowCollisions = NONE;
 			calcFrame();
+		}
+		
+		/**
+		 * Clean up memory.
+		 */
+		override public function destroy():void
+		{
+			_textField = null;
+			super.destroy();
 		}
 		
 		/**
@@ -71,13 +92,13 @@ package org.flixel
 		{
 			if(Font == null)
 				Font = "";
-			var tf:TextFormat = dtfCopy();
-			tf.font = Font;
-			tf.size = Size;
-			tf.color = Color;
-			tf.align = Alignment;
-			_tf.defaultTextFormat = tf;
-			_tf.setTextFormat(tf);
+			var format:TextFormat = dtfCopy();
+			format.font = Font;
+			format.size = Size;
+			format.color = Color;
+			format.align = Alignment;
+			_textField.defaultTextFormat = format;
+			_textField.setTextFormat(format);
 			_shadow = ShadowColor;
 			_regen = true;
 			calcFrame();
@@ -89,7 +110,7 @@ package org.flixel
 		 */
 		public function get text():String
 		{
-			return _tf.text;
+			return _textField.text;
 		}
 		
 		/**
@@ -97,9 +118,9 @@ package org.flixel
 		 */
 		public function set text(Text:String):void
 		{
-			var ot:String = _tf.text;
-			_tf.text = Text;
-			if(_tf.text != ot)
+			var ot:String = _textField.text;
+			_textField.text = Text;
+			if(_textField.text != ot)
 			{
 				_regen = true;
 				calcFrame();
@@ -111,7 +132,7 @@ package org.flixel
 		 */
 		 public function get size():Number
 		{
-			return _tf.defaultTextFormat.size as Number;
+			return _textField.defaultTextFormat.size as Number;
 		}
 		
 		/**
@@ -119,10 +140,10 @@ package org.flixel
 		 */
 		public function set size(Size:Number):void
 		{
-			var tf:TextFormat = dtfCopy();
-			tf.size = Size;
-			_tf.defaultTextFormat = tf;
-			_tf.setTextFormat(tf);
+			var format:TextFormat = dtfCopy();
+			format.size = Size;
+			_textField.defaultTextFormat = format;
+			_textField.setTextFormat(format);
 			_regen = true;
 			calcFrame();
 		}
@@ -132,7 +153,7 @@ package org.flixel
 		 */
 		override public function get color():uint
 		{
-			return _tf.defaultTextFormat.color as uint;
+			return _textField.defaultTextFormat.color as uint;
 		}
 		
 		/**
@@ -140,10 +161,10 @@ package org.flixel
 		 */
 		override public function set color(Color:uint):void
 		{
-			var tf:TextFormat = dtfCopy();
-			tf.color = Color;
-			_tf.defaultTextFormat = tf;
-			_tf.setTextFormat(tf);
+			var format:TextFormat = dtfCopy();
+			format.color = Color;
+			_textField.defaultTextFormat = format;
+			_textField.setTextFormat(format);
 			_regen = true;
 			calcFrame();
 		}
@@ -153,7 +174,7 @@ package org.flixel
 		 */
 		public function get font():String
 		{
-			return _tf.defaultTextFormat.font;
+			return _textField.defaultTextFormat.font;
 		}
 		
 		/**
@@ -161,10 +182,10 @@ package org.flixel
 		 */
 		public function set font(Font:String):void
 		{
-			var tf:TextFormat = dtfCopy();
-			tf.font = Font;
-			_tf.defaultTextFormat = tf;
-			_tf.setTextFormat(tf);
+			var format:TextFormat = dtfCopy();
+			format.font = Font;
+			_textField.defaultTextFormat = format;
+			_textField.setTextFormat(format);
 			_regen = true;
 			calcFrame();
 		}
@@ -174,7 +195,7 @@ package org.flixel
 		 */
 		public function get alignment():String
 		{
-			return _tf.defaultTextFormat.align;
+			return _textField.defaultTextFormat.align;
 		}
 		
 		/**
@@ -182,15 +203,15 @@ package org.flixel
 		 */
 		public function set alignment(Alignment:String):void
 		{
-			var tf:TextFormat = dtfCopy();
-			tf.align = Alignment;
-			_tf.defaultTextFormat = tf;
-			_tf.setTextFormat(tf);
+			var format:TextFormat = dtfCopy();
+			format.align = Alignment;
+			_textField.defaultTextFormat = format;
+			_textField.setTextFormat(format);
 			calcFrame();
 		}
 		
 		/**
-		 * The alignment of the font ("left", "right", or "center").
+		 * The color of the text shadow in 0xAARRGGBB hex format.
 		 */
 		public function get shadow():uint
 		{
@@ -215,15 +236,14 @@ package org.flixel
 			{
 				//Need to generate a new buffer to store the text graphic
 				var i:uint = 0;
-				var nl:uint = _tf.numLines;
+				var nl:uint = _textField.numLines;
 				height = 0;
 				while(i < nl)
-					height += _tf.getLineMetrics(i++).height;
+					height += _textField.getLineMetrics(i++).height;
 				height += 4; //account for 2px gutter on top and bottom
 				_pixels = new BitmapData(width,height,true,0);
-				_bbb = new BitmapData(width,height,true,0);
 				frameHeight = height;
-				_tf.height = height*1.2;
+				_textField.height = height*1.2;
 				_flashRect.x = 0;
 				_flashRect.y = 0;
 				_flashRect.width = width;
@@ -233,41 +253,37 @@ package org.flixel
 			else	//Else just clear the old buffer before redrawing the text
 				_pixels.fillRect(_flashRect,0);
 			
-			if((_tf != null) && (_tf.text != null) && (_tf.text.length > 0))
+			if((_textField != null) && (_textField.text != null) && (_textField.text.length > 0))
 			{
 				//Now that we've cleared a buffer, we need to actually render the text to it
-				var tf:TextFormat = _tf.defaultTextFormat;
-				var tfa:TextFormat = tf;
-				_mtx.identity();
+				var format:TextFormat = _textField.defaultTextFormat;
+				var formatAdjusted:TextFormat = format;
+				_matrix.identity();
 				//If it's a single, centered line of text, we center it ourselves so it doesn't blur to hell
-				if((tf.align == "center") && (_tf.numLines == 1))
+				if((format.align == "center") && (_textField.numLines == 1))
 				{
-					tfa = new TextFormat(tf.font,tf.size,tf.color,null,null,null,null,null,"left");
-					_tf.setTextFormat(tfa);				
-					_mtx.translate(Math.floor((width - _tf.getLineMetrics(0).width)/2),0);
+					formatAdjusted = new TextFormat(format.font,format.size,format.color,null,null,null,null,null,"left");
+					_textField.setTextFormat(formatAdjusted);				
+					_matrix.translate(Math.floor((width - _textField.getLineMetrics(0).width)/2),0);
 				}
 				//Render a single pixel shadow beneath the text
 				if(_shadow > 0)
 				{
-					_tf.setTextFormat(new TextFormat(tfa.font,tfa.size,_shadow,null,null,null,null,null,tfa.align));				
-					_mtx.translate(1,1);
-					_pixels.draw(_tf,_mtx,_ct);
-					_mtx.translate(-1,-1);
-					_tf.setTextFormat(new TextFormat(tfa.font,tfa.size,tfa.color,null,null,null,null,null,tfa.align));
+					_textField.setTextFormat(new TextFormat(formatAdjusted.font,formatAdjusted.size,_shadow,null,null,null,null,null,formatAdjusted.align));				
+					_matrix.translate(1,1);
+					_pixels.draw(_textField,_matrix,_colorTransform);
+					_matrix.translate(-1,-1);
+					_textField.setTextFormat(new TextFormat(formatAdjusted.font,formatAdjusted.size,formatAdjusted.color,null,null,null,null,null,formatAdjusted.align));
 				}
 				//Actually draw the text onto the buffer
-				_pixels.draw(_tf,_mtx,_ct);
-				_tf.setTextFormat(new TextFormat(tf.font,tf.size,tf.color,null,null,null,null,null,tf.align));
+				_pixels.draw(_textField,_matrix,_colorTransform);
+				_textField.setTextFormat(new TextFormat(format.font,format.size,format.color,null,null,null,null,null,format.align));
 			}
 			
 			//Finally, update the visible pixels
-			if((_framePixels == null) || (_framePixels.width != _pixels.width) || (_framePixels.height != _pixels.height))
-				_framePixels = new BitmapData(_pixels.width,_pixels.height,true,0);
-			_framePixels.copyPixels(_pixels,_flashRect,_flashPointZero);
-			if(FlxG.showBounds)
-				drawBounds();
-			if(solid)
-				refreshHulls();
+			if((framePixels == null) || (framePixels.width != _pixels.width) || (framePixels.height != _pixels.height))
+				framePixels = new BitmapData(_pixels.width,_pixels.height,true,0);
+			framePixels.copyPixels(_pixels,_flashRect,_flashPointZero);
 		}
 		
 		/**
@@ -277,8 +293,8 @@ package org.flixel
 		 */
 		protected function dtfCopy():TextFormat
 		{
-			var dtf:TextFormat = _tf.defaultTextFormat;
-			return new TextFormat(dtf.font,dtf.size,dtf.color,dtf.bold,dtf.italic,dtf.underline,dtf.url,dtf.target,dtf.align);
+			var defaultTextFormat:TextFormat = _textField.defaultTextFormat;
+			return new TextFormat(defaultTextFormat.font,defaultTextFormat.size,defaultTextFormat.color,defaultTextFormat.bold,defaultTextFormat.italic,defaultTextFormat.underline,defaultTextFormat.url,defaultTextFormat.target,defaultTextFormat.align);
 		}
 	}
 }
