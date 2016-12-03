@@ -434,12 +434,12 @@ package org.flixel
 				Camera = FlxG.camera;
 
 			//get bounding box coordinates
-			var boundingBoxX:Number = x - int(Camera.scroll.x*scrollFactor.x); //copied from getScreenXY()
-			var boundingBoxY:Number = y - int(Camera.scroll.y*scrollFactor.y);
-			boundingBoxX = int(boundingBoxX + ((boundingBoxX > 0)?0.0000001:-0.0000001));
-			boundingBoxY = int(boundingBoxY + ((boundingBoxY > 0)?0.0000001:-0.0000001));
-			var boundingBoxWidth:int = (width != int(width))?width:width-1;
-			var boundingBoxHeight:int = (height != int(height))?height:height-1;
+			var bx:Number = boundingX - int(Camera.scroll.x*scrollFactor.x); //copied from getScreenXY()
+			var by:Number = boundingY - int(Camera.scroll.y*scrollFactor.y);
+			bx = int(bx + ((bx > 0)?0.0000001:-0.0000001));
+			by = int(by + ((by > 0)?0.0000001:-0.0000001));
+			var bw:int = (width != int(width))?width:width-1;
+			var bh:int = (height != int(height))?height:height-1;
 
 			//fill static graphics object with square shape
 			var gfx:Graphics = FlxG.flashGfx;
@@ -832,6 +832,24 @@ package org.flixel
 			Point.x += (Point.x > 0)?0.0000001:-0.0000001;
 			Point.y += (Point.y > 0)?0.0000001:-0.0000001;
 			return Point;
+		}
+		
+		/**
+		 * Bounding box left position
+		 * @return 
+		 */
+		public function get boundingX():Number
+		{
+			return x;
+		}
+		
+		/**
+		 * Bounding box top position
+		 * @return 
+		 */		
+		public function get boundingY():Number
+		{
+			return y;
 		}
 		
 		/**
